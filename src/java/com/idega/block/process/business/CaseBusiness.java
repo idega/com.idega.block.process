@@ -43,6 +43,7 @@ public interface CaseBusiness extends com.idega.business.IBOService
  public com.idega.block.process.data.CaseStatus getCaseStatusError()throws java.rmi.RemoteException, java.rmi.RemoteException;
  public com.idega.block.process.data.CaseStatus getCaseStatusGranted()throws java.rmi.RemoteException, java.rmi.RemoteException;
  public com.idega.block.process.data.CaseStatus getCaseStatusInactive()throws java.rmi.RemoteException, java.rmi.RemoteException;
+ public com.idega.block.process.data.CaseStatus getCaseStatusMoved()throws java.rmi.RemoteException, java.rmi.RemoteException;
  public com.idega.block.process.data.CaseStatus getCaseStatusOpen()throws java.rmi.RemoteException, java.rmi.RemoteException;
  public com.idega.block.process.data.CaseStatus getCaseStatusPreliminary()throws java.rmi.RemoteException, java.rmi.RemoteException;
  public com.idega.block.process.data.CaseStatus getCaseStatusReady()throws java.rmi.RemoteException, java.rmi.RemoteException;
