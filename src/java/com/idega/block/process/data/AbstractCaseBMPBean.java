@@ -615,18 +615,20 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		from.setHour(0);
 		from.setMinute(0);
 		from.setSecond(0);
+		
 		sql.appendAnd();
 		sql.append(" g.");
 		sql.append(getSQLGeneralCaseCreatedColumnName());
 		sql.append(" >= '");
-		sql.append(from.toSQLString());
+		sql.append(from.toSQLDateString() +" "+from.toSQLTimeString());
 		sql.append("'");
 		sql.appendAnd();
 		sql.append(" g.");
 		sql.append(getSQLGeneralCaseCreatedColumnName());
 		sql.append(" <= '");
-		sql.append(to.toSQLString());
+		sql.append(to.toSQLDateString() +" "+to.toSQLTimeString());
 		sql.append("'");
+	
 		return sql;
 	}
 	
