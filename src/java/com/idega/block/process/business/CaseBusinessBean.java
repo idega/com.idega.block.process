@@ -572,7 +572,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	protected Locale getDefaultLocale()
 	{
 		//return com.idega.util.LocaleUtil.getLocale("en");
-		return getIWApplicationContext().getApplication().getSettings().getDefaultLocale();
+		return getIWApplicationContext().getIWMainApplication().getSettings().getDefaultLocale();
 	}
 	protected String getLocalizedString(String key, String defaultValue)
 	{
@@ -633,7 +633,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	protected IWBundle getBundle()
 	{
-		return getIWApplicationContext().getApplication().getBundle(getBundleIdentifier());
+		return getIWApplicationContext().getIWMainApplication().getBundle(getBundleIdentifier());
 	}
 	
 	/**
