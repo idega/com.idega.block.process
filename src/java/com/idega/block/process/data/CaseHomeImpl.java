@@ -27,6 +27,13 @@ public java.util.Collection findAllCasesByUser(com.idega.user.data.User p0)throw
 	return this.getEntityCollectionForPrimaryKeys(ids);
 }
 
+public java.util.Collection findAllCasesByGroup(com.idega.user.data.Group p0)throws javax.ejb.FinderException {
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindAllCasesByGroup(p0);
+	this.idoCheckInPooledEntity(entity);
+	return this.getEntityCollectionForPrimaryKeys(ids);
+}
+
 public java.util.Collection findAllCasesByUser(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode p1,com.idega.block.process.data.CaseStatus p2)throws javax.ejb.FinderException{
 	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindAllCasesByUser(p0,p1,p2);
@@ -60,6 +67,13 @@ public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.U
 	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindAllCasesForUserExceptCodes(p0,codes);
 	this.idoCheckInPooledEntity(entity);
 	return this.getEntityCollectionForPrimaryKeys(ids);
+}
+
+public java.util.Collection findAllCasesForGroupExceptCodes(com.idega.user.data.Group p0,CaseCode[] codes)throws javax.ejb.FinderException {
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindAllCasesForGroupExceptCodes(p0,codes);
+	this.idoCheckInPooledEntity(entity);
+	return this.getEntityCollectionForPrimaryKeys(ids); 
 }
 
  public Case findByPrimaryKey(Object pk) throws javax.ejb.FinderException{

@@ -11,6 +11,7 @@ public interface CaseHome extends com.idega.data.IDOHome
  public java.util.Collection findAllCasesByUser(com.idega.user.data.User p0,java.lang.String p1,java.lang.String p2)throws javax.ejb.FinderException;
  public java.util.Collection findAllCasesByUser(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode p1)throws javax.ejb.FinderException;
  public java.util.Collection findAllCasesByUser(com.idega.user.data.User p0,java.lang.String p1)throws javax.ejb.FinderException;
+ public java.util.Collection findAllCasesByGroup(com.idega.user.data.Group p0)throws javax.ejb.FinderException;
  public java.lang.String getCaseStatusCancelled();
  public java.lang.String getCaseStatusGranted();
  public int countSubCasesUnder(com.idega.block.process.data.Case p0);
@@ -23,6 +24,7 @@ public interface CaseHome extends com.idega.data.IDOHome
  public java.lang.String getCaseStatusReady();
  public java.lang.String getCaseStatusRedeem();
  public java.lang.String getCaseStatusError();
-public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.User p0,CaseCode[] codes)throws javax.ejb.FinderException;
+ public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.User p0,CaseCode[] codes)throws javax.ejb.FinderException;
+ public java.util.Collection findAllCasesForGroupExceptCodes(com.idega.user.data.Group p0,CaseCode[] codes)throws javax.ejb.FinderException;
 
 }

@@ -20,6 +20,7 @@ import com.idega.business.IBOServiceBean;
 import com.idega.core.component.data.ICObject;
 import com.idega.data.IDOStoreException;
 import com.idega.idegaweb.IWBundle;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
 import com.idega.util.IWTimestamp;
@@ -233,12 +234,31 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	
 	/**
+	 * Gets all the Cases for the User
+	 */
+	public Collection getAllCasesForGroup(Group group) throws FinderException, RemoteException
+	{
+		return this.getCaseHome().findAllCasesByGroup(group);
+	}	
+	
+
+	
+	/**
 	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array.
 	 */
 	public Collection getAllCasesForUserExceptCodes(User user,CaseCode[] codes) throws FinderException, RemoteException
 	{
 		return this.getCaseHome().findAllCasesForUserExceptCodes(user,codes);
 	}
+	
+	/**
+	 * Gets all the Cases for the Group except the ones with one of the CaseCode in the codes[] array.
+	 */
+	public Collection getAllCasesForGroupExceptCodes(Group group,CaseCode[] codes) throws FinderException, RemoteException
+	{
+		return this.getCaseHome().findAllCasesForGroupExceptCodes(group,codes);
+	}
+		
 	/**
 	 * Gets all the Cases for the User with a specificed code
 	 */

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.29 2003/10/05 20:02:14 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.30 2003/10/13 18:21:20 roar Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -298,6 +298,23 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			throw new IDORuntimeException(e,this);	
 		}
 	}
+	
+	/**
+	 * Gets the query for finding all the cases for a group ordered in chronological order
+	 */
+	protected IDOQuery idoQueryGetAllCasesByGroupOrdered(Group group)
+	{
+		try{
+			IDOQuery query = idoQueryGetAllCasesByGroup(group);
+			query.appendOrderBy(COLUMN_CREATED);
+			return query;
+		}
+		catch(Exception e){
+			throw new IDORuntimeException(e,this);	
+		}
+	}
+		
+		
 
 	/**
 	 * Gets all the cases of all casetypes for a user and orders in chronological order
@@ -317,6 +334,15 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			+ COLUMN_CREATED);
 		*/
 	}
+	
+	/**
+	 * Gets all the cases of all casetypes for a group and orders in chronological order
+	 */	
+	public Collection ejbFindAllCasesByGroup(Group group) throws FinderException 
+	{
+		return idoFindPKsByQuery(idoQueryGetAllCasesByGroupOrdered(group));
+	}
+			
 	/**
 	 * Gets all the cases for a user with a specified caseCode and orders in chronological order
 	 */
@@ -582,6 +608,18 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		query.appendOrderBy(COLUMN_CREATED);
 		return query;
 	}
+	
+	protected IDOQuery idoQueryGetAllCasesForGroupExceptCodes(Group group,CaseCode[] codes)
+	{
+		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+		IDOQuery query = idoQueryGetAllCasesByGroup(group);
+		query.appendAnd();
+		query.append(COLUMN_CASE_CODE);
+		query.appendNotIn(notInClause);
+		query.appendOrderBy(COLUMN_CREATED);
+		return query;
+	}
+		
 
 	/**
 	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array and orders in chronological order
@@ -608,6 +646,16 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			*/			
 	}
 	
+	/**
+	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array and orders in chronological order
+	 */
+	public Collection ejbFindAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException
+	{
+		IDOQuery query = idoQueryGetAllCasesForGroupExceptCodes(group, codes);
+		return super.idoFindPKsByQuery(query);
+	}
+		
+	
 	
 	/**
 	 * Gets the query for selecting all cases by user.	 * @param user the cases has to be owned by	 * @return IDOQuery the resulting query.	 */
@@ -621,6 +669,23 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			throw new IDORuntimeException(e,this);	
 		}
 	}
+	
+	/**
+	 * Gets the query for selecting all cases by group.
+	 * @param group the cases will be handled by
+	 * @return IDOQuery the resulting query.
+	 */
+	protected IDOQuery idoQueryGetAllCasesByGroup(Group group){
+		try{
+			IDOQuery query = this.idoQueryGetSelect();
+			query.appendWhereEqualsQuoted(COLUMN_HANDLER, group.getPrimaryKey().toString());
+			return query;
+		}
+		catch(Exception e){
+			throw new IDORuntimeException(e, this);	
+		}
+	}
+	
 
 
 }
