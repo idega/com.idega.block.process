@@ -44,6 +44,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	private String CASE_STATUS_OPEN_KEY;
 	private String CASE_STATUS_INACTIVE_KEY;
 	private String CASE_STATUS_GRANTED_KEY;
+	private String CASE_STATUS_DELETED_KEY;
 	private String CASE_STATUS_DENIED_KEY;
 	private String CASE_STATUS_REVIEW_KEY;
 	private String CASE_STATUS_CANCELLED_KEY;
@@ -61,6 +62,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			CASE_STATUS_OPEN_KEY = this.getCaseHome().getCaseStatusOpen();
 			CASE_STATUS_INACTIVE_KEY = this.getCaseHome().getCaseStatusInactive();
 			CASE_STATUS_GRANTED_KEY = this.getCaseHome().getCaseStatusGranted();
+			CASE_STATUS_DELETED_KEY = this.getCaseHome().getCaseStatusDeleted();
 			CASE_STATUS_DENIED_KEY = this.getCaseHome().getCaseStatusDenied();
 			CASE_STATUS_REVIEW_KEY = this.getCaseHome().getCaseStatusReview();
 			CASE_STATUS_CANCELLED_KEY = this.getCaseHome().getCaseStatusCancelled();
@@ -419,6 +421,17 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		{
 			throw new EJBException(
 				"CaseStatus " + this.CASE_STATUS_GRANTED_KEY + " is not installed or does not exist");
+		}
+	}
+	public CaseStatus getCaseStatusDeleted() throws RemoteException
+	{
+		try
+		{
+			return this.getCaseStatusHome().findByPrimaryKey(CASE_STATUS_DELETED_KEY);
+		}
+		catch (FinderException e)
+		{
+			throw new EJBException("CaseStatus " + this.CASE_STATUS_DELETED_KEY + " is not installed or does not exist");
 		}
 	}
 	public CaseStatus getCaseStatusDenied() throws RemoteException
