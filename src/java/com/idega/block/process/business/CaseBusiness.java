@@ -1,8 +1,8 @@
 /*
- * $Id: CaseBusiness.java,v 1.27 2004/12/09 13:44:19 laddi Exp $
- * Created on 8.12.2004
+ * $Id: CaseBusiness.java,v 1.28 2005/01/10 20:38:01 laddi Exp $
+ * Created on 10.1.2005
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -25,10 +25,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/09 13:44:19 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/10 20:38:01 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -211,6 +211,11 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusReview
 	 */
 	public CaseStatus getCaseStatusReview() throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusWaiting
+	 */
+	public CaseStatus getCaseStatusWaiting() throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusMoved

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.18 2004/12/08 18:09:46 laddi Exp $
+ * $Id: CaseHomeImpl.java,v 1.19 2005/01/10 20:38:01 laddi Exp $
  * Created on 8.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -20,10 +20,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/08 18:09:46 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/10 20:38:01 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -140,6 +140,13 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	public String getCaseStatusReview() {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusReview();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	public String getCaseStatusWaiting() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusWaiting();
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.45 2004/12/20 14:03:38 sigtryggur Exp $
+ * $Id: CaseBMPBean.java,v 1.46 2005/01/10 20:38:01 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -61,6 +61,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String CASE_STATUS_PLACED_KEY = "PLAC";
 	static final String CASE_STATUS_DELETED_KEY = "DELE";
 	static final String CASE_STATUS_PENDING_KEY = "PEND";
+	static final String CASE_STATUS_WAITING = "WAIT";
 	
 	public void initializeAttributes()
 	{
@@ -597,6 +598,14 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return CASE_STATUS_REVIEW_KEY;
 	}
 
+	/**
+	 * Returns the CASE_STATUS_WAITING.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusWaiting()
+	{
+		return CASE_STATUS_WAITING;
+	}
 	/**
 	 * Returns the CASE_STATUS_PRELIMINARY_KEY.
 	 * @return String
