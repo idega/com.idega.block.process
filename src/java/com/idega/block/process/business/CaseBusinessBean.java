@@ -650,4 +650,23 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		return null;
 	}
 	
+	public String getCaseStatusOpenString() {		
+		return CASE_STATUS_OPEN_KEY;	
+	}
+	
+	public String getCaseStatusCancelledString() {		
+		return CASE_STATUS_CANCELLED_KEY;
+	}
+	
+	public String getCaseStatusInactiveString() {
+			return CASE_STATUS_INACTIVE_KEY;
+	}
+
+	public String getCaseStatusReadyString() {
+			return CASE_STATUS_READY_KEY;
+	}
+	
+	public String getCaseStatusDeletedString() {
+				return CASE_STATUS_DELETED_KEY;
+	}
 }
