@@ -524,7 +524,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			oldCaseStatus = theCase.getStatus();
 
 			theCase.setStatus(newCaseStatus);
-			theCase.setHandler(performer);
+			if (performer != null) {
+				theCase.setHandler(performer);
+			}
 			theCase.store();
 
 			if (oldCaseStatus != newCaseStatus) {
@@ -532,7 +534,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				log.setCase(Integer.parseInt(theCase.getPrimaryKey().toString()));
 				log.setCaseStatusBefore(oldCaseStatus);
 				log.setCaseStatusAfter(newCaseStatus);
-				log.setPerformer(performer);
+				if (performer != null) {
+					log.setPerformer(performer);
+				}
 				log.store();
 			}
 		}
