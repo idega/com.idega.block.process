@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.22 2002/11/04 09:46:03 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.23 2002/11/13 22:24:41 gimmi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -28,7 +28,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 {
 	public static final String TABLE_NAME = "PROC_CASE";
 	static final String COLUMN_CASE_CODE = "CASE_CODE";
-	static final String COLUMN_CASE_STATUS = "CASE_STATUS";
+	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
 	static final String COLUMN_CREATED = "CREATED";
 	static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID";
 	static final String COLUMN_USER = "USER_ID";
