@@ -20,7 +20,7 @@ import java.rmi.RemoteException;
 
 public abstract class CaseDaemonBean extends com.idega.business.IBOTimedServiceBean implements IWService, CaseDaemon{
 
-  public CaseDaemonBean() {
+  protected CaseDaemonBean() {
   }
   public String getServiceName() {
     return "CaseDeamon";
