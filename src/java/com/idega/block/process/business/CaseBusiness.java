@@ -1,6 +1,5 @@
 package com.idega.block.process.business;
 
-import javax.ejb.*;
 
 public interface CaseBusiness extends com.idega.business.IBOService
 {

@@ -1,6 +1,5 @@
 package com.idega.block.process.data;
 
-import javax.ejb.*;
 
 public interface CaseCode extends com.idega.data.IDOEntity
 {

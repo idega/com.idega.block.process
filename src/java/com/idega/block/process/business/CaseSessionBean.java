@@ -1,12 +1,15 @@
 package com.idega.block.process.business;
 
-import com.idega.business.IBOSessionBean;
-import com.idega.block.process.data.*;
-
 import java.rmi.RemoteException;
-import javax.ejb.*;
 import java.util.Collection;
-import com.idega.user.Converter;
+
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
+
+import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.data.CaseStatus;
+import com.idega.business.IBOSessionBean;
 
 /**
  * Title:        idegaWeb

@@ -1,7 +1,5 @@
 package com.idega.block.process.data;
 
-import javax.ejb.*;
-
 import com.idega.user.data.Group;
 
 public interface Case extends com.idega.data.IDOEntity,com.idega.core.ICTreeNode

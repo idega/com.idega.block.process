@@ -1,13 +1,11 @@
 package com.idega.block.process.business;
 
-import com.idega.idegaweb.*;
-
-import java.util.*;
-import com.idega.block.process.data.*;
-import javax.ejb.EJBHome;
-import javax.ejb.Handle;
-import javax.ejb.EJBObject;
 import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.Iterator;
+
+import com.idega.block.process.data.Case;
+import com.idega.idegaweb.IWService;
 
 /**
  * Title:        idegaWeb

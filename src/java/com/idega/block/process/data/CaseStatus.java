@@ -1,6 +1,5 @@
 package com.idega.block.process.data;
 
-import javax.ejb.*;
 
 public interface CaseStatus extends com.idega.data.IDOEntity
 {
