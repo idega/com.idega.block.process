@@ -162,7 +162,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 	public int ejbHomeGetCountByStatusChange(Case theCase, String statusBefore, String statusAfter) throws IDOException {
 		IDOQuery query = idoQuery();
 		query.appendSelectCountFrom(this);
-		query.appendWhereEquals(COLUMN_CASE_STATUS_BEFORE, statusBefore);
+		query.appendWhereEqualsQuoted(COLUMN_CASE_STATUS_BEFORE, statusBefore);
 		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_AFTER, statusAfter);
 		query.appendAndEquals(COLUMN_CASE_ID, theCase);
 		return super.idoGetNumberOfRecords(query);
