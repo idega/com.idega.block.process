@@ -24,8 +24,6 @@ public interface CaseBusiness extends com.idega.business.IBOService
  public java.util.Collection getAllCasesForUserAndGroupsExceptCodes(com.idega.user.data.User p0,java.util.Collection p1,com.idega.block.process.data.CaseCode[] p2,int p3,int p4)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public java.util.Collection getAllCasesForUserExceptCodes(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode[] p1,int p2,int p3)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public com.idega.block.process.data.Case getCase(int p0)throws java.rmi.RemoteException,javax.ejb.FinderException, java.rmi.RemoteException;
- public com.idega.block.process.business.CaseBusiness getCaseBusiness(java.lang.String p0) throws java.rmi.RemoteException;
- public com.idega.block.process.business.CaseBusiness getCaseBusiness(com.idega.block.process.data.CaseCode p0) throws java.rmi.RemoteException;
  public com.idega.block.process.data.CaseCode getCaseCode(java.lang.String p0)throws java.rmi.RemoteException,javax.ejb.FinderException, java.rmi.RemoteException;
  public java.util.Collection getCaseLogsByCaseAndDatesAndStatusChange(java.lang.String p0,java.sql.Timestamp p1,java.sql.Timestamp p2,java.lang.String p3,java.lang.String p4)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public java.util.Collection getCaseLogsByCaseAndDatesAndStatusChange(com.idega.block.process.data.CaseCode p0,java.sql.Timestamp p1,java.sql.Timestamp p2,java.lang.String p3,java.lang.String p4)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;

@@ -5,11 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
-
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
@@ -18,10 +16,8 @@ import com.idega.block.process.data.CaseLog;
 import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
-import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
-import com.idega.core.component.data.ICObject;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
@@ -97,73 +93,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 		
 		_statusMap.put(status.getStatus(), status);
-	}
-
-	/**
-	 * Returns the correct CaseBusiness implementation instance for the specified
-	 * case code. <br>
-	 * If there is no specified the default (this) is returned;
-	 */
-	public CaseBusiness getCaseBusiness(String caseCode) {
-		try {
-			CaseCode code = this.getCaseCodeHome().findByPrimaryKey(caseCode);
-			return this.getCaseBusiness(code);
-		}
-		catch (FinderException e) {
-			throw new EJBException(e.getMessage());
-		}
-	}
-
-	/**
-	 * Returns the correct CaseBusiness implementation instance for the specified
-	 * case code. <br>
-	 * If there is no specified the default (this) is returned;
-	 */
-	public CaseBusiness getCaseBusiness(CaseCode code) {
-		/**
-		 * @todo: implement
-		 */
-		try {
-			ICObject handler = code.getBusinessHandler();
-			if (handler != null) {
-				Class objClass = handler.getObjectClass();
-				return (CaseBusiness) this.getServiceInstance(objClass);
-			}
-			/**
-			 * TODO: Remove hardcoding of CaseBusinessBeans
-			 */
-			try {
-				Class c = Class.forName("se.idega.idegaweb.commune.school.business.SchoolChoiceBusiness");
-				if (code.getCode().equals("MBSKOLV")) {
-					return (CaseBusiness) this.getServiceInstance(c);
-				}
-			}
-			catch (ClassNotFoundException e) {
-			}
-			try {
-				Class c = Class.forName("se.idega.idegaweb.commune.childcare.business.ChildCareBusiness");
-				if (code.getCode().equals("MBANBOP") || code.getCode().equals("MBFRITV")) {
-					return (CaseBusiness) this.getServiceInstance(c);
-				}
-			}
-			catch (ClassNotFoundException e) {
-			}
-			try {
-				Class c = Class.forName("se.idega.idegaweb.commune.school.music.business.MusicSchoolBusiness");
-				if (code.getCode().equals("MUSICCH")) {
-					return (CaseBusiness) this.getServiceInstance(c);
-				}
-			}
-			catch (ClassNotFoundException e) {
-			}
-			return this;
-		}
-		catch (ClassNotFoundException cnfe) {
-			throw new EJBException(cnfe.getMessage());
-		}
-		catch (IBOLookupException ile) {
-			throw new EJBException(ile.getMessage());
-		}
 	}
 
 	public Case createCase(int userID, String caseCode) throws CreateException {
