@@ -1,14 +1,23 @@
 package com.idega.block.process.data;
-import com.idega.data.*;
 import java.rmi.RemoteException;
-import javax.ejb.*;
 import java.sql.Timestamp;
-
-import com.idega.user.data.Group;
-import com.idega.user.data.User;
 import java.util.Collection;
 import java.util.Iterator;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
+
 import com.idega.core.ICTreeNode;
+import com.idega.data.GenericEntity;
+import com.idega.data.IDOException;
+import com.idega.data.IDOLookup;
+import com.idega.data.IDOQuery;
+import com.idega.data.IDORuntimeException;
+import com.idega.data.IDOStoreException;
+import com.idega.user.data.Group;
+import com.idega.user.data.User;
 /**
  * Title:        idegaWeb
  * Description:
@@ -430,7 +439,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	 * Returns the cASE_STATUS_INACTIVE_KEY.
 	 * @return String
 	 */
-	public String getCaseStatusInactive() throws RemoteException
+	public String getCaseStatusInactive()throws RemoteException
 	{
 		return this.getCaseHome().getCaseStatusInactive();
 	}
@@ -438,7 +447,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	 * Returns the cASE_STATUS_OPEN_KEY.
 	 * @return String
 	 */
-	public String getCaseStatusOpen() throws RemoteException
+	public String getCaseStatusOpen()throws RemoteException
 	{
 		return this.getCaseHome().getCaseStatusOpen();
 	}
@@ -446,7 +455,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	 * Returns the cASE_STATUS_REVIEW_KEY.
 	 * @return String
 	 */
-	public String getCaseStatusReview() throws RemoteException
+	public String getCaseStatusReview()throws RemoteException
 	{
 		return getCaseHome().getCaseStatusReview();
 	}
@@ -454,7 +463,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	 * Returns the CASE_STATUS_PRELIMINARY_KEY.
 	 * @return String
 	 */
-	public String getCaseStatusPreliminary() throws RemoteException
+	public String getCaseStatusPreliminary()throws RemoteException
 	{
 		return getCaseHome().getCaseStatusPreliminary();
 	}
@@ -462,7 +471,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
 	 * @return String
 	 */
-	public String getCaseStatusContract() throws RemoteException
+	public String getCaseStatusContract()throws RemoteException
 	{
 		return getCaseHome().getCaseStatusContract();
 	}
@@ -470,7 +479,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
 	 * @return String
 	 */
-	public String getCaseStatusReady() throws RemoteException
+	public String getCaseStatusReady()throws RemoteException
 	{
 		return getCaseHome().getCaseStatusReady();
 	}
@@ -506,7 +515,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode
 	 */
-	public Collection ejbFindAllCasesByStatus(CaseStatus caseStatus) throws FinderException, RemoteException
+	public Collection ejbFindAllCasesByStatus(CaseStatus caseStatus) throws FinderException,RemoteException
 	{
 		return ejbFindAllCasesByStatus(caseStatus.getStatus());
 	}
@@ -514,11 +523,21 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	/**
 	 * Finds all cases for the specified user and the associated caseCode and orders chronologically
 	 */
-	public Collection ejbFindAllCasesByUser(User user) throws FinderException, RemoteException
+	public Collection ejbFindAllCasesByUser(User user) throws FinderException
+	{
+		IDOQuery sql = idoQueryGetAllCasesByUser(user);
+		return (Collection) super.idoFindPKsByQuery(sql);
+	}
+	/**
+	 * Finds all cases for the specified user and the associated caseCode and orders chronologically
+	 */
+	public IDOQuery idoQueryGetAllCasesByUser(User user)
 	{
 		String caseCode = this.getCaseCodeKey();
-		StringBuffer sql = new StringBuffer();
+		//StringBuffer sql = new StringBuffer();
+		IDOQuery sql = idoQuery();
 		sql.append("select * from ");
+		
 		sql.append(getSQLGeneralCaseTableName());
 		sql.append(" g,");
 		sql.append(this.getTableName());
@@ -538,15 +557,26 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append(" order by ");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		
-		return (Collection) super.idoFindPKsBySQL(sql.toString());
-	}	
+		return sql;
+		//return (Collection) super.idoFindPKsBySQL(sql.toString());
+	}
+
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
 	 */
-	public Collection ejbFindAllCasesByStatus(String caseStatus) throws FinderException, RemoteException
+	public Collection ejbFindAllCasesByStatus(String caseStatus) throws FinderException
+	{
+		return idoFindPKsByQuery(idoQueryGetAllCasesByStatusOrderedByCreation(caseStatus));
+	}
+
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 */
+	public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus)
 	{
 		String caseCode = this.getCaseCodeKey();
-		StringBuffer sql = new StringBuffer();
+		//StringBuffer sql = new StringBuffer();
+		IDOQuery sql = idoQuery();
 		sql.append("select * from ");
 		sql.append(getSQLGeneralCaseTableName());
 		sql.append(" g,");
@@ -567,16 +597,39 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("'");
 		sql.append(" order by ");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return (Collection) super.idoFindPKsBySQL(sql.toString());
+		
+		return sql;
+		//return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}
+	
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 */
+	public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String caseStatus)
+	{
+		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
+		return sql;
+	}
+
 	/**
 	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUserAndStatus(User user, String caseStatus)
-		throws FinderException, RemoteException
+		throws FinderException
+	{
+		return idoFindPKsByQuery(idoQueryGetAllCasesByUserAndStatus(user,caseStatus));
+	}
+
+	/**
+	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode and orders chronologically
+	 */
+	public IDOQuery idoQueryGetAllCasesByUserAndStatus(User user, String caseStatus)
 	{
 		String caseCode = this.getCaseCodeKey();
-		StringBuffer sql = new StringBuffer();
+		//StringBuffer sql = new StringBuffer();
+		IDOQuery sql = idoQuery();
 		sql.append("select * from ");
 		sql.append(getSQLGeneralCaseTableName());
 		sql.append(" g,");
@@ -601,15 +654,26 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("'");
 		sql.append(" order by ");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return (Collection) super.idoFindPKsBySQL(sql.toString());
+		//return (Collection) super.idoFindPKsBySQL(sql.toString());
+		return sql;
 	}
+
 	/**
 	 *Returns all the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
 	 */
-	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException, RemoteException
+	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException
+	{
+		return idoFindPKsByQuery(idoQueryGetSubCasesUnder(theCase));
+	}
+
+	/**
+	 *Returns all the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 */
+	public IDOQuery idoQueryGetSubCasesUnder(Case theCase) throws FinderException
 	{
 		String caseCode = this.getCaseCodeKey();
-		StringBuffer sql = new StringBuffer();
+		//StringBuffer sql = new StringBuffer();
+		IDOQuery sql = idoQuery();
 		sql.append("select * from ");
 		sql.append(getSQLGeneralCaseTableName());
 		sql.append(" g,");
@@ -629,8 +693,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("'");
 		sql.append(" order by ");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return (Collection) super.idoFindPKsBySQL(sql.toString());
+		return sql;
+		//return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}
+	
 	/**
 	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
 	 */
@@ -638,8 +704,24 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	{
 		try
 		{
+			IDOQuery sql = idoQueryGetCountSubCasesUnder(theCase);
+			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+			return super.getNumberOfRecords(sql.toString());
+		}
+		catch (java.sql.SQLException sqle)
+		{
+			throw new EJBException(sqle.getMessage());
+		}
+	}
+	
+	/**
+	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 */
+	protected IDOQuery idoQueryGetCountSubCasesUnder(Case theCase) throws RemoteException
+	{
 			String caseCode = this.getCaseCodeKey();
-			StringBuffer sql = new StringBuffer();
+			//StringBuffer sql = new StringBuffer();
+			IDOQuery sql = idoQuery();
 			sql.append("select count(*) from ");
 			sql.append(getSQLGeneralCaseTableName());
 			sql.append(" g,");
@@ -659,23 +741,19 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			sql.append("'");
 			sql.append(" order by ");
 			sql.append(this.getSQLGeneralCaseCreatedColumnName());
-			return super.getNumberOfRecords(sql.toString());
-		}
-		catch (java.sql.SQLException sqle)
-		{
-			throw new EJBException(sqle.getMessage());
-		}
+			return sql;
+			//return super.getNumberOfRecords(sql.toString());
 	}
+        
         
 	/**
 	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
 	 */
-	public int ejbHomeCountCasesWithStatus(String caseStatus) throws RemoteException
+	protected IDOQuery idoQueryGetCountCasesWithStatus(String caseStatus)
 	{
-		try
-		{
 			String caseCode = this.getCaseCodeKey();
-			StringBuffer sql = new StringBuffer();
+			//StringBuffer sql = new StringBuffer();
+			IDOQuery sql = idoQuery();
 			sql.append("select count(*) from ");
 			sql.append(getSQLGeneralCaseTableName());
 			sql.append(" g,");
@@ -694,9 +772,22 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			sql.append("='");
 			sql.append(caseStatus);
 			sql.append("'");
-			return super.getNumberOfRecords(sql.toString());
+			return sql;
+			//return super.getNumberOfRecords(sql.toString());
+	}
+        
+        
+	/**
+	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 */
+	public int ejbHomeCountCasesWithStatus(String caseStatus)
+	{
+		try
+		{	
+			IDOQuery sql = idoQueryGetCountCasesWithStatus(caseStatus);	
+			return super.idoGetNumberOfRecords(sql);
 		}
-		catch (java.sql.SQLException sqle)
+		catch (IDOException sqle)
 		{
 			throw new EJBException(sqle.getMessage());
 		}
@@ -705,41 +796,56 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
 	 */
-	public Collection ejbFindAllCasesByStatusArray(String caseStatus[]) throws FinderException, RemoteException {
-		String caseCode = this.getCaseCodeKey();
-		StringBuffer sql = new StringBuffer();
-		sql.append("select * from ");
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-		sql.append(" in (");
-		int length = caseStatus.length;
-		for (int i = 0; i < length; i++) {
+	public Collection ejbFindAllCasesByStatusArray(String caseStatus[]) throws FinderException {
+
+		IDOQuery sql = idoQueryGetAllCasesByStatusArray(caseStatus);
+		return (Collection) super.idoFindPKsByQuery(sql);
+	}
+	
+	
+	
+	protected IDOQuery idoQueryGetAllCasesByStatusArray(String caseStatus[])
+	{
+		try{
+			String caseCode = this.getCaseCodeKey();
+			//StringBuffer sql = new StringBuffer();
+			IDOQuery sql = idoQuery();
+			sql.append("select * from ");
+			sql.append(getSQLGeneralCaseTableName());
+			sql.append(" g,");
+			sql.append(this.getTableName());
+			sql.append(" a where g.");
+			sql.append(this.getSQLGeneralCasePKColumnName());
+			sql.append("=a.");
+			sql.append(this.getIDColumnName());
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
+			sql.append("='");
+			sql.append(caseCode);
 			sql.append("'");
-			sql.append(caseStatus[i]);
-			if (i != (length - 1))
-				sql.append("', ");
-			else
-				sql.append("'");				
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
+			sql.append(" in (");
+			int length = caseStatus.length;
+			for (int i = 0; i < length; i++) {
+				sql.append("'");
+				sql.append(caseStatus[i]);
+				if (i != (length - 1))
+					sql.append("', ");
+				else
+					sql.append("'");
+			}
+			sql.append(")");
+			sql.append(" order by ");
+			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+
+			debug("AbstractCase.idoQueryGetAllCasesByStatusArray(): sql = " + sql.toString());
+
+			return sql;
 		}
-		sql.append(")");
-		sql.append(" order by ");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		
-		//System.out.println("sql = " + sql.toString());
-		
-		return (Collection) super.idoFindPKsBySQL(sql.toString());
+		catch(Exception e){
+			throw new IDORuntimeException(e,this);
+		}
 	}
 	
 }
