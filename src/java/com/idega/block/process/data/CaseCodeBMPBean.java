@@ -46,6 +46,10 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     return String.class;
   }
 
+  public String getIDColumnName(){
+    return CASE_CODE;
+  }
+
   public void setDefaultValues(){
     String sCode = this.getCode();
     if(sCode!=null){

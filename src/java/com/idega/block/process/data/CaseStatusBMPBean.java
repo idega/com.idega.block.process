@@ -36,6 +36,10 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     return TABLE_NAME;
   }
 
+  public String getIDColumnName(){
+    return CASE_STATUS;
+  }
+
   public Class getPrimaryKeyClass(){
     return String.class;
   }
