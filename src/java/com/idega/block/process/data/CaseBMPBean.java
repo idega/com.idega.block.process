@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.43 2004/12/08 18:09:46 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.44 2004/12/09 15:31:39 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -732,7 +732,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		SelectQuery query = new SelectQuery(table);
 		query.addCriteria(new MatchCriteria(table, COLUMN_USER, MatchCriteria.EQUALS, user));
 		query.addCriteria(new InCriteria(table, COLUMN_CASE_STATUS, statuses));
-		query.addOrder(table, COLUMN_CREATED, true);
+		query.addOrder(table, COLUMN_CREATED, false);
 		return query;
 	}
 	
@@ -756,7 +756,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		SelectQuery query = new SelectQuery(table);
 		query.addCriteria(new MatchCriteria(table, COLUMN_HANDLER, MatchCriteria.EQUALS, group));
 		query.addCriteria(new InCriteria(table, COLUMN_CASE_STATUS, statuses));
-		query.addOrder(table, COLUMN_CREATED, true);
+		query.addOrder(table, COLUMN_CREATED, false);
 		return query;
 	}
 	
