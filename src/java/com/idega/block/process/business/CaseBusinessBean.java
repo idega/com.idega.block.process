@@ -90,11 +90,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 				return (CaseBusiness) this.getServiceInstance(objClass);
 			}
 			/**
-			 * temporary hardcoding
+			 *TODO: Remove hardcoding of CaseBusinessBeans
 			 */
 			try{
 				Class c = Class.forName("se.idega.idegaweb.commune.school.business.SchoolChoiceBusiness");
 				if(code.getCode().equals("MBSKOLV")){
+					return (CaseBusiness) this.getServiceInstance(c);
+				}
+			}
+			catch(ClassNotFoundException e){}
+			try{
+				Class c = Class.forName("se.idega.idegaweb.commune.childcare.business.ChildCareBusiness");
+				if(code.getCode().equals("MBANBOP")){
 					return (CaseBusiness) this.getServiceInstance(c);
 				}
 			}
