@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.33 2003/10/23 23:47:05 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.34 2003/10/24 00:06:18 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -631,7 +631,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public Collection ejbFindAllCasesForUserExceptCodes(User user,CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException
 	{
 		IDOQuery query = idoQueryGetAllCasesForUserExceptCodes(user,codes);
-		return super.idoFindPKsByQuery(query, startingCase, numberOfCases);
+		return super.idoFindPKsByQuery(query, numberOfCases, startingCase);
 		/*
 		return (Collection) super.idoFindPKsBySQL(
 			"select * from "
@@ -661,7 +661,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 		
 		IDOQuery query = idoQueryGetAllCasesByGroupsOrUserExceptCodes(((Integer)user.getPrimaryKey()).intValue(), groupIDs, codes);
-		return super.idoFindPKsByQuery(query, startingCase, numberOfCases);
+		return super.idoFindPKsByQuery(query, numberOfCases, startingCase);
 	}
 	
 	/**
