@@ -841,7 +841,60 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		return (Collection) super.idoFindPKsByQuery(sql);
 	}
 	
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 */
+	public Collection ejbFindAllCasesByUserAndStatusArray(User user, String caseStatus[]) throws FinderException {
+		IDOQuery sql = idQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
+		return (Collection) super.idoFindPKsByQuery(sql);
+	}
 	
+	protected IDOQuery idQueryGetAllCasesByUserAndStatusArray(User user, String caseStatus[]) {
+		try{
+			String caseCode = this.getCaseCodeKey();
+			//StringBuffer sql = new StringBuffer();
+			IDOQuery sql = idoQuery();
+			sql.append("select * from ");
+			sql.append(getSQLGeneralCaseTableName());
+			sql.append(" g,");
+			sql.append(this.getTableName());
+			sql.append(" a where g.");
+			sql.append(this.getSQLGeneralCasePKColumnName());
+			sql.append("=a.");
+			sql.append(this.getIDColumnName());
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
+			sql.append("='");
+			sql.append(caseCode);
+			sql.append("'");
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
+			sql.append(" in (");
+			int length = caseStatus.length;
+			for (int i = 0; i < length; i++) {
+				sql.append("'");
+				sql.append(caseStatus[i]);
+				if (i != (length - 1))
+					sql.append("', ");
+				else
+					sql.append("'");
+			}
+			sql.append(")");
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseUserColumnName());
+			sql.append("=");
+			sql.append(user.getPrimaryKey().toString());
+			sql.append(" order by g.");
+			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+
+			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
+
+			return sql;
+		}
+		catch(Exception e){
+			throw new IDORuntimeException(e,this);
+		}
+	}
 	
 	protected IDOQuery idoQueryGetAllCasesByStatusArray(String caseStatus[])
 	{
