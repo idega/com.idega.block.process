@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusiness.java,v 1.26 2004/12/06 21:35:23 laddi Exp $
- * Created on 5.12.2004
+ * $Id: CaseBusiness.java,v 1.27 2004/12/09 13:44:19 laddi Exp $
+ * Created on 8.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
@@ -25,10 +25,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/06 21:35:23 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 13:44:19 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -283,6 +283,11 @@ public interface CaseBusiness extends IBOService {
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler) throws java.rmi.RemoteException;
 
 	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
+	 */
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) throws java.rmi.RemoteException;
+
+	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseDescription
 	 */
 	public String getLocalizedCaseDescription(Case theCase, Locale locale) throws java.rmi.RemoteException;
@@ -326,5 +331,10 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusDeletedString
 	 */
 	public String getCaseStatusDeletedString() throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getPrimaryKeyParameter
+	 */
+	public String getPrimaryKeyParameter() throws java.rmi.RemoteException;
 
 }

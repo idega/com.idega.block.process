@@ -569,4 +569,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public String getCaseStatusDeletedString() {
 		return CASE_STATUS_DELETED_KEY;
 	}
+	
+	public String getPrimaryKeyParameter() {
+		return null;
+	}
 }
