@@ -609,6 +609,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus,IWTimestamp from, IWTimestamp to)
 	{
 		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
+		to.setHour(23);
+		to.setMinute(59);
+		to.setSecond(59);
+		from.setHour(0);
+		from.setMinute(0);
+		from.setSecond(0);
 		sql.appendAnd();
 		sql.append(" g.");
 		sql.append(getSQLGeneralCaseCreatedColumnName());
