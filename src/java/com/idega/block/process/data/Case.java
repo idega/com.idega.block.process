@@ -8,7 +8,7 @@ public interface Case extends com.idega.data.IDOEntity,com.idega.core.data.ICTre
  public com.idega.block.process.data.CaseStatus getCaseStatus();
  public com.idega.core.data.ICTreeNode getChildAtIndex(int p0);
  public int getChildCount();
- public java.util.Iterator getChildren();
+ public java.util.Iterator getChildrenIterator();
  public java.lang.String getCode();
  public java.sql.Timestamp getCreated();
  public com.idega.user.data.Group getHandler();

@@ -199,8 +199,8 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 	public void setCreated(Timestamp p0) {
 		this.getGeneralCase().setCreated(p0);
 	}
-	public Iterator getChildren() {
-		return this.getGeneralCase().getChildren();
+	public Iterator getChildrenIterator() {
+		return this.getGeneralCase().getChildrenIterator();
 	}
 	public boolean getAllowsChildren() {
 		return this.getGeneralCase().getAllowsChildren();
