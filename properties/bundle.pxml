@@ -10,14 +10,9 @@
             <value>
               <map>
                 <key>
-                  <name>component_name</name>
+                  <name>component_property_file</name>
                   <type>java.lang.String</type>
-                  <value>Case</value>
-                </key>
-                <key>
-                  <name>component_type</name>
-                  <type>java.lang.String</type>
-                  <value>iw.data</value>
+                  <value>com.idega.block.process.data.Case.pxml</value>
                 </key>
               </map>
             </value>
@@ -28,14 +23,9 @@
             <value>
               <map>
                 <key>
-                  <name>component_name</name>
+                  <name>component_property_file</name>
                   <type>java.lang.String</type>
-                  <value>CaseLog</value>
-                </key>
-                <key>
-                  <name>component_type</name>
-                  <type>java.lang.String</type>
-                  <value>iw.data</value>
+                  <value>com.idega.block.process.data.CaseLog.pxml</value>
                 </key>
               </map>
             </value>
