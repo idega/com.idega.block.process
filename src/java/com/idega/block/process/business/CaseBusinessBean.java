@@ -221,6 +221,15 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
     return (CaseStatusHome)com.idega.data.IDOLookup.getHome(CaseStatus.class);
   }
 
+  public CaseStatus getCaseStatus(String StatusCode)throws RemoteException{
+    try{
+      return this.getCaseStatusHome().findByPrimaryKey(StatusCode);
+    }
+    catch(FinderException e){
+      throw new EJBException("CaseStatus "+StatusCode+" is not installed or does not exist");
+    }
+  }
+
 
   public CaseStatus getCaseStatusOpen()throws RemoteException{
     try{
