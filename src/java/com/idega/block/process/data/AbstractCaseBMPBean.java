@@ -474,6 +474,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	{
 		return CaseBMPBean.PARENT_CASE;
 	}
+		protected String getSQLGeneralCaseCreatedColumnName()
+	{
+		return CaseBMPBean.CREATED;
+	}
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode
 	 */
@@ -483,7 +487,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	}
 	
 	/**
-	 * Finds all cases for the specified user and the associated caseCode
+	 * Finds all cases for the specified user and the associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUser(User user) throws FinderException, RemoteException
 	{
@@ -506,10 +510,15 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append(this.getSQLGeneralCaseUserColumnName());
 		sql.append("=");
 		sql.append(user.getPrimaryKey().toString());
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
+		sql.append(user.getPrimaryKey().toString());
+		
+		
 		return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}	
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByStatus(String caseStatus) throws FinderException, RemoteException
 	{
@@ -533,10 +542,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("='");
 		sql.append(caseStatus);
 		sql.append("'");
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}
 	/**
-	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode
+	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUserAndStatus(User user, String caseStatus)
 		throws FinderException, RemoteException
@@ -565,10 +576,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("='");
 		sql.append(caseStatus);
 		sql.append("'");
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}
 	/**
-	 *Returns all the subcases under the specified theCase and whith the associated CaseCode
+	 *Returns all the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
 	 */
 	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException, RemoteException
 	{
@@ -591,10 +604,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("='");
 		sql.append(caseCode);
 		sql.append("'");
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode
+	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
 	 */
 	public int ejbHomeCountSubCasesUnder(Case theCase) throws RemoteException
 	{
@@ -619,6 +634,8 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			sql.append("='");
 			sql.append(caseCode);
 			sql.append("'");
+			sql.append(" order by ");
+			sql.append(this.getSQLGeneralCaseCreatedColumnName());
 			return super.getNumberOfRecords(sql.toString());
 		}
 		catch (java.sql.SQLException sqle)
