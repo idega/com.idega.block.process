@@ -6,6 +6,7 @@ import com.idega.block.process.data.*;
 import java.rmi.RemoteException;
 import javax.ejb.*;
 import java.util.Collection;
+import com.idega.user.Converter;
 
 /**
  * Title:        idegaWeb
@@ -34,7 +35,7 @@ public class CaseSessionBean extends IBOSessionBean {
    * Creates a case for the current user
    */
   public Case createCase(CaseCode code)throws CreateException,RemoteException{
-    return getCaseBusiness().createCase(this.getCurrentUser(),code);
+    return getCaseBusiness().createCase(Converter.convertToNewUser(getCurrentUser()),code);
   }
 
 
@@ -54,7 +55,7 @@ public class CaseSessionBean extends IBOSessionBean {
    * Gets all active cases for the current user
    */
   public Collection getAllActiveCases()throws FinderException,RemoteException{
-    return getCaseBusiness().getAllActiveCasesForUser(getCurrentUser());
+    return getCaseBusiness().getAllActiveCasesForUser(Converter.convertToNewUser(getCurrentUser()));
   }
 
 
@@ -62,7 +63,7 @@ public class CaseSessionBean extends IBOSessionBean {
    * Gets all active cases for the current user with a specified caseCode
    */
   public Collection getAllActiveCases(CaseCode code)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllActiveCasesForUser(getCurrentUser(),code);
+    return getCaseBusiness().getAllActiveCasesForUser(Converter.convertToNewUser(getCurrentUser()),code);
   }
 
 
@@ -70,21 +71,21 @@ public class CaseSessionBean extends IBOSessionBean {
    * Gets all active cases for the current user with a specified caseCode
    */
   public Collection getAllActiveCases(String caseCode)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllActiveCasesForUser(getCurrentUser(),caseCode);
+    return getCaseBusiness().getAllActiveCasesForUser(Converter.convertToNewUser(getCurrentUser()),caseCode);
   }
 
   /**
    * Gets all active cases for the current user with a specified caseCode and caseStatus
    */
   public Collection getAllActiveCases(CaseCode caseCode,CaseStatus caseStatus)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllActiveCasesForUser(getCurrentUser(),caseCode,caseStatus);
+    return getCaseBusiness().getAllActiveCasesForUser(Converter.convertToNewUser(getCurrentUser()),caseCode,caseStatus);
   }
 
   /**
    * Gets all active cases for the current user with a specified caseCode and caseStatus
    */
   public Collection getAllActiveCases(String caseCode,String caseStatus)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllActiveCasesForUser(getCurrentUser(),caseCode,caseStatus);
+    return getCaseBusiness().getAllActiveCasesForUser(Converter.convertToNewUser(getCurrentUser()),caseCode,caseStatus);
   }
 
 
@@ -99,7 +100,7 @@ public class CaseSessionBean extends IBOSessionBean {
    * Gets all cases for the current user
    */
   public Collection getAllCases()throws FinderException,RemoteException{
-    return getCaseBusiness().getAllCasesForUser(getCurrentUser());
+    return getCaseBusiness().getAllCasesForUser(Converter.convertToNewUser(getCurrentUser()));
   }
 
 
@@ -107,7 +108,7 @@ public class CaseSessionBean extends IBOSessionBean {
    * Gets all for the current user with a specified caseCode
    */
   public Collection getAllCases(CaseCode code)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllCasesForUser(getCurrentUser(),code);
+    return getCaseBusiness().getAllCasesForUser(Converter.convertToNewUser(getCurrentUser()),code);
   }
 
 
@@ -115,21 +116,21 @@ public class CaseSessionBean extends IBOSessionBean {
    * Gets all cases for the current user with a specified caseCode
    */
   public Collection getAllCases(String caseCode)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllCasesForUser(getCurrentUser(),caseCode);
+    return getCaseBusiness().getAllCasesForUser(Converter.convertToNewUser(getCurrentUser()),caseCode);
   }
 
   /**
    * Gets all cases for the current user with a specified caseCode and caseStatus
    */
   public Collection getAllCases(CaseCode caseCode,CaseStatus caseStatus)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllActiveCasesForUser(getCurrentUser(),caseCode,caseStatus);
+    return getCaseBusiness().getAllActiveCasesForUser(Converter.convertToNewUser(getCurrentUser()),caseCode,caseStatus);
   }
 
   /**
    * Gets all cases for the current user with a specified caseCode and caseStatus
    */
   public Collection getAllCases(String caseCode,String caseStatus)throws FinderException,RemoteException{
-    return getCaseBusiness().getAllCasesForUser(getCurrentUser(),caseCode,caseStatus);
+    return getCaseBusiness().getAllCasesForUser(Converter.convertToNewUser(getCurrentUser()),caseCode,caseStatus);
   }
 
 

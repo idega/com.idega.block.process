@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.7 2002/06/26 18:55:17 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.8 2002/06/28 10:09:49 palli Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -18,7 +18,8 @@ import java.rmi.RemoteException;
 
 import com.idega.util.idegaTimestamp;
 
-import com.idega.core.user.data.User;
+//import com.idega.core.user.data.User;
+import com.idega.user.data.User;
 import com.idega.data.*;
 import com.idega.core.ICTreeNode;
 

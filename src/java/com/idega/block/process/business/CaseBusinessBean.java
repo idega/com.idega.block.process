@@ -5,7 +5,7 @@ import com.idega.block.process.data.*;
 
 import com.idega.data.*;
 import com.idega.core.data.*;
-import com.idega.core.user.data.*;
+import com.idega.user.data.*;
 import com.idega.util.idegaTimestamp;
 
 import java.rmi.RemoteException;
@@ -67,7 +67,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
 
   public Case createCase(int userID,String caseCode)throws CreateException,RemoteException{
     try{
-      User user = this.getUserHome().findByPrimaryKey(userID);
+      User user = this.getUserHome().findByPrimaryKey(new Integer(userID));
       CaseCode code = this.getCaseCode(caseCode);
       return createCase(user,code);
     }
@@ -205,7 +205,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
   }
 
   protected User getUser(int userID)throws RemoteException,FinderException{
-    return this.getUserHome().findByPrimaryKey(userID);
+    return this.getUserHome().findByPrimaryKey(new Integer(userID));
   }
 
   protected CaseHome getCaseHome()throws RemoteException{

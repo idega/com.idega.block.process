@@ -5,7 +5,7 @@ import com.idega.data.*;
 import java.rmi.RemoteException;
 import javax.ejb.*;
 import java.sql.Timestamp;
-import com.idega.core.user.data.User;
+import com.idega.user.data.User;
 import java.util.Iterator;
 import com.idega.core.ICTreeNode;
 
