@@ -324,7 +324,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	{
 		try
 		{
-			return this.getCaseStatusHome().findByPrimaryKey(CASE_STATUS_GRANTED_KEY);
+			return this.getCaseStatusHome().findByPrimaryKey(CASE_STATUS_DENIED_KEY);
 		}
 		catch (FinderException e)
 		{
