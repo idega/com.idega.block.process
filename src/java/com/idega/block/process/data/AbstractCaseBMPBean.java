@@ -724,7 +724,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 			sql.append("=");
 			sql.append(user.getPrimaryKey().toString());
 			sql.append(" order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+			sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
 
 			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
 
@@ -889,7 +889,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 			sql.append(this.getSQLGeneralCaseHandlerColumnName());
 			sql.appendInArray(groupIDs);
 			sql.append(") order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+			sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
 
 			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
 
