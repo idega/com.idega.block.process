@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.47 2005/01/12 09:59:24 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.48 2005/01/12 14:47:56 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -685,6 +685,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		query.appendAnd();
 		query.append(COLUMN_CASE_CODE);
 		query.appendNotIn(notInClause);
+		query.appendAnd();
+		query.append(COLUMN_CASE_STATUS);
+		query.appendNOTEqual();
+		query.appendWithinSingleQuotes(CASE_STATUS_DELETED_KEY);
 		query.appendOrderByDescending(COLUMN_CREATED);
 		return query;
 	}
@@ -696,6 +700,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		query.appendAnd();
 		query.append(COLUMN_CASE_CODE);
 		query.appendNotIn(notInClause);
+		query.appendAnd();
+		query.append(COLUMN_CASE_STATUS);
+		query.appendNOTEqual();
+		query.appendWithinSingleQuotes(CASE_STATUS_DELETED_KEY);
 		query.appendOrderBy(COLUMN_CREATED);
 		return query;
 	}
