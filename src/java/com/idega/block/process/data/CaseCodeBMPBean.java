@@ -4,7 +4,8 @@ import com.idega.data.*;
 
 import java.util.Collection;
 import javax.ejb.*;
-import com.idega.core.data.ICObject;
+
+import com.idega.core.component.data.ICObject;
 
 import java.rmi.RemoteException;
 

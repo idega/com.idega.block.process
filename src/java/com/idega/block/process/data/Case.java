@@ -2,7 +2,7 @@ package com.idega.block.process.data;
 
 import com.idega.user.data.Group;
 
-public interface Case extends com.idega.data.IDOEntity,com.idega.core.ICTreeNode
+public interface Case extends com.idega.data.IDOEntity,com.idega.core.data.ICTreeNode
 {
  public com.idega.block.process.data.Case getParentCase() throws java.rmi.RemoteException;
 

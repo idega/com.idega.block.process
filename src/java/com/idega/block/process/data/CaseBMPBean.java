@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.27 2003/07/30 02:53:08 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.28 2003/10/03 01:41:58 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -19,13 +19,13 @@ import com.idega.util.IWTimestamp;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.data.*;
-import com.idega.core.ICTreeNode;
+import com.idega.core.data.ICTreeNode;
 /**
  *
  * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson</a>
  * @version 1.0
  */
-public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, com.idega.core.ICTreeNode
+public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, com.idega.core.data.ICTreeNode
 {
 	public static final String TABLE_NAME = "PROC_CASE";
 	public static final String COLUMN_CASE_CODE = "CASE_CODE";

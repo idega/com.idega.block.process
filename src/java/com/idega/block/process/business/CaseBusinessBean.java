@@ -17,7 +17,7 @@ import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
 import com.idega.business.IBOServiceBean;
-import com.idega.core.data.ICObject;
+import com.idega.core.component.data.ICObject;
 import com.idega.data.IDOStoreException;
 import com.idega.idegaweb.IWBundle;
 import com.idega.user.data.User;
