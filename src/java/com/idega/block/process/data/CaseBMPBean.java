@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.26 2003/03/05 22:58:35 aron Exp $
+ * $Id: CaseBMPBean.java,v 1.27 2003/07/30 02:53:08 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -10,6 +10,7 @@
 package com.idega.block.process.data;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 import java.sql.Timestamp;
 import javax.ejb.*;
 import java.rmi.RemoteException;
@@ -462,6 +463,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public String getNodeName()
 	{
 		return getName();
+	}
+	public String getNodeName(Locale locale)
+	{
+		return getNodeName();
 	}
 	public boolean isLeaf()
 	{
