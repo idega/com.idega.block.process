@@ -25,7 +25,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
 
   private static final String CASE_STATUS_OPEN_KEY = "UBEH";
   private static final String CASE_STATUS_INACTIVE_KEY = "TYST";
-  private static final String CASE_STATUS_GRANTED_KEY = "BJVD";
+  private static final String CASE_STATUS_GRANTED_KEY = "BVJD";
   private static final String CASE_STATUS_DENIED_KEY = "AVSL";
   private static final String CASE_STATUS_REVIEW_KEY = "OMPR";
   private static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
@@ -51,8 +51,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
     try{
       ICObject handler = code.getBusinessHandler();
       if(handler!=null){
-        Class objClass = handler.getObjectClass();
-        return (CaseBusiness)this.getServiceInstance(objClass);
+	Class objClass = handler.getObjectClass();
+	return (CaseBusiness)this.getServiceInstance(objClass);
       }
       return this;
     }
