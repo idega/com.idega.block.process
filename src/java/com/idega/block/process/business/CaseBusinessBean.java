@@ -35,6 +35,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	private String CASE_STATUS_PRELIMINARY_KEY;
 	private String CASE_STATUS_CONTRACT_KEY;
 	private String CASE_STATUS_READY_KEY;
+	private String CASE_STATUS_REDEEM_KEY;
 	public CaseBusinessBean()
 	{
 		try
@@ -48,6 +49,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			CASE_STATUS_PRELIMINARY_KEY = this.getCaseHome().getCaseStatusPreliminary();
 			CASE_STATUS_CONTRACT_KEY = this.getCaseHome().getCaseStatusContract();
 			CASE_STATUS_READY_KEY = this.getCaseHome().getCaseStatusReady();
+			CASE_STATUS_REDEEM_KEY = this.getCaseHome().getCaseStatusRedeem();
 		}
 		catch (RemoteException e)
 		{
@@ -384,6 +386,19 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	public CaseStatus getCaseStatusReady() throws RemoteException
 	{
 		return getCaseStatusAndInstallIfNotExists(CASE_STATUS_READY_KEY);
+	}
+
+	public CaseStatus getCaseStatusRedeem() throws RemoteException
+	{
+		try
+		{
+			return this.getCaseStatusHome().findByPrimaryKey(CASE_STATUS_REDEEM_KEY);
+		}
+		catch (FinderException e)
+		{
+			throw new EJBException(
+				"CaseStatus " + CASE_STATUS_REDEEM_KEY + " is not installed or does not exist");
+		}
 	}
 	
 	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString)throws EJBException,RemoteException{

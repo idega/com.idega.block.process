@@ -137,5 +137,10 @@ public java.lang.String getCaseStatusReady(){
 	return theReturn;
 }
 
-
+public java.lang.String getCaseStatusRedeem(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusRedeem();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
 }
