@@ -509,7 +509,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append(" and g.");
 		sql.append(this.getSQLGeneralCaseParentColumnName());
 		sql.append("=");
-		sql.append(theCase.getID());
+		sql.append(theCase.getPrimaryKey().toString());
 		sql.append(" and g.");
 		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
 		sql.append("='");
@@ -537,7 +537,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			sql.append(" and g.");
 			sql.append(this.getSQLGeneralCaseParentColumnName());
 			sql.append("=");
-			sql.append(theCase.getID());
+			sql.append(theCase.getPrimaryKey().toString());
 			sql.append(" and g.");
 			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
 			sql.append("='");

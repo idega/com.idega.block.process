@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.12 2002/07/15 14:48:34 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.13 2002/07/15 14:58:02 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -307,14 +307,14 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException, RemoteException
 	{
 		return (Collection) super.idoFindPKsBySQL(
-			"select * from " + this.TABLE_NAME + " where " + this.PARENT_CASE + "=" + theCase.getID());
+			"select * from " + this.TABLE_NAME + " where " + this.PARENT_CASE + "=" + theCase.getPrimaryKey().toString());
 	}
 	public int ejbHomeCountSubCasesUnder(Case theCase) throws RemoteException
 	{
 		try
 		{
 			return super.getNumberOfRecords(
-				"select count(*) from " + this.TABLE_NAME + " where " + this.PARENT_CASE + "=" + theCase.getID());
+				"select count(*) from " + this.TABLE_NAME + " where " + this.PARENT_CASE + "=" + theCase.getPrimaryKey().toString());
 		}
 		catch (java.sql.SQLException sqle)
 		{
