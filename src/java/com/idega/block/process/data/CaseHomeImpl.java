@@ -116,5 +116,18 @@ public java.lang.String getCaseStatusReview(){
 	return theReturn;
 }
 
+public java.lang.String getCaseStatusPreliminary(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusPreliminary();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
+public java.lang.String getCaseStatusContract(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusContract();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
 
 }

@@ -32,6 +32,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	private String CASE_STATUS_DENIED_KEY;
 	private String CASE_STATUS_REVIEW_KEY;
 	private String CASE_STATUS_CANCELLED_KEY;
+	private String CASE_STATUS_PRELIMINARY_KEY;
+	private String CASE_STATUS_CONTRACT_KEY;
 	public CaseBusinessBean()
 	{
 		try
@@ -42,6 +44,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			CASE_STATUS_DENIED_KEY = this.getCaseHome().getCaseStatusDenied();
 			CASE_STATUS_REVIEW_KEY = this.getCaseHome().getCaseStatusReview();
 			CASE_STATUS_CANCELLED_KEY = this.getCaseHome().getCaseStatusCancelled();
+			CASE_STATUS_PRELIMINARY_KEY = this.getCaseHome().getCaseStatusPreliminary();
+			CASE_STATUS_CONTRACT_KEY = this.getCaseHome().getCaseStatusContract();
 		}
 		catch (RemoteException e)
 		{
@@ -349,6 +353,30 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		{
 			throw new EJBException(
 				"CaseStatus " + this.CASE_STATUS_INACTIVE_KEY + " is not installed or does not exist");
+		}
+	}
+	public CaseStatus getCaseStatusPreliminary() throws RemoteException
+	{
+		try
+		{
+			return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_PRELIMINARY_KEY);
+		}
+		catch (FinderException e)
+		{
+			throw new EJBException(
+				"CaseStatus " + this.CASE_STATUS_PRELIMINARY_KEY + " is not installed or does not exist");
+		}
+	}
+	public CaseStatus getCaseStatusContract() throws RemoteException
+	{
+		try
+		{
+			return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_CONTRACT_KEY);
+		}
+		catch (FinderException e)
+		{
+			throw new EJBException(
+				"CaseStatus " + this.CASE_STATUS_CONTRACT_KEY + " is not installed or does not exist");
 		}
 	}
 	protected Locale getDefaultLocale()
