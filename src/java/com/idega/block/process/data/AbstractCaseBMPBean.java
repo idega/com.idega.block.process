@@ -353,6 +353,61 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			throw new EJBException(rme.getMessage());
 		}
 	}
+	
+/**
+ * Returns the cASE_STATUS_CANCELLED_KEY.
+ * @return String
+ */
+protected  String getCaseStatusCancelled()throws RemoteException
+{
+	return this.getCaseHome().getCaseStatusCancelled();
+}
+
+/**
+ * Returns the cASE_STATUS_DENIED_KEY.
+ * @return String
+ */
+protected  String getCaseStatusDenied()throws RemoteException
+{
+	return this.getCaseHome().getCaseStatusDenied();
+}
+
+/**
+ * Returns the cASE_STATUS_GRANTED_KEY.
+ * @return String
+ */
+protected  String getCaseStatusGranted()throws RemoteException
+{
+	return this.getCaseHome().getCaseStatusGranted();
+}
+
+/**
+ * Returns the cASE_STATUS_INACTIVE_KEY.
+ * @return String
+ */
+public  String getCaseStatusInactive()throws RemoteException
+{
+	return this.getCaseHome().getCaseStatusInactive();
+}
+
+/**
+ * Returns the cASE_STATUS_OPEN_KEY.
+ * @return String
+ */
+public  String getCaseStatusOpen()throws RemoteException
+{
+	return this.getCaseHome().getCaseStatusOpen();
+}
+
+/**
+ * Returns the cASE_STATUS_REVIEW_KEY.
+ * @return String
+ */
+public  String getCaseStatusReview()throws RemoteException
+{
+	return getCaseHome().getCaseStatusReview();
+}
+	
 	protected String getSQLGeneralCaseTableName()
 	{
 		return CaseBMPBean.TABLE_NAME;

@@ -24,15 +24,32 @@ import java.util.Locale;
 
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
 
-  private static final String CASE_STATUS_OPEN_KEY = "UBEH";
-  private static final String CASE_STATUS_INACTIVE_KEY = "TYST";
-  private static final String CASE_STATUS_GRANTED_KEY = "BVJD";
-  private static final String CASE_STATUS_DENIED_KEY = "AVSL";
-  private static final String CASE_STATUS_REVIEW_KEY = "OMPR";
-  private static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
+  /*private  final String CASE_STATUS_OPEN_KEY = "UBEH";
+  private  final String CASE_STATUS_INACTIVE_KEY = "TYST";
+  private  final String CASE_STATUS_GRANTED_KEY = "BVJD";
+  private  final String CASE_STATUS_DENIED_KEY = "AVSL";
+  private  final String CASE_STATUS_REVIEW_KEY = "OMPR";
+  private  final String CASE_STATUS_CANCELLED_KEY = "UPPS";*/
 
+  private  String CASE_STATUS_OPEN_KEY ;
+  private  String CASE_STATUS_INACTIVE_KEY ;
+  private   String CASE_STATUS_GRANTED_KEY ;
+  private   String CASE_STATUS_DENIED_KEY ;
+  private   String CASE_STATUS_REVIEW_KEY ;
+  private   String CASE_STATUS_CANCELLED_KEY ;
 
   public CaseBusinessBean() {
+  	try{
+	  	CASE_STATUS_OPEN_KEY = this.getCaseHome().getCaseStatusOpen();
+  		CASE_STATUS_INACTIVE_KEY = this.getCaseHome().getCaseStatusInactive();
+   		CASE_STATUS_GRANTED_KEY = this.getCaseHome().getCaseStatusGranted();
+   		CASE_STATUS_DENIED_KEY = this.getCaseHome().getCaseStatusDenied();
+   		CASE_STATUS_REVIEW_KEY = this.getCaseHome().getCaseStatusReview();
+   		CASE_STATUS_CANCELLED_KEY = this.getCaseHome().getCaseStatusCancelled();
+  	}
+  	catch(RemoteException e){
+  		System.err.println("CaseBusinessBean : Error initializing case codes : Error : "+e.getMessage());	
+  	}
   }
 
   public CaseBusiness getCaseBusiness(String caseCode){
@@ -252,7 +269,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
 
   public CaseStatus getCaseStatusDenied()throws RemoteException{
     try{
-      return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_DENIED_KEY);
+      return this.getCaseStatusHome().findByPrimaryKey(CASE_STATUS_GRANTED_KEY);
     }
     catch(FinderException e){
       throw new EJBException("CaseStatus "+this.CASE_STATUS_DENIED_KEY+" is not installed or does not exist");
