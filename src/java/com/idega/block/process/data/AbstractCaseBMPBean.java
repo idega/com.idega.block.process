@@ -737,7 +737,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append(" order by ");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		
-		System.out.println("sql = " + sql.toString());
+		//System.out.println("sql = " + sql.toString());
 		
 		return (Collection) super.idoFindPKsBySQL(sql.toString());
 	}
