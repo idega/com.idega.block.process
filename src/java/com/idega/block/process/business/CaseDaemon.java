@@ -27,14 +27,4 @@ public interface CaseDaemon extends com.idega.idegaweb.IWService,com.idega.busin
   public CaseBusiness getCaseBusiness()throws RemoteException;
 
 
-  /**
-   *Run the Case Processor now
-   */
-  public void runNow()throws RemoteException;
-
-
-  /**
-   * Interrupts and stops the current process if it is running
-   */
-  public void interrupt()throws RemoteException;
 }

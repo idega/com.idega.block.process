@@ -83,6 +83,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
                 status.setDescription(statusDesc);
               }
               status.store();
+              code.addAssociatedCaseStatus(status);
             }
             catch(Exception e){
               e.printStackTrace();

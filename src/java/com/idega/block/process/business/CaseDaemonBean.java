@@ -18,7 +18,7 @@ import java.rmi.RemoteException;
  * @version 1.0
  */
 
-public abstract class CaseDaemonBean extends com.idega.business.IBOServiceBean implements IWService, Runnable, CaseDaemon{
+public abstract class CaseDaemonBean extends com.idega.business.IBOTimedServiceBean implements IWService, CaseDaemon{
 
   public CaseDaemonBean() {
   }
@@ -26,10 +26,13 @@ public abstract class CaseDaemonBean extends com.idega.business.IBOServiceBean i
     return "CaseDeamon";
   }
 
-  protected void executeService() {
+  public void executeTimedService() {
     processAllPendingCases();
   }
 
+  /**
+   * Can be overrided in subclasses for specific implementation
+   */
   protected void processAllPendingCases() {
     Iterator iter = getAllPendingCases().iterator();
     while (iter.hasNext()) {
@@ -49,46 +52,5 @@ public abstract class CaseDaemonBean extends com.idega.business.IBOServiceBean i
   }
 
   public abstract void onCaseProcess(Case theCase);
-
-  public void startService(IWMainApplication superApplication) {
-    /**@todo: Implement this com.idega.idegaweb.IWService method*/
-    throw new java.lang.UnsupportedOperationException("Method startService() not yet implemented.");
-  }
-  public void endService() {
-    /**@todo: Implement this com.idega.idegaweb.IWService method*/
-    throw new java.lang.UnsupportedOperationException("Method endService() not yet implemented.");
-  }
-  public void run() {
-    /**@todo: Implement this java.lang.Runnable method*/
-    throw new java.lang.UnsupportedOperationException("Method run() not yet implemented.");
-  }
-  public Collection getAssociatedCaseCodes() throws RemoteException {
-    /**@todo: Implement this com.idega.block.process.business.CaseDaemon method*/
-    throw new java.lang.UnsupportedOperationException("Method getAssociatedCaseCodes() not yet implemented.");
-  }
-  public CaseBusiness getCaseBusiness() throws RemoteException {
-    /**@todo: Implement this com.idega.block.process.business.CaseDaemon method*/
-    throw new java.lang.UnsupportedOperationException("Method getCaseBusiness() not yet implemented.");
-  }
-  public void runNow() throws RemoteException {
-    /**@todo: Implement this com.idega.block.process.business.CaseDaemon method*/
-    throw new java.lang.UnsupportedOperationException("Method runNow() not yet implemented.");
-  }
-  public void interrupt() throws RemoteException {
-    /**@todo: Implement this com.idega.block.process.business.CaseDaemon method*/
-    throw new java.lang.UnsupportedOperationException("Method interrupt() not yet implemented.");
-  }
-  public String getServiceDescription() {
-    /**@todo: Implement this com.idega.business.IBOService method*/
-    throw new java.lang.UnsupportedOperationException("Method getServiceDescription() not yet implemented.");
-  }
-  public String getLocalizedServiceDescription(Locale locale) {
-    /**@todo: Implement this com.idega.business.IBOService method*/
-    throw new java.lang.UnsupportedOperationException("Method getLocalizedServiceDescription() not yet implemented.");
-  }
-  public IWApplicationContext getIWApplicationContext() {
-    /**@todo: Implement this com.idega.business.IBOService method*/
-    throw new java.lang.UnsupportedOperationException("Method getIWApplicationContext() not yet implemented.");
-  }
 
 }
