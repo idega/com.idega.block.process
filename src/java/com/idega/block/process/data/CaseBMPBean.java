@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.31 2003/10/23 22:26:44 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.32 2003/10/23 23:00:07 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -646,6 +646,20 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			*/			
 	}
 	
+	public Collection ejbFindAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+		String[] groupIDs = new String[groups.size()];
+		int row = 0;
+		
+		Iterator iter = groups.iterator();
+		while (iter.hasNext()) {
+			Group element = (Group) iter.next();
+			groupIDs[row++] = element.getPrimaryKey().toString();
+		}
+		
+		IDOQuery query = idoQueryGetAllCasesByGroupsOrUserExceptCodes(((Integer)user.getPrimaryKey()).intValue(), groupIDs, codes);
+		return super.idoFindPKsByQuery(query, startingCase, numberOfCases);
+	}
+	
 	/**
 	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array and orders in chronological order
 	 */
@@ -684,6 +698,19 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		catch(Exception e){
 			throw new IDORuntimeException(e, this);	
 		}
+	}
+	
+	protected IDOQuery idoQueryGetAllCasesByGroupsOrUserExceptCodes(int userID, String[] groupIDs, CaseCode[] codes) {
+		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+
+		IDOQuery query = this.idoQueryGetSelect();
+		query.appendWhere().appendLeftParenthesis().appendEquals(COLUMN_USER, userID);
+		query.appendOr().append(COLUMN_HANDLER).appendInArray(groupIDs).appendRightParenthesis();
+		query.appendAnd();
+		query.append(COLUMN_CASE_CODE);
+		query.appendNotIn(notInClause);
+		query.appendOrderByDescending(COLUMN_CREATED);
+		return query;
 	}
 	
 

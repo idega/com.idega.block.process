@@ -260,6 +260,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 		
 	/**
+	 * Gets all the Cases for the Group except the ones with one of the CaseCode in the codes[] array.
+	 */
+	public Collection getAllCasesForUserAndGroupsExceptCodes(User user, Collection groups,CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException, RemoteException
+	{
+		return this.getCaseHome().findAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
+	}
+		
+	/**
 	 * Gets all the Cases for the User with a specificed code
 	 */
 	public Collection getAllCasesForUser(User user, CaseCode code) throws FinderException, RemoteException

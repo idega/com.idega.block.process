@@ -50,4 +50,5 @@ public interface CaseBusiness extends com.idega.business.IBOService
  public java.lang.String getLocalizedCaseDescription(com.idega.block.process.data.Case p0,java.util.Locale p1)throws java.rmi.RemoteException, java.rmi.RemoteException;
  public java.lang.String getLocalizedCaseDescription(com.idega.block.process.data.CaseCode p0,java.util.Locale p1)throws java.rmi.RemoteException, java.rmi.RemoteException;
  public java.lang.String getLocalizedCaseStatusDescription(com.idega.block.process.data.CaseStatus p0,java.util.Locale p1) throws java.rmi.RemoteException;
+ public java.util.Collection getAllCasesForUserAndGroupsExceptCodes(com.idega.user.data.User user, java.util.Collection groups,com.idega.block.process.data.CaseCode[] codes, int startingCase, int numberOfCases) throws javax.ejb.FinderException, java.rmi.RemoteException;
 }
