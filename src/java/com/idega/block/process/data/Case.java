@@ -4,12 +4,12 @@ import javax.ejb.*;
 
 public interface Case extends com.idega.data.IDOEntity,com.idega.core.ICTreeNode
 {
- public void setCaseStatus(java.lang.String p0) throws java.rmi.RemoteException;
+ public void setStatus(java.lang.String p0) throws java.rmi.RemoteException;
 
  public void setCode(java.lang.String p0) throws java.rmi.RemoteException;
  public com.idega.block.process.data.Case getParentCase() throws java.rmi.RemoteException;
  public com.idega.block.process.data.CaseCode getCaseCode() throws java.rmi.RemoteException;
- public void setStatus(com.idega.block.process.data.CaseStatus p0) throws java.rmi.RemoteException;
+ public void setCaseStatus(com.idega.block.process.data.CaseStatus p0) throws java.rmi.RemoteException;
  public void setOwner(com.idega.core.user.data.User p0) throws java.rmi.RemoteException;
  public com.idega.core.user.data.User getOwner() throws java.rmi.RemoteException;
  public java.sql.Timestamp getCreated() throws java.rmi.RemoteException;

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.4 2002/06/18 15:01:01 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.5 2002/06/18 21:24:37 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -163,7 +163,7 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
   }
 
 
-  public void setStatus(CaseStatus status) {
+  public void setCaseStatus(CaseStatus status) {
     setColumn(this.CASE_STATUS,status);
   }
 
@@ -171,7 +171,7 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
     return (CaseStatus)(this.getColumnValue(CASE_STATUS));
   }
 
-  public void setCaseStatus(String status) {
+  public void setStatus(String status) {
     setColumn(this.CASE_STATUS,status);
   }
 

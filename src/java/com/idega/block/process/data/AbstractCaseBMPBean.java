@@ -42,6 +42,16 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
     }
   }
 
+
+  public void setDefaultValues(){
+    try{
+      setCode(getCaseCodeKey());
+    }
+    catch(RemoteException e){
+      throw new EJBException(e.getMessage());
+    }
+  }
+
   public void insertStartData(){
     try{
       //CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
@@ -164,15 +174,15 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
     getGeneralCase().setParentCase(p0);
   }
 
-  public void setCaseStatus(String p0) throws java.rmi.RemoteException {
-    getGeneralCase().setCaseStatus(p0);
+  public void setStatus(String p0) throws java.rmi.RemoteException {
+    getGeneralCase().setStatus(p0);
   }
 
   public String getCode() throws java.rmi.RemoteException {
     return this.getGeneralCase().getCode();
   }
-  public void setStatus(CaseStatus p0) throws java.rmi.RemoteException {
-    this.getGeneralCase().setStatus(p0);
+  public void setCaseStatus(CaseStatus p0) throws java.rmi.RemoteException {
+    this.getGeneralCase().setCaseStatus(p0);
   }
   public CaseCode getCaseCode() throws java.rmi.RemoteException {
     return this.getGeneralCase().getCaseCode();
