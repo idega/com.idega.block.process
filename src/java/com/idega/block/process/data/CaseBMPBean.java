@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.48 2005/01/12 14:47:56 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.49 2005/03/21 09:06:57 anna Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -850,8 +850,13 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	}
 	
 	public int ejbHomeGetNumberOfCasesForUserExceptCodes(User user, CaseCode[] codes) throws IDOException {
-		IDOQuery query = this.idoQueryGetSelectCount();
-		query.appendWhereEqualsQuoted(COLUMN_USER,user.getPrimaryKey().toString());
+		Table table = new Table(this);
+
+		SelectQuery query = new SelectQuery(table);
+		query.addColumn(new CountColumn(getIDColumnName()));
+		query.addCriteria(new MatchCriteria(table, COLUMN_USER, MatchCriteria.EQUALS, user));
+		query.addCriteria(new InCriteria(table, COLUMN_CASE_CODE, codes, true));
+		
 		return super.idoGetNumberOfRecords(query);
 	}
 
