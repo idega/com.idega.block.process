@@ -18,6 +18,7 @@ import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
 import com.idega.business.IBOServiceBean;
 import com.idega.core.component.data.ICObject;
+import com.idega.data.IDOException;
 import com.idega.data.IDOStoreException;
 import com.idega.idegaweb.IWBundle;
 import com.idega.user.data.Group;
@@ -251,6 +252,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		return this.getCaseHome().findAllCasesForUserExceptCodes(user,codes, startingCase, numberOfCases);
 	}
 	
+	public int getNumberOfCasesForUserExceptCodes(User user, CaseCode[] codes) {
+		try {
+			return this.getCaseHome().getNumberOfCasesForUserExceptCodes(user, codes);
+		}
+		catch (RemoteException e) {
+			return 0;
+		}
+		catch (IDOException e) {
+			return 0;
+		}
+	}
+		
 	/**
 	 * Gets all the Cases for the Group except the ones with one of the CaseCode in the codes[] array.
 	 */
@@ -265,6 +278,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	public Collection getAllCasesForUserAndGroupsExceptCodes(User user, Collection groups,CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException, RemoteException
 	{
 		return this.getCaseHome().findAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
+	}
+	
+	public int getNumberOfCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes) {
+		try {
+			return this.getCaseHome().getNumberOfCasesByGroupsOrUserExceptCodes(user, groups, codes);
+		}
+		catch (RemoteException e) {
+			return 0;
+		}
+		catch (IDOException e) {
+			return 0;
+		}
 	}
 		
 	/**

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.32 2003/10/23 23:00:07 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.33 2003/10/23 23:47:05 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -8,17 +8,21 @@
  *
  */
 package com.idega.block.process.data;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
-import java.sql.Timestamp;
-import javax.ejb.*;
-import com.idega.util.IWTimestamp;
-//import com.idega.core.user.data.User;
+
+import javax.ejb.EJBException;
+import javax.ejb.FinderException;
+
+import com.idega.core.data.ICTreeNode;
+import com.idega.data.IDOException;
+import com.idega.data.IDOQuery;
+import com.idega.data.IDORuntimeException;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
-import com.idega.data.*;
-import com.idega.core.data.ICTreeNode;
+import com.idega.util.IWTimestamp;
 /**
  *
  * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson</a>
@@ -713,6 +717,31 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return query;
 	}
 	
+	public int ejbHomeGetNumberOfCasesForUserExceptCodes(User user, CaseCode[] codes) throws IDOException {
+		IDOQuery query = this.idoQueryGetSelectCount();
+		query.appendWhereEqualsQuoted(COLUMN_USER,user.getPrimaryKey().toString());
+		return super.idoGetNumberOfRecords(query);
+	}
 
+	public int ejbHomeGetNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes) throws IDOException {
+		String[] groupIDs = new String[groups.size()];
+		int row = 0;
+		
+		Iterator iter = groups.iterator();
+		while (iter.hasNext()) {
+			Group element = (Group) iter.next();
+			groupIDs[row++] = element.getPrimaryKey().toString();
+		}
 
+		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+
+		IDOQuery query = this.idoQueryGetSelect();
+		query.appendWhere().appendLeftParenthesis().appendEquals(COLUMN_USER, user.getPrimaryKey().toString());
+		query.appendOr().append(COLUMN_HANDLER).appendInArray(groupIDs).appendRightParenthesis();
+		query.appendAnd();
+		query.append(COLUMN_CASE_CODE);
+		query.appendNotIn(notInClause);
+		query.appendOrderByDescending(COLUMN_CREATED);
+		return super.idoGetNumberOfRecords(query);
+	}
 }
