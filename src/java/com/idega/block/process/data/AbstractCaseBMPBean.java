@@ -22,6 +22,15 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
 
   private Case _case;
 
+  /**
+   * Returns a unique Key to identify this CaseCode
+   */
+  public abstract String getCaseCodeKey();
+  /**
+   * Returns a description for the CaseCode associated with this case type
+   */
+  public abstract String getCaseCodeDescription();
+
   public Object ejbCreate()throws CreateException{
     try{
       _case = this.getCaseHome().create();
@@ -31,6 +40,67 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
     catch(RemoteException rme){
       throw new EJBException(rme.getMessage());
     }
+  }
+
+  public void insertStartData(){
+    try{
+      //CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
+      CaseCodeHome cchome = (CaseCodeHome)IDOLookup.getHome(CaseCode.class);
+      CaseStatusHome cshome = (CaseStatusHome)IDOLookup.getHome(CaseStatus.class);
+
+      CaseCode code = cchome.create();
+      code.setCode(getCaseCodeKey());
+      code.setDescription(getCaseCodeDescription());
+      code.store();
+
+      String[] statusKeys = this.getCaseStatusKeys();
+      String[] statusDescs = this.getCaseStatusDescriptions();
+      if(statusKeys!=null){
+        for (int i = 0; i < statusKeys.length; i++) {
+            try{
+              String statusKey = statusKeys[i];
+              String statusDesc = null;
+
+              try{
+                statusDesc = statusDescs[i];
+              }
+              catch(java.lang.NullPointerException ne){}
+              catch(java.lang.ArrayIndexOutOfBoundsException arre){}
+
+              CaseStatus status = cshome.create();
+              status.setStatus(statusKey);
+              if(statusDesc!=null){
+                status.setDescription(statusDesc);
+              }
+              status.store();
+            }
+            catch(Exception e){
+              e.printStackTrace();
+            }
+          }
+        }
+
+    }
+    catch(Exception e){
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Could be ovverrided for extra CaseStatus Keys associated with this CaseCode
+   * Returns an array of Strings.
+   */
+  public String[] getCaseStatusKeys(){
+    return null;
+  }
+
+  /**
+   * Could be ovverrided for extra CaseStatus Descriptions associated with this CaseCode
+   * Returns an array of String descriptions
+   * Does not need to return anything (but null), but if it returns a non-null value then the array must be as long as returned by getCaseStatusKeys()
+   */
+  public String[] getCaseStatusDescriptions(){
+    return null;
   }
 
   protected boolean doInsertInCreate(){
