@@ -11,5 +11,6 @@ public interface CaseLogHome extends com.idega.data.IDOHome
  public java.util.Collection findAllCaseLogsByDate(java.sql.Timestamp p0,java.sql.Timestamp p1)throws javax.ejb.FinderException;
  public java.util.Collection findAllCaseLogsByDateAndStatusChange(java.sql.Timestamp p0,java.sql.Timestamp p1,java.lang.String p2,java.lang.String p3)throws javax.ejb.FinderException;
  public CaseLog findLastCaseLogForCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException;
+ public int getCountByStatusChange(com.idega.block.process.data.Case p0,java.lang.String p1,java.lang.String p2)throws com.idega.data.IDOException;
 
 }

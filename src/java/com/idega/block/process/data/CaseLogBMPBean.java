@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.ejb.FinderException;
 
 import com.idega.data.GenericEntity;
+import com.idega.data.IDOException;
 import com.idega.data.IDOFinderException;
 import com.idega.data.IDOQuery;
 import com.idega.user.data.User;
@@ -156,5 +157,14 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 		query.appendAndEquals("pl." + COLUMN_CASE_ID, "p.proc_case_id");
 		query.appendAndEqualsQuoted("p.case_code", caseCode);
 		return super.idoFindPKsByQuery(query);
+	}
+	
+	public int ejbHomeGetCountByStatusChange(Case theCase, String statusBefore, String statusAfter) throws IDOException {
+		IDOQuery query = idoQuery();
+		query.appendSelectCountFrom(this);
+		query.appendWhereEquals(COLUMN_CASE_STATUS_BEFORE, statusBefore);
+		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_AFTER, statusAfter);
+		query.appendAndEquals(COLUMN_CASE_ID, theCase);
+		return super.idoGetNumberOfRecords(query);
 	}
 }

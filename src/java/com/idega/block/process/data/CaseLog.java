@@ -7,13 +7,11 @@ public interface CaseLog extends com.idega.data.IDOEntity
  public int getCaseId();
  public com.idega.block.process.data.CaseStatus getCaseStatusAfter();
  public com.idega.block.process.data.CaseStatus getCaseStatusBefore();
- public java.lang.String getIDColumnName();
  public com.idega.user.data.User getPerformer();
  public int getPerformerId();
  public java.lang.String getStatusAfter();
  public java.lang.String getStatusBefore();
  public java.sql.Timestamp getTimeStamp();
- public void initializeAttributes();
  public void setCase(com.idega.block.process.data.Case p0);
  public void setCase(int p0);
  public void setCaseStatusAfter(com.idega.block.process.data.CaseStatus p0);

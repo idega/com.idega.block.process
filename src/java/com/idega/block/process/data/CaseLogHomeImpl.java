@@ -60,5 +60,12 @@ public CaseLog findLastCaseLogForCase(com.idega.block.process.data.Case p0)throw
  }
 
 
+public int getCountByStatusChange(com.idega.block.process.data.Case p0,java.lang.String p1,java.lang.String p2)throws com.idega.data.IDOException{
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	int theReturn = ((CaseLogBMPBean)entity).ejbHomeGetCountByStatusChange(p0,p1,p2);
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
 
 }
