@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
+
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
@@ -577,6 +579,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public String getPrimaryKeyParameter() {
+		return null;
+	}
+	
+	public Map getCaseParameters(Case theCase) {
+		return null;
+	}
+	
+	public Class getEventListener() {
 		return null;
 	}
 	

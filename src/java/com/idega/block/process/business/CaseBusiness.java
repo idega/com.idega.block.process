@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusiness.java,v 1.29 2005/01/22 15:55:09 laddi Exp $
- * Created on 22.1.2005
+ * $Id: CaseBusiness.java,v 1.30 2005/02/16 11:11:16 laddi Exp $
+ * Created on 31.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -12,6 +12,7 @@ package com.idega.block.process.business;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
@@ -25,10 +26,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/01/22 15:55:09 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/16 11:11:16 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -341,6 +342,16 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getPrimaryKeyParameter
 	 */
 	public String getPrimaryKeyParameter() throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseParameters
+	 */
+	public Map getCaseParameters(Case theCase) throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getEventListener
+	 */
+	public Class getEventListener() throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#canDeleteCase
