@@ -2,6 +2,7 @@ package com.idega.block.process.business;
 import com.idega.business.IBOServiceBean;
 import com.idega.block.process.data.*;
 import com.idega.data.*;
+import com.idega.idegaweb.IWBundle;
 import com.idega.core.data.*;
 import com.idega.user.data.*;
 import com.idega.util.idegaTimestamp;
@@ -310,7 +311,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	protected Locale getDefaultLocale()
 	{
-		return com.idega.util.LocaleUtil.getLocale("en");
+		//return com.idega.util.LocaleUtil.getLocale("en");
+		return getIWApplicationContext().getApplication().getSettings().getDefaultLocale();
 	}
 	protected String getLocalizedString(String key, String defaultValue)
 	{
@@ -318,10 +320,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	protected String getLocalizedString(String key, String defaultValue, Locale locale)
 	{
-		/**
-		 * @todo:implement
-		 */
-		return defaultValue;
+		return getBundle().getResourceBundle(locale).getLocalizedString(key, defaultValue);
 	}
 	public void changeCaseStatus(int theCaseID, String newCaseStatus, User performer)
 		throws FinderException, RemoteException
@@ -336,5 +335,25 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		 */
 		theCase.setStatus(newCaseStatus);
 		theCase.store();
+	}
+	public String getLocalizedCaseCodeDescription(CaseCode code, Locale locale)
+	{
+		return getLocalizedString("case_code_key." + code.toString(), code.toString());
+	}
+	public String getLocalizedCaseStatusDescription(CaseStatus status, Locale locale)
+	{
+		return getLocalizedString("case_status_key." + status.toString(), status.toString());
+	}
+	private static final String PROC_CASE_BUNDLE_IDENTIFIER = "com.idega.block.process";
+	/**
+	 * Can be overrided in subclasses
+	 */
+	public String getBundleIdentifier()
+	{
+		return PROC_CASE_BUNDLE_IDENTIFIER;
+	}
+	protected IWBundle getBundle()
+	{
+		return getIWApplicationContext().getApplication().getBundle(getBundleIdentifier());
 	}
 }
