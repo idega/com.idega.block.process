@@ -36,6 +36,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		try
 		{
 			_case = this.getCaseHome().create();
+			_case.setStatus(this.getCaseStatusOpen());
 			this.setPrimaryKey(_case.getPrimaryKey());
 			return super.ejbCreate();
 		}
