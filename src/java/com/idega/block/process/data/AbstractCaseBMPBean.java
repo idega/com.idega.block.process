@@ -49,13 +49,13 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
 
 
   public void setDefaultValues(){
-    try{
+    /*try{
       System.out.println("AbstractCase : Calling setDefaultValues()");
       setCode(getCaseCodeKey());
     }
     catch(RemoteException e){
       throw new EJBException(e.getMessage());
-    }
+    }*/
   }
 
   public void insertStartData(){
@@ -72,32 +72,32 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
       String[] statusKeys = this.getCaseStatusKeys();
       String[] statusDescs = this.getCaseStatusDescriptions();
       if(statusKeys!=null){
-        for (int i = 0; i < statusKeys.length; i++) {
-            String statusKey = null;
-            try{
-              statusKey = statusKeys[i];
-              String statusDesc = null;
+	for (int i = 0; i < statusKeys.length; i++) {
+	    String statusKey = null;
+	    try{
+	      statusKey = statusKeys[i];
+	      String statusDesc = null;
 
-              try{
-                statusDesc = statusDescs[i];
-              }
-              catch(java.lang.NullPointerException ne){}
-              catch(java.lang.ArrayIndexOutOfBoundsException arre){}
+	      try{
+		statusDesc = statusDescs[i];
+	      }
+	      catch(java.lang.NullPointerException ne){}
+	      catch(java.lang.ArrayIndexOutOfBoundsException arre){}
 
-              CaseStatus status = cshome.create();
-              status.setStatus(statusKey);
-              if(statusDesc!=null){
-                status.setDescription(statusDesc);
-              }
-              status.store();
-              code.addAssociatedCaseStatus(status);
-            }
-            catch(Exception e){
-              //e.printStackTrace();
-              System.err.println("Error inserting CaseStatus for key: "+statusKey);
-            }
-          }
-        }
+	      CaseStatus status = cshome.create();
+	      status.setStatus(statusKey);
+	      if(statusDesc!=null){
+		status.setDescription(statusDesc);
+	      }
+	      status.store();
+	      code.addAssociatedCaseStatus(status);
+	    }
+	    catch(Exception e){
+	      //e.printStackTrace();
+	      System.err.println("Error inserting CaseStatus for key: "+statusKey);
+	    }
+	  }
+	}
 
     }
     catch(Exception e){
@@ -139,7 +139,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
   public void store()throws IDOStoreException{
     try{
       if(this.getCode()==null){
-        this.setCode(this.getCaseCodeKey());
+	this.setCode(this.getCaseCodeKey());
       }
       getGeneralCase().store();
       super.store();
@@ -167,10 +167,11 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
   protected Case getGeneralCase()throws RemoteException{
     if(_case == null){
       try{
-        _case = getCaseHome().findByPrimaryKey(this.getPrimaryKey());
+	_case = getCaseHome().findByPrimaryKey(this.getPrimaryKey());
       }
       catch(FinderException fe){
-        throw new EJBException(fe.getMessage());
+	fe.printStackTrace();
+	throw new EJBException(fe.getMessage());
       }
     }
     return _case;
