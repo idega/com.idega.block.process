@@ -526,15 +526,19 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		Case theCase = this.getCase(theCaseID);
 		changeCaseStatus(theCase, newCaseStatus, performer);
 	}
-
+	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer) {
+		changeCaseStatus(theCase, newCaseStatus, performer, performer);
+	}
+
+	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Group handler) {
 		String oldCaseStatus = "";
 		try {
 			oldCaseStatus = theCase.getStatus();
 
 			theCase.setStatus(newCaseStatus);
-			if (performer != null) {
-				theCase.setHandler(performer);
+			if (handler != null) {
+				theCase.setHandler(handler);
 			}
 			theCase.store();
 
