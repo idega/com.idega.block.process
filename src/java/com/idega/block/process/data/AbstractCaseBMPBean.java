@@ -64,7 +64,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
       getGeneralCase().remove();
     }
     catch(RemoteException rme){
-      throw new EJBException(rme.getMessage());
+      throw new RemoveException(rme.getMessage());
     }
   }
 
