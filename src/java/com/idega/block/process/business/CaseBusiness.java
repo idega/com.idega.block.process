@@ -19,7 +19,7 @@ public interface CaseBusiness extends com.idega.business.IBOService
  public java.util.Collection getAllCasesForUser(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode p1)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public java.util.Collection getAllCasesForUser(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode p1,com.idega.block.process.data.CaseStatus p2)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public java.util.Collection getAllCasesForUser(com.idega.user.data.User p0,java.lang.String p1,java.lang.String p2)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
- public java.util.Collection getAllCasesForUserExceptCodes(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode[] p1)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
+ public java.util.Collection getAllCasesForUserExceptCodes(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode[] p1,int p2,int p3)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public java.util.Collection getAllCasesForGroupExceptCodes(com.idega.user.data.Group p0,com.idega.block.process.data.CaseCode[] p1)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
  public java.util.Collection getAllCasesForGroup(com.idega.user.data.Group group) throws javax.ejb.FinderException, java.rmi.RemoteException; 
  public java.lang.String getBundleIdentifier() throws java.rmi.RemoteException;

@@ -24,7 +24,7 @@ public interface CaseHome extends com.idega.data.IDOHome
  public java.lang.String getCaseStatusReady();
  public java.lang.String getCaseStatusRedeem();
  public java.lang.String getCaseStatusError();
- public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.User p0,CaseCode[] codes)throws javax.ejb.FinderException;
+ public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.User p0,CaseCode[] codes, int startingCase, int numberOfCases)throws javax.ejb.FinderException;
  public java.util.Collection findAllCasesForGroupExceptCodes(com.idega.user.data.Group p0,CaseCode[] codes)throws javax.ejb.FinderException;
 
 }

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.30 2003/10/13 18:21:20 roar Exp $
+ * $Id: CaseBMPBean.java,v 1.31 2003/10/23 22:26:44 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -605,7 +605,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		query.appendAnd();
 		query.append(COLUMN_CASE_CODE);
 		query.appendNotIn(notInClause);
-		query.appendOrderBy(COLUMN_CREATED);
+		query.appendOrderByDescending(COLUMN_CREATED);
 		return query;
 	}
 	
@@ -624,10 +624,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	/**
 	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array and orders in chronological order
 	 */
-	public Collection ejbFindAllCasesForUserExceptCodes(User user,CaseCode[] codes) throws FinderException
+	public Collection ejbFindAllCasesForUserExceptCodes(User user,CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException
 	{
 		IDOQuery query = idoQueryGetAllCasesForUserExceptCodes(user,codes);
-		return super.idoFindPKsByQuery(query);
+		return super.idoFindPKsByQuery(query, startingCase, numberOfCases);
 		/*
 		return (Collection) super.idoFindPKsBySQL(
 			"select * from "
