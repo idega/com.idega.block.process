@@ -335,5 +335,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		 * @todo: implement logging
 		 */
 		theCase.setStatus(newCaseStatus);
+		theCase.store();
 	}
 }
