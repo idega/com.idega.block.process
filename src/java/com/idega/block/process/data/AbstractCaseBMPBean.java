@@ -554,7 +554,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append(this.getSQLGeneralCaseUserColumnName());
 		sql.append("=");
 		sql.append(user.getPrimaryKey().toString());
-		sql.append(" order by ");
+		sql.append(" order by g.");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		
 		return sql;
@@ -608,7 +608,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String caseStatus)
 	{
 		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
-		sql.append(" order by ");
+		sql.append(" order by g.");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		return sql;
 	}
@@ -652,7 +652,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("='");
 		sql.append(caseStatus);
 		sql.append("'");
-		sql.append(" order by ");
+		sql.append(" order by g.");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		//return (Collection) super.idoFindPKsBySQL(sql.toString());
 		return sql;
@@ -691,7 +691,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		sql.append("='");
 		sql.append(caseCode);
 		sql.append("'");
-		sql.append(" order by ");
+		sql.append(" order by g.");
 		sql.append(this.getSQLGeneralCaseCreatedColumnName());
 		return sql;
 		//return (Collection) super.idoFindPKsBySQL(sql.toString());
@@ -739,7 +739,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			sql.append("='");
 			sql.append(caseCode);
 			sql.append("'");
-			sql.append(" order by ");
+			sql.append(" order by g.");
 			sql.append(this.getSQLGeneralCaseCreatedColumnName());
 			return sql;
 			//return super.getNumberOfRecords(sql.toString());
@@ -836,7 +836,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 					sql.append("'");
 			}
 			sql.append(")");
-			sql.append(" order by ");
+			sql.append(" order by g.");
 			sql.append(this.getSQLGeneralCaseCreatedColumnName());
 
 			debug("AbstractCase.idoQueryGetAllCasesByStatusArray(): sql = " + sql.toString());
