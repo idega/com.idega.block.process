@@ -393,8 +393,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	public String getLocalizedCaseDescription(Case theCase, Locale locale)throws RemoteException
 	{
-		CaseCode code = theCase.getCaseCode();
-		return getLocalizedString("case_code_key." + code.toString(), code.toString());
+		return getLocalizedCaseDescription(theCase.getCaseCode(),locale);
+	}
+	public String getLocalizedCaseDescription(CaseCode theCaseCode, Locale locale)throws RemoteException
+	{
+		return getLocalizedString("case_code_key." + theCaseCode.toString(), theCaseCode.toString());
 	}
 	public String getLocalizedCaseStatusDescription(CaseStatus status, Locale locale)
 	{
