@@ -500,6 +500,15 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		putCaseStatusInMap(status);
 		return status;
 	}
+	
+	protected boolean hasStatusChange(Case theCase, String statusBefore, String statusAfter) {
+		try {
+			return getCaseLogHome().getCountByStatusChange(theCase, statusBefore, statusAfter) > 0;
+		}
+		catch (IDOException ie) {
+			return false;
+		}
+	}
 
 	protected Locale getDefaultLocale() {
 		return getIWApplicationContext().getIWMainApplication().getSettings().getDefaultLocale();
