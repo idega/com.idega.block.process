@@ -466,7 +466,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		
 			if ( oldCaseStatus != newCaseStatus ) {
 				CaseLog log = getCaseLogHome().create();
-				log.setCase(theCase);
+				log.setCase(Integer.parseInt(theCase.getPrimaryKey().toString()));
 				log.setCaseStatusBefore(oldCaseStatus);
 				log.setCaseStatusAfter(newCaseStatus);
 				log.setPerformer(performer);
@@ -474,7 +474,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			}
 		}
 		catch(Exception e){
-			throw new RemoteException("Error changing case status: "+oldCaseStatus+" to "+newCaseStatus+":"+e.getMessage());	
+				throw new RemoteException("Error changing case status: "+oldCaseStatus+" to "+newCaseStatus+":"+e.getMessage());	
 		}
 	}
 	public String getLocalizedCaseDescription(Case theCase, Locale locale)throws RemoteException
