@@ -3,6 +3,8 @@ package com.idega.block.process.data;
 import com.idega.data.*;
 
 import java.util.Locale;
+import javax.ejb.*;
+import java.util.Collection;
 
 /**
  * Title:        idegaWeb
@@ -76,6 +78,20 @@ public class CaseStatusBMPBean extends GenericEntity {
      */
   public CaseCode getAssociatedCaseCode() {
     throw new java.lang.UnsupportedOperationException("Method getAssociatedCaseCode() not yet implemented.");
+  }
+
+
+
+
+  public Collection ejbFindAllStatuses()throws FinderException{
+    return super.idoFindAllIDsBySQL();
+  }
+
+  /**
+   * @todo: implement better
+   */
+  public Collection ejbFindGlobalStatuses()throws FinderException{
+    return ejbFindAllStatuses();
   }
 
 }

@@ -64,6 +64,10 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     return (ICObject) (this.getColumnValue(CASE_CODE_HANDLER));
   }
 
+  protected CaseHome getCaseHome(){
+    return (CaseHome)IDOLookup.getHome(Case.class);
+  }
+
     /**
      * @todo: Implement
      */
@@ -100,7 +104,11 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
       //e.printStackTrace();
       throw new EJBException(e.getMessage());
     }
+  }
 
+
+  public Collection ejbFindAllCaseCodes()throws FinderException{
+    return super.idoFindAllIDsBySQL();
   }
 
 }

@@ -41,6 +41,13 @@ public java.util.Collection findAllCasesByUser(com.idega.core.user.data.User p0,
 	return this.getEntityCollectionForPrimaryKeys(ids);
 }
 
+public java.util.Collection findSubCasesUnder(com.idega.block.process.data.Case p0)throws java.rmi.RemoteException,javax.ejb.FinderException{
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindSubCasesUnder(p0);
+	this.idoCheckInPooledEntity(entity);
+	return this.getEntityCollectionForPrimaryKeys(ids);
+}
+
 public java.util.Collection findAllCasesByUser(com.idega.core.user.data.User p0,com.idega.block.process.data.CaseCode p1,com.idega.block.process.data.CaseStatus p2)throws java.rmi.RemoteException,javax.ejb.FinderException{
 	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindAllCasesByUser(p0,p1,p2);
@@ -52,6 +59,13 @@ public java.util.Collection findAllCasesByUser(com.idega.core.user.data.User p0,
   return (Case) super.findByPrimaryKeyIDO(pk);
  }
 
+
+public int countSubCasesUnder(com.idega.block.process.data.Case p0)throws java.rmi.RemoteException{
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	int theReturn = ((CaseBMPBean)entity).ejbHomeCountSubCasesUnder(p0);
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
 
 
 }

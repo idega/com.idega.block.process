@@ -120,28 +120,28 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
    * Gets all the active Cases for the User with a specificed code
    */
   public Collection getAllActiveCasesForUser(User user,CaseCode code)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,code);
   }
 
   /**
    * Gets all the active Cases for the User with a specificed code
    */
   public Collection getAllActiveCasesForUser(User user,String caseCode)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,caseCode);
   }
 
   /**
    * Gets all the active Cases for the User with a specificed code and status
    */
   public Collection getAllActiveCasesForUser(User user,CaseCode code,CaseStatus status)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,code,status);
   }
 
   /**
    * Gets all the active Cases for the User with a specificed code and status
    */
   public Collection getAllActiveCasesForUser(User user,String caseCode,String caseStatus)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,caseCode,caseStatus);
   }
 
 
@@ -157,7 +157,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
    * Gets all the Cases for the User with a specificed code
    */
   public Collection getAllCasesForUser(User user,CaseCode code)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,code);
   }
 
 
@@ -165,7 +165,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
    * Gets all the Cases for the User with a specificed code
    */
   public Collection getAllCasesForUser(User user,String caseCode)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,caseCode);
   }
 
 
@@ -174,14 +174,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
    * Gets all the Cases for the User with a specificed code and status
    */
   public Collection getAllCasesForUser(User user,String caseCode,String caseStatus)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,caseCode,caseStatus);
   }
 
   /**
    * Gets all the Cases for the User with a specificed code and status
    */
   public Collection getAllCasesForUser(User user,CaseCode code,CaseStatus status)throws FinderException,RemoteException{
-    return getAllActiveCasesForUser(user);
+    return this.getCaseHome().findAllCasesByUser(user,code,status);
   }
 
   public Case getCase(int caseID)throws RemoteException,FinderException{

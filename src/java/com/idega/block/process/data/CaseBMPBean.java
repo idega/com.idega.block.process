@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.1 2002/06/14 11:04:42 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.2 2002/06/18 14:19:55 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -10,6 +10,7 @@
 package com.idega.block.process.data;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.sql.Timestamp;
 
 import javax.ejb.*;
@@ -18,6 +19,8 @@ import java.rmi.RemoteException;
 import com.idega.util.idegaTimestamp;
 
 import com.idega.core.user.data.User;
+import com.idega.data.*;
+import com.idega.core.ICTreeNode;
 
 /**
  *
@@ -51,6 +54,97 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
     return true;
   }
 
+  public void insertStartData(){
+    try{
+      //CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
+      CaseCodeHome cchome = (CaseCodeHome)IDOLookup.getHome(CaseCode.class);
+      CaseStatusHome cshome = (CaseStatusHome)IDOLookup.getHome(CaseStatus.class);
+
+      CaseCode code = cchome.create();
+      code.setCode("GARENDE");
+      code.setCode("General Case");
+      code.store();
+
+      CaseStatus status = cshome.create();
+      status.setStatus("UBEH");
+      status.setDescription("Open");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("TYST");
+      status.setDescription("Inactive");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("BVJD");
+      status.setDescription("Granted");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("AVSL");
+      status.setDescription("Denied");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("OMPR");
+      status.setDescription("Review");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("KOUT");
+      status.setDescription("Contract sent");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("UPPS");
+      status.setDescription("Cancelled");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("PREL");
+      status.setDescription("Preliminary Accepted");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+/*      status = cshome.create();
+      status.setStatus("PREL");
+      status.setDescription("Preliminary Accepted in school");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+
+      status = cshome.create();
+      status.setStatus("PLAC");
+      status.setDescription("Accepted and placed in school group");
+      status.store();
+      status.setAssociatedCaseCode(code);
+      status.store();
+*/
+    }
+    catch(Exception e){
+      System.err.println("Error inserting start data for com.idega.block.process.Case");
+      e.printStackTrace();
+    }
+  }
+
+  protected CaseHome getCaseHome(){
+    return (CaseHome)this.getEJBHome();
+  }
 
   public void setCode(String caseCode) {
     setColumn(this.CASE_CODE,caseCode);
@@ -111,6 +205,38 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
     return (User)this.getColumnValue(this.USER);
   }
 
+
+  public ICTreeNode getParentNode(){
+    return this.getParentCase();
+  }
+
+  public ICTreeNode getChildAtIndex(int childIndex){
+    try{
+      return this.getCaseHome().findByPrimaryKey(new Integer(childIndex));
+    }
+    catch(Exception e){
+      throw new EJBException(e.getMessage());
+    }
+  }
+
+  public int getChildCount(){
+    try{
+      return this.getCaseHome().countSubCasesUnder(this);
+    }
+    catch(Exception e){
+      throw new EJBException(e.getMessage());
+    }
+  }
+
+  public Iterator getChildren(){
+    try{
+      return this.getCaseHome().findSubCasesUnder(this).iterator();
+    }
+    catch(Exception e){
+      throw new EJBException(e.getMessage());
+    }
+  }
+
   public Collection ejbFindAllCasesByUser(User user)throws FinderException,RemoteException{
     return (Collection)super.idoFindPKsBySQL("select * from "+this.TABLE_NAME+" where "+this.USER+"="+user.getPrimaryKey().toString());
   }
@@ -129,6 +255,19 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
 
   public Collection ejbFindAllCasesByUser(User user,String caseCode,String caseStatus)throws FinderException,RemoteException{
     return (Collection)super.idoFindPKsBySQL("select * from "+this.TABLE_NAME+" where "+this.USER+"="+user.getPrimaryKey().toString()+" and "+this.CASE_CODE+"='"+caseCode+"'"+" and "+this.CASE_STATUS+"='"+caseStatus+"'");
+  }
+
+  public Collection ejbFindSubCasesUnder(Case theCase)throws FinderException,RemoteException{
+    return (Collection)super.idoFindPKsBySQL("select * from "+this.TABLE_NAME+" where "+this.PARENT_CASE+"="+theCase.getID());
+  }
+
+  public int ejbHomeCountSubCasesUnder(Case theCase)throws RemoteException{
+    try{
+      return super.getNumberOfRecords("select count(*) from "+this.TABLE_NAME+" where "+this.PARENT_CASE+"="+theCase.getID());
+    }
+    catch(java.sql.SQLException sqle){
+      throw new EJBException(sqle.getMessage());
+    }
   }
 
 }
