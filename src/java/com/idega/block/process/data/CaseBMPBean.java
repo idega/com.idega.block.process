@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.13 2002/07/15 14:58:02 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.14 2002/08/12 12:15:26 palli Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.sql.Timestamp;
 import javax.ejb.*;
 import java.rmi.RemoteException;
-import com.idega.util.idegaTimestamp;
+import com.idega.util.IWTimeStamp;
 //import com.idega.core.user.data.User;
 import com.idega.user.data.User;
 import com.idega.data.*;
@@ -142,7 +142,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public void setDefaultValues()
 	{
 		//System.out.println("Case : Calling setDefaultValues()");
-		setCreated(idegaTimestamp.getTimestampRightNow());
+		setCreated(IWTimeStamp.getTimestampRightNow());
 	}
 	protected CaseHome getCaseHome()
 	{

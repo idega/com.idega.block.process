@@ -5,7 +5,7 @@ import com.idega.data.*;
 import com.idega.idegaweb.IWBundle;
 import com.idega.core.data.*;
 import com.idega.user.data.*;
-import com.idega.util.idegaTimestamp;
+import com.idega.util.IWTimeStamp;
 import java.rmi.RemoteException;
 import javax.ejb.*;
 import java.util.Collection;
@@ -104,7 +104,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			Case newCase = this.getCaseHome().create();
 			newCase.setOwner(user);
 			newCase.setCaseCode(code);
-			newCase.setCreated(new idegaTimestamp().getTimestamp());
+			newCase.setCreated(new IWTimeStamp().getTimestamp());
 			newCase.store();
 			return newCase;
 		}
@@ -130,7 +130,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			Case newCase = this.getCaseHome().create();
 			newCase.setOwner(oldCase.getOwner());
 			newCase.setCaseCode(newCaseCode);
-			newCase.setCreated(new idegaTimestamp().getTimestamp());
+			newCase.setCreated(new IWTimeStamp().getTimestamp());
 			newCase.store();
 			return newCase;
 		}
