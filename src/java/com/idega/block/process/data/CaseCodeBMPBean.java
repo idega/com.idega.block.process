@@ -1,13 +1,15 @@
 package com.idega.block.process.data;
 
-import com.idega.data.*;
-
 import java.util.Collection;
-import javax.ejb.*;
+
+import javax.ejb.EJBException;
+import javax.ejb.FinderException;
 
 import com.idega.core.component.data.ICObject;
-
-import java.rmi.RemoteException;
+import com.idega.data.GenericEntity;
+import com.idega.data.IDOLookup;
+import com.idega.data.IDOLookupException;
+import com.idega.data.IDORuntimeException;
 
 /**
  * Title:        idegaWeb
@@ -93,8 +95,13 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     return (ICObject) (this.getColumnValue(CASE_CODE_HANDLER));
   }
 
-  protected CaseHome getCaseHome()throws RemoteException{
-    return (CaseHome)IDOLookup.getHome(Case.class);
+  protected CaseHome getCaseHome() {
+    try {
+			return (CaseHome)IDOLookup.getHome(Case.class);
+		}
+		catch (IDOLookupException e) {
+			throw new IDORuntimeException(e.getMessage());
+		}
   }
 
     /**

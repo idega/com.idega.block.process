@@ -1,11 +1,12 @@
 package com.idega.block.process.data;
 
-import com.idega.data.*;
-
-import java.util.Locale;
-import javax.ejb.*;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
+
+import javax.ejb.FinderException;
+
+import com.idega.data.GenericEntity;
 
 /**
  * Title:        idegaWeb

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.28 2003/10/03 01:41:58 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.29 2003/10/05 20:02:14 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.sql.Timestamp;
 import javax.ejb.*;
-import java.rmi.RemoteException;
 import com.idega.util.IWTimestamp;
 //import com.idega.core.user.data.User;
 import com.idega.user.data.Group;
@@ -303,7 +302,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	/**
 	 * Gets all the cases of all casetypes for a user and orders in chronological order
 	 */
-	public Collection ejbFindAllCasesByUser(User user) throws FinderException, RemoteException
+	public Collection ejbFindAllCasesByUser(User user) throws FinderException
 	{
 		return idoFindPKsByQuery(idoQueryGetAllCasesByUserOrdered(user));
 		/*
@@ -321,7 +320,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	/**
 	 * Gets all the cases for a user with a specified caseCode and orders in chronological order
 	 */
-	public Collection ejbFindAllCasesByUser(User user, CaseCode caseCode) throws FinderException, RemoteException
+	public Collection ejbFindAllCasesByUser(User user, CaseCode caseCode) throws FinderException
 	{
 		return ejbFindAllCasesByUser(user, caseCode.getCode());
 	}
@@ -368,7 +367,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 * Gets all the cases for a user with a specified caseStatus and caseCode and orders in chronological order
 	 */
 	public Collection ejbFindAllCasesByUser(User user, CaseCode caseCode, CaseStatus caseStatus)
-		throws FinderException, RemoteException
+		throws FinderException
 	{
 		return ejbFindAllCasesByUser(user, caseCode.getCode(), caseStatus.getStatus());
 	}
@@ -428,7 +427,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 	
-	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException, RemoteException
+	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException
 	{
 		return (Collection) super.idoFindPKsByQuery(idoQueryGetSubCasesUnder(theCase));
 	}
@@ -445,7 +444,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 	
-	public int ejbHomeCountSubCasesUnder(Case theCase) throws RemoteException
+	public int ejbHomeCountSubCasesUnder(Case theCase)
 	{
 		try
 		{
@@ -587,7 +586,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	/**
 	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array and orders in chronological order
 	 */
-	public Collection ejbFindAllCasesForUserExceptCodes(User user,CaseCode[] codes) throws FinderException, RemoteException
+	public Collection ejbFindAllCasesForUserExceptCodes(User user,CaseCode[] codes) throws FinderException
 	{
 		IDOQuery query = idoQueryGetAllCasesForUserExceptCodes(user,codes);
 		return super.idoFindPKsByQuery(query);

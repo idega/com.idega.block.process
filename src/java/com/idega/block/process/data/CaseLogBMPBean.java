@@ -1,5 +1,5 @@
 package com.idega.block.process.data;
-import java.rmi.RemoteException;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -103,7 +103,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 	/**
 	 * Finds all CaseLogs recorded for the specified aCase
 	 **/
-	public Collection ejbFindAllCaseLogsByCase(Case aCase) throws FinderException, RemoteException {
+	public Collection ejbFindAllCaseLogsByCase(Case aCase) throws FinderException {
 		return super.idoFindAllIDsByColumnBySQL(COLUMN_CASE_ID, aCase.getPrimaryKey().toString());
 	}
 	
@@ -111,13 +111,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 	 * Finds the last CaseLog recorded for the specified aCase
 	 **/
 	public Integer ejbFindLastCaseLogForCase(Case aCase) throws FinderException {
-		Integer theReturn = null;
-		//try{
-			theReturn = (Integer)super.idoFindOnePKBySQL("select * from "+TABLE_NAME+" where "+COLUMN_CASE_ID+"="+aCase.getPrimaryKey().toString()+" order by "+COLUMN_TIMESTAMP);
-		//}
-		//catch(RemoteException e){
-		//	throw new IDOFinderException(e);	
-		//}
+		Integer theReturn =  (Integer)super.idoFindOnePKBySQL("select * from "+TABLE_NAME+" where "+COLUMN_CASE_ID+"="+aCase.getPrimaryKey().toString()+" order by "+COLUMN_TIMESTAMP);
 		if(theReturn==null){
 			throw new IDOFinderException("No records found for case");	
 		}
