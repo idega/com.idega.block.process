@@ -23,6 +23,14 @@ import java.util.Collection;
 
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
 
+  private static final String CASE_STATUS_OPEN_KEY = "UBEH";
+  private static final String CASE_STATUS_INACTIVE_KEY = "TYST";
+  private static final String CASE_STATUS_GRANTED_KEY = "BJVD";
+  private static final String CASE_STATUS_DENIED_KEY = "AVSL";
+  private static final String CASE_STATUS_REVIEW_KEY = "OMPR";
+  private static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
+
+
   public CaseBusinessBean() {
   }
 
@@ -207,4 +215,52 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
   protected CaseStatusHome getCaseStatusHome()throws RemoteException{
     return (CaseStatusHome)com.idega.data.IDOLookup.getHome(CaseStatus.class);
   }
+
+
+  public CaseStatus getCaseStatusOpen()throws RemoteException{
+    try{
+      return this.getCaseStatusHome().findByPrimaryKey(CASE_STATUS_OPEN_KEY);
+    }
+    catch(FinderException e){
+      throw new EJBException("CaseStatus "+CASE_STATUS_OPEN_KEY+" is not installed or does not exist");
+    }
+  }
+
+  public CaseStatus getCaseStatusGranted()throws RemoteException{
+    try{
+      return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_GRANTED_KEY);
+    }
+    catch(FinderException e){
+      throw new EJBException("CaseStatus "+this.CASE_STATUS_GRANTED_KEY+" is not installed or does not exist");
+    }
+  }
+
+
+  public CaseStatus getCaseStatusDenied()throws RemoteException{
+    try{
+      return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_DENIED_KEY);
+    }
+    catch(FinderException e){
+      throw new EJBException("CaseStatus "+this.CASE_STATUS_DENIED_KEY+" is not installed or does not exist");
+    }
+  }
+
+  public CaseStatus getCaseStatusReview()throws RemoteException{
+    try{
+      return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_REVIEW_KEY);
+    }
+    catch(FinderException e){
+      throw new EJBException("CaseStatus "+this.CASE_STATUS_REVIEW_KEY+" is not installed or does not exist");
+    }
+  }
+
+  public CaseStatus getCaseStatusCancelled()throws RemoteException{
+    try{
+      return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_CANCELLED_KEY);
+    }
+    catch(FinderException e){
+      throw new EJBException("CaseStatus "+this.CASE_STATUS_CANCELLED_KEY+" is not installed or does not exist");
+    }
+  }
+
 }

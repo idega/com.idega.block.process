@@ -22,11 +22,15 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
 
   private static final String CASE_STATUS = "CASE_STATUS";
   private static final String CASE_STATUS_DESC = "CASE_STATUS_DESC";
+  private static final String CASE_STATUS_DESC_LOC_KEY = "CASE_STATUS_DESC_LOC_KEY";
+
+  private static final String LOC_KEY_PREFIX = "case.status";
 
   public void initializeAttributes() {
     addAttribute(CASE_STATUS,"Status",String.class,4);
     this.setAsPrimaryKey(CASE_STATUS,true);
     addAttribute(CASE_STATUS_DESC,"Description",String.class,1000);
+    addAttribute(CASE_STATUS_DESC_LOC_KEY,"Localized Description Key",String.class);
   }
   public String getEntityName() {
     return TABLE_NAME;
@@ -36,7 +40,18 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     return String.class;
   }
 
+  public void setDefaultValues(){
+    String sCode = this.getStatus();
+    if(sCode!=null){
+      this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+sCode);
+    }
+  }
+
   public void setStatus(String status) {
+    String sKey = this.getDescriptionLocalizedKey();
+    if(sKey!=null){
+      this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+status);
+    }
     setColumn(this.CASE_STATUS,status);
   }
 
@@ -51,6 +66,14 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
 
   public String getDescription() {
     return(this.getStringColumnValue(CASE_STATUS_DESC));
+  }
+
+  public void setDescriptionLocalizedKey(String key) {
+    setColumn(this.CASE_STATUS_DESC_LOC_KEY,key);
+  }
+
+  public String getDescriptionLocalizedKey() {
+    return(this.getStringColumnValue(CASE_STATUS_DESC_LOC_KEY));
   }
 
     /**

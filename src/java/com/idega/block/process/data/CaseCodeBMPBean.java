@@ -23,7 +23,10 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
 
   private static final String CASE_CODE = "CASE_CODE";
   private static final String CASE_CODE_DESC = "CASE_CODE_DESC";
+  private static final String CASE_CODE_DESC_LOC_KEY = "CASE_CODE_DESC_LOC_KEY";
   private static final String CASE_CODE_HANDLER = "CASE_CODE_HANDLER_ID";
+
+  private static final String LOC_KEY_PREFIX = "case.code";
 
   public CaseCodeBMPBean() {
   }
@@ -31,7 +34,7 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     addAttribute(CASE_CODE,"Code",String.class,7);
     this.setAsPrimaryKey(CASE_CODE,true);
     addAttribute(CASE_CODE_DESC,"Description",String.class,1000);
-
+    addAttribute(CASE_CODE_DESC_LOC_KEY,"Description Localized Key",String.class);
     this.addManyToOneRelationship(CASE_CODE_HANDLER,"Business Handler Object",ICObject.class);
     addManyToManyRelationShip(CaseStatus.class);
   }
@@ -43,7 +46,18 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     return String.class;
   }
 
+  public void setDefaultValues(){
+    String sCode = this.getCode();
+    if(sCode!=null){
+      this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+sCode);
+    }
+  }
+
   public void setCode(String caseCode) {
+    String sKey = this.getDescriptionLocalizedKey();
+    if(sKey!=null){
+      this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+caseCode);
+    }
     setColumn(this.CASE_CODE,caseCode);
   }
 
@@ -63,6 +77,13 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     setColumn(this.CASE_CODE_HANDLER,obj);
   }
 
+  public void setDescriptionLocalizedKey(String key) {
+    setColumn(this.CASE_CODE_DESC_LOC_KEY,key);
+  }
+
+  public String getDescriptionLocalizedKey() {
+    return(this.getStringColumnValue(CASE_CODE_DESC_LOC_KEY));
+  }
   public ICObject getBusinessHandler() {
     return (ICObject) (this.getColumnValue(CASE_CODE_HANDLER));
   }
