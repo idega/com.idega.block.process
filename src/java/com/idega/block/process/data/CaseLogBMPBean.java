@@ -35,6 +35,9 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 	public void setDefaultValues() {
 		setTimeStamp(IWTimestamp.getTimestampRightNow());
 	}
+	public String getIDColumnName(){
+		return COLUMN_CASE_LOG_ID;
+	}
 	public String getEntityName() {
 		return TABLE_NAME;
 	}
