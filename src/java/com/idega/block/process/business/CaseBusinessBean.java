@@ -579,4 +579,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public String getPrimaryKeyParameter() {
 		return null;
 	}
+	
+	public boolean canDeleteCase(Case theCase) {
+		return true;
+	}
+	
+	public void deleteCase(Case theCase, User performer) {
+		changeCaseStatus(theCase, getCaseStatusDeletedString(), performer);
+	}
 }
