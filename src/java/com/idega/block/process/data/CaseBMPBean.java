@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.16 2002/08/13 15:46:19 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.17 2002/08/14 23:26:47 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -15,6 +15,7 @@ import javax.ejb.*;
 import java.rmi.RemoteException;
 import com.idega.util.IWTimestamp;
 //import com.idega.core.user.data.User;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.data.*;
 import com.idega.core.ICTreeNode;
@@ -31,6 +32,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String CREATED = "CREATED";
 	static final String PARENT_CASE = "PARENT_CASE_ID";
 	static final String USER = "USER_ID";
+	static final String COLUMN_HANDLER = "HANDLER_GROUP_ID";
 	static final String PK_COLUMN = TABLE_NAME + "_ID";
 	static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
@@ -45,7 +47,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(CASE_STATUS, "Case status", true, true, String.class, 4, super.MANY_TO_ONE, CaseStatus.class);
 		addAttribute(CREATED, "Created when", Timestamp.class);
 		addAttribute(PARENT_CASE, "Parent case", true, true, Integer.class, super.MANY_TO_ONE, Case.class);
-		addAttribute(USER, "Owner", true, true, Integer.class, super.MANY_TO_ONE, User.class);
+		addManyToOneRelationship(USER, "Owner", User.class);
+		addManyToOneRelationship(COLUMN_HANDLER, "Handler Group/User", Group.class);
 	}
 	public String getIDColumnName()
 	{
@@ -59,7 +62,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	{
 		return true;
 	}
-	public void insertStartData()
+	/*public void insertStartData()
 	{
 		try
 		{
@@ -118,27 +121,28 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			status.store();
 			status.setAssociatedCaseCode(code);
 			status.store();
-			/*      status = cshome.create();
-			      status.setStatus("PREL");
-			      status.setDescription("Preliminary Accepted in school");
-			      status.store();
-			      status.setAssociatedCaseCode(code);
-			      status.store();
-			
-			      status = cshome.create();
-			      status.setStatus("PLAC");
-			      status.setDescription("Accepted and placed in school group");
-			      status.store();
-			      status.setAssociatedCaseCode(code);
-			      status.store();
-			*/
+			//      status = cshome.create();
+			//      status.setStatus("PREL");
+			//      status.setDescription("Preliminary Accepted in school");
+			//      status.store();
+			//      status.setAssociatedCaseCode(code);
+			//      status.store();
+			//
+			//
+			//      status = cshome.create();
+			//      status.setStatus("PLAC");
+			//      status.setDescription("Accepted and placed in school group");
+			//      status.store();
+			//      status.setAssociatedCaseCode(code);
+			//      status.store();
+			//
 		}
 		catch (Exception e)
 		{
 			System.err.println("Error inserting start data for com.idega.block.process.Case");
 			e.printStackTrace();
 		}
-	}
+	}*/
 	public void setDefaultValues()
 	{
 		//System.out.println("Case : Calling setDefaultValues()");
@@ -202,10 +206,29 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	{
 		super.setColumn(USER, owner);
 	}
+	public Group getHandler()
+	{
+		return (Group) this.getColumnValue(this.COLUMN_HANDLER);
+	}
+	public int getHandlerId()
+	{
+		return this.getIntColumnValue(this.COLUMN_HANDLER);
+	}
+	
+	public void setHandler(Group handler)
+	{
+		super.setColumn(COLUMN_HANDLER, handler);
+	}
+	public void setHandler(int handlerGroupID)
+	{
+		super.setColumn(COLUMN_HANDLER, handlerGroupID);
+	}
 	public User getOwner()
 	{
 		return (User) this.getColumnValue(this.USER);
 	}
+	
+	
 	public ICTreeNode getParentNode()
 	{
 		return this.getParentCase();

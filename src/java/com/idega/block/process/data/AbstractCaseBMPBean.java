@@ -3,6 +3,8 @@ import com.idega.data.*;
 import java.rmi.RemoteException;
 import javax.ejb.*;
 import java.sql.Timestamp;
+
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import java.util.Collection;
 import java.util.Iterator;
@@ -354,6 +356,52 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			throw new EJBException(rme.getMessage());
 		}
 	}
+
+
+
+	public Group getHandler(){
+		try
+		{
+			return this.getGeneralCase().getHandler();
+		}
+		catch (RemoteException rme)
+		{
+			throw new EJBException(rme.getMessage());
+		}		
+	}
+	public int getHandlerId(){
+		try
+		{
+			return this.getGeneralCase().getHandlerId();
+		}
+		catch (RemoteException rme)
+		{
+			throw new EJBException(rme.getMessage());
+		}		
+	}
+	public void setHandler(Group handler){
+		try
+		{
+			this.getGeneralCase().setHandler(handler);
+		}
+		catch (RemoteException rme)
+		{
+			throw new EJBException(rme.getMessage());
+		}		
+	}
+	public void setHandler(int handlerGroupID){
+		try
+		{
+			this.getGeneralCase().setHandler(handlerGroupID);
+		}
+		catch (RemoteException rme)
+		{
+			throw new EJBException(rme.getMessage());
+		}
+	}
+
+
+
 	/**
 	 * Returns the cASE_STATUS_CANCELLED_KEY.
 	 * @return String
