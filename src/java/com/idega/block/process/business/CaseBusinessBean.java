@@ -148,6 +148,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 			catch (ClassNotFoundException e) {
 			}
+			try {
+				Class c = Class.forName("se.idega.idegaweb.commune.school.music.business.MusicSchoolBusiness");
+				if (code.getCode().equals("MUSICCH")) {
+					return (CaseBusiness) this.getServiceInstance(c);
+				}
+			}
+			catch (ClassNotFoundException e) {
+			}
 			return this;
 		}
 		catch (ClassNotFoundException cnfe) {
