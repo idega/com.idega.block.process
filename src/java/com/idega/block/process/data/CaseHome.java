@@ -18,5 +18,6 @@ public interface CaseHome extends com.idega.data.IDOHome
  public java.lang.String getCaseStatusOpen() throws java.rmi.RemoteException;
  public java.lang.String getCaseStatusDenied() throws java.rmi.RemoteException;
  public java.lang.String getCaseStatusReview() throws java.rmi.RemoteException;
+public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.User p0,CaseCode[] codes)throws javax.ejb.FinderException,java.rmi.RemoteException;
 
 }

@@ -55,6 +55,13 @@ public java.util.Collection findAllCasesByUser(com.idega.user.data.User p0,java.
 	return this.getEntityCollectionForPrimaryKeys(ids);
 }
 
+public java.util.Collection findAllCasesForUserExceptCodes(com.idega.user.data.User p0,CaseCode[] codes)throws javax.ejb.FinderException,java.rmi.RemoteException{
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.util.Collection ids = ((CaseBMPBean)entity).ejbFindAllCasesForUserExceptCodes(p0,codes);
+	this.idoCheckInPooledEntity(entity);
+	return this.getEntityCollectionForPrimaryKeys(ids);
+}
+
  public Case findByPrimaryKey(Object pk) throws javax.ejb.FinderException{
   return (Case) super.findByPrimaryKeyIDO(pk);
  }

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.15 2002/08/12 12:59:33 palli Exp $
+ * $Id: CaseBMPBean.java,v 1.16 2002/08/13 15:46:19 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -388,4 +388,27 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	{
 		return CASE_STATUS_REVIEW_KEY;
 	}
+
+
+	/**
+	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array.
+	 */
+	public Collection ejbFindAllCasesForUserExceptCodes(User user,CaseCode[] codes) throws FinderException, RemoteException
+	{
+		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+		return (Collection) super.idoFindPKsBySQL(
+			"select * from "
+				+ this.TABLE_NAME
+				+ " where "
+				+ this.USER
+				+ "="
+				+ user.getPrimaryKey().toString()
+				+ " and "
+				+ this.CASE_CODE
+				+ " not in ("
+				+ notInClause
+				+ ")");
+	}
+
+
 }
