@@ -26,6 +26,7 @@ public interface Case extends com.idega.data.IDOEntity,com.idega.core.ICTreeNode
 	public int getHandlerId() throws java.rmi.RemoteException;
 	public void setHandler(Group handler) throws java.rmi.RemoteException;
 	public void setHandler(int handlerGroupID) throws java.rmi.RemoteException;
+	public String getNodeName(java.util.Locale locale) throws java.rmi.RemoteException;
 
 
 
