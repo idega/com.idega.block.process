@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.5 2002/06/18 21:24:37 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.6 2002/06/25 14:58:56 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -27,7 +27,7 @@ import com.idega.core.ICTreeNode;
  * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson</a>
  * @version 1.0
  */
-public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean implements Case,com.idega.core.ICTreeNode{
+public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case,com.idega.core.ICTreeNode{
   public static final String TABLE_NAME = "PROC_CASE";
 
   private static final String CASE_CODE = "CASE_CODE";
@@ -277,6 +277,26 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
     catch(java.sql.SQLException sqle){
       throw new EJBException(sqle.getMessage());
     }
+  }
+
+  public int getNodeID(){
+    return this.getID();
+  }
+
+  public String getNodeName(){
+    return getName();
+  }
+
+  public boolean isLeaf(){
+    return (this.getChildCount()==0);
+  }
+
+  public int getIndex(ICTreeNode node){
+    return node.getNodeID();
+  }
+
+  public boolean getAllowsChildren(){
+    return true;
   }
 
 }

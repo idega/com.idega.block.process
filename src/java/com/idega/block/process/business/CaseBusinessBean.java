@@ -204,6 +204,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
     return (UserHome)com.idega.data.IDOLookup.getHome(User.class);
   }
 
+  protected User getUser(int userID)throws RemoteException,FinderException{
+    return this.getUserHome().findByPrimaryKey(userID);
+  }
+
   protected CaseHome getCaseHome()throws RemoteException{
     return (CaseHome)com.idega.data.IDOLookup.getHome(Case.class);
   }
