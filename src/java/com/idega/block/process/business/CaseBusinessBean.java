@@ -11,6 +11,7 @@ import com.idega.util.idegaTimestamp;
 import java.rmi.RemoteException;
 import javax.ejb.*;
 import java.util.Collection;
+import java.util.Locale;
 
 /**
  * Title:        idegaWeb
@@ -267,4 +268,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
     }
   }
 
+  protected Locale getDefaultLocale(){
+    return com.idega.util.LocaleUtil.getLocale("en");
+  }
+
+  protected String getLocalizedString(String key,String defaultValue){
+    return getLocalizedString(key,defaultValue,this.getDefaultLocale());
+  }
+
+  protected String getLocalizedString(String key,String defaultValue,Locale locale){
+    /**
+     * @todo:implement
+     */
+    return defaultValue;
+  }
 }
