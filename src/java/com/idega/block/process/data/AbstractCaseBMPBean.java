@@ -430,17 +430,22 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 		from.setMinute(0);
 		from.setSecond(0);
 		sql.appendAnd();
-		sql.append(" g.");
-		sql.append(getSQLGeneralCaseCreatedColumnName());
-		sql.append(" >= '");
-		sql.append(from.toSQLString());
-		sql.append("'");
-		sql.appendAnd();
-		sql.append(" g.");
-		sql.append(getSQLGeneralCaseCreatedColumnName());
-		sql.append(" <= '");
-		sql.append(to.toSQLString());
-		sql.append("'");
+		sql.appendWithinStamps("g."+getSQLGeneralCaseCreatedColumnName(),from.getTimestamp(),to.getTimestamp());
+		//sql.append(" g.");
+		//sql.append(getSQLGeneralCaseCreatedColumnName());
+		//sql.appendGreaterThanOrEqualsSign();
+		//sql.append((Timestamp)from.getTimestamp());
+		//sql.append(" >= '");
+		//sql.append(from.toSQLString());
+		//sql.append("'");
+		//sql.appendAnd();
+		//sql.append(" g.");
+		//sql.append(getSQLGeneralCaseCreatedColumnName());
+		//sql.appendLessThanOrEqualsSign();
+		//sql.append((Timestamp)to.getTimestamp());
+		//sql.append(" <= '");
+		//sql.append(to.toSQLString());
+		//sql.append("'");
 		return sql;
 	}
 
