@@ -1,16 +1,68 @@
+/*
+ * $Id: CaseLogHome.java 1.1 2.12.2004 laddi Exp $
+ * Created on 2.12.2004
+ *
+ * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
+ */
 package com.idega.block.process.data;
 
+import java.sql.Timestamp;
+import java.util.Collection;
 
-public interface CaseLogHome extends com.idega.data.IDOHome
-{
- public CaseLog create() throws javax.ejb.CreateException;
- public CaseLog findByPrimaryKey(Object pk) throws javax.ejb.FinderException;
- public java.util.Collection findAllCaseLogsByCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException;
- public java.util.Collection findAllCaseLogsByCaseAndDate(java.lang.String p0,java.sql.Timestamp p1,java.sql.Timestamp p2)throws javax.ejb.FinderException;
- public java.util.Collection findAllCaseLogsByCaseAndDateAndStatusChange(java.lang.String p0,java.sql.Timestamp p1,java.sql.Timestamp p2,java.lang.String p3,java.lang.String p4)throws javax.ejb.FinderException;
- public java.util.Collection findAllCaseLogsByDate(java.sql.Timestamp p0,java.sql.Timestamp p1)throws javax.ejb.FinderException;
- public java.util.Collection findAllCaseLogsByDateAndStatusChange(java.sql.Timestamp p0,java.sql.Timestamp p1,java.lang.String p2,java.lang.String p3)throws javax.ejb.FinderException;
- public CaseLog findLastCaseLogForCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException;
- public int getCountByStatusChange(com.idega.block.process.data.Case p0,java.lang.String p1,java.lang.String p2)throws com.idega.data.IDOException;
+import javax.ejb.FinderException;
+
+import com.idega.data.IDOException;
+import com.idega.data.IDOHome;
+
+
+/**
+ * Last modified: $Date: 2004/06/28 09:09:50 $ by $Author: laddi $
+ * 
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.1 $
+ */
+public interface CaseLogHome extends IDOHome {
+
+	public CaseLog create() throws javax.ejb.CreateException;
+
+	public CaseLog findByPrimaryKey(Object pk) throws javax.ejb.FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCase
+	 */
+	public Collection findAllCaseLogsByCase(Case aCase) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindLastCaseLogForCase
+	 */
+	public CaseLog findLastCaseLogForCase(Case aCase) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByDate
+	 */
+	public Collection findAllCaseLogsByDate(Timestamp fromDate, Timestamp toDate) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseAndDate
+	 */
+	public Collection findAllCaseLogsByCaseAndDate(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByDateAndStatusChange
+	 */
+	public Collection findAllCaseLogsByDateAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseAndDateAndStatusChange
+	 */
+	public Collection findAllCaseLogsByCaseAndDateAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbHomeGetCountByStatusChange
+	 */
+	public int getCountByStatusChange(Case theCase, String statusBefore, String statusAfter) throws IDOException;
 
 }

@@ -1,71 +1,90 @@
+/*
+ * $Id: CaseLogHomeImpl.java 1.1 2.12.2004 laddi Exp $
+ * Created on 2.12.2004
+ *
+ * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
+ */
 package com.idega.block.process.data;
 
+import java.sql.Timestamp;
+import java.util.Collection;
 
-public class CaseLogHomeImpl extends com.idega.data.IDOFactory implements CaseLogHome
-{
- protected Class getEntityInterfaceClass(){
-  return CaseLog.class;
- }
+import javax.ejb.FinderException;
 
-
- public CaseLog create() throws javax.ejb.CreateException{
-  return (CaseLog) super.createIDO();
- }
+import com.idega.data.IDOException;
+import com.idega.data.IDOFactory;
 
 
-public java.util.Collection findAllCaseLogsByCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	java.util.Collection ids = ((CaseLogBMPBean)entity).ejbFindAllCaseLogsByCase(p0);
-	this.idoCheckInPooledEntity(entity);
-	return this.getEntityCollectionForPrimaryKeys(ids);
-}
+/**
+ * Last modified: $Date: 2004/06/28 09:09:50 $ by $Author: laddi $
+ * 
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.1 $
+ */
+public class CaseLogHomeImpl extends IDOFactory implements CaseLogHome {
 
-public java.util.Collection findAllCaseLogsByCaseAndDate(java.lang.String p0,java.sql.Timestamp p1,java.sql.Timestamp p2)throws javax.ejb.FinderException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	java.util.Collection ids = ((CaseLogBMPBean)entity).ejbFindAllCaseLogsByCaseAndDate(p0,p1,p2);
-	this.idoCheckInPooledEntity(entity);
-	return this.getEntityCollectionForPrimaryKeys(ids);
-}
+	protected Class getEntityInterfaceClass() {
+		return CaseLog.class;
+	}
 
-public java.util.Collection findAllCaseLogsByCaseAndDateAndStatusChange(java.lang.String p0,java.sql.Timestamp p1,java.sql.Timestamp p2,java.lang.String p3,java.lang.String p4)throws javax.ejb.FinderException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	java.util.Collection ids = ((CaseLogBMPBean)entity).ejbFindAllCaseLogsByCaseAndDateAndStatusChange(p0,p1,p2,p3,p4);
-	this.idoCheckInPooledEntity(entity);
-	return this.getEntityCollectionForPrimaryKeys(ids);
-}
+	public CaseLog create() throws javax.ejb.CreateException {
+		return (CaseLog) super.createIDO();
+	}
 
-public java.util.Collection findAllCaseLogsByDate(java.sql.Timestamp p0,java.sql.Timestamp p1)throws javax.ejb.FinderException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	java.util.Collection ids = ((CaseLogBMPBean)entity).ejbFindAllCaseLogsByDate(p0,p1);
-	this.idoCheckInPooledEntity(entity);
-	return this.getEntityCollectionForPrimaryKeys(ids);
-}
+	public CaseLog findByPrimaryKey(Object pk) throws javax.ejb.FinderException {
+		return (CaseLog) super.findByPrimaryKeyIDO(pk);
+	}
 
-public java.util.Collection findAllCaseLogsByDateAndStatusChange(java.sql.Timestamp p0,java.sql.Timestamp p1,java.lang.String p2,java.lang.String p3)throws javax.ejb.FinderException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	java.util.Collection ids = ((CaseLogBMPBean)entity).ejbFindAllCaseLogsByDateAndStatusChange(p0,p1,p2,p3);
-	this.idoCheckInPooledEntity(entity);
-	return this.getEntityCollectionForPrimaryKeys(ids);
-}
+	public Collection findAllCaseLogsByCase(Case aCase) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByCase(aCase);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 
-public CaseLog findLastCaseLogForCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	Object pk = ((CaseLogBMPBean)entity).ejbFindLastCaseLogForCase(p0);
-	this.idoCheckInPooledEntity(entity);
-	return this.findByPrimaryKey(pk);
-}
+	public CaseLog findLastCaseLogForCase(Case aCase) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Object pk = ((CaseLogBMPBean) entity).ejbFindLastCaseLogForCase(aCase);
+		this.idoCheckInPooledEntity(entity);
+		return this.findByPrimaryKey(pk);
+	}
 
- public CaseLog findByPrimaryKey(Object pk) throws javax.ejb.FinderException{
-  return (CaseLog) super.findByPrimaryKeyIDO(pk);
- }
+	public Collection findAllCaseLogsByDate(Timestamp fromDate, Timestamp toDate) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByDate(fromDate, toDate);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 
+	public Collection findAllCaseLogsByCaseAndDate(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByCaseAndDate(caseCode, fromDate, toDate);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 
-public int getCountByStatusChange(com.idega.block.process.data.Case p0,java.lang.String p1,java.lang.String p2)throws com.idega.data.IDOException{
-	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-	int theReturn = ((CaseLogBMPBean)entity).ejbHomeGetCountByStatusChange(p0,p1,p2);
-	this.idoCheckInPooledEntity(entity);
-	return theReturn;
-}
+	public Collection findAllCaseLogsByDateAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByDateAndStatusChange(fromDate, toDate, statusBefore, statusAfter);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 
+	public Collection findAllCaseLogsByCaseAndDateAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByCaseAndDateAndStatusChange(caseCode, fromDate, toDate, statusBefore, statusAfter);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
+	public int getCountByStatusChange(Case theCase, String statusBefore, String statusAfter) throws IDOException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		int theReturn = ((CaseLogBMPBean) entity).ejbHomeGetCountByStatusChange(theCase, statusBefore, statusAfter);
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
 
 }

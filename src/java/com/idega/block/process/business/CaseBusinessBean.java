@@ -469,6 +469,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Group handler) {
+		changeCaseStatus(theCase, newCaseStatus, null, performer, handler);
+	}
+	
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler) {
 		String oldCaseStatus = "";
 		try {
 			oldCaseStatus = theCase.getStatus();
@@ -486,6 +490,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				log.setCaseStatusAfter(newCaseStatus);
 				if (performer != null) {
 					log.setPerformer(performer);
+				}
+				if (comment != null) {
+					log.setComment(comment);
 				}
 				log.store();
 			}
