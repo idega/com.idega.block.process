@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.44 2004/12/09 15:31:39 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.45 2004/12/20 14:03:38 sigtryggur Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -284,7 +284,12 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	}
 	public Iterator getChildrenIterator()
 	{
-	    return getChildren().iterator();
+	    Iterator it = null;
+	    Collection children = getChildren();
+	    if (children != null) {
+	        it = children.iterator();
+	    }
+	    return it;
 	}
 		public Collection getChildren()
 	{
