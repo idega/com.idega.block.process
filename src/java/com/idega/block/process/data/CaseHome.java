@@ -25,6 +25,7 @@ public interface CaseHome extends com.idega.data.IDOHome
  public java.lang.String getCaseStatusInactive();
  public java.lang.String getCaseStatusOpen();
  public java.lang.String getCaseStatusPreliminary();
+ public java.lang.String getCaseStatusPending();
  public java.lang.String getCaseStatusReady();
  public java.lang.String getCaseStatusRedeem();
  public java.lang.String getCaseStatusReview();

@@ -158,6 +158,13 @@ public java.lang.String getCaseStatusPreliminary(){
 	return theReturn;
 }
 
+public java.lang.String getCaseStatusPending(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusPending();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
 public java.lang.String getCaseStatusReady(){
 	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusReady();
