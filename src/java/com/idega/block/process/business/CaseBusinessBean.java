@@ -81,6 +81,16 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 				Class objClass = handler.getObjectClass();
 				return (CaseBusiness) this.getServiceInstance(objClass);
 			}
+			/**
+			 * temporary hardcoding
+			 */
+			try{
+				Class c = Class.forName("se.idega.idegaweb.commune.school.business.SchoolChoiceBusiness");
+				if(code.getCode().equals("MBSKOLV")){
+					return (CaseBusiness) this.getServiceInstance(c);
+				}
+			}
+			catch(ClassNotFoundException e){}
 			return this;
 		}
 		catch (ClassNotFoundException cnfe)
@@ -253,6 +263,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	{
 		return (CaseCodeHome) com.idega.data.IDOLookup.getHome(CaseCode.class);
 	}
+	protected CaseLogHome getCaseLogHome() throws RemoteException
+	{
+		return (CaseLogHome) com.idega.data.IDOLookup.getHome(CaseLog.class);
+	}
 	protected CaseStatusHome getCaseStatusHome() throws RemoteException
 	{
 		return (CaseStatusHome) com.idega.data.IDOLookup.getHome(CaseStatus.class);
@@ -358,11 +372,24 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer) throws RemoteException
 	{
-		/**
-		 * @todo: implement logging
-		 */
-		theCase.setStatus(newCaseStatus);
-		theCase.store();
+		try{
+			String oldCaseStatus = theCase.getStatus();
+			
+			theCase.setStatus(newCaseStatus);
+			theCase.setHandler(performer);
+			theCase.store();
+		
+			CaseLog log = getCaseLogHome().create();
+			log.setCase(theCase);
+			log.setCaseStatusBefore(oldCaseStatus);
+			log.setCaseStatusAfter(newCaseStatus);
+			log.setPerformer(performer);
+			log.store();
+			
+		}
+		catch(Exception e){
+			throw new RemoteException("Error changing case status: "+e.getMessage());	
+		}
 	}
 	public String getLocalizedCaseDescription(Case theCase, Locale locale)throws RemoteException
 	{
