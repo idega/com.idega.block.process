@@ -657,4 +657,43 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			throw new EJBException(sqle.getMessage());
 		}
 	}
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 */
+	public Collection ejbFindAllCasesByStatusArray(String caseStatus[]) throws FinderException, RemoteException {
+		String caseCode = this.getCaseCodeKey();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from ");
+		sql.append(getSQLGeneralCaseTableName());
+		sql.append(" g,");
+		sql.append(this.getTableName());
+		sql.append(" a where g.");
+		sql.append(this.getSQLGeneralCasePKColumnName());
+		sql.append("=a.");
+		sql.append(this.getIDColumnName());
+		sql.append(" and g.");
+		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
+		sql.append("='");
+		sql.append(caseCode);
+		sql.append("'");
+		sql.append(" and g.");
+		sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
+		sql.append(" in (");
+		int length = caseStatus.length;
+		for (int i = 0; i < length; i++) {
+			sql.append("'");
+			sql.append(caseStatus[i]);
+			if (i != (length - 1))
+				sql.append("', ");
+			else
+				sql.append("'");				
+		}
+		sql.append(")");
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
+		
+		System.out.println("sql = " + sql.toString());
+		
+		return (Collection) super.idoFindPKsBySQL(sql.toString());
+	}	
 }
