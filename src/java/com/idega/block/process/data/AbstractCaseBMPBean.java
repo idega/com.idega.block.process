@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -338,6 +339,17 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		try
 		{
 			return this.getGeneralCase().getNodeName();
+		}
+		catch (RemoteException rme)
+		{
+			throw new EJBException(rme.getMessage());
+		}
+	}
+	public String getNodeName(Locale locale)
+	{
+		try
+		{
+			return this.getGeneralCase().getNodeName(locale);
 		}
 		catch (RemoteException rme)
 		{
