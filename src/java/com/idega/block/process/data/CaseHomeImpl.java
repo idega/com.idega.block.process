@@ -130,4 +130,12 @@ public java.lang.String getCaseStatusContract(){
 	return theReturn;
 }
 
+public java.lang.String getCaseStatusReady(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusReady();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
+
 }

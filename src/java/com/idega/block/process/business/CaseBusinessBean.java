@@ -34,6 +34,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	private String CASE_STATUS_CANCELLED_KEY;
 	private String CASE_STATUS_PRELIMINARY_KEY;
 	private String CASE_STATUS_CONTRACT_KEY;
+	private String CASE_STATUS_READY_KEY;
 	public CaseBusinessBean()
 	{
 		try
@@ -46,6 +47,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			CASE_STATUS_CANCELLED_KEY = this.getCaseHome().getCaseStatusCancelled();
 			CASE_STATUS_PRELIMINARY_KEY = this.getCaseHome().getCaseStatusPreliminary();
 			CASE_STATUS_CONTRACT_KEY = this.getCaseHome().getCaseStatusContract();
+			CASE_STATUS_READY_KEY = this.getCaseHome().getCaseStatusReady();
 		}
 		catch (RemoteException e)
 		{
@@ -379,6 +381,31 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 				"CaseStatus " + this.CASE_STATUS_CONTRACT_KEY + " is not installed or does not exist");
 		}
 	}
+	public CaseStatus getCaseStatusReady() throws RemoteException
+	{
+		return getCaseStatusAndInstallIfNotExists(CASE_STATUS_READY_KEY);
+	}
+	
+	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString)throws EJBException,RemoteException{
+		try
+		{
+			return this.getCaseStatusHome().findByPrimaryKey(caseStatusString);
+		}
+		catch (FinderException fe)
+		{
+			try{
+				CaseStatus status = getCaseStatusHome().create();
+				status.setStatus(caseStatusString);
+				status.store();
+				return status;
+			}
+			catch(Exception e){
+				throw new EJBException(
+					"Error creating CaseStatus " + caseStatusString + " is not installed or does not exist. Message: "+e.getMessage());
+			}
+		}
+	}
+	
 	protected Locale getDefaultLocale()
 	{
 		//return com.idega.util.LocaleUtil.getLocale("en");

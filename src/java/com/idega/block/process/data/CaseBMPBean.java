@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.19 2002/09/23 11:55:14 palli Exp $
+ * $Id: CaseBMPBean.java,v 1.20 2002/10/02 22:33:03 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -42,6 +42,9 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
 	static final String CASE_STATUS_PRELIMINARY_KEY = "PREL";
 	static final String CASE_STATUS_CONTRACT_KEY = "KOUT";
+	static final String CASE_STATUS_READY_KEY = "KLAR";
+	
+	
 	public void initializeAttributes()
 	{
 		addAttribute(getIDColumnName());
@@ -459,6 +462,16 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	{
 		return CASE_STATUS_CONTRACT_KEY;
 	}
+
+	/**
+	 * Returns the CASE_STATUS_READY_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusReady()
+	{
+		return CASE_STATUS_READY_KEY;
+	}
+
 
 	/**
 	 * Gets all the Cases for the User except the ones with one of the CaseCode in the codes[] array and orders in chronological order
