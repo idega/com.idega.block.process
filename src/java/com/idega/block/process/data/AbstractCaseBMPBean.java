@@ -31,6 +31,11 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
    */
   public abstract String getCaseCodeDescription();
 
+  public void addGeneralCaseRelation(){
+    this.addManyToOneRelationship(getIDColumnName(),"Case ID",Case.class);
+    this.getAttribute(getIDColumnName()).setAsPrimaryKey(true);
+  }
+
   public Object ejbCreate()throws CreateException{
     try{
       _case = this.getCaseHome().create();
