@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.3 2002/06/18 14:47:57 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.4 2002/06/18 15:01:01 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -231,6 +231,15 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
   public Iterator getChildren(){
     try{
       return this.getCaseHome().findSubCasesUnder(this).iterator();
+    }
+    catch(Exception e){
+      throw new EJBException(e.getMessage());
+    }
+  }
+
+  public int getSiblingCount(){
+    try{
+      return this.getParentCase().getChildCount();
     }
     catch(Exception e){
       throw new EJBException(e.getMessage());
