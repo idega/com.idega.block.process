@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.35 2003/11/03 12:45:01 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.36 2003/12/10 11:18:13 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -49,9 +49,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String CASE_STATUS_CONTRACT_KEY = "KOUT";
 	static final String CASE_STATUS_READY_KEY = "KLAR";
 	static final String CASE_STATUS_REDEEM_KEY = "CHIN";
-	static final String CASE_STATUS_ERROR = "ERRR";
-	static final String CASE_STATUS_MOVED = "FLYT";
-	static final String CASE_STATUS_PLACED = "PLAC";
+	static final String CASE_STATUS_ERROR_KEY = "ERRR";
+	static final String CASE_STATUS_MOVED_KEY = "FLYT";
+	static final String CASE_STATUS_PLACED_KEY = "PLAC";
+	static final String CASE_STATUS_DELETED_KEY = "DELE";
 	
 	public void initializeAttributes()
 	{
@@ -518,7 +519,16 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public String ejbHomeGetCaseStatusCancelled()
 	{
 		return CASE_STATUS_CANCELLED_KEY;
-	} /**
+	}
+	/**
+	 * Returns the CASE_STATUS_DELETED_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusDeleted()
+	{
+		return CASE_STATUS_DELETED_KEY;
+	}
+	/**
 	 * Returns the cASE_STATUS_DENIED_KEY.
 	 * @return String
 	 */
@@ -601,7 +611,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		 */
 		public String ejbHomeGetCaseStatusError()
 		{
-			return CASE_STATUS_ERROR;
+			return CASE_STATUS_ERROR_KEY;
 		}
 
 		/**
@@ -610,7 +620,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			 */
 			public String ejbHomeGetCaseStatusMoved()
 			{
-				return CASE_STATUS_MOVED;
+				return CASE_STATUS_MOVED_KEY;
 			}
 
 		/**
@@ -619,7 +629,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			 */
 			public String ejbHomeGetCaseStatusPlaced()
 			{
-				return CASE_STATUS_PLACED;
+				return CASE_STATUS_PLACED_KEY;
 			}
 
 	protected IDOQuery idoQueryGetAllCasesForUserExceptCodes(User user,CaseCode[] codes)

@@ -18,6 +18,7 @@ public interface CaseHome extends com.idega.data.IDOHome
  public int countSubCasesUnder(com.idega.block.process.data.Case p0);
  public java.lang.String getCaseStatusCancelled();
  public java.lang.String getCaseStatusContract();
+ public java.lang.String getCaseStatusDeleted();
  public java.lang.String getCaseStatusDenied();
  public java.lang.String getCaseStatusError();
  public java.lang.String getCaseStatusGranted();

@@ -109,6 +109,13 @@ public java.lang.String getCaseStatusContract(){
 	return theReturn;
 }
 
+public java.lang.String getCaseStatusDeleted(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusDeleted();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
 public java.lang.String getCaseStatusDenied(){
 	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusDenied();
