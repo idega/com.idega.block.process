@@ -291,4 +291,17 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness{
      */
     return defaultValue;
   }
+
+  public void changeCaseStatus(int theCaseID,String newCaseStatus,User performer)throws FinderException,RemoteException{
+     Case theCase = this.getCase(theCaseID);
+     changeCaseStatus(theCase,newCaseStatus,performer);
+  }
+
+
+  public void changeCaseStatus(Case theCase,String newCaseStatus,User performer)throws RemoteException{
+    /**
+     * @todo: implement logging
+     */
+     theCase.setStatus(newCaseStatus);
+  }
 }
