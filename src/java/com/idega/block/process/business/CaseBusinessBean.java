@@ -627,7 +627,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	/**
 	 * Can be overrided in subclasses
 	 */
-	public String getBundleIdentifier()
+	protected String getBundleIdentifier()
 	{
 		return PROC_CASE_BUNDLE_IDENTIFIER;
 	}
