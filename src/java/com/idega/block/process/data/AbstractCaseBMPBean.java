@@ -18,6 +18,7 @@ import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
 /**
  * Title:        idegaWeb
  * Description:
@@ -600,6 +601,38 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		
 		return sql;
 		//return (Collection) super.idoFindPKsBySQL(sql.toString());
+	}
+	
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode ,created between given timestamps
+	 */
+	public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus,IWTimestamp from, IWTimestamp to)
+	{
+		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
+		sql.appendAnd();
+		sql.append(" g.");
+		sql.append(getSQLGeneralCaseCreatedColumnName());
+		sql.append(" >= '");
+		sql.append(from.toSQLString());
+		sql.append("'");
+		sql.appendAnd();
+		sql.append(" g.");
+		sql.append(getSQLGeneralCaseCreatedColumnName());
+		sql.append(" <= '");
+		sql.append(to.toSQLString());
+		sql.append("'");
+		return sql;
+	}
+	
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 */
+	public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String caseStatus,IWTimestamp from, IWTimestamp to)
+	{
+		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus,from,to);
+		sql.append(" order by ");
+		sql.append(this.getSQLGeneralCaseCreatedColumnName());
+		return sql;
 	}
 	
 	/**
