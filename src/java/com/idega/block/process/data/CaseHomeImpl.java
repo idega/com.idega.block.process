@@ -172,6 +172,20 @@ public java.lang.String getCaseStatusReview(){
 	return theReturn;
 }
 
+public java.lang.String getCaseStatusMoved(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusMoved();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
+public java.lang.String getCaseStatusPlaced(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusPlaced();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
+
 public int getNumberOfCasesByGroupsOrUserExceptCodes(com.idega.user.data.User p0,java.util.Collection p1,com.idega.block.process.data.CaseCode[] p2)throws com.idega.data.IDOException{
 	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 	int theReturn = ((CaseBMPBean)entity).ejbHomeGetNumberOfCasesByGroupsOrUserExceptCodes(p0,p1,p2);

@@ -27,6 +27,8 @@ public interface CaseHome extends com.idega.data.IDOHome
  public java.lang.String getCaseStatusReady();
  public java.lang.String getCaseStatusRedeem();
  public java.lang.String getCaseStatusReview();
+ public java.lang.String getCaseStatusMoved();
+ public java.lang.String getCaseStatusPlaced();
  public int getNumberOfCasesByGroupsOrUserExceptCodes(com.idega.user.data.User p0,java.util.Collection p1,com.idega.block.process.data.CaseCode[] p2)throws com.idega.data.IDOException;
  public int getNumberOfCasesForUserExceptCodes(com.idega.user.data.User p0,com.idega.block.process.data.CaseCode[] p1)throws com.idega.data.IDOException;
 
