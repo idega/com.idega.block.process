@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.11 2002/07/15 14:46:55 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.12 2002/07/15 14:48:34 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -32,17 +32,12 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String PARENT_CASE = "PARENT_CASE_ID";
 	static final String USER = "USER_ID";
 	static final String PK_COLUMN = TABLE_NAME + "_ID";
-	
-	
-   static final String CASE_STATUS_OPEN_KEY = "UBEH";
-   static final String CASE_STATUS_INACTIVE_KEY = "TYST";
-   static final String CASE_STATUS_GRANTED_KEY = "BVJD";
-   static final String CASE_STATUS_DENIED_KEY = "AVSL";
-   static final String CASE_STATUS_REVIEW_KEY = "OMPR";
-   static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
-	
-	
-	
+	static final String CASE_STATUS_OPEN_KEY = "UBEH";
+	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
+	static final String CASE_STATUS_GRANTED_KEY = "BVJD";
+	static final String CASE_STATUS_DENIED_KEY = "AVSL";
+	static final String CASE_STATUS_REVIEW_KEY = "OMPR";
+	static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
 	public void initializeAttributes()
 	{
 		addAttribute(getIDColumnName());
@@ -346,60 +341,51 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	{
 		return true;
 	}
-
-
-/**
- * Returns the cASE_STATUS_CANCELLED_KEY.
- * @return String
- */
-public  String ejbHomeGetCaseStatusCancelled()
-{
-	return CASE_STATUS_CANCELLED_KEY;
-}
-
-/**
- * Returns the cASE_STATUS_DENIED_KEY.
- * @return String
- */
-public  String ejbHomeGetCaseStatusDenied()
-{
-	return CASE_STATUS_DENIED_KEY;
-}
-
-/**
- * Returns the cASE_STATUS_GRANTED_KEY.
- * @return String
- */
-public  String ejbHomeGetCaseStatusGranted()
-{
-	return CASE_STATUS_GRANTED_KEY;
-}
-
-/**
- * Returns the cASE_STATUS_INACTIVE_KEY.
- * @return String
- */
-public  String ejbHomeGetCaseStatusInactive()
-{
-	return CASE_STATUS_INACTIVE_KEY;
-}
-
-/**
- * Returns the cASE_STATUS_OPEN_KEY.
- * @return String
- */
-public  String ejbHomeGetCaseStatusOpen()
-{
-	return CASE_STATUS_OPEN_KEY;
-}
-
-/**
- * Returns the cASE_STATUS_REVIEW_KEY.
- * @return String
- */
-public  String ejbHomeGetCaseStatusReview()
-{
-	return CASE_STATUS_REVIEW_KEY;
-}
-
+	/**
+	 * Returns the cASE_STATUS_CANCELLED_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusCancelled()
+	{
+		return CASE_STATUS_CANCELLED_KEY;
+	} /**
+	 * Returns the cASE_STATUS_DENIED_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusDenied()
+	{
+		return CASE_STATUS_DENIED_KEY;
+	}
+	/**
+	 * Returns the cASE_STATUS_GRANTED_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusGranted()
+	{
+		return CASE_STATUS_GRANTED_KEY;
+	}
+	/**
+	 * Returns the cASE_STATUS_INACTIVE_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusInactive()
+	{
+		return CASE_STATUS_INACTIVE_KEY;
+	}
+	/**
+	 * Returns the cASE_STATUS_OPEN_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusOpen()
+	{
+		return CASE_STATUS_OPEN_KEY;
+	}
+	/**
+	 * Returns the cASE_STATUS_REVIEW_KEY.
+	 * @return String
+	 */
+	public String ejbHomeGetCaseStatusReview()
+	{
+		return CASE_STATUS_REVIEW_KEY;
+	}
 }
