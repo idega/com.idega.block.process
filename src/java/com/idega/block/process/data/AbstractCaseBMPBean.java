@@ -466,6 +466,15 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	{
 		return getCaseHome().getCaseStatusContract();
 	}
+	/**
+	 * Returns the CASE_STATUS_CONTRACT_KEY.
+	 * @return String
+	 */
+	public String getCaseStatusReady() throws RemoteException
+	{
+		return getCaseHome().getCaseStatusReady();
+	}
+	
 	protected String getSQLGeneralCaseTableName()
 	{
 		return CaseBMPBean.TABLE_NAME;
@@ -476,23 +485,23 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 	}
 	protected String getSQLGeneralCaseUserColumnName()
 	{
-		return CaseBMPBean.USER;
+		return CaseBMPBean.COLUMN_USER;
 	}
 	protected String getSQLGeneralCaseCaseCodeColumnName()
 	{
-		return CaseBMPBean.CASE_CODE;
+		return CaseBMPBean.COLUMN_CASE_CODE;
 	}
 	protected String getSQLGeneralCaseCaseStatusColumnName()
 	{
-		return CaseBMPBean.CASE_STATUS;
+		return CaseBMPBean.COLUMN_CASE_STATUS;
 	}
 	protected String getSQLGeneralCaseParentColumnName()
 	{
-		return CaseBMPBean.PARENT_CASE;
+		return CaseBMPBean.COLUMN_PARENT_CASE;
 	}
 		protected String getSQLGeneralCaseCreatedColumnName()
 	{
-		return CaseBMPBean.CREATED;
+		return CaseBMPBean.COLUMN_CREATED;
 	}
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode
@@ -657,6 +666,42 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 			throw new EJBException(sqle.getMessage());
 		}
 	}
+        
+	/**
+	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 */
+	public int ejbHomeCountCasesWithStatus(String caseStatus) throws RemoteException
+	{
+		try
+		{
+			String caseCode = this.getCaseCodeKey();
+			StringBuffer sql = new StringBuffer();
+			sql.append("select count(*) from ");
+			sql.append(getSQLGeneralCaseTableName());
+			sql.append(" g,");
+			sql.append(this.getTableName());
+			sql.append(" a where g.");
+			sql.append(this.getSQLGeneralCasePKColumnName());
+			sql.append("=a.");
+			sql.append(this.getIDColumnName());
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
+			sql.append("='");
+			sql.append(caseCode);
+			sql.append("'");
+			sql.append(" and g.");
+			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
+			sql.append("='");
+			sql.append(caseStatus);
+			sql.append("'");
+			return super.getNumberOfRecords(sql.toString());
+		}
+		catch (java.sql.SQLException sqle)
+		{
+			throw new EJBException(sqle.getMessage());
+		}
+	}
+	
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
 	 */
@@ -695,5 +740,6 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case
 		System.out.println("sql = " + sql.toString());
 		
 		return (Collection) super.idoFindPKsBySQL(sql.toString());
-	}	
+	}
+	
 }
