@@ -109,12 +109,12 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 	 **/
 	public Integer ejbFindLastCaseLogForCase(Case aCase) throws FinderException {
 		Integer theReturn = null;
-		try{
+		//try{
 			theReturn = (Integer)super.idoFindOnePKBySQL("select * from "+TABLE_NAME+" where "+COLUMN_CASE_ID+"="+aCase.getPrimaryKey().toString()+" order by "+COLUMN_TIMESTAMP);
-		}
-		catch(RemoteException e){
-			throw new IDOFinderException(e);	
-		}
+		//}
+		//catch(RemoteException e){
+		//	throw new IDOFinderException(e);	
+		//}
 		if(theReturn==null){
 			throw new IDOFinderException("No records found for case");	
 		}

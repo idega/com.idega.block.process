@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.23 2002/11/13 22:24:41 gimmi Exp $
+ * $Id: CaseBMPBean.java,v 1.24 2002/11/21 15:57:45 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -156,7 +156,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	}
 	protected CaseHome getCaseHome()
 	{
-		return (CaseHome) this.getEJBHome();
+		return (CaseHome) this.getEJBLocalHome();
 	}
 	public void setCode(String caseCode)
 	{
