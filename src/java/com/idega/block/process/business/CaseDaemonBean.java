@@ -7,6 +7,7 @@ import com.idega.block.process.data.*;
 import javax.ejb.EJBHome;
 import javax.ejb.Handle;
 import javax.ejb.EJBObject;
+import java.rmi.RemoteException;
 
 /**
  * Title:        idegaWeb
@@ -77,15 +78,15 @@ public abstract class CaseDaemonBean extends com.idega.business.IBOServiceBean i
     /**@todo: Implement this com.idega.block.process.business.CaseDaemon method*/
     throw new java.lang.UnsupportedOperationException("Method interrupt() not yet implemented.");
   }
-  public String getServiceDescription() throws RemoteException {
+  public String getServiceDescription() {
     /**@todo: Implement this com.idega.business.IBOService method*/
     throw new java.lang.UnsupportedOperationException("Method getServiceDescription() not yet implemented.");
   }
-  public String getLocalizedServiceDescription(Locale locale) throws RemoteException {
+  public String getLocalizedServiceDescription(Locale locale) {
     /**@todo: Implement this com.idega.business.IBOService method*/
     throw new java.lang.UnsupportedOperationException("Method getLocalizedServiceDescription() not yet implemented.");
   }
-  public IWApplicationContext getIWApplicationContext() throws RemoteException {
+  public IWApplicationContext getIWApplicationContext() {
     /**@todo: Implement this com.idega.business.IBOService method*/
     throw new java.lang.UnsupportedOperationException("Method getIWApplicationContext() not yet implemented.");
   }
