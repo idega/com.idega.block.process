@@ -2,6 +2,9 @@ package com.idega.block.process.business;
 
 import javax.ejb.*;
 
+import com.idega.block.process.data.Case;
+import com.idega.user.data.User;
+
 public interface CaseBusiness extends com.idega.business.IBOService
 {
  public void changeCaseStatus(int p0,java.lang.String p1,com.idega.user.data.User p2)throws javax.ejb.FinderException,java.rmi.RemoteException, java.rmi.RemoteException;
@@ -36,4 +39,5 @@ public interface CaseBusiness extends com.idega.business.IBOService
  public java.lang.String getLocalizedCaseDescription(com.idega.block.process.data.Case p0,java.util.Locale p1)throws java.rmi.RemoteException, java.rmi.RemoteException;
  public java.lang.String getLocalizedCaseDescription(com.idega.block.process.data.CaseCode p0,java.util.Locale p1)throws java.rmi.RemoteException, java.rmi.RemoteException;
  public java.lang.String getLocalizedCaseStatusDescription(com.idega.block.process.data.CaseStatus p0,java.util.Locale p1) throws java.rmi.RemoteException;
+public User getLastModifier(Case aCase) throws java.rmi.RemoteException;
 }

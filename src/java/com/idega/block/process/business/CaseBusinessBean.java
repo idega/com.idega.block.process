@@ -416,5 +416,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		return getIWApplicationContext().getApplication().getBundle(getBundleIdentifier());
 	}
 	
+	/**
+	 * Gets the last modifier of the Case. Returns null if not modification found.
+	 **/
+	public User getLastModifier(Case aCase){
+		try{
+			CaseLog log = this.getCaseLogHome().findLastCaseLogForCase(aCase);
+			return log.getPerformer();
+		}
+		catch(Exception e){
+			
+		}
+		return null;
+	}
 	
 }
