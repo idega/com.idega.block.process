@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.42 2004/09/07 00:32:35 sigtryggur Exp $
+ * $Id: CaseBMPBean.java,v 1.43 2004/12/08 18:09:46 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -20,6 +20,12 @@ import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
 import com.idega.data.IDORuntimeException;
+import com.idega.data.query.CountColumn;
+import com.idega.data.query.InCriteria;
+import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.SelectQuery;
+import com.idega.data.query.Table;
+import com.idega.data.query.WildCardColumn;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
@@ -704,6 +710,54 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 				+ CREATED
 				);
 			*/			
+	}
+	
+	public Collection ejbFindAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+		SelectQuery query = getUserCaseQuery(user, statuses);
+		query.addColumn(new WildCardColumn());
+		
+		return idoFindPKsByQuery(query, numberOfCases, startingCase);
+	}
+	
+	public int ejbHomeGetCountOfAllCasesForUserByStatuses(User user, String[] statuses) throws IDOException {
+		SelectQuery query = getUserCaseQuery(user, statuses);
+		query.addColumn(new CountColumn(getIDColumnName()));
+		
+		return idoGetNumberOfRecords(query);
+	}
+	
+	private SelectQuery getUserCaseQuery(User user, String[] statuses) {
+		Table table = new Table(this);
+		
+		SelectQuery query = new SelectQuery(table);
+		query.addCriteria(new MatchCriteria(table, COLUMN_USER, MatchCriteria.EQUALS, user));
+		query.addCriteria(new InCriteria(table, COLUMN_CASE_STATUS, statuses));
+		query.addOrder(table, COLUMN_CREATED, true);
+		return query;
+	}
+	
+	public Collection ejbFindAllCasesForGroupByStatuses(Group group, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+		SelectQuery query = getGroupCaseQuery(group, statuses);
+		query.addColumn(new WildCardColumn());
+		
+		return idoFindPKsByQuery(query, numberOfCases, startingCase);
+	}
+	
+	public int ejbHomeGetCountOfAllCasesForGroupByStatuses(Group group, String[] statuses) throws IDOException {
+		SelectQuery query = getGroupCaseQuery(group, statuses);
+		query.addColumn(new CountColumn(getIDColumnName()));
+		
+		return idoGetNumberOfRecords(query);
+	}
+	
+	private SelectQuery getGroupCaseQuery(Group group, String[] statuses) {
+		Table table = new Table(this);
+		
+		SelectQuery query = new SelectQuery(table);
+		query.addCriteria(new MatchCriteria(table, COLUMN_HANDLER, MatchCriteria.EQUALS, group));
+		query.addCriteria(new InCriteria(table, COLUMN_CASE_STATUS, statuses));
+		query.addOrder(table, COLUMN_CREATED, true);
+		return query;
 	}
 	
 	public Collection ejbFindAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
