@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.39 2004/03/29 14:10:23 gummi Exp $
+ * $Id: CaseBMPBean.java,v 1.40 2004/05/19 13:23:55 gimmi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -65,6 +65,11 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(COLUMN_PARENT_CASE, "Parent case", true, true, Integer.class, super.MANY_TO_ONE, Case.class);
 		addManyToOneRelationship(COLUMN_USER, "Owner", User.class);
 		addManyToOneRelationship(COLUMN_HANDLER, "Handler Group/User", Group.class);
+		
+		addIndex("IDX_PROC_CASE_2", new String[]{getIDColumnName(), COLUMN_USER});
+		addIndex("IDX_PROC_CASE_3", new String[]{getIDColumnName(), COLUMN_CASE_CODE});
+		addIndex("IDX_PROC_CASE_4", new String[]{getIDColumnName(), COLUMN_CASE_STATUS});
+		addIndex("IDX_PROC_CASE_5", new String[]{getIDColumnName(), COLUMN_CASE_CODE, COLUMN_CASE_STATUS});
 	}
 	public String getIDColumnName()
 	{
