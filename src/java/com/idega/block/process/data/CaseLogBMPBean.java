@@ -2,9 +2,12 @@ package com.idega.block.process.data;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Collection;
+
 import javax.ejb.FinderException;
+
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOFinderException;
+import com.idega.data.IDOQuery;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 /**
@@ -119,5 +122,45 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 			throw new IDOFinderException("No records found for case");	
 		}
 		return theReturn;
+	}
+	
+	public Collection ejbFindAllCaseLogsByDate(Timestamp fromDate, Timestamp toDate) throws FinderException {
+		IDOQuery query = idoQuery();
+		query.appendSelectAllFrom(this).appendWhere();
+		query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+		query.appendAnd().append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+		return super.idoFindPKsByQuery(query);
+	}
+
+	public Collection ejbFindAllCaseLogsByCaseAndDate(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException {
+		IDOQuery query = idoQuery();
+		query.appendSelect().append("pl.*").appendFrom().append(getEntityName()).append(" pl, proc_case p ").appendWhere();
+		query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+		query.appendAnd().append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+		query.appendAndEquals("pl." + COLUMN_CASE_ID, "p.proc_case_id");
+		query.appendAndEqualsQuoted("p.case_code", caseCode);
+		return super.idoFindPKsByQuery(query);
+	}
+
+	public Collection ejbFindAllCaseLogsByDateAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
+		IDOQuery query = idoQuery();
+		query.appendSelectAllFrom(this).appendWhere();
+		query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+		query.appendAnd().append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_BEFORE, statusBefore);
+		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_AFTER, statusAfter);
+		return super.idoFindPKsByQuery(query);
+	}
+
+	public Collection ejbFindAllCaseLogsByCaseAndDateAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
+		IDOQuery query = idoQuery();
+		query.appendSelect().append("pl.*").appendFrom().append(getEntityName()).append(" pl, proc_case p ").appendWhere();
+		query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+		query.appendAnd().append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_BEFORE, statusBefore);
+		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_AFTER, statusAfter);
+		query.appendAndEquals("pl." + COLUMN_CASE_ID, "p.proc_case_id");
+		query.appendAndEqualsQuoted("p.case_code", caseCode);
+		return super.idoFindPKsByQuery(query);
 	}
 }

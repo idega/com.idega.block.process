@@ -1,15 +1,28 @@
 package com.idega.block.process.business;
-import com.idega.business.IBOServiceBean;
-import com.idega.block.process.data.*;
-import com.idega.data.*;
-import com.idega.idegaweb.IWBundle;
-import com.idega.core.data.*;
-import com.idega.user.data.*;
-import com.idega.util.IWTimestamp;
 import java.rmi.RemoteException;
-import javax.ejb.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Locale;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.FinderException;
+
+import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.data.CaseCodeHome;
+import com.idega.block.process.data.CaseHome;
+import com.idega.block.process.data.CaseLog;
+import com.idega.block.process.data.CaseLogHome;
+import com.idega.block.process.data.CaseStatus;
+import com.idega.block.process.data.CaseStatusHome;
+import com.idega.business.IBOServiceBean;
+import com.idega.core.data.ICObject;
+import com.idega.data.IDOStoreException;
+import com.idega.idegaweb.IWBundle;
+import com.idega.user.data.User;
+import com.idega.user.data.UserHome;
+import com.idega.util.IWTimestamp;
 /**
  * Title:        idegaWeb
  * Description:
@@ -256,6 +269,35 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	{
 		return this.getCaseHome().findAllCasesByUser(user, code, status);
 	}
+	
+	public Collection getCaseLogsByDates(Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException {
+		return getCaseLogHome().findAllCaseLogsByDate(fromDate, toDate);
+	}
+	
+	public Collection getCaseLogsByCaseCodeAndDates(CaseCode caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException {
+		return getCaseLogsByCaseCodeAndDates(caseCode.getCode(), fromDate, toDate);
+	}
+	
+	public Collection getCaseLogsByCaseCodeAndDates(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException {
+		return getCaseLogHome().findAllCaseLogsByCaseAndDate(caseCode, fromDate, toDate);
+	}
+	
+	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, CaseStatus statusBefore, CaseStatus statusAfter) throws FinderException, RemoteException {
+		return getCaseLogsByDatesAndStatusChange(fromDate, toDate, statusBefore.getStatus(), statusAfter.getStatus());
+	}
+	
+	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException {
+		return getCaseLogHome().findAllCaseLogsByDateAndStatusChange(fromDate, toDate, statusBefore, statusAfter);
+	}
+	
+	public Collection getCaseLogsByCaseAndDatesAndStatusChange(CaseCode caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException {
+		return getCaseLogsByCaseAndDatesAndStatusChange(caseCode.getCode(), fromDate, toDate, statusBefore, statusAfter);
+	}
+	
+	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException {
+		return getCaseLogHome().findAllCaseLogsByCaseAndDateAndStatusChange(caseCode, fromDate, toDate, statusBefore, statusAfter);
+	}
+	
 	public Case getCase(int caseID) throws RemoteException, FinderException
 	{
 		return getCaseHome().findByPrimaryKey(new Integer(caseID));
