@@ -13,6 +13,13 @@ public class CaseLogHomeImpl extends com.idega.data.IDOFactory implements CaseLo
  }
 
 
+public CaseLog findLastCaseLogForCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException{
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	Object pk = ((CaseLogBMPBean)entity).ejbFindLastCaseLogForCase(p0);
+	this.idoCheckInPooledEntity(entity);
+	return this.findByPrimaryKey(pk);
+}
+
 public java.util.Collection findAllCaseLogsByCase(com.idega.block.process.data.Case p0)throws javax.ejb.FinderException,java.rmi.RemoteException{
 	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 	java.util.Collection ids = ((CaseLogBMPBean)entity).ejbFindAllCaseLogsByCase(p0);

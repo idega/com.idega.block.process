@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import javax.ejb.FinderException;
 import com.idega.data.GenericEntity;
+import com.idega.data.IDOFinderException;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 /**
@@ -95,7 +96,28 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog
 	public void setTimeStamp(Timestamp stamp) {
 		setColumn(COLUMN_TIMESTAMP, stamp);
 	}
+
+	/**
+	 * Finds all CaseLogs recorded for the specified aCase
+	 **/
 	public Collection ejbFindAllCaseLogsByCase(Case aCase) throws FinderException, RemoteException {
 		return super.idoFindAllIDsByColumnBySQL(COLUMN_CASE_ID, aCase.getPrimaryKey().toString());
+	}
+	
+	/**
+	 * Finds the last CaseLog recorded for the specified aCase
+	 **/
+	public Integer ejbFindLastCaseLogForCase(Case aCase) throws FinderException {
+		Integer theReturn = null;
+		try{
+			theReturn = (Integer)super.idoFindOnePKBySQL("select * from "+TABLE_NAME+" where "+COLUMN_CASE_ID+"="+aCase.getPrimaryKey().toString()+" order by "+COLUMN_TIMESTAMP);
+		}
+		catch(RemoteException e){
+			throw new IDOFinderException(e);	
+		}
+		if(theReturn==null){
+			throw new IDOFinderException("No records found for case");	
+		}
+		return theReturn;
 	}
 }
