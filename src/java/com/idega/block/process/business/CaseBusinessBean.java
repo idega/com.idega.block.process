@@ -434,13 +434,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			theCase.setHandler(performer);
 			theCase.store();
 		
-			CaseLog log = getCaseLogHome().create();
-			log.setCase(theCase);
-			log.setCaseStatusBefore(oldCaseStatus);
-			log.setCaseStatusAfter(newCaseStatus);
-			log.setPerformer(performer);
-			log.store();
-			
+			if ( oldCaseStatus != newCaseStatus ) {
+				CaseLog log = getCaseLogHome().create();
+				log.setCase(theCase);
+				log.setCaseStatusBefore(oldCaseStatus);
+				log.setCaseStatusAfter(newCaseStatus);
+				log.setPerformer(performer);
+				log.store();
+			}
 		}
 		catch(Exception e){
 			throw new RemoteException("Error changing case status: "+e.getMessage());	
