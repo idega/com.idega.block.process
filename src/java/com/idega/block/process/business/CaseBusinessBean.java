@@ -48,6 +48,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			System.err.println("CaseBusinessBean : Error initializing case codes : Error : " + e.getMessage());
 		}
 	}
+	/**
+	 * Returns the correct CaseBusiness implementation instance for the specified case code.<br>
+	 * If there is no specified the default (this) is returned;
+	 **/
 	public CaseBusiness getCaseBusiness(String caseCode)
 	{
 		try
@@ -60,6 +64,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			throw new EJBException(e.getMessage());
 		}
 	}
+	/**
+	 * Returns the correct CaseBusiness implementation instance for the specified case code.<br>
+	 * If there is no specified the default (this) is returned;
+	 **/
 	public CaseBusiness getCaseBusiness(CaseCode code)
 	{
 		/**
@@ -317,6 +325,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 				"CaseStatus " + this.CASE_STATUS_CANCELLED_KEY + " is not installed or does not exist");
 		}
 	}
+	public CaseStatus getCaseStatusInactive() throws RemoteException
+	{
+		try
+		{
+			return this.getCaseStatusHome().findByPrimaryKey(this.CASE_STATUS_INACTIVE_KEY);
+		}
+		catch (FinderException e)
+		{
+			throw new EJBException(
+				"CaseStatus " + this.CASE_STATUS_INACTIVE_KEY + " is not installed or does not exist");
+		}
+	}
 	protected Locale getDefaultLocale()
 	{
 		//return com.idega.util.LocaleUtil.getLocale("en");
@@ -344,8 +364,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		theCase.setStatus(newCaseStatus);
 		theCase.store();
 	}
-	public String getLocalizedCaseCodeDescription(CaseCode code, Locale locale)
+	public String getLocalizedCaseDescription(Case theCase, Locale locale)throws RemoteException
 	{
+		CaseCode code = theCase.getCaseCode();
 		return getLocalizedString("case_code_key." + code.toString(), code.toString());
 	}
 	public String getLocalizedCaseStatusDescription(CaseStatus status, Locale locale)
@@ -364,4 +385,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	{
 		return getIWApplicationContext().getApplication().getBundle(getBundleIdentifier());
 	}
+	
+	
 }
