@@ -292,6 +292,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByCaseAndDateAndStatusChange(caseCode, fromDate, toDate, statusBefore, statusAfter);
 	}
+	
+	public Collection getCaseLogsByCase(Case theCase) throws FinderException {
+		return getCaseLogHome().findAllCaseLogsByCaseOrderedByDate(theCase);
+	}
 
 	public Case getCase(int caseID) throws FinderException {
 		return getCaseHome().findByPrimaryKey(new Integer(caseID));
@@ -473,6 +477,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler) {
+		changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, false);
+	}
+	
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) {
 		String oldCaseStatus = "";
 		try {
 			oldCaseStatus = theCase.getStatus();
@@ -483,7 +491,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 			theCase.store();
 
-			if (oldCaseStatus != newCaseStatus) {
+			if (oldCaseStatus != newCaseStatus || canBeSameStatus) {
 				CaseLog log = getCaseLogHome().create();
 				log.setCase(Integer.parseInt(theCase.getPrimaryKey().toString()));
 				log.setCaseStatusBefore(oldCaseStatus);

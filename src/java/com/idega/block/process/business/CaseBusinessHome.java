@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusinessHome.java,v 1.2 2004/12/02 15:49:23 laddi Exp $
- * Created on 2.12.2004
+ * $Id: CaseBusinessHome.java,v 1.3 2004/12/06 21:35:23 laddi Exp $
+ * Created on 5.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
@@ -15,10 +15,10 @@ import com.idega.business.IBOHome;
 
 
 /**
- * Last modified: $Date: 2004/12/02 15:49:23 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/06 21:35:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface CaseBusinessHome extends IBOHome {
 

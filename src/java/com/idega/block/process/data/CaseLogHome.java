@@ -1,6 +1,6 @@
 /*
- * $Id: CaseLogHome.java 1.1 2.12.2004 laddi Exp $
- * Created on 2.12.2004
+ * $Id: CaseLogHome.java 1.1 5.12.2004 laddi Exp $
+ * Created on 5.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
@@ -34,6 +34,11 @@ public interface CaseLogHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCase
 	 */
 	public Collection findAllCaseLogsByCase(Case aCase) throws FinderException;
+
+	/**
+	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseOrderedByDate
+	 */
+	public Collection findAllCaseLogsByCaseOrderedByDate(Case aCase) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindLastCaseLogForCase

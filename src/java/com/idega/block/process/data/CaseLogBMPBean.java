@@ -9,6 +9,10 @@ import com.idega.data.GenericEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFinderException;
 import com.idega.data.IDOQuery;
+import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.SelectQuery;
+import com.idega.data.query.Table;
+import com.idega.data.query.WildCardColumn;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 
@@ -146,6 +150,19 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 	 */
 	public Collection ejbFindAllCaseLogsByCase(Case aCase) throws FinderException {
 		return super.idoFindAllIDsByColumnBySQL(COLUMN_CASE_ID, aCase.getPrimaryKey().toString());
+	}
+
+	/**
+	 * Finds all CaseLogs recorded for the specified aCase
+	 */
+	public Collection ejbFindAllCaseLogsByCaseOrderedByDate(Case aCase) throws FinderException {
+		Table table = new Table(this);
+		
+		SelectQuery query = new SelectQuery(table);
+		query.addColumn(new WildCardColumn());
+		query.addCriteria(new MatchCriteria(table, COLUMN_CASE_ID, MatchCriteria.EQUALS, aCase));
+		query.addOrder(table, COLUMN_TIMESTAMP, false);
+		return super.idoFindPKsByQuery(query);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 /*
- * $Id: CaseLogHomeImpl.java 1.1 2.12.2004 laddi Exp $
- * Created on 2.12.2004
+ * $Id: CaseLogHomeImpl.java 1.1 5.12.2004 laddi Exp $
+ * Created on 5.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
@@ -41,6 +41,13 @@ public class CaseLogHomeImpl extends IDOFactory implements CaseLogHome {
 	public Collection findAllCaseLogsByCase(Case aCase) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByCase(aCase);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
+	public Collection findAllCaseLogsByCaseOrderedByDate(Case aCase) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByCaseOrderedByDate(aCase);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}

@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusiness.java,v 1.25 2004/12/02 15:49:23 laddi Exp $
- * Created on 2.12.2004
+ * $Id: CaseBusiness.java,v 1.26 2004/12/06 21:35:23 laddi Exp $
+ * Created on 5.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
@@ -25,10 +25,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/02 15:49:23 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/06 21:35:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -166,6 +166,11 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseAndDatesAndStatusChange
 	 */
 	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCase
+	 */
+	public Collection getCaseLogsByCase(Case theCase) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase

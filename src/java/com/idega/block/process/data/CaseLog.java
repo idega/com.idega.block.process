@@ -1,6 +1,6 @@
 /*
- * $Id: CaseLog.java 1.1 2.12.2004 laddi Exp $
- * Created on 2.12.2004
+ * $Id: CaseLog.java 1.1 5.12.2004 laddi Exp $
+ * Created on 5.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
