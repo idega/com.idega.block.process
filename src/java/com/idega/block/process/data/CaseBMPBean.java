@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.46 2005/01/10 20:38:01 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.47 2005/01/12 09:59:24 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -750,25 +750,25 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return query;
 	}
 	
-	public Collection ejbFindAllCasesForGroupByStatuses(Group group, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
-		SelectQuery query = getGroupCaseQuery(group, statuses);
+	public Collection ejbFindAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+		SelectQuery query = getGroupCaseQuery(groups, statuses);
 		query.addColumn(new WildCardColumn());
 		
 		return idoFindPKsByQuery(query, numberOfCases, startingCase);
 	}
 	
-	public int ejbHomeGetCountOfAllCasesForGroupByStatuses(Group group, String[] statuses) throws IDOException {
-		SelectQuery query = getGroupCaseQuery(group, statuses);
+	public int ejbHomeGetCountOfAllCasesForGroupsByStatuses(Collection groups, String[] statuses) throws IDOException {
+		SelectQuery query = getGroupCaseQuery(groups, statuses);
 		query.addColumn(new CountColumn(getIDColumnName()));
 		
 		return idoGetNumberOfRecords(query);
 	}
 	
-	private SelectQuery getGroupCaseQuery(Group group, String[] statuses) {
+	private SelectQuery getGroupCaseQuery(Collection groups, String[] statuses) {
 		Table table = new Table(this);
 		
 		SelectQuery query = new SelectQuery(table);
-		query.addCriteria(new MatchCriteria(table, COLUMN_HANDLER, MatchCriteria.EQUALS, group));
+		query.addCriteria(new InCriteria(table, COLUMN_HANDLER, groups));
 		query.addCriteria(new InCriteria(table, COLUMN_CASE_STATUS, statuses));
 		query.addOrder(table, COLUMN_CREATED, false);
 		return query;

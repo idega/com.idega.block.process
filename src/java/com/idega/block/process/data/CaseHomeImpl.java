@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.19 2005/01/10 20:38:01 laddi Exp $
+ * $Id: CaseHomeImpl.java,v 1.20 2005/01/12 09:59:24 laddi Exp $
  * Created on 8.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -20,10 +20,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/01/10 20:38:01 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/12 09:59:24 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -228,16 +228,16 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForGroupByStatuses(Group group, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupByStatuses(group, statuses, startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public int getCountOfAllCasesForGroupByStatuses(Group group, String[] statuses) throws IDOException {
+	public int getCountOfAllCasesForGroupsByStatuses(Collection groups, String[] statuses) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		int theReturn = ((CaseBMPBean) entity).ejbHomeGetCountOfAllCasesForGroupByStatuses(group, statuses);
+		int theReturn = ((CaseBMPBean) entity).ejbHomeGetCountOfAllCasesForGroupsByStatuses(groups, statuses);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
