@@ -50,6 +50,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
 
   public void setDefaultValues(){
     try{
+      System.out.println("AbstractCase : Calling setDefaultValues()");
       setCode(getCaseCodeKey());
     }
     catch(RemoteException e){
@@ -72,8 +73,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
       String[] statusDescs = this.getCaseStatusDescriptions();
       if(statusKeys!=null){
         for (int i = 0; i < statusKeys.length; i++) {
+            String statusKey = null;
             try{
-              String statusKey = statusKeys[i];
+              statusKey = statusKeys[i];
               String statusDesc = null;
 
               try{
@@ -91,7 +93,8 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
               code.addAssociatedCaseStatus(status);
             }
             catch(Exception e){
-              e.printStackTrace();
+              //e.printStackTrace();
+              System.err.println("Error inserting CaseStatus for key: "+statusKey);
             }
           }
         }
@@ -135,6 +138,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
 
   public void store()throws IDOStoreException{
     try{
+      if(this.getCode()==null){
+        this.setCode(this.getCaseCodeKey());
+      }
       getGeneralCase().store();
       super.store();
     }

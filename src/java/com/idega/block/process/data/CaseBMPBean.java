@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.6 2002/06/25 14:58:56 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.7 2002/06/26 18:55:17 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -140,6 +140,11 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
       System.err.println("Error inserting start data for com.idega.block.process.Case");
       e.printStackTrace();
     }
+  }
+
+  public void setDefaultValues(){
+    System.out.println("Case : Calling setDefaultValues()");
+    setCreated(idegaTimestamp.getTimestampRightNow());
   }
 
   protected CaseHome getCaseHome(){
