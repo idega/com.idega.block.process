@@ -22,7 +22,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
 
   private Case _case;
 
-  public Object ejCreate()throws CreateException{
+  public Object ejbCreate()throws CreateException{
     try{
       _case = this.getCaseHome().create();
       this.setPrimaryKey(_case.getPrimaryKey());
@@ -73,7 +73,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case{
   }
 
   protected Case getGeneralCase()throws RemoteException{
-    if(_case==null){
+    if(_case == null){
       try{
         _case = getCaseHome().findByPrimaryKey(this.getPrimaryKey());
       }
