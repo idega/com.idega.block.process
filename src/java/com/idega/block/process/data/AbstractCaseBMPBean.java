@@ -18,6 +18,7 @@ import com.idega.data.IDOLookupException;
 import com.idega.data.IDOQuery;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -225,11 +226,20 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 	public String getNodeName(Locale locale) {
 		return this.getGeneralCase().getNodeName(locale);
 	}
+	public String getNodeName(Locale locale, IWApplicationContext iwac) {
+		return this.getGeneralCase().getNodeName(locale, iwac);
+	}
 	public int getNodeID() {
 		return this.getGeneralCase().getNodeID();
 	}
 	public int getSiblingCount() {
 		return this.getGeneralCase().getSiblingCount();
+	}
+	/**
+	 * @see com.idega.core.ICTreeNode#getNodeType()
+	 */
+	public int getNodeType(){
+		return -1;
 	}
 
 	public Group getHandler() {

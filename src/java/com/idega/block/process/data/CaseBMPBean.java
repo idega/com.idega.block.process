@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.38 2004/03/05 16:15:37 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.39 2004/03/29 14:10:23 gummi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -20,6 +20,7 @@ import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
 import com.idega.data.IDORuntimeException;
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -292,6 +293,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			throw new EJBException(e.getMessage());
 		}
 	}
+	
+	
 	/**
 	 * Gets the query for finding all the cases for a user ordered in chronological order
 	 */
@@ -500,6 +503,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public String getNodeName(Locale locale)
 	{
 		return getNodeName();
+	}
+	public String getNodeName(Locale locale, IWApplicationContext iwac)
+	{
+		return getNodeName(locale);
 	}
 	public boolean isLeaf()
 	{
