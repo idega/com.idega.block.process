@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.25 2002/12/10 15:20:53 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.26 2003/03/05 22:58:35 aron Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -45,6 +45,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String CASE_STATUS_CONTRACT_KEY = "KOUT";
 	static final String CASE_STATUS_READY_KEY = "KLAR";
 	static final String CASE_STATUS_REDEEM_KEY = "CHIN";
+	static final String CASE_STATUS_ERROR = "ERRR";
 	
 	public void initializeAttributes()
 	{
@@ -557,6 +558,15 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	{
 		return CASE_STATUS_REDEEM_KEY;
 	}
+	
+	/**
+		 * Returns the CASE_STATUS_ERROR.
+		 * @return String
+		 */
+		public String ejbHomeGetCaseStatusError()
+		{
+			return CASE_STATUS_ERROR;
+		}
 
 	protected IDOQuery idoQueryGetAllCasesForUserExceptCodes(User user,CaseCode[] codes)
 	{

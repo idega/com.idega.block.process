@@ -36,6 +36,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	private String CASE_STATUS_CONTRACT_KEY;
 	private String CASE_STATUS_READY_KEY;
 	private String CASE_STATUS_REDEEM_KEY;
+	private String CASE_STATUS_ERROR;
 	public CaseBusinessBean()
 	{
 		try
@@ -50,6 +51,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			CASE_STATUS_CONTRACT_KEY = this.getCaseHome().getCaseStatusContract();
 			CASE_STATUS_READY_KEY = this.getCaseHome().getCaseStatusReady();
 			CASE_STATUS_REDEEM_KEY = this.getCaseHome().getCaseStatusRedeem();
+			CASE_STATUS_ERROR = this.getCaseHome().getCaseStatusError();
 		}
 		catch (RemoteException e)
 		{
@@ -408,6 +410,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 		}
 	}
 	
+	public CaseStatus getCaseStatusError() throws RemoteException
+		{
+			return getCaseStatusAndInstallIfNotExists(CASE_STATUS_ERROR);
+		}
+	
 	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString)throws EJBException,RemoteException{
 		try
 		{
@@ -449,8 +456,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 	}
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer) throws RemoteException
 	{
+		String oldCaseStatus = "";
 		try{
-			String oldCaseStatus = theCase.getStatus();
+			oldCaseStatus = theCase.getStatus();
 			
 			theCase.setStatus(newCaseStatus);
 			theCase.setHandler(performer);
@@ -466,7 +474,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness
 			}
 		}
 		catch(Exception e){
-			throw new RemoteException("Error changing case status: "+e.getMessage());	
+			throw new RemoteException("Error changing case status: "+oldCaseStatus+" to "+newCaseStatus+":"+e.getMessage());	
 		}
 	}
 	public String getLocalizedCaseDescription(Case theCase, Locale locale)throws RemoteException

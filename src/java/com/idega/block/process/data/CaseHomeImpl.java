@@ -143,4 +143,11 @@ public java.lang.String getCaseStatusRedeem(){
 	this.idoCheckInPooledEntity(entity);
 	return theReturn;
 }
+
+public java.lang.String getCaseStatusError(){
+	com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+	java.lang.String theReturn = ((CaseBMPBean)entity).ejbHomeGetCaseStatusError();
+	this.idoCheckInPooledEntity(entity);
+	return theReturn;
+}
 }
