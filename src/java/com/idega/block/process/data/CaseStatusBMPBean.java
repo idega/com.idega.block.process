@@ -5,6 +5,7 @@ import com.idega.data.*;
 import java.util.Locale;
 import javax.ejb.*;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Title:        idegaWeb
@@ -15,7 +16,7 @@ import java.util.Collection;
  * @version 1.0
  */
 
-public class CaseStatusBMPBean extends GenericEntity {
+public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
 
   public static final String TABLE_NAME = "PROC_CASE_STATUS";
 
@@ -23,7 +24,8 @@ public class CaseStatusBMPBean extends GenericEntity {
   private static final String CASE_STATUS_DESC = "CASE_STATUS_DESC";
 
   public void initializeAttributes() {
-    addAttribute(CASE_STATUS,"Code",String.class,4);
+    addAttribute(CASE_STATUS,"Status",String.class,4);
+    this.setAsPrimaryKey(CASE_STATUS,true);
     addAttribute(CASE_STATUS_DESC,"Description",String.class,1000);
   }
   public String getEntityName() {
@@ -70,14 +72,28 @@ public class CaseStatusBMPBean extends GenericEntity {
      * @todo: Implement
      */
   public void setAssociatedCaseCode(CaseCode caseCode) {
-    throw new java.lang.UnsupportedOperationException("Method setAssociatedCaseCode(caseCode) not yet implemented.");
+    //throw new java.lang.UnsupportedOperationException("Method setAssociatedCaseCode(caseCode) not yet implemented.");
+    try{
+      super.idoAddTo(caseCode);
+    }
+    catch(Exception e){
+
+    }
   }
 
     /**
      * @todo: Implement
      */
   public CaseCode getAssociatedCaseCode() {
-    throw new java.lang.UnsupportedOperationException("Method getAssociatedCaseCode() not yet implemented.");
+    //throw new java.lang.UnsupportedOperationException("Method getAssociatedCaseCode() not yet implemented.");
+    try{
+      Collection c = super.idoGetRelatedEntities(CaseCode.class);
+      Iterator iter = c.iterator();
+      return (CaseCode)iter.next();
+    }
+    catch(Exception e){
+      throw new RuntimeException("No CaseCode defined for CaseStatus: "+this.getStatus());
+    }
   }
 
 

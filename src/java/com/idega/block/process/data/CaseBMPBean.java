@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.2 2002/06/18 14:19:55 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.3 2002/06/18 14:47:57 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -62,7 +62,7 @@ public final class CaseBMPBean extends com.idega.data.TreeableEntityBMPBean impl
 
       CaseCode code = cchome.create();
       code.setCode("GARENDE");
-      code.setCode("General Case");
+      code.setDescription("General Case");
       code.store();
 
       CaseStatus status = cshome.create();

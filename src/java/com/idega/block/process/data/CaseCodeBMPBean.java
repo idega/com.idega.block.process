@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.ejb.*;
 import com.idega.core.data.ICObject;
 
+import java.rmi.RemoteException;
+
 /**
  * Title:        idegaWeb
  * Description:
@@ -27,6 +29,7 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
   }
   public void initializeAttributes() {
     addAttribute(CASE_CODE,"Code",String.class,7);
+    this.setAsPrimaryKey(CASE_CODE,true);
     addAttribute(CASE_CODE_DESC,"Description",String.class,1000);
 
     this.addManyToOneRelationship(CASE_CODE_HANDLER,"Business Handler Object",ICObject.class);
@@ -64,7 +67,7 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     return (ICObject) (this.getColumnValue(CASE_CODE_HANDLER));
   }
 
-  protected CaseHome getCaseHome(){
+  protected CaseHome getCaseHome()throws RemoteException{
     return (CaseHome)IDOLookup.getHome(Case.class);
   }
 
