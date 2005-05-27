@@ -5,7 +5,8 @@
   <pomVersion>3</pomVersion>
   <name>idegaWeb Process Block</name>
   <artifactId>com.idega.block.process</artifactId>
-  <currentVersion>1.0-SNAPSHOT</currentVersion>
+    <currentVersion>1.0.1</currentVersion>
+  <!--currentVersion>1.0-SNAPSHOT</currentVersion-->
   <inceptionYear>2000</inceptionYear>
   <shortDescription>Process</shortDescription>
   <versions>
@@ -45,8 +46,8 @@
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>com.idega.core</artifactId>
-      <!--<version>1.9</version>-->
-      <version>SNAPSHOT</version>
+      <!--HELPER--><version>3.0.5</version><!--HELPER-->
+      <!--HELPERversion>SNAPSHOT</versionHELPER-->
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>

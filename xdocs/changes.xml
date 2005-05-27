@@ -1,0 +1,13 @@
+<document>
+  <properties>
+    <title> changes</title>
+    <author email="tryggvi@idega.com">Tryggvi Larusson</author>
+  </properties>
+  <body>
+     	<release version="1.1.1" date="2005-05-27">
+      <action dev="tryggvil" type="update">
+        Declaration of version for use with core 3.0.5
+      </action>              
+    </release>
+  </body>
+</document>
