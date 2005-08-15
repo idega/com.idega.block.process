@@ -1,4 +1,3 @@
-#Fri Oct 24 12:54:49 CEST 2003
 =
 Mobile_phone=
 _blank=
@@ -9,6 +8,7 @@ case_code_key.MBANBOP=
 case_code_key.MBANCHK=MBANCHK
 case_code_key.MBANSKO=MBANSKO
 case_code_key.MBSKOLV=MBSKOLV
+case_code_key.MUSICCH=MUSICCH
 case_code_key.SCREMIN=
 case_code_key.SYMEARK=
 case_code_key.SYMEBRV=SYMEBRV
@@ -18,10 +18,12 @@ case_code_key.null=
 case_status_key.ASWD=
 case_status_key.AVSL=Avslag
 case_status_key.BVJD=BVJD
+case_status_key.DELE=DELE
 case_status_key.FLYT=
 case_status_key.KLAR=
 case_status_key.KOUT=
 case_status_key.OMPR=
+case_status_key.PEND=PEND
 case_status_key.PLAC=PLAC
 case_status_key.PREL=
 case_status_key.TYST=TYST
