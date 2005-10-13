@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.51 2005/06/09 09:28:10 sigtryggur Exp $
+ * $Id: CaseBMPBean.java,v 1.52 2005/10/13 18:20:38 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -683,11 +683,13 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	protected IDOQuery idoQueryGetAllCasesForUserExceptCodes(User user,CaseCode[] codes)
 	{
-		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
 		IDOQuery query = idoQueryGetAllCasesByUser(user);
-		query.appendAnd();
-		query.append(COLUMN_CASE_CODE);
-		query.appendNotIn(notInClause);
+		if (codes != null) {
+			String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+			query.appendAnd();
+			query.append(COLUMN_CASE_CODE);
+			query.appendNotIn(notInClause);
+		}
 		query.appendAnd();
 		query.append(COLUMN_CASE_STATUS);
 		query.appendNOTEqual();
@@ -840,14 +842,15 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	}
 	
 	protected IDOQuery idoQueryGetAllCasesByGroupsOrUserExceptCodes(int userID, String[] groupIDs, CaseCode[] codes) {
-		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
-
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhere().appendLeftParenthesis().appendEquals(COLUMN_USER, userID);
 		query.appendOr().append(COLUMN_HANDLER).appendInArray(groupIDs).appendRightParenthesis();
-		query.appendAnd();
-		query.append(COLUMN_CASE_CODE);
-		query.appendNotIn(notInClause);
+		if (codes != null) {
+			String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+			query.appendAnd();
+			query.append(COLUMN_CASE_CODE);
+			query.appendNotIn(notInClause);
+		}
 		query.appendOrderByDescending(COLUMN_CREATED);
 		return query;
 	}
@@ -858,7 +861,9 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		SelectQuery query = new SelectQuery(table);
 		query.addColumn(new CountColumn(getIDColumnName()));
 		query.addCriteria(new MatchCriteria(table, COLUMN_USER, MatchCriteria.EQUALS, user));
-		query.addCriteria(new InCriteria(table, COLUMN_CASE_CODE, codes, true));
+		if (codes != null) {
+			query.addCriteria(new InCriteria(table, COLUMN_CASE_CODE, codes, true));
+		}
 		
 		return super.idoGetNumberOfRecords(query);
 	}
@@ -873,14 +878,15 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			groupIDs[row++] = element.getPrimaryKey().toString();
 		}
 
-		String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
-
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhere().appendLeftParenthesis().appendEquals(COLUMN_USER, user.getPrimaryKey().toString());
 		query.appendOr().append(COLUMN_HANDLER).appendInArray(groupIDs).appendRightParenthesis();
-		query.appendAnd();
-		query.append(COLUMN_CASE_CODE);
-		query.appendNotIn(notInClause);
+		if (codes != null) {
+			String notInClause = getIDOUtil().convertArrayToCommaseparatedString(codes);
+			query.appendAnd();
+			query.append(COLUMN_CASE_CODE);
+			query.appendNotIn(notInClause);
+		}
 		query.appendOrderByDescending(COLUMN_CREATED);
 		return super.idoGetNumberOfRecords(query);
 	}
