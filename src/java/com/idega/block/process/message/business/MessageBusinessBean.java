@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.1 2005/10/13 18:20:38 laddi Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.2 2005/10/14 13:04:53 laddi Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2005/10/13 18:20:38 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/14 13:04:53 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -129,11 +129,17 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 	protected Message createMessage(MessageValue msgValue) throws CreateException {
 		Message message = createMessage(msgValue.getMessageType());
 		message.setOwner(msgValue.getReceiver());
-		message.setSender(msgValue.getSender());
-		message.setHandler(msgValue.getHandler());
+		if (msgValue.getSender() != null) {
+			message.setSender(msgValue.getSender());
+		}
+		if (message.getHandler() != null) {
+			message.setHandler(msgValue.getHandler());
+		}
 		message.setSubject(msgValue.getSubject());
 		message.setBody(msgValue.getBody());
-		message.setParentCase(msgValue.getParentCase());
+		if (message.getParentCase() != null) {
+			message.setParentCase(msgValue.getParentCase());
+		}
 
 		try {
 			message.store();
