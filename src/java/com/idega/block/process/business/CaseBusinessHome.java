@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusinessHome.java,v 1.7 2005/02/16 11:11:16 laddi Exp $
- * Created on 31.1.2005
+ * $Id: CaseBusinessHome.java,v 1.8 2005/10/14 21:58:54 eiki Exp $
+ * Created on Oct 12, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -9,19 +9,17 @@
  */
 package com.idega.block.process.business;
 
-
-
 import com.idega.business.IBOHome;
 
 
 /**
- * Last modified: $Date: 2005/02/16 11:11:16 $ by $Author: laddi $
  * 
- * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ *  Last modified: $Date: 2005/10/14 21:58:54 $ by $Author: eiki $
+ * 
+ * @author <a href="mailto:eiki@idega.com">eiki</a>
+ * @version $Revision: 1.8 $
  */
 public interface CaseBusinessHome extends IBOHome {
 
 	public CaseBusiness create() throws javax.ejb.CreateException, java.rmi.RemoteException;
-
 }

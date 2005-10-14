@@ -5,11 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
-
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
@@ -64,6 +62,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_WAITING;
 	
 	private Map _statusMap;
+	
+	
+	protected final static String PARAMETER_SELECTED_CASE = "sel_case_nr";
 	
 	public CaseBusinessBean() {
 		CASE_STATUS_OPEN_KEY = this.getCaseHome().getCaseStatusOpen();
@@ -578,10 +579,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return CASE_STATUS_DELETED_KEY;
 	}
 	
-	public String getPrimaryKeyParameter() {
-		return null;
-	}
-	
+	/**
+	 * The parameters are added to the case link to the page set on the UserCases block when the casee and it's status are correct.
+	 */
 	public Map getCaseParameters(Case theCase) {
 		return null;
 	}
@@ -596,5 +596,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	
 	public void deleteCase(Case theCase, User performer) {
 		changeCaseStatus(theCase, getCaseStatusDeletedString(), performer);
+	}
+	
+	/**
+	 * @return The parameter name of the current selected/clicked case number (case primary key). The parameter is always added to a case link
+	 */
+	public String getSelectedCaseParameter(){
+		return PARAMETER_SELECTED_CASE;
 	}
 }
