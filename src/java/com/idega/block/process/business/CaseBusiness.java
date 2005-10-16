@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusiness.java,v 1.31 2005/10/14 21:58:54 eiki Exp $
- * Created on Oct 12, 2005
+ * $Id: CaseBusiness.java,v 1.32 2005/10/16 15:29:34 eiki Exp $
+ * Created on Oct 16, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -25,10 +25,10 @@ import com.idega.user.data.User;
 
 /**
  * 
- *  Last modified: $Date: 2005/10/14 21:58:54 $ by $Author: eiki $
+ *  Last modified: $Date: 2005/10/16 15:29:34 $ by $Author: eiki $
  * 
  * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -305,6 +305,12 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler)
+			throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
+	 */
+	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus, User performer)
 			throws java.rmi.RemoteException;
 
 	/**
