@@ -2,6 +2,10 @@
 Mobile_phone=
 _blank=
 acc.app.acc.body1=Dear mr./ms./mrs. 
+application.choice_received_body={1} has received the application for a school placing for {0}, {2}.  The application will be handled as soon as possible.
+application.choice_received_subject=School choice received
+application.home_school_choice_received_body={1} has received the application for a school placing for {0}, {2}.  The application has been handled and your child has a placing at the school.
+application.home_school_choice_received_subject=Home school choice received
 cancel=
 case_code_key.ANANSKO=
 case_code_key.MBANBOP=
