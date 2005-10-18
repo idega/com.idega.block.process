@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusiness.java,v 1.32 2005/10/16 15:29:34 eiki Exp $
- * Created on Oct 16, 2005
+ * $Id: CaseBusiness.java,v 1.33 2005/10/18 13:29:25 laddi Exp $
+ * Created on Oct 17, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -24,11 +24,13 @@ import com.idega.user.data.User;
 
 
 /**
+ * <p>
+ * TODO laddi Describe Type CaseBusiness
+ * </p>
+ *  Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
  * 
- *  Last modified: $Date: 2005/10/16 15:29:34 $ by $Author: eiki $
- * 
- * @author <a href="mailto:eiki@idega.com">eiki</a>
- * @version $Revision: 1.32 $
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.33 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -60,8 +62,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
@@ -195,6 +196,11 @@ public interface CaseBusiness extends IBOService {
 	public Case getCase(int caseID) throws FinderException, java.rmi.RemoteException;
 
 	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
+	 */
+	public Case getCase(Object casePK) throws FinderException, java.rmi.RemoteException;
+
+	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseCode
 	 */
 	public CaseCode getCaseCode(String caseCode) throws FinderException, java.rmi.RemoteException;
@@ -310,8 +316,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus, User performer)
-			throws java.rmi.RemoteException;
+	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus, User performer) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus

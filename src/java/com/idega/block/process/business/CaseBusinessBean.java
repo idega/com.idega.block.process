@@ -306,6 +306,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return getCaseHome().findByPrimaryKey(new Integer(caseID));
 	}
 
+	public Case getCase(Object casePK) throws FinderException {
+		return getCaseHome().findByPrimaryKey(new Integer(casePK.toString()));
+	}
+
 	public CaseCode getCaseCode(String caseCode) throws FinderException {
 		return getCaseCodeHome().findByPrimaryKey(caseCode);
 	}

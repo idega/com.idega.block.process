@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.2 2005/10/14 13:04:53 laddi Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.3 2005/10/18 13:29:25 laddi Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -12,7 +12,6 @@ package com.idega.block.process.message.business;
 import java.util.Collection;
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseBusinessBean;
 import com.idega.block.process.data.Case;
@@ -27,10 +26,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2005/10/14 13:04:53 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -43,8 +42,9 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		}
 	}
 
-	public void deleteMessage(String messageType, Object messagePK) throws FinderException, RemoveException {
-		getMessage(messageType, messagePK).remove();
+	public void deleteMessage(Object messagePK) throws FinderException {
+		Message message = getMessage(messagePK);
+		changeCaseStatus(message, getCaseStatusDeleted().getStatus(), message.getOwner());
 	}
 
 	public void markMessageAsRead(Message message) {
@@ -122,11 +122,11 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		return getMessageHome(messageType).findMessages(group, validStatuses, numberOfEntries, startingEntry);
 	}
 
-	protected Message createMessage(String messageType) throws CreateException {
+	public Message createMessage(String messageType) throws CreateException {
 		return getMessageHome(messageType).create();
 	}
 
-	protected Message createMessage(MessageValue msgValue) throws CreateException {
+	public Message createMessage(MessageValue msgValue) throws CreateException {
 		Message message = createMessage(msgValue.getMessageType());
 		message.setOwner(msgValue.getReceiver());
 		if (msgValue.getSender() != null) {

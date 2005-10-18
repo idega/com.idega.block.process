@@ -1,6 +1,6 @@
 /*
- * $Id: MessageBusiness.java,v 1.1 2005/10/13 18:20:38 laddi Exp $
- * Created on Oct 12, 2005
+ * $Id: MessageBusiness.java,v 1.2 2005/10/18 13:29:25 laddi Exp $
+ * Created on Oct 18, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -10,8 +10,8 @@
 package com.idega.block.process.message.business;
 
 import java.util.Collection;
+import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.message.data.Message;
 import com.idega.business.IBOService;
@@ -21,18 +21,20 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/10/13 18:20:38 $ by $Author: laddi $
+ * <p>
+ * TODO laddi Describe Type MessageBusiness
+ * </p>
+ *  Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface MessageBusiness extends IBOService, CaseBusiness {
 
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#deleteMessage
 	 */
-	public void deleteMessage(String messageType, Object messagePK) throws FinderException, RemoveException,
-			java.rmi.RemoteException;
+	public void deleteMessage(Object messagePK) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#markMessageAsRead
@@ -107,4 +109,14 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	 */
 	public Collection findMessages(String messageType, Group group, int numberOfEntries, int startingEntry)
 			throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.message.business.MessageBusinessBean#createMessage
+	 */
+	public Message createMessage(String messageType) throws CreateException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.message.business.MessageBusinessBean#createMessage
+	 */
+	public Message createMessage(MessageValue msgValue) throws CreateException, java.rmi.RemoteException;
 }

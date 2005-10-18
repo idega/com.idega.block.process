@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBlock.java,v 1.1 2005/10/16 12:50:53 laddi Exp $
+ * $Id: CaseBlock.java,v 1.2 2005/10/18 13:29:25 laddi Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -10,6 +10,7 @@
 package com.idega.block.process.presentation;
 
 import com.idega.block.process.business.CaseBusiness;
+import com.idega.block.process.business.CaseConstants;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -22,10 +23,10 @@ import com.idega.user.business.UserBusiness;
 
 
 /**
- * Last modified: $Date: 2005/10/16 12:50:53 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class CaseBlock extends Block {
 
@@ -43,7 +44,7 @@ public abstract class CaseBlock extends Block {
 	protected abstract void present(IWContext iwc) throws Exception;
 
 	public String getBundleIdentifier() {
-		return IW_BUNDLE_IDENTIFIER;
+		return CaseConstants.IW_BUNDLE_IDENTIFIER;
 	}
 
 	private void initialize(IWContext iwc) {
