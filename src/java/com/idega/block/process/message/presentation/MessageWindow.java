@@ -30,6 +30,7 @@ public class MessageWindow extends Window {
 	 * @see com.idega.presentation.PresentationObject#main(IWContext)
 	 */
 	public void main(IWContext iwc) throws Exception {
+		getParentPage().setStyleClass("messageViewerWindow");
 		IWResourceBundle iwrb = getResourceBundle(iwc);
 
 		add(new MessageViewer());

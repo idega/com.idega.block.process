@@ -52,11 +52,12 @@ public class MessageViewer extends MessageBlock {
 			messageItem.setStyleClass("messageItem");
 			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("subject", "Subject")));
 			messageItem.add(new Text(message.getSubject() != null ? message.getSubject(): getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
+			messageLayer.add(messageItem);
 			
 			messageItem = new Layer(Layer.DIV);
 			messageItem.setID("messageSender");
 			messageItem.setStyleClass("messageItem");
-			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("sender", "sender")));
+			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("sender", "Sender")));
 			if (sender != null) {
 				Name name = new Name(sender.getFirstName(), sender.getMiddleName(), sender.getLastName());
 				messageItem.add(new Text(name.getName(iwc.getCurrentLocale())));
@@ -64,18 +65,21 @@ public class MessageViewer extends MessageBlock {
 			else {
 				messageItem.add(new Text("-"));
 			}
+			messageLayer.add(messageItem);
 			
 			messageItem = new Layer(Layer.DIV);
 			messageItem.setID("messageDate");
 			messageItem.setStyleClass("messageItem");
 			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("date", "Date")));
-			messageItem.add(new Text(created.getLocaleDateAndTime(iwc.getCurrentLocale(), IWTimestamp.FULL, IWTimestamp.FULL)));
-
+			messageItem.add(new Text(created.getLocaleDateAndTime(iwc.getCurrentLocale(), IWTimestamp.MEDIUM, IWTimestamp.MEDIUM)));
+			messageLayer.add(messageItem);
+			
 			messageItem = new Layer(Layer.DIV);
-			messageItem.setID("messageSender");
+			messageItem.setID("messageBody");
 			messageItem.setStyleClass("messageItem");
 			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("body", "Body")));
 			messageItem.add(new Text(message.getBody() != null ? TextSoap.formatText(message.getBody()): ""));
+			messageLayer.add(messageItem);
 			
 			add(layer);
 		}

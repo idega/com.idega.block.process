@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBlock.java,v 1.2 2005/10/18 13:29:25 laddi Exp $
+ * $Id: CaseBlock.java,v 1.3 2005/10/19 12:52:55 laddi Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -23,10 +23,10 @@ import com.idega.user.business.UserBusiness;
 
 
 /**
- * Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class CaseBlock extends Block {
 
@@ -66,7 +66,7 @@ public abstract class CaseBlock extends Block {
 		return business;
 	}
 
-	private CaseBusiness getCaseBusiness(IWApplicationContext iwac) {
+	protected CaseBusiness getCaseBusiness(IWApplicationContext iwac) {
 		try {
 			return (CaseBusiness) IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
 		}

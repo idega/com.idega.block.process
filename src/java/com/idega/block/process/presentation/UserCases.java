@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.2 2005/10/18 13:29:25 laddi Exp $
+ * $Id: UserCases.java,v 1.3 2005/10/19 12:52:55 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -56,6 +56,11 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
 	 */
 	protected void present(IWContext iwc) throws Exception {
+		if (!iwc.isLoggedOn()) {
+			add(new Text("No user logged on..."));
+			return;
+		}
+
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
 		layer.setID("userCases");
@@ -115,9 +120,13 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		cell.add(new Text(getResourceBundle().getLocalizedString("handler", "Handler")));
 		
 		cell = row.createHeaderCell();
-		cell.setStyleClass("lastColumn");
 		cell.setStyleClass("casesStatus");
 		cell.add(new Text(getResourceBundle().getLocalizedString("status", "Status")));
+		
+		cell = row.createHeaderCell();
+		cell.setStyleClass("lastColumn");
+		cell.setStyleClass("casesEdit");
+		cell.add(Text.getNonBrakingSpace());
 		
 		group = table.createBodyRowGroup();
 		int iRow = 1;
@@ -159,10 +168,14 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.add(new Text(handler));
 				
 				cell = row.createCell();
-				cell.setStyleClass("lastColumn");
 				cell.setStyleClass("casesStatus");
 				cell.add(new Text(status));
 
+				cell = row.createCell();
+				cell.setStyleClass("lastColumn");
+				cell.setStyleClass("casesEdit");
+
+				boolean addNonBrakingSpace = true;
 				ICPage page = getPage(caseCode, caseStatus.getStatus());
 				if (page != null) {
 					Link link = new Link(getBundle(iwc).getImage("edit.gif"));
@@ -180,14 +193,21 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					link.addParameter(caseBusiness.getSelectedCaseParameter(), userCase.getPrimaryKey().toString());
 					link.setPage(page);
 					cell.add(link);
+					addNonBrakingSpace = false;
 				}
 				
 				if (caseBusiness.canDeleteCase(userCase)) {
 					Link link = new Link(getBundle(iwc).getImage("delete.gif"));
 					link.setStyleClass("caseDelete");
 					link.setEventListener(UserCases.class);
+					link.setToolTip(getResourceBundle().getLocalizedString("delete_case", "Delete case"));
 					link.addParameter(PARAMETER_CASE_PK, userCase.getPrimaryKey().toString());
 					cell.add(link);
+					addNonBrakingSpace = false;
+				}
+				
+				if (addNonBrakingSpace) {
+					cell.add(Text.getNonBrakingSpace());
 				}
 
 				if (iRow % 2 == 0) {
@@ -237,6 +257,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 		
 		iHiddenCaseCodes.addAll(MessageTypeManager.getInstance().getMessageCodes());
+		if (iHiddenCaseCodes.isEmpty()) {
+			return null;
+		}
+		
 		if (iHiddenCaseCodes.isEmpty()) {
 			return null;
 		}
@@ -309,7 +333,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public boolean actionPerformed(IWContext iwc) throws IWException {
 		if (iwc.isParameterSet(PARAMETER_CASE_PK)) {
 			try {
-				Case userCase = getBusiness().getCase(iwc.getParameter(PARAMETER_CASE_PK));
+				Case userCase = getCaseBusiness(iwc).getCase(iwc.getParameter(PARAMETER_CASE_PK));
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				caseBusiness.deleteCase(userCase, iwc.getCurrentUser());
 				return true;

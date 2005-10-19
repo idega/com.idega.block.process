@@ -1,6 +1,6 @@
 /*
- * $Id: CaseBusinessHomeImpl.java,v 1.10 2005/10/18 13:29:25 laddi Exp $
- * Created on Oct 17, 2005
+ * $Id: CaseBusinessHomeImpl.java,v 1.11 2005/10/19 12:52:55 laddi Exp $
+ * Created on Oct 19, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -13,13 +13,10 @@ import com.idega.business.IBOHomeImpl;
 
 
 /**
- * <p>
- * TODO laddi Describe Type CaseBusinessHomeImpl
- * </p>
- *  Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class CaseBusinessHomeImpl extends IBOHomeImpl implements CaseBusinessHome {
 

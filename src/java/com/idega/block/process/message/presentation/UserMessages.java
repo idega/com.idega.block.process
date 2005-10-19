@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.2 2005/10/18 13:29:25 laddi Exp $
+ * $Id: UserMessages.java,v 1.3 2005/10/19 12:52:55 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -14,12 +14,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.ejb.FinderException;
-import com.idega.block.process.data.CaseCode;
-import com.idega.block.process.message.business.MessageValue;
 import com.idega.block.process.message.data.Message;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.builder.data.ICPage;
 import com.idega.data.IDOException;
+import com.idega.event.IWPageEventListener;
 import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
@@ -32,34 +31,35 @@ import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.Form;
+import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2005/10/18 13:29:25 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class UserMessages extends MessageBlock {
+public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
-	private CaseCode messageCode;
+	private String messageType;
 	private ICPage iViewerPage;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
 	 */
 	protected void present(IWContext iwc) throws Exception {
-		MessageValue value = new MessageValue();
-		value.setReceiver(iwc.getCurrentUser());
-		value.setSubject("Test subject");
-		value.setBody("This is a test message");
-		getMessageBusiness().createMessage(value);
-		
-		Form form = new Form();
-		form.setEventListener(UserMessages.class);
+		if (messageType == null) {
+			add(new Text("No code set..."));
+			return;
+		}
+		if (!iwc.isLoggedOn()) {
+			add(new Text("No user logged on..."));
+			return;
+		}
 		
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
@@ -81,10 +81,21 @@ public class UserMessages extends MessageBlock {
 		headingLayer.add(new Text(getHeading()));
 		headerLayer.add(headingLayer);
 		
-		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), navigator.getNumberOfEntriesPerPage(iwc)));
+		Form form = new Form();
+		form.setEventListener(UserMessages.class);
+		form.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), navigator.getNumberOfEntriesPerPage(iwc)));
 		
-		form.add(layer);
-		add(form);
+		Layer buttonLayer = new Layer(Layer.DIV);
+		buttonLayer.setStyleClass("buttonLayer");
+		
+		SubmitButton button = new SubmitButton(getResourceBundle().getLocalizedString("delete", "Delete"));
+		button.setStyleClass("button");
+		buttonLayer.add(button);
+		form.add(buttonLayer);
+		
+		layer.add(form);
+		
+		add(layer);
 	}
 	
 	protected String getHeading() {
@@ -134,7 +145,7 @@ public class UserMessages extends MessageBlock {
 			row = group.createRow();
 			Message message = (Message) iter.next();
 			if (!getMessageBusiness().isMessageRead(message)) {
-				row.setStyleClass("newMessage");
+				row.setStyleClass("newEntry");
 			}
 			User sender = message.getSender();
 			IWTimestamp created = new IWTimestamp(message.getCreated());
@@ -195,7 +206,7 @@ public class UserMessages extends MessageBlock {
 
 	protected Collection getMessages(IWContext iwc, int startingEntry, int numberOfEntries) {
 		try {
-			return getMessageBusiness().findMessages(messageCode.getCode(), iwc.getCurrentUser(), numberOfEntries, startingEntry);
+			return getMessageBusiness().findMessages(messageType, iwc.getCurrentUser(), numberOfEntries, startingEntry);
 		}
 		catch (FinderException fe) {
 			log(fe);
@@ -209,7 +220,7 @@ public class UserMessages extends MessageBlock {
 	
 	protected int getMessageCount(IWContext iwc) {
 		try {
-			return getMessageBusiness().getNumberOfMessages(messageCode.getCode(), iwc.getCurrentUser());
+			return getMessageBusiness().getNumberOfMessages(messageType, iwc.getCurrentUser());
 		}
 		catch (IDOException ie) {
 			ie.printStackTrace();
@@ -244,7 +255,7 @@ public class UserMessages extends MessageBlock {
 		return false;
 	}
 
-	public void setMessageType(CaseCode code) {
-		messageCode = code;
+	public void setMessageType(String type) {
+		messageType = type;
 	}
 }

@@ -1,6 +1,7 @@
 package com.idega.block.process.business;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -37,13 +38,6 @@ import com.idega.util.IWTimestamp;
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
-	/*
-	 * private final String CASE_STATUS_OPEN_KEY = "UBEH"; private final String
-	 * CASE_STATUS_INACTIVE_KEY = "TYST"; private final String
-	 * CASE_STATUS_GRANTED_KEY = "BVJD"; private final String
-	 * CASE_STATUS_DENIED_KEY = "AVSL"; private final String
-	 * CASE_STATUS_REVIEW_KEY = "OMPR";
-	 */
 	private String CASE_STATUS_OPEN_KEY;
 	private String CASE_STATUS_INACTIVE_KEY;
 	private String CASE_STATUS_GRANTED_KEY;
@@ -62,7 +56,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_WAITING;
 	
 	private Map _statusMap;
-	
 	
 	protected final static String PARAMETER_SELECTED_CASE = "sel_case_nr";
 	
@@ -360,6 +353,26 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 		catch (IDOLookupException ile) {
 			throw new IBORuntimeException(ile);
+		}
+	}
+	
+	public Collection getCaseCodes() {
+		try {
+			return getCaseCodeHome().findAllCaseCodes();
+		}
+		catch (FinderException fe) {
+			fe.printStackTrace();
+			return new ArrayList();
+		}
+	}
+	
+	public Collection getCaseStatuses() {
+		try {
+			return getCaseStatusHome().findAllStatuses();
+		}
+		catch (FinderException fe) {
+			fe.printStackTrace();
+			return new ArrayList();
 		}
 	}
 
