@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.3 2005/10/19 12:52:55 laddi Exp $
+ * $Id: UserCases.java,v 1.4 2005/10/24 19:22:45 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/24 19:22:45 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -51,6 +51,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	private Collection iHiddenCaseCodes;
 	private Map pageMap;
+	private int iMaxNumberOfEntries = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -81,7 +82,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		headingLayer.add(new Text(getHeading()));
 		headerLayer.add(headingLayer);
 		
-		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), navigator.getNumberOfEntriesPerPage(iwc)));
+		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), iMaxNumberOfEntries != -1 ? iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
 		
 		add(layer);
 	}
@@ -135,6 +136,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		while (iter.hasNext()) {
 			row = group.createRow();
 			Case userCase = (Case) iter.next();
+			if (iRow == 1) {
+				row.setStyleClass("firstRow");
+			}
+			else if (!iter.hasNext()) {
+				row.setStyleClass("lastRow");
+			}
 
 			try {
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
@@ -346,5 +353,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			}
 		}
 		return false;
+	}
+	
+	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
+		iMaxNumberOfEntries = maxNumberOfEntries;
 	}
 }

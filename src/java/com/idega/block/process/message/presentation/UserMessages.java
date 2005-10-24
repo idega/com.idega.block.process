@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.3 2005/10/19 12:52:55 laddi Exp $
+ * $Id: UserMessages.java,v 1.4 2005/10/24 19:22:45 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -38,21 +38,22 @@ import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/24 19:22:45 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
 	private String messageType;
 	private ICPage iViewerPage;
+	private int iMaxNumberOfEntries = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
 	 */
 	protected void present(IWContext iwc) throws Exception {
-		if (messageType == null) {
+		if (getMessageType() == null) {
 			add(new Text("No code set..."));
 			return;
 		}
@@ -83,7 +84,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		
 		Form form = new Form();
 		form.setEventListener(UserMessages.class);
-		form.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), navigator.getNumberOfEntriesPerPage(iwc)));
+		form.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
 		
 		Layer buttonLayer = new Layer(Layer.DIV);
 		buttonLayer.setStyleClass("buttonLayer");
@@ -144,6 +145,12 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		while (iter.hasNext()) {
 			row = group.createRow();
 			Message message = (Message) iter.next();
+			if (iRow == 1) {
+				row.setStyleClass("firstRow");
+			}
+			else if (!iter.hasNext()) {
+				row.setStyleClass("lastRow");
+			}
 			if (!getMessageBusiness().isMessageRead(message)) {
 				row.setStyleClass("newEntry");
 			}
@@ -160,8 +167,8 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			
 			Link link = new Link(new Text(message.getSubject() != null ? message.getSubject() : getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
 			link.addParameter(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
-			if (iViewerPage != null) {
-				link.setPage(iViewerPage);
+			if (getViewerPage() != null) {
+				link.setPage(getViewerPage());
 			}
 			else {
 				link.setWindowToOpen(MessageWindow.class);
@@ -257,5 +264,24 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 
 	public void setMessageType(String type) {
 		messageType = type;
+	}
+	
+	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
+		iMaxNumberOfEntries = maxNumberOfEntries;
+	}
+
+	
+	protected int getMaxNumberOfEntries() {
+		return iMaxNumberOfEntries;
+	}
+
+	
+	protected ICPage getViewerPage() {
+		return iViewerPage;
+	}
+
+	
+	protected String getMessageType() {
+		return messageType;
 	}
 }
