@@ -4,7 +4,7 @@
     <key>
       <name>component_name</name>
       <type>java.lang.String</type>
-      <value>UserMessages</value>
+      <value>UserMessagesList</value>
     </key>
     <key>
       <name>component_type</name>
@@ -172,6 +172,60 @@
                   <name>iw_method_identifier</name>
                   <type>java.lang.String</type>
                   <value>:method:1:implied:void:setMaximumNumberOfEntries:int:</value>
+                </key>
+              </map>
+            </value>
+            <type>map</type>
+          </key>
+          <key>
+            <name>:method:1:implied:void:setMaximumNumberOfLetters:int:</name>
+            <value>
+              <map>
+                <key>
+                  <name>iw_method_params</name>
+                  <value>
+                    <map>
+                      <key>
+                        <name>0</name>
+                        <value>
+                          <map>
+                            <key>
+                              <name>iw_method_param_handler</name>
+                              <type>java.lang.String</type>
+                              <value />
+                            </key>
+                            <key>
+                              <name>iw_method_param_prim_key</name>
+                              <type>java.lang.Boolean</type>
+                              <value>false</value>
+                            </key>
+                            <key>
+                              <name>iw_method_param_desc</name>
+                              <type>java.lang.String</type>
+                              <value>Maximum number of letters</value>
+                            </key>
+                          </map>
+                        </value>
+                        <type>map</type>
+                      </key>
+                    </map>
+                  </value>
+                  <type>map</type>
+                </key>
+                <key>
+                  <name>iw_method_option_multiv</name>
+                  <type>java.lang.Boolean</type>
+                  <value>false</value>
+                </key>
+                <key>
+                  <name>iw_method_description</name>
+                  <type>java.lang.String</type>
+                  <value>Message type</value>
+                </key>
+                <key>
+                  <name>iw_method_identifier</name>
+                  <type>java.lang.String</type>
+                  <value>:method:1:implied:void:setMaximumNumberOfLetters:int:</value>
                 </key>
               </map>
             </value>
