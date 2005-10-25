@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.4 2005/10/24 19:22:45 laddi Exp $
+ * $Id: UserCases.java,v 1.5 2005/10/25 09:37:03 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/10/24 19:22:45 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/25 09:37:03 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -187,6 +187,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				if (page != null) {
 					Link link = new Link(getBundle(iwc).getImage("edit.gif"));
 					link.setStyleClass("caseEdit");
+					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
 					
 					Class eventListener = caseBusiness.getEventListener();
 					if (eventListener != null) {
