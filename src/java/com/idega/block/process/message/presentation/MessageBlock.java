@@ -33,7 +33,7 @@ public abstract class MessageBlock extends CaseBlock {
 		return messageBusiness;
 	}
 
-	private MessageBusiness getMessageBusiness(IWApplicationContext iwac) {
+	protected MessageBusiness getMessageBusiness(IWApplicationContext iwac) {
 		try {
 			return (MessageBusiness) IBOLookup.getServiceInstance(iwac, MessageBusiness.class);
 		}

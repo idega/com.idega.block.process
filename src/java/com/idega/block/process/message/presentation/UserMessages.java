@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.4 2005/10/24 19:22:45 laddi Exp $
+ * $Id: UserMessages.java,v 1.5 2005/11/14 10:46:12 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -38,10 +38,10 @@ import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2005/10/24 19:22:45 $ by $Author: laddi $
+ * Last modified: $Date: 2005/11/14 10:46:12 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
@@ -248,7 +248,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			try {
 				String[] messagePKs = iwc.getParameterValues(PARAMETER_MESSAGE_PK);
 				for (int i = 0; i < messagePKs.length; i++) {
-					getMessageBusiness().deleteMessage(messagePKs[i]);
+					getMessageBusiness(iwc).deleteMessage(messagePKs[i]);
 				}
 				return true;
 			}
