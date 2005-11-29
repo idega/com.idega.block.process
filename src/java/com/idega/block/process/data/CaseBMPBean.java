@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.52 2005/10/13 18:20:38 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.53 2005/11/29 12:54:17 laddi Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -490,7 +490,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	
 	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException
 	{
-		return (Collection) super.idoFindPKsByQuery(idoQueryGetSubCasesUnder(theCase));
+		return super.idoFindPKsByQuery(idoQueryGetSubCasesUnder(theCase));
 	}
 	
 	protected IDOQuery idoQueryGetCountSubCasesUnder(Case theCase)
