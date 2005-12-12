@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.5 2005/10/25 09:37:03 laddi Exp $
+ * $Id: UserCases.java,v 1.6 2005/12/12 15:23:01 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/10/25 09:37:03 $ by $Author: laddi $
+ * Last modified: $Date: 2005/12/12 15:23:01 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -185,7 +185,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				boolean addNonBrakingSpace = true;
 				ICPage page = getPage(caseCode, caseStatus.getStatus());
 				if (page != null) {
-					Link link = new Link(getBundle(iwc).getImage("edit.gif"));
+					Link link = new Link(getBundle(iwc).getImage("edit.png"));
 					link.setStyleClass("caseEdit");
 					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
 					
@@ -205,7 +205,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				}
 				
 				if (caseBusiness.canDeleteCase(userCase)) {
-					Link link = new Link(getBundle(iwc).getImage("delete.gif"));
+					Link link = new Link(getBundle(iwc).getImage("delete.png"));
 					link.setStyleClass("caseDelete");
 					link.setEventListener(UserCases.class);
 					link.setToolTip(getResourceBundle().getLocalizedString("delete_case", "Delete case"));
