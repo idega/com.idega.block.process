@@ -612,7 +612,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public boolean canDeleteCase(Case theCase) {
-		return true;
+		return false;
 	}
 	
 	public void deleteCase(Case theCase, User performer) {
