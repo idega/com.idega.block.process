@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.7 2005/12/13 09:08:34 laddi Exp $
+ * $Id: UserCases.java,v 1.8 2005/12/13 14:01:52 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/12/13 09:08:34 $ by $Author: laddi $
+ * Last modified: $Date: 2005/12/13 14:01:52 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -164,7 +164,26 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				
 				cell = row.createCell();
 				cell.setStyleClass("casesDescription");
-				cell.add(new Text(description));
+				ICPage page = getPage(caseCode, caseStatus.getStatus());
+				if (page != null) {
+					Link link = new Link(description);
+					
+					Class eventListener = caseBusiness.getEventListener();
+					if (eventListener != null) {
+						link.setEventListener(eventListener);
+					}
+					Map parameters = caseBusiness.getCaseParameters(userCase);
+					if (parameters != null) {
+						link.setParameter(parameters);
+					}
+					
+					link.addParameter(caseBusiness.getSelectedCaseParameter(), userCase.getPrimaryKey().toString());
+					link.setPage(page);
+					cell.add(link);
+				}
+				else {
+					cell.add(new Text(description));
+				}
 
 				cell = row.createCell();
 				cell.setStyleClass("casesDate");
@@ -183,7 +202,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.setStyleClass("casesEdit");
 
 				boolean addNonBrakingSpace = true;
-				ICPage page = getPage(caseCode, caseStatus.getStatus());
 				if (page != null) {
 					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")));
 					link.setStyleClass("caseEdit");

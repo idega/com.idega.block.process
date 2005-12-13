@@ -220,6 +220,10 @@ div.messageItem h1 {
 	padding-right: 10px;
 }
 
+div.messageSubjectHeading {
+	display: none;
+}
+
 div#messageBody h1 {
 	display: none;
 }

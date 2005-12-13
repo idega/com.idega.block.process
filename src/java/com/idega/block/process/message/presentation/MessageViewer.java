@@ -54,6 +54,11 @@ public class MessageViewer extends MessageBlock {
 			messageItem.add(new Text(message.getSubject() != null ? message.getSubject(): getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
 			messageLayer.add(messageItem);
 			
+			Layer subjectHeadingLayer = new Layer(Layer.DIV);
+			subjectHeadingLayer.setStyleClass("messageSubjectHeading");
+			subjectHeadingLayer.add(new Text(message.getSubject() != null ? message.getSubject(): getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
+			headerLayer.add(subjectHeadingLayer);
+			
 			messageItem = new Layer(Layer.DIV);
 			messageItem.setID("messageSender");
 			messageItem.setStyleClass("messageItem");
