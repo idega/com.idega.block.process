@@ -1,8 +1,8 @@
 /*
- * $Id: CaseBusiness.java,v 1.34 2005/10/19 12:52:55 laddi Exp $
- * Created on Oct 19, 2005
+ * $Id: CaseBusiness.java,v 1.35 2006/01/04 14:18:36 gimmi Exp $
+ * Created on Jan 4, 2006
  *
- * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -18,16 +18,20 @@ import javax.ejb.FinderException;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
+import com.idega.block.process.webservice._case;
 import com.idega.business.IBOService;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
+ * <p>
+ * TODO gimmi Describe Type CaseBusiness
+ * </p>
+ *  Last modified: $Date: 2006/01/04 14:18:36 $ by $Author: gimmi $
  * 
- * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.34 $
+ * @author <a href="mailto:gimmi@idega.com">gimmi</a>
+ * @version $Revision: 1.35 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -59,7 +63,8 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
@@ -323,7 +328,8 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus, User performer) throws java.rmi.RemoteException;
+	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus, User performer)
+			throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
@@ -400,4 +406,14 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getSelectedCaseParameter
 	 */
 	public String getSelectedCaseParameter() throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseBusiness
+	 */
+	public CaseBusiness getCaseBusiness(String caseCode) throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#createOrUpdateCase
+	 */
+	public Case createOrUpdateCase(_case wsCase) throws Exception, java.rmi.RemoteException;
 }

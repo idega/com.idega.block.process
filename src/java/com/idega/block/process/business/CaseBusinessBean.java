@@ -17,6 +17,8 @@ import com.idega.block.process.data.CaseLog;
 import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
+import com.idega.block.process.webservice._case;
+import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
 import com.idega.data.IDOException;
@@ -624,5 +626,37 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 */
 	public String getSelectedCaseParameter(){
 		return PARAMETER_SELECTED_CASE;
+	}
+	
+	public CaseBusiness getCaseBusiness(String caseCode) throws FinderException {
+		CaseCode code = getCaseCodeHome().findByPrimaryKey(caseCode);
+		try {
+			return CaseCodeManager.getInstance().getCaseBusinessOrDefault(code, getIWApplicationContext());
+		}
+		catch (IBOLookupException e) {
+			throw new IBORuntimeException(e);
+		}
+	}
+
+	public Case createOrUpdateCase(_case wsCase) throws Exception {
+		String id = wsCase.getId();
+		Case theCase = null;
+		if (id == null || "-1".equals(id)) {
+			theCase = getCaseHome().create();
+		} else {
+			theCase = getCaseHome().findByPrimaryKey(new Integer(id));
+		}
+	
+		theCase.setCode(wsCase.getCode());
+		//theCase.set checkit yo, þarf að mappa eitthvða crappis
+		try {
+			User owner = getUserHome().findByPersonalID(wsCase.getOwner().getSocialsecurity());
+			theCase.setOwner(owner);
+		} catch (FinderException f) {
+			f.printStackTrace();
+		}
+		
+		
+		return null;
 	}
 }
