@@ -1,0 +1,76 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from CreateNewCase WSDL service -->
+
+  <service name="CreateNewCaseHttp" provider="java:RPC" style="document" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://skjalfandi.is/new_case"/>
+      <parameter name="wsdlServiceElement" value="CreateNewCase"/>
+      <parameter name="schemaQualified" value="schema.request,schema.response"/>
+      <parameter name="wsdlServicePort" value="CreateNewCaseHttp"/>
+      <parameter name="className" value="com.idega.block.process.webservice.NewCaseBindingImpl"/>
+      <parameter name="wsdlPortType" value="NewCasePort"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="createNewCase" qname="CreateNewCase" returnQName="retNS:external_case_id" xmlns:retNS="schema.response" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="""" >
+        <parameter qname="pns:case" xmlns:pns="schema.request" type="tns:>case" xmlns:tns="schema.request"/>
+      </operation>
+      <parameter name="allowedMethods" value="createNewCase"/>
+
+      <typeMapping
+        xmlns:ns="schema.request"
+        qname="ns:>handler"
+        type="java:com.idega.block.process.webservice.Handler"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="schema.request"
+        qname="ns:>owner"
+        type="java:com.idega.block.process.webservice.Owner"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="schema.request"
+        qname="ns:>item"
+        type="java:com.idega.block.process.webservice.Item"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="schema.request"
+        qname="ns:>case"
+        type="java:com.idega.block.process.webservice._case"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="schema.request"
+        qname="ns:>metadata"
+        type="java:com.idega.block.process.webservice.Item[]"
+        innerType="cmp-ns:item" xmlns:cmp-ns="schema.request"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="schema.request"
+        qname="ns:>contact"
+        type="java:com.idega.block.process.webservice.Contact"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
