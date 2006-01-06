@@ -17,6 +17,7 @@ import com.idega.block.process.data.CaseLog;
 import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
+import com.idega.block.process.webservice.WSCaseConstants;
 import com.idega.block.process.webservice._case;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -639,24 +640,50 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	public Case createOrUpdateCase(_case wsCase) throws Exception {
+		
+		String status = wsCase.getStatus();
+		if (status.equals(WSCaseConstants.STATUS_ARCHIVED)) {
+			status = getCaseHome().getCaseStatusArchived();
+		} else if (status.equals(WSCaseConstants.STATUS_CLOSED)) {
+			status = getCaseHome().getCaseStatusClosed();
+		} else if (status.equals(WSCaseConstants.STATUS_IN_PROCESS)) {
+			status = getCaseHome().getCaseStatusInProcess();
+		} else if (status.equals(WSCaseConstants.STATUS_LOCKED)) {
+			status = getCaseHome().getCaseStatusLocked();
+		} else if (status.equals(WSCaseConstants.STATUS_PENDING)) {
+			status = getCaseHome().getCaseStatusPending();
+		} 
+		
+		CaseStatus newCaseStatus = getCaseStatus(status);
+		
 		String id = wsCase.getId();
 		Case theCase = null;
 		if (id == null || "-1".equals(id)) {
 			theCase = getCaseHome().create();
+			theCase.setCreated(new IWTimestamp(wsCase.getCreated()).getTimestamp());
 		} else {
 			theCase = getCaseHome().findByPrimaryKey(new Integer(id));
+			changeCaseStatus(theCase, newCaseStatus, null);
 		}
-	
 		theCase.setCode(wsCase.getCode());
-		//theCase.set checkit yo, þarf að mappa eitthvða crappis
+		theCase.setExternalId(wsCase.getExternal_case_id());
+		theCase.setBody(wsCase.getBody());
+		theCase.setSubject(wsCase.getSubject());
+
 		try {
 			User owner = getUserHome().findByPersonalID(wsCase.getOwner().getSocialsecurity());
 			theCase.setOwner(owner);
 		} catch (FinderException f) {
 			f.printStackTrace();
 		}
+		try {
+			User handler = getUserHome().findByPersonalID(wsCase.getHandler().getSocialsecurity());
+			theCase.setExternalHandler(handler);
+		} catch (FinderException f) {
+			f.printStackTrace();
+		}
+		theCase.store();
 		
-		
-		return null;
+		return theCase;
 	}
 }
