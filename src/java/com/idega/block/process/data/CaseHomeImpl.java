@@ -1,8 +1,8 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.20 2005/01/12 09:59:24 laddi Exp $
- * Created on 8.12.2004
+ * $Id: CaseHomeImpl.java,v 1.21 2006/01/06 01:06:42 gimmi Exp $
+ * Created on Jan 6, 2006
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -10,9 +10,7 @@
 package com.idega.block.process.data;
 
 import java.util.Collection;
-
 import javax.ejb.FinderException;
-
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.user.data.Group;
@@ -20,10 +18,13 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/01/12 09:59:24 $ by $Author: laddi $
+ * <p>
+ * TODO gimmi Describe Type CaseHomeImpl
+ * </p>
+ *  Last modified: $Date: 2006/01/06 01:06:42 $ by $Author: gimmi $
  * 
- * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.20 $
+ * @author <a href="mailto:gimmi@idega.com">gimmi</a>
+ * @version $Revision: 1.21 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -207,16 +208,48 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+	public String getCaseStatusInProcess() {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserExceptCodes(user, codes, startingCase, numberOfCases);
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusInProcess();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	public String getCaseStatusClosed() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusClosed();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	public String getCaseStatusArchived() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusArchived();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	public String getCaseStatusLocked() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusLocked();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases)
+			throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserExceptCodes(user, codes, startingCase,
+				numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases)
+			throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserByStatuses(user, statuses, startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserByStatuses(user, statuses,
+				startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -228,9 +261,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase,
+			int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses, startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses,
+				startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -242,9 +277,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes,
+			int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsAndUserExceptCodes(user, groups,
+				codes, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -263,11 +300,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes) throws IDOException {
+	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes)
+			throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		int theReturn = ((CaseBMPBean) entity).ejbHomeGetNumberOfCasesByGroupsOrUserExceptCodes(user, groups, codes);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
-
 }

@@ -1,8 +1,8 @@
 /*
- * $Id: Case.java,v 1.15 2004/12/08 18:09:46 laddi Exp $
- * Created on 8.12.2004
+ * $Id: Case.java,v 1.16 2006/01/06 01:06:42 gimmi Exp $
+ * Created on Jan 6, 2006
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -13,22 +13,24 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
-
-
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOEntity;
+import com.idega.data.UniqueIDCapable;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/08 18:09:46 $ by $Author: laddi $
+ * <p>
+ * TODO gimmi Describe Type Case
+ * </p>
+ *  Last modified: $Date: 2006/01/06 01:06:42 $ by $Author: gimmi $
  * 
- * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.15 $
+ * @author <a href="mailto:gimmi@idega.com">gimmi</a>
+ * @version $Revision: 1.16 $
  */
-public interface Case extends IDOEntity, ICTreeNode {
+public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable {
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setCode
@@ -121,6 +123,56 @@ public interface Case extends IDOEntity, ICTreeNode {
 	public User getOwner();
 
 	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#setExternalId
+	 */
+	public void setExternalId(String externalId);
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#getExternalId
+	 */
+	public String getExternalId();
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#setCaseNumber
+	 */
+	public void setCaseNumber(String caseNumber);
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#getCaseNumber
+	 */
+	public String getCaseNumber();
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#setExternalHandler
+	 */
+	public void setExternalHandler(User user);
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#getExternalHandler
+	 */
+	public User getExternalHandler();
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#getSubject
+	 */
+	public String getSubject();
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#setSubject
+	 */
+	public void setSubject(String subject);
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#getBody
+	 */
+	public String getBody();
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#setBody
+	 */
+	public void setBody(String body);
+
+	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getParentNode
 	 */
 	public ICTreeNode getParentNode();
@@ -184,5 +236,4 @@ public interface Case extends IDOEntity, ICTreeNode {
 	 * @see com.idega.block.process.data.CaseBMPBean#getAllowsChildren
 	 */
 	public boolean getAllowsChildren();
-
 }
