@@ -1248,4 +1248,36 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 	    return query;
 	}
 
+	
+	public String getExternalId() {
+		return getGeneralCase().getExternalId();
+	}
+	public void setExternalId(String externalId) {
+		getGeneralCase().setExternalId(externalId);
+	}
+	public String getCaseNumber() {
+		return getGeneralCase().getCaseNumber();
+	}
+	public void setCaseNumber(String caseNumber) {
+		getGeneralCase().setCaseNumber(caseNumber);
+	}
+	public void setExternalHandler(User user) {
+		getGeneralCase().setExternalHandler(user);
+	}
+	public User getExternalHandler() {
+		return getGeneralCase().getExternalHandler();
+	}
+	public String getSubject() {
+		return getGeneralCase().getSubject();
+	}
+	public void setSubject(String subject) {
+		getGeneralCase().setSubject(subject);
+	}
+	public String getBody() {
+		return getGeneralCase().getBody();
+	}
+	public void setBody(String body) {
+		getGeneralCase().setBody(body);
+	}
+
 }
