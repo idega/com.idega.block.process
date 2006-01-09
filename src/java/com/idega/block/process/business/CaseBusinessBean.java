@@ -661,6 +661,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if (id == null || "-1".equals(id)) {
 			theCase = getCaseHome().create();
 			theCase.setCreated(new IWTimestamp(wsCase.getCreated()).getTimestamp());
+			theCase.setCaseStatus(newCaseStatus);
 		} else {
 			theCase = getCaseHome().findByPrimaryKey(new Integer(id));
 			changeCaseStatus(theCase, newCaseStatus, null);
