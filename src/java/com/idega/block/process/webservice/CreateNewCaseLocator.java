@@ -22,7 +22,7 @@ public class CreateNewCaseLocator extends org.apache.axis.client.Service impleme
     }
 
     // Use to get a proxy class for CreateNewCaseHttp
-    private java.lang.String CreateNewCaseHttp_address = "http://ttestsql/GoProHusavik.nsf/webservicenewcase?OpenAgent";
+    private java.lang.String CreateNewCaseHttp_address = "http://213.167.155.187:6580/GoProHusavik.nsf/webservicenewcase?OpenAgent";
 
     public java.lang.String getCreateNewCaseHttpAddress() {
         return CreateNewCaseHttp_address;
