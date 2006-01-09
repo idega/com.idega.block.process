@@ -5,8 +5,10 @@ import com.idega.business.IBOLookup;
 import com.idega.idegaweb.IWMainApplication;
 
 public class NewCaseBindingImpl implements com.idega.block.process.webservice.NewCasePort{
+    
     public java.lang.String createNewCase(com.idega.block.process.webservice._case part_request) throws java.rmi.RemoteException {
     	
+	    	System.out.println("[NewCaseBindingImpl (WebService)] method is called");
 		CaseBusiness bus1 = (CaseBusiness) IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), CaseBusiness.class);
 		try {
 			CaseBusiness business = bus1.getCaseBusiness(part_request.getCode());
