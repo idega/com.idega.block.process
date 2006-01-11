@@ -166,7 +166,7 @@
                 <key>
                   <name>iw_method_description</name>
                   <type>java.lang.String</type>
-                  <value>Message type</value>
+                  <value>Maximum number of entries</value>
                 </key>
                 <key>
                   <name>iw_method_identifier</name>
@@ -220,7 +220,7 @@
                 <key>
                   <name>iw_method_description</name>
                   <type>java.lang.String</type>
-                  <value>Message type</value>
+                  <value>Maximum number of letters</value>
                 </key>
                 <key>
                   <name>iw_method_identifier</name>
