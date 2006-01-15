@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.5 2005/11/14 10:46:12 laddi Exp $
+ * $Id: UserMessages.java,v 1.6 2006/01/15 19:45:20 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -38,10 +38,10 @@ import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2005/11/14 10:46:12 $ by $Author: laddi $
+ * Last modified: $Date: 2006/01/15 19:45:20 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
@@ -75,6 +75,8 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		headerLayer.add(navigationLayer);
 		
 		ListNavigator navigator = new ListNavigator("userMessages", getMessageCount(iwc));
+		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
+		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("messages", "messages"));
 		navigationLayer.add(navigator);
 		
 		Layer headingLayer = new Layer(Layer.DIV);

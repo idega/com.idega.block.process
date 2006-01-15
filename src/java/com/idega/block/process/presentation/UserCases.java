@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.9 2005/12/13 19:57:23 laddi Exp $
+ * $Id: UserCases.java,v 1.10 2006/01/15 19:45:20 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/12/13 19:57:23 $ by $Author: laddi $
+ * Last modified: $Date: 2006/01/15 19:45:20 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -75,6 +75,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		headerLayer.add(navigationLayer);
 		
 		ListNavigator navigator = new ListNavigator("userCases", getCaseCount(iwc));
+		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
+		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("cases", "cases"));
 		navigationLayer.add(navigator);
 		
 		Layer headingLayer = new Layer(Layer.DIV);

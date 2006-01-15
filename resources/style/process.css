@@ -144,10 +144,6 @@ div.caseNavigation select {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
 
-div.caseNavigation ul:before {
-	content: "Sýýa: ";
-}
-
 div.caseNavigation ul li {
 	display: inline;
 	padding-left: 4px;
