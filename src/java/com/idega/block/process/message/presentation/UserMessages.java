@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.6 2006/01/15 19:45:20 laddi Exp $
+ * $Id: UserMessages.java,v 1.7 2006/01/16 07:19:55 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -29,19 +29,16 @@ import com.idega.presentation.TableRow;
 import com.idega.presentation.TableRowGroup;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
-import com.idega.presentation.ui.CheckBox;
-import com.idega.presentation.ui.Form;
-import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2006/01/15 19:45:20 $ by $Author: laddi $
+ * Last modified: $Date: 2006/01/16 07:19:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
@@ -84,19 +81,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		headingLayer.add(new Text(getHeading()));
 		headerLayer.add(headingLayer);
 		
-		Form form = new Form();
-		form.setEventListener(UserMessages.class);
-		form.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
-		
-		Layer buttonLayer = new Layer(Layer.DIV);
-		buttonLayer.setStyleClass("buttonLayer");
-		
-		SubmitButton button = new SubmitButton(getResourceBundle().getLocalizedString("delete", "Delete"));
-		button.setStyleClass("button");
-		buttonLayer.add(button);
-		form.add(buttonLayer);
-		
-		layer.add(form);
+		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
 		
 		add(layer);
 	}
@@ -195,9 +180,12 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			cell.setStyleClass("lastColumn");
 			cell.setStyleClass("messageDelete");
 			
-			CheckBox box = new CheckBox(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
-			box.setStyleClass("checkbox");
-			cell.add(box);
+			link = new Link(getBundle(iwc).getImage("delete.png", getResourceBundle().getLocalizedString("delete_message", "Delete message")));
+			link.setStyleClass("deleteMessage");
+			link.setEventListener(UserMessages.class);
+			link.setToolTip(getResourceBundle().getLocalizedString("delete_message", "Delete message"));
+			link.addParameter(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
+			cell.add(link);
 
 			if (iRow % 2 == 0) {
 				row.setStyleClass("evenRow");
@@ -248,10 +236,8 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	public boolean actionPerformed(IWContext iwc) throws IWException {
 		if (iwc.isParameterSet(PARAMETER_MESSAGE_PK)) {
 			try {
-				String[] messagePKs = iwc.getParameterValues(PARAMETER_MESSAGE_PK);
-				for (int i = 0; i < messagePKs.length; i++) {
-					getMessageBusiness(iwc).deleteMessage(messagePKs[i]);
-				}
+				String messagePKs = iwc.getParameter(PARAMETER_MESSAGE_PK);
+				getMessageBusiness(iwc).deleteMessage(messagePKs);
 				return true;
 			}
 			catch (FinderException fe) {

@@ -18,15 +18,6 @@ table.caseTable td a, th a {
 	text-decoration: none;
 }
 
-
-table.caseTable tr.newEntry td a:after {
-	content: url(/n24/idegaweb/bundles/com.idega.block.process.bundle/resources/new.gif);
-	text-decoration: none;
-	padding-left: 12px;
-	margin-top: 2px;
-	vertical-align: bottom;
-}
-
 table.caseTable tr.newEntry td img {
 	vertical-align: bottom;
 	padding-left: 3px;
