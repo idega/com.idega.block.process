@@ -18,7 +18,7 @@ table.caseTable td a, th a {
 	text-decoration: none;
 }
 
-table.caseTable td a, a:hover {
+table.caseTable td a, table.caseTable td a:hover {
 	font-size: 11px;
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
