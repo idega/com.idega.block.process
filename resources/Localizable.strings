@@ -37,6 +37,7 @@ case_status_key.null=
 cases=Cases
 cca_type=
 delete_message=Delete message
+delete_message_confirm=Are you sure you want to delete this message?
 importer.back=
 iw.component.com.idega.block.email.presentation.NewsLetter.name=
 iw.component.com.idega.block.process.message.presentation.MessageViewer.name=MessageViewer

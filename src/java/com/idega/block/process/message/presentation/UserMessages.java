@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.7 2006/01/16 07:19:55 laddi Exp $
+ * $Id: UserMessages.java,v 1.8 2006/01/30 14:14:13 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -35,10 +35,10 @@ import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2006/01/16 07:19:55 $ by $Author: laddi $
+ * Last modified: $Date: 2006/01/30 14:14:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
@@ -183,6 +183,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			link = new Link(getBundle(iwc).getImage("delete.png", getResourceBundle().getLocalizedString("delete_message", "Delete message")));
 			link.setStyleClass("deleteMessage");
 			link.setEventListener(UserMessages.class);
+			link.setOnClick("return confirm('" + getResourceBundle().getLocalizedString("delete_message_confirm", "Are you sure you want to delete this message?") + "');");
 			link.setToolTip(getResourceBundle().getLocalizedString("delete_message", "Delete message"));
 			link.addParameter(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
 			cell.add(link);
