@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.10 2006/01/15 19:45:20 laddi Exp $
+ * $Id: UserCases.java,v 1.11 2006/02/05 19:42:22 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/01/15 19:45:20 $ by $Author: laddi $
+ * Last modified: $Date: 2006/02/05 19:42:22 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -129,7 +129,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		cell = row.createHeaderCell();
 		cell.setStyleClass("lastColumn");
 		cell.setStyleClass("casesEdit");
-		cell.add(Text.getNonBrakingSpace());
+		cell.add(new Text(getResourceBundle().getLocalizedString("view", "View")));
 		
 		group = table.createBodyRowGroup();
 		int iRow = 1;
