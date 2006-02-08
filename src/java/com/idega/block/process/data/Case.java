@@ -1,5 +1,5 @@
 /*
- * $Id: Case.java,v 1.16 2006/01/06 01:06:42 gimmi Exp $
+ * $Id: Case.java,v 1.17 2006/02/08 14:36:02 tryggvil Exp $
  * Created on Jan 6, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -23,12 +23,14 @@ import com.idega.user.data.User;
 
 /**
  * <p>
- * TODO gimmi Describe Type Case
+ * Main type declared for "Case".
+ * This type is implemented by different case types such ass SchoolChoice, ChildcareApplication
+ * etc. that each identify themselves with unique case codes.
  * </p>
- *  Last modified: $Date: 2006/01/06 01:06:42 $ by $Author: gimmi $
+ *  Last modified: $Date: 2006/02/08 14:36:02 $ by $Author: tryggvil $
  * 
- * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.16 $
+ * @author <a href="mailto:tryggvi@idega.com">Tryggvi Larusson</a>
+ * @version $Revision: 1.17 $
  */
 public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable {
 

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.54 2006/01/06 01:06:42 gimmi Exp $
+ * $Id: CaseBMPBean.java,v 1.55 2006/02/08 14:36:02 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -32,9 +32,14 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 /**
- *
- * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson</a>
- * @version 1.0
+ * <p>
+ * Main implementation data entity bean for "Case".<br/>
+ * Backing SQL table is PROC_CASE.
+ * <p>
+ * Last modified: $Date: 2006/02/08 14:36:02 $ by $Author: tryggvil $
+ * 
+ * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
+ * @version $Revision: 1.55 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable
 {
