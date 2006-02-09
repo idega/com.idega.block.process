@@ -92,5 +92,15 @@
         <idegaweb.bundle.include>true</idegaweb.bundle.include>
       </properties>
     </dependency>
+        <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.0</version>
+      <type>jar</type>
+      <url>http://ws.apache.org/axis</url>
+      <properties>
+        <idegaweb.bundle.include>true</idegaweb.bundle.include>
+      </properties>
+    </dependency>
   </dependencies>
 </project>

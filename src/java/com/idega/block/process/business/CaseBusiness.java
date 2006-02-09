@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusiness.java,v 1.35 2006/01/04 14:18:36 gimmi Exp $
+ * $Id: CaseBusiness.java,v 1.36 2006/02/09 11:14:08 palli Exp $
  * Created on Jan 4, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -18,7 +18,6 @@ import javax.ejb.FinderException;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
-import com.idega.block.process.webservice._case;
 import com.idega.business.IBOService;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
@@ -28,10 +27,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO gimmi Describe Type CaseBusiness
  * </p>
- *  Last modified: $Date: 2006/01/04 14:18:36 $ by $Author: gimmi $
+ *  Last modified: $Date: 2006/02/09 11:14:08 $ by $Author: palli $
  * 
  * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -411,9 +410,4 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseBusiness
 	 */
 	public CaseBusiness getCaseBusiness(String caseCode) throws FinderException, java.rmi.RemoteException;
-
-	/**
-	 * @see com.idega.block.process.business.CaseBusinessBean#createOrUpdateCase
-	 */
-	public Case createOrUpdateCase(_case wsCase) throws Exception, java.rmi.RemoteException;
 }
