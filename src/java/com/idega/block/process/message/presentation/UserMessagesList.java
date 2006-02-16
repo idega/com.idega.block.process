@@ -11,6 +11,7 @@ package com.idega.block.process.message.presentation;
 
 import java.util.Collection;
 import java.util.Iterator;
+import com.idega.block.process.message.business.MessageConstants;
 import com.idega.block.process.message.data.Message;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.text.Link;
@@ -22,6 +23,14 @@ import com.idega.presentation.text.Text;
 public class UserMessagesList extends UserMessages {
 
 	private int iMaxNumberOfLetters;
+
+	public UserMessagesList() {
+		setCacheable(getCacheKey(), (20 * 60 * 1000));
+	}
+	
+	public String getCacheKey() {
+		return MessageConstants.CACHE_KEY;
+	}
 
 	protected void present(IWContext iwc) throws Exception {
 		if (getMessageType() == null) {
