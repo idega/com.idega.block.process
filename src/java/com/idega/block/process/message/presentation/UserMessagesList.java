@@ -31,7 +31,16 @@ public class UserMessagesList extends UserMessages {
 	public String getCacheKey() {
 		return MessageConstants.CACHE_KEY;
 	}
-
+	
+	protected String getCacheState(IWContext iwc, String cacheStatePrefix) {
+		if (iwc.isLoggedOn()) {
+			return cacheStatePrefix + "_" + iwc.getCurrentUser().getPrimaryKey().toString();
+		}
+		else {
+			return cacheStatePrefix;
+		}
+	}
+	
 	protected void present(IWContext iwc) throws Exception {
 		if (getMessageType() == null) {
 			add(new Text("No code set..."));

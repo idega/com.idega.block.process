@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.5 2006/02/16 15:37:33 laddi Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.6 2006/02/16 21:39:32 laddi Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2006/02/16 15:37:33 $ by $Author: laddi $
+ * Last modified: $Date: 2006/02/16 21:39:32 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -47,13 +47,13 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		Message message = getMessage(messagePK);
 		User owner = message.getOwner();
 		changeCaseStatus(message, getCaseStatusDeleted().getStatus(), message.getOwner());
-		IWCacheManager.getInstance(getIWMainApplication()).invalidateCache(MessageConstants.CACHE_KEY + "_" + owner.getPrimaryKey().toString());
+		IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + owner.getPrimaryKey().toString());
 	}
 
 	public void markMessageAsRead(Message message) {
 		User owner = message.getOwner();
 		changeCaseStatus(message, getCaseStatusGranted().getPrimaryKey().toString(), owner);
-		IWCacheManager.getInstance(getIWMainApplication()).invalidateCache(MessageConstants.CACHE_KEY + "_" + owner.getPrimaryKey().toString());
+		IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + owner.getPrimaryKey().toString());
 	}
 
 	public boolean isMessageRead(Message message) {
@@ -148,7 +148,7 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 
 		try {
 			message.store();
-			IWCacheManager.getInstance(getIWMainApplication()).invalidateCache(MessageConstants.CACHE_KEY + "_" + msgValue.getReceiver().getPrimaryKey().toString());
+			IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + msgValue.getReceiver().getPrimaryKey().toString());
 		}
 		catch (IDOStoreException idos) {
 			throw new IDOCreateException(idos);
