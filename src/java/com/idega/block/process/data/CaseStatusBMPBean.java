@@ -57,7 +57,7 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     if(sKey!=null){
       this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+status);
     }
-    setColumn(this.CASE_STATUS,status);
+    setColumn(CaseStatusBMPBean.CASE_STATUS,status);
   }
 
   public String getStatus() {
@@ -66,7 +66,7 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
 
 
   public void setDescription(String desc) {
-    setColumn(this.CASE_STATUS_DESC,desc);
+    setColumn(CaseStatusBMPBean.CASE_STATUS_DESC,desc);
   }
 
   public String getDescription() {
@@ -74,7 +74,7 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
   }
 
   public void setDescriptionLocalizedKey(String key) {
-    setColumn(this.CASE_STATUS_DESC_LOC_KEY,key);
+    setColumn(CaseStatusBMPBean.CASE_STATUS_DESC_LOC_KEY,key);
   }
 
   public String getDescriptionLocalizedKey() {

@@ -65,7 +65,7 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     if(sKey!=null){
       this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+caseCode);
     }
-    setColumn(this.CASE_CODE,caseCode);
+    setColumn(CaseCodeBMPBean.CASE_CODE,caseCode);
   }
 
   public String getCode() {
@@ -73,7 +73,7 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
   }
 
   public void setDescription(String desc) {
-    setColumn(this.CASE_CODE_DESC,desc);
+    setColumn(CaseCodeBMPBean.CASE_CODE_DESC,desc);
   }
 
   public String getDescription() {
@@ -81,11 +81,11 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
   }
 
   public void setBusinessHandler(ICObject obj) {
-    setColumn(this.CASE_CODE_HANDLER,obj);
+    setColumn(CaseCodeBMPBean.CASE_CODE_HANDLER,obj);
   }
 
   public void setDescriptionLocalizedKey(String key) {
-    setColumn(this.CASE_CODE_DESC_LOC_KEY,key);
+    setColumn(CaseCodeBMPBean.CASE_CODE_DESC_LOC_KEY,key);
   }
 
   public String getDescriptionLocalizedKey() {
