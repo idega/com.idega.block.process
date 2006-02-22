@@ -41,8 +41,6 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
 	private static final String COLUMN_COMMENT = "PROC_COMMENT";
 
-	private static final String LOC_KEY_PREFIX = "case.code";
-
 	public void initializeAttributes() {
 		addAttribute(COLUMN_CASE_LOG_ID);
 		this.addManyToOneRelationship(COLUMN_CASE_ID, "The case", Case.class);
