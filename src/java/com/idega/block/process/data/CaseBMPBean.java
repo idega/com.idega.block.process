@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.56 2006/02/20 11:04:03 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.57 2006/03/01 10:30:58 tryggvil Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
+import com.idega.block.process.business.CaseConstants;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
@@ -34,10 +35,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/>
  * Backing SQL table is PROC_CASE.
  * <p>
- * Last modified: $Date: 2006/02/20 11:04:03 $ by $Author: laddi $
+ * Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable
 {
@@ -91,6 +92,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addUniqueIDColumn();
 		addAttribute(COLUMN_CASE_SUBJECT, "Case subject", String.class);
 		addAttribute(COLUMN_CASE_BODY, "Case subject", String.class, 4000);
+		addMetaDataRelationship();
+		
 		
 		addIndex("IDX_PROC_CASE_2", new String[]{getIDColumnName(), COLUMN_USER});
 		addIndex("IDX_PROC_CASE_3", new String[]{getIDColumnName(), COLUMN_CASE_CODE});
@@ -973,4 +976,36 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		query.appendOrderByDescending(COLUMN_CREATED);
 		return super.idoGetNumberOfRecords(query);
 	}
+	
+	
+	/**
+	 * Gets the case with externalId='externalId'
+	 */	
+	public Integer ejbFindCaseByExternalId(String externalId) throws FinderException 
+	{
+		IDOQuery query = idoQueryGetSelect();
+		query.appendWhereEqualsQuoted(COLUMN_EXTERNAL_ID,externalId);
+		
+		return (Integer) idoFindOnePKByQuery(query);
+	}
+	
+	/**
+	 * Gets the case with externalId='externalId'
+	 */	
+	public Integer ejbFindCaseByUniqueId(String uniqueId) throws FinderException 
+	{
+		IDOQuery query = idoQueryGetSelect();
+		query.appendWhereEqualsQuoted(UNIQUE_ID_COLUMN_NAME,uniqueId);
+		
+		return (Integer) idoFindOnePKByQuery(query);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.idega.block.process.data.Case#getUrl()
+	 */
+	public String getUrl() {
+		return getMetaData(CaseConstants.METADATA_KEY_URL);
+	}
+	
+	
 }

@@ -41,6 +41,10 @@ import com.idega.util.IWTimestamp;
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
+	/**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 5676084152460108081L;
 	private String CASE_STATUS_OPEN_KEY;
 	private String CASE_STATUS_INACTIVE_KEY;
 	private String CASE_STATUS_GRANTED_KEY;
@@ -448,6 +452,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString) {
+		
+		if(caseStatusString.length()>4){
+			caseStatusString=caseStatusString.substring(0,4);
+		}
+		
 		CaseStatus status = getCaseStatusFromMap(caseStatusString);
 		if (status != null) {
 			return status;
@@ -638,6 +647,56 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			throw new IBORuntimeException(e);
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#getUrl(com.idega.block.process.data.Case)
+	 */
+	public String getUrl(Case userCase) {
+		String url = userCase.getUrl();
+		return url;
+	}
 
+	/* (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#getCaseSubject(com.idega.block.process.data.Case, java.util.Locale)
+	 */
+	public String getCaseSubject(Case userCase, Locale currentLocale) {
+		String subject = userCase.getSubject();
+		if(subject!=null){
+			return subject;
+		}
+		else{
+			String ret = getLocalizedCaseDescription(userCase,currentLocale);
+			return ret;
+		}
+	}
 
+	/**
+	 * <p>
+	 * Gets the CaseCode instance with primary key caseCode if it exitsts
+	 * in the databse. Else it is created inserted and returned.
+	 * </p>
+	 * @param caseCode
+	 * @return
+	 */
+	protected CaseCode getCaseCodeAndInstallIfNotExists(String caseCode) {
+		CaseCode code=null;
+		try {
+			code = getCaseCode(caseCode);
+		}
+		catch (FinderException e) {
+			try {
+				code = getCaseCodeHome().create();
+				if(caseCode.length()>7){
+					caseCode=caseCode.substring(0,7);
+				}
+				code.setCode(caseCode);
+				code.store();
+			}
+			catch (CreateException e1) {
+				throw new RuntimeException(e);
+			}
+		}
+		return code;
+	}
+	
 }

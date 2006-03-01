@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusiness.java,v 1.36 2006/02/09 11:14:08 palli Exp $
+ * $Id: CaseBusiness.java,v 1.37 2006/03/01 10:30:58 tryggvil Exp $
  * Created on Jan 4, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO gimmi Describe Type CaseBusiness
  * </p>
- *  Last modified: $Date: 2006/02/09 11:14:08 $ by $Author: palli $
+ *  Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -410,4 +410,23 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseBusiness
 	 */
 	public CaseBusiness getCaseBusiness(String caseCode) throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * <p>
+	 * TODO tryggvil describe method getUrl
+	 * </p>
+	 * @param userCase
+	 * @return
+	 */
+	public String getUrl(Case userCase);
+
+	/**
+	 * <p>
+	 * TODO tryggvil describe method getCaseSubject
+	 * </p>
+	 * @param userCase
+	 * @param currentLocale
+	 * @return
+	 */
+	public String getCaseSubject(Case userCase, Locale currentLocale);
 }

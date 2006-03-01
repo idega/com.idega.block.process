@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.11 2006/02/05 19:42:22 laddi Exp $
+ * $Id: UserCases.java,v 1.12 2006/03/01 10:30:58 tryggvil Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/02/05 19:42:22 $ by $Author: laddi $
+ * Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -147,7 +147,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 			try {
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
-				String description = caseBusiness.getLocalizedCaseDescription(userCase, iwc.getCurrentLocale());
+				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
 				IWTimestamp created = new IWTimestamp(userCase.getCreated());
 				String handler = "-";
 				if (userCase.getHandler() != null) {
@@ -168,8 +168,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell = row.createCell();
 				cell.setStyleClass("casesDescription");
 				ICPage page = getPage(caseCode, caseStatus.getStatus());
+				String caseUrl =  caseBusiness.getUrl(userCase);
 				if (page != null) {
-					Link link = new Link(description);
+					Link link = new Link(subject);
 					
 					Class eventListener = caseBusiness.getEventListener();
 					if (eventListener != null) {
@@ -184,8 +185,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					link.setPage(page);
 					cell.add(link);
 				}
+				else if(caseUrl!=null){
+					Link link = new Link(subject,caseUrl);
+					cell.add(link);
+				}
 				else {
-					cell.add(new Text(description));
+					cell.add(new Text(subject));
 				}
 
 				cell = row.createCell();

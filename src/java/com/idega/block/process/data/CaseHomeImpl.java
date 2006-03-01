@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.21 2006/01/06 01:06:42 gimmi Exp $
+ * $Id: CaseHomeImpl.java,v 1.22 2006/03/01 10:30:58 tryggvil Exp $
  * Created on Jan 6, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -21,10 +21,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO gimmi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2006/01/06 01:06:42 $ by $Author: gimmi $
+ *  Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -307,4 +307,19 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
+	
+	public Case findCaseByExternalId(String externalId) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Integer id = ((CaseBMPBean) entity).ejbFindCaseByExternalId(externalId);
+		this.idoCheckInPooledEntity(entity);
+		return this.findByPrimaryKey(id);
+	}
+
+	public Case findCaseByUniqueId(String uniqueId) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Integer id = ((CaseBMPBean) entity).ejbFindCaseByUniqueId(uniqueId);
+		this.idoCheckInPooledEntity(entity);
+		return this.findByPrimaryKey(id);
+	}
+	
 }

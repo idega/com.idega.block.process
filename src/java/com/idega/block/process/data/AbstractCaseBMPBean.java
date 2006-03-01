@@ -1279,5 +1279,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 	public void setBody(String body) {
 		getGeneralCase().setBody(body);
 	}
+	
+	public String getUrl(){
+		return getGeneralCase().getUrl();
+	}
 
 }
