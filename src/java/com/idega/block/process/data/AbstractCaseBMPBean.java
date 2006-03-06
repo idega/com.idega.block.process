@@ -1,23 +1,33 @@
+/*
+ * $Id: AbstractCaseBMPBean.java,v 1.47 2006/03/06 12:47:55 tryggvil Exp $
+ *
+ * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
+ *
+ */
 package com.idega.block.process.data;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
-
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
-
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
-//import com.idega.data.IDOQuery;
+import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
+import com.idega.data.MetaData;
+import com.idega.data.MetaDataBMPBean;
+import com.idega.data.MetaDataCapable;
 import com.idega.data.query.AND;
 import com.idega.data.query.Column;
 import com.idega.data.query.Criteria;
@@ -33,14 +43,17 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 /**
- * Title:        idegaWeb
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:      idega software
- * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson</a>
- * @version 1.0
+ * <p>
+ * This entity class is a abstract class for extending the standard "Case" entity.<br/>
+ * This class is convenient to extend the Case entity by adding a second table that is
+ * one-to-one related to the base Case entity table.
+ * <p>
+ * Last modified: $Date: 2006/03/06 12:47:55 $ by $Author: tryggvil $
+ * 
+ * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
+ * @version $Revision: 1.47 $
  */
-public abstract class AbstractCaseBMPBean extends GenericEntity implements Case {
+public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,MetaDataCapable {
 	private Case _case;
     private Table caseTable;
     private Table genCaseTable;
@@ -1283,5 +1296,85 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case 
 	public String getUrl(){
 		return getGeneralCase().getUrl();
 	}
+	
+	/**
+	 * Finds all cases with set metadata attributes with key metadataKey and value metadataValue
+	 */
+	public Collection ejbFindAllCasesByMetaData(String metadataKey,String metadataValue) throws FinderException {
+		//IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group, caseStatus);
+	    SelectQuery sql = idoSelectQueryGetAllCases();
+	    Table metadataTable = new Table(MetaData.class,"meta");
+	    Table caseTable = new Table(Case.class,"g");
+	    try {
+			sql.addManyToManyJoin(caseTable,metadataTable);
+			sql.addCriteria(new MatchCriteria(metadataTable, MetaDataBMPBean.COLUMN_META_KEY, MatchCriteria.EQUALS, metadataKey));
+			sql.addCriteria(new MatchCriteria(metadataTable, MetaDataBMPBean.COLUMN_META_VALUE, MatchCriteria.EQUALS, metadataValue));
+	    }
+		catch (IDORelationshipException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return super.idoFindPKsByQuery(sql);
+	}
+	
+	/**
+	 *Sets all the metadata key/values for this instance with the given map where the is keys and values of String type.
+	 */
+	public void setMetaDataAttributes(java.util.Map map){
+		getGeneralCase().setMetaDataAttributes(map);
+	}
+	/**
+	 *Gets all the metadata key/values for this instance with the given map where the keys and values of String type.
+	 */
+	public java.util.Map getMetaDataAttributes(){
+		return getGeneralCase().getMetaDataAttributes();
+	}
 
+	/**
+	 *Sets all the metadata types this instance with the given map which is keys and values of String type.
+	 */
+	public java.util.Map getMetaDataTypes(){
+		return getGeneralCase().getMetaDataTypes();
+	}
+	
+	/**
+	 *Set the metadata set for the key metaDataKey to value value
+	 */
+	public void setMetaData(String metaDataKey,String value){
+		getGeneralCase().setMetaData(metaDataKey,value);
+	}
+	/**
+	 *Set the metadata set for the key metaDataKey to value value
+	 */
+	public void setMetaData(String metaDataKey,String value,String type){
+		getGeneralCase().setMetaData(metaDataKey,value,type);
+	}
+	/**
+	 * Gets the metadata set for the key metaDataKey
+	 */
+	public String getMetaData(String metaDataKey){
+		return getGeneralCase().getMetaData(metaDataKey);
+	}
+
+	/**
+	 * Rename a metadata key
+	 */
+	public void renameMetaData(String oldKeyName, String newKeyName){
+		getGeneralCase().renameMetaData(oldKeyName,newKeyName);
+	}
+
+	/**
+	 * Rename a metadata key, and change the value
+	 */
+	public void renameMetaData(String oldKeyName, String newKeyName, String value){
+		getGeneralCase().renameMetaData(oldKeyName,newKeyName,value);
+	}
+	
+	/**
+	 * Gets the metadata for the key metaDataKey
+	 */
+	public boolean removeMetaData(String metaDataKey){
+		return getGeneralCase().removeMetaData(metaDataKey);
+	}
+	
 }
