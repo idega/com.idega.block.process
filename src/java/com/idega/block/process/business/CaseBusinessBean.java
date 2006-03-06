@@ -1,9 +1,20 @@
+/*
+ * $Id: CaseBusinessBean.java,v 1.64 2006/03/06 12:47:04 tryggvil Exp $
+ * Created in 2002 by Tryggvi Larusson
+ *
+ * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
+ */
 package com.idega.block.process.business;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -33,11 +44,13 @@ import com.idega.user.data.UserHome;
 import com.idega.util.IWTimestamp;
 
 /**
- * Title: idegaWeb Description: Copyright: Copyright (c) 2001 Company: idega
- * software
+ * <p>
+ * This is the main logic class for the case/process module.
+ * </p>
+ *  Last modified: $Date: 2006/03/06 12:47:04 $ by $Author: tryggvil $
  * 
- * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson </a>
- * @version 1.0
+ * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
+ * @version $Revision: 1.64 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -63,6 +76,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_WAITING;
 	
 	private Map _statusMap;
+
+	private static Map listenerCaseCodeMap;
+	private static Map listenerCaseCodeStatusMap;
 	
 	protected final static String PARAMETER_SELECTED_CASE = "sel_case_nr";
 	
@@ -509,6 +525,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer) {
 		changeCaseStatus(theCase, newCaseStatus, performer, performer);
 	}
+	
+	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer,Map attributes) {
+		changeCaseStatus(theCase, newCaseStatus, null, performer,null,false,attributes);
+	}
 
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Group handler) {
 		changeCaseStatus(theCase, newCaseStatus, null, performer, handler);
@@ -523,10 +543,25 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) {
+		
+		
+	}
+	
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
 		String oldCaseStatus = "";
 		try {
 			oldCaseStatus = theCase.getStatus();
-
+			Collection listeners = getCaseChangeListeners(theCase,newCaseStatus);
+			
+			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
+				CaseChangeListener listener = (CaseChangeListener) iter.next();
+				CaseChangeEvent event = new CaseChangeEvent(theCase);
+				event.setPerformer(performer);
+				event.setStatusTo(newCaseStatus);
+				event.setAttributes(attributes);
+				listener.beforeCaseChange(event);
+			}
+			
 			theCase.setStatus(newCaseStatus);
 			if (handler != null) {
 				theCase.setHandler(handler);
@@ -546,6 +581,16 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				}
 				log.store();
 			}
+			
+			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
+				CaseChangeListener listener = (CaseChangeListener) iter.next();
+				CaseChangeEvent event = new CaseChangeEvent(theCase);
+				event.setPerformer(performer);
+				event.setStatusTo(newCaseStatus);
+				event.setAttributes(attributes);
+				listener.afterCaseChange(event);
+			}
+			
 		}
 		catch (CreateException e) {
 			throw new EJBException("Error changing case status: " + oldCaseStatus + " to " + newCaseStatus + ":" + e.getMessage());
@@ -697,6 +742,93 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 		}
 		return code;
+	}
+
+
+	/**
+	 * <p>
+	 * TODO tryggvil describe method getCaseChangeListeners
+	 * </p>
+	 * @param theCase
+	 * @param newCaseStatus
+	 * @return
+	 */
+	protected List getCaseChangeListeners(Case theCase, String newCaseStatus) {
+		ArrayList list = new ArrayList();
+		String caseCode = theCase.getCode();
+		List codeList = getListenerListForCaseCode(caseCode);
+		list.addAll(codeList);
+		List statusList = getListenerListForCaseCodeAndStatus(caseCode,newCaseStatus);
+		list.addAll(statusList);
+		return list;
+	}
+	/**
+	 * <p>
+	 * Registers a listener on all status changes for all cases with given caseCode
+	 * </p>
+	 * @param myListener
+	 * @param caseCode
+	 * @param caseStatusTo
+	 */
+	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode){
+		List list = getListenerListForCaseCode(caseCode);
+		list.add(myListener);
+	}
+	
+	/**
+	 * <p>
+	 * TODO tryggvil describe method getListenerListForCaseCode
+	 * </p>
+	 * @param caseCode
+	 * @return
+	 */
+	protected List getListenerListForCaseCode(String caseCode) {
+		if(listenerCaseCodeMap==null){
+			listenerCaseCodeMap = new HashMap();
+		}
+		List listenerList = (List) listenerCaseCodeMap.get(caseCode);
+		if(listenerList==null){
+			listenerList = new ArrayList();
+			listenerCaseCodeMap.put(caseCode,listenerList);
+		}
+		return listenerList;
+	}
+
+	/**
+	 * <p>
+	 * TODO tryggvil describe method getListenerListForCaseCode
+	 * </p>
+	 * @param caseCode
+	 * @return
+	 */
+	protected List getListenerListForCaseCodeAndStatus(String caseCode,String caseStatus) {
+		if(listenerCaseCodeStatusMap==null){
+			listenerCaseCodeStatusMap = new HashMap();
+		}
+		Map statusMap = (Map) listenerCaseCodeStatusMap.get(caseCode);
+		if(statusMap==null){
+			statusMap = new HashMap();
+			listenerCaseCodeStatusMap.put(caseCode,statusMap);
+		}
+		List listenerList = (List) statusMap.get(caseStatus);
+		if(listenerList==null){
+			listenerList = new ArrayList();
+			statusMap.put(caseStatus,listenerList);
+		}
+		return listenerList;
+	}
+	/**
+	 * <p>
+	 * Registers a listener on a status change for all cases with given caseCode and when the status
+	 * is changed to caseStatusTo
+	 * </p>
+	 * @param myListener
+	 * @param caseCode
+	 * @param caseStatusTo
+	 */
+	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode,String caseStatusTo){
+		List list = getListenerListForCaseCodeAndStatus(caseCode,caseStatusTo);
+		list.add(myListener);
 	}
 	
 }

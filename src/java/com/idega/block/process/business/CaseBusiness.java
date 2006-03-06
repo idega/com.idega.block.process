@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusiness.java,v 1.37 2006/03/01 10:30:58 tryggvil Exp $
+ * $Id: CaseBusiness.java,v 1.38 2006/03/06 12:47:04 tryggvil Exp $
  * Created on Jan 4, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO gimmi Describe Type CaseBusiness
  * </p>
- *  Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/03/06 12:47:04 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -429,4 +429,26 @@ public interface CaseBusiness extends IBOService {
 	 * @return
 	 */
 	public String getCaseSubject(Case userCase, Locale currentLocale);
+	
+	
+	/**
+	 * <p>
+	 * Registers a listener on a status change for all cases with given caseCode and when the status
+	 * is changed to caseStatusTo
+	 * </p>
+	 * @param myListener
+	 * @param caseCode
+	 * @param caseStatusTo
+	 */
+	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode,String caseStatusTo);
+	
+	/**
+	 * <p>
+	 * Registers a listener on all status changes for all cases with given caseCode
+	 * </p>
+	 * @param myListener
+	 * @param caseCode
+	 * @param caseStatusTo
+	 */
+	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode);
 }
