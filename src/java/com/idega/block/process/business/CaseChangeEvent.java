@@ -1,23 +1,29 @@
-/**
- * 
+/*
+ * $Id: CaseChangeEvent.java,v 1.2 2006/03/06 13:48:37 tryggvil Exp $
+ * Created in 2006 by Tryggvi Larusson
+ *
+ * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
  */
 package com.idega.block.process.business;
 
 import java.util.HashMap;
 import java.util.Map;
 import com.idega.block.process.data.Case;
-import com.idega.block.process.data.CaseStatus;
 import com.idega.core.user.data.User;
 
 
 /**
  * <p>
- * Event sent into a CaseChangeListener
+ * Event sent into a CaseChangeListener containing info about the 
+ * change on the Case that is being made.
  * </p>
- *  Last modified: $Date: 2006/03/06 12:47:04 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/03/06 13:48:37 $ by $Author: tryggvil $
  * 
- * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.1 $
+ * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
+ * @version $Revision: 1.2 $
  */
 public class CaseChangeEvent {
 	private Case theCase;
