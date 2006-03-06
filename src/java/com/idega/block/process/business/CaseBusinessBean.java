@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.64 2006/03/06 12:47:04 tryggvil Exp $
+ * $Id: CaseBusinessBean.java,v 1.65 2006/03/06 14:02:47 tryggvil Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -47,10 +47,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/03/06 12:47:04 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/03/06 14:02:47 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -557,6 +557,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				CaseChangeListener listener = (CaseChangeListener) iter.next();
 				CaseChangeEvent event = new CaseChangeEvent(theCase);
 				event.setPerformer(performer);
+				event.setStatusFrom(oldCaseStatus);
 				event.setStatusTo(newCaseStatus);
 				event.setAttributes(attributes);
 				listener.beforeCaseChange(event);
@@ -586,6 +587,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				CaseChangeListener listener = (CaseChangeListener) iter.next();
 				CaseChangeEvent event = new CaseChangeEvent(theCase);
 				event.setPerformer(performer);
+				event.setStatusFrom(oldCaseStatus);
 				event.setStatusTo(newCaseStatus);
 				event.setAttributes(attributes);
 				listener.afterCaseChange(event);
