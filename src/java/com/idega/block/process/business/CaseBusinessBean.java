@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.65 2006/03/06 14:02:47 tryggvil Exp $
+ * $Id: CaseBusinessBean.java,v 1.66 2006/03/07 10:51:47 tryggvil Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -47,10 +47,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/03/06 14:02:47 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/03/07 10:51:47 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -543,8 +543,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) {
-		
-		
+		changeCaseStatus(theCase,newCaseStatus,comment,performer,handler,canBeSameStatus,null);
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
