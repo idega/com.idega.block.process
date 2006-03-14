@@ -31,6 +31,7 @@ cca_type=Tegund
 choice_sent_body=\u00DE\u00FA hefur panta\u00F0 sk\u00F3lam\u00E1lt\u00ED\u00F0 hj\u00E1\: {1} fyrir\: {0}, {2}.
 choice_sent_subject=P\u00F6ntun sk\u00F3lam\u00E1lt\u00ED\u00F0a send
 close=Loka glugga
+confirm_case_delete=Ertu viss um a\u00F0 \u00FE\u00FA viljir ey\u00F0a \u00FEessu erindi?
 date=Dagsetning
 delete=Ey\u00F0a
 delete_case=Ey\u00F0a erindi

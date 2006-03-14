@@ -36,6 +36,7 @@ case_status_key.UPPS=Uppsagd
 case_status_key.null=
 cases=Cases
 cca_type=
+confirm_case_delete=Are you sure you want to delete this case?
 delete=Delete
 delete_message=Delete message
 delete_message_confirm=Are you sure you want to delete this message?

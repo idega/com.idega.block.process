@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.12 2006/03/01 10:30:58 tryggvil Exp $
+ * $Id: UserCases.java,v 1.13 2006/03/14 13:46:10 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
+ * Last modified: $Date: 2006/03/14 13:46:10 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -237,6 +237,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					link.setEventListener(UserCases.class);
 					link.setToolTip(getResourceBundle().getLocalizedString("delete_case", "Delete case"));
 					link.addParameter(PARAMETER_CASE_PK, userCase.getPrimaryKey().toString());
+					link.setClickConfirmation(getResourceBundle().getLocalizedString("confirm_case_delete", "Are you sure you want to delete this case?"));
 					cell.add(link);
 					addNonBrakingSpace = false;
 				}
