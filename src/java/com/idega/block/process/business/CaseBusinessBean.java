@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.67 2006/03/15 10:34:47 palli Exp $
+ * $Id: CaseBusinessBean.java,v 1.68 2006/03/15 13:17:02 palli Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -47,10 +47,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/03/15 10:34:47 $ by $Author: palli $
+ *  Last modified: $Date: 2006/03/15 13:17:02 $ by $Author: palli $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -549,11 +549,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
 		String oldCaseStatus = "";
 		try {
+			System.out.print("case code = " + theCase.getCode());
 			oldCaseStatus = theCase.getStatus();
 			Collection listeners = getCaseChangeListeners(theCase,newCaseStatus);
+			System.out.println("number of listeners = " + listeners.size());
 			
 			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
 				CaseChangeListener listener = (CaseChangeListener) iter.next();
+				System.out.println("listener class name = " + listener.getClass().getName());
 				CaseChangeEvent event = new CaseChangeEvent(theCase);
 				event.setPerformer(performer);
 				event.setStatusFrom(oldCaseStatus);
