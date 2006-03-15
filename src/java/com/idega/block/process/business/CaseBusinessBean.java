@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.66 2006/03/07 10:51:47 tryggvil Exp $
+ * $Id: CaseBusinessBean.java,v 1.67 2006/03/15 10:34:47 palli Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -47,10 +47,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/03/07 10:51:47 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/03/15 10:34:47 $ by $Author: palli $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -772,6 +772,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @param caseStatusTo
 	 */
 	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode){
+		System.out.println("adding listener to code = " + caseCode + " name = " + myListener.getClass().getName());
 		List list = getListenerListForCaseCode(caseCode);
 		list.add(myListener);
 	}
