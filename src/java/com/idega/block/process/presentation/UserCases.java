@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.13 2006/03/14 13:46:10 laddi Exp $
+ * $Id: UserCases.java,v 1.14 2006/03/16 12:14:10 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/03/14 13:46:10 $ by $Author: laddi $
+ * Last modified: $Date: 2006/03/16 12:14:10 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -52,6 +52,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private Collection iHiddenCaseCodes;
 	private Map pageMap;
 	private int iMaxNumberOfEntries = -1;
+	private int iMaxNumberOfLetters = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -148,6 +149,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			try {
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
+				if (iMaxNumberOfLetters > 0 && iMaxNumberOfLetters < subject.length()) {
+					subject = subject.substring(0, (iMaxNumberOfLetters + 1)) + "...";
+				}
+				
 				IWTimestamp created = new IWTimestamp(userCase.getCreated());
 				String handler = "-";
 				if (userCase.getHandler() != null) {
@@ -386,5 +391,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
 		iMaxNumberOfEntries = maxNumberOfEntries;
+	}
+
+	
+	public void setMaximumNumberOfLetters(int maxNumberOfLetters) {
+		iMaxNumberOfLetters = maxNumberOfLetters;
 	}
 }
