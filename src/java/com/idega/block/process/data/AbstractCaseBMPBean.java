@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.48 2006/03/15 13:17:02 palli Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.49 2006/03/17 16:51:57 tryggvil Exp $
  *
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  *
@@ -28,6 +28,7 @@ import com.idega.data.IDOStoreException;
 import com.idega.data.MetaData;
 import com.idega.data.MetaDataBMPBean;
 import com.idega.data.MetaDataCapable;
+import com.idega.data.UniqueIDCapable;
 import com.idega.data.query.AND;
 import com.idega.data.query.Column;
 import com.idega.data.query.Criteria;
@@ -48,12 +49,12 @@ import com.idega.util.IWTimestamp;
  * This class is convenient to extend the Case entity by adding a second table that is
  * one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2006/03/15 13:17:02 $ by $Author: palli $
+ * Last modified: $Date: 2006/03/17 16:51:57 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
-public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,MetaDataCapable {
+public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,MetaDataCapable,UniqueIDCapable {
 	private Case _case;
     private Table caseTable;
     private Table genCaseTable;
@@ -1378,6 +1379,22 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 */
 	public boolean removeMetaData(String metaDataKey){
 		return getGeneralCase().removeMetaData(metaDataKey);
+	}
+	
+	/**
+	 * @return The unique id string of the entity if it has it, otherwise null
+	 */
+	public String getUniqueId(){
+		return getGeneralCase().getUniqueId();
+	}
+	
+	/**
+	 * Sets the Unique ID column.
+	 * This method should generally never be called manually
+	 * @param uniqueId
+	 */
+	public void setUniqueId(String uniqueId){
+		getGeneralCase().setUniqueId(uniqueId);
 	}
 	
 }
