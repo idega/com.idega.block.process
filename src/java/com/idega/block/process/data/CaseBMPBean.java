@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.57 2006/03/01 10:30:58 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.58 2006/03/17 09:15:03 palli Exp $
  *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  *
@@ -35,10 +35,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/>
  * Backing SQL table is PROC_CASE.
  * <p>
- * Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
+ * Last modified: $Date: 2006/03/17 09:15:03 $ by $Author: palli $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable
 {
@@ -87,7 +87,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addManyToOneRelationship(COLUMN_USER, "Owner", User.class);
 		addManyToOneRelationship(COLUMN_HANDLER, "Handler Group/User", Group.class);
 		addAttribute(COLUMN_CASE_NUMBER, "Case number", String.class, 30);
-		addAttribute(COLUMN_EXTERNAL_ID, "External case id", String.class, 30);
+		addAttribute(COLUMN_EXTERNAL_ID, "External case id", String.class, 36);
 		addManyToOneRelationship(COLUMN_EXTERNAL_HANDLER_ID, "External handler id", User.class);
 		addUniqueIDColumn();
 		addAttribute(COLUMN_CASE_SUBJECT, "Case subject", String.class);
