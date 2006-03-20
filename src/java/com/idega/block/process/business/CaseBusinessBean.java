@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.69 2006/03/17 09:15:03 palli Exp $
+ * $Id: CaseBusinessBean.java,v 1.70 2006/03/20 14:18:02 palli Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -47,10 +47,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/03/17 09:15:03 $ by $Author: palli $
+ *  Last modified: $Date: 2006/03/20 14:18:02 $ by $Author: palli $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -526,6 +526,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		changeCaseStatus(theCase, newCaseStatus, performer, performer);
 	}
 	
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer) {
+		changeCaseStatus(theCase, newCaseStatus, null, performer, null, false, null, false);
+	}
+	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer,Map attributes) {
 		changeCaseStatus(theCase, newCaseStatus, null, performer,null,false,attributes);
 	}
@@ -547,10 +551,16 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
+		changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, canBeSameStatus, attributes, true);
+	}
+
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes, boolean sendUpdates) {
 		String oldCaseStatus = "";
 		try {
 			oldCaseStatus = theCase.getStatus();
-			Collection listeners = getCaseChangeListeners(theCase,newCaseStatus);
+			Collection listeners = null;
+			if (sendUpdates) {
+				listeners = getCaseChangeListeners(theCase,newCaseStatus);
 			
 			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
 				CaseChangeListener listener = (CaseChangeListener) iter.next();
@@ -560,6 +570,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				event.setStatusTo(newCaseStatus);
 				event.setAttributes(attributes);
 				listener.beforeCaseChange(event);
+			}
 			}
 			
 			theCase.setStatus(newCaseStatus);
@@ -582,6 +593,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				log.store();
 			}
 			
+			if (sendUpdates) {
 			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
 				CaseChangeListener listener = (CaseChangeListener) iter.next();
 				CaseChangeEvent event = new CaseChangeEvent(theCase);
@@ -591,6 +603,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				event.setAttributes(attributes);
 				listener.afterCaseChange(event);
 			}
+			}
 			
 		}
 		catch (CreateException e) {
@@ -598,6 +611,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 	}
 
+	
 	public String getLocalizedCaseDescription(Case theCase, Locale locale) {
 		return getLocalizedCaseDescription(theCase.getCaseCode(), locale);
 	}
