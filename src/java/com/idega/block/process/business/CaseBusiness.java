@@ -1,5 +1,11 @@
-/**
- * 
+/*
+ * $Id: CaseBusiness.java,v 1.40 2006/03/30 11:19:50 thomas Exp $
+ * Created on Mar 27, 2006
+ *
+ * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
+ *
+ * This software is the proprietary information of Idega hf.
+ * Use is subject to license terms.
  */
 package com.idega.block.process.business;
 
@@ -7,10 +13,8 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
@@ -18,207 +22,187 @@ import com.idega.business.IBOService;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
+
 /**
- * @author bluebottle
- *
+ * 
+ *  Last modified: $Date: 2006/03/30 11:19:50 $ by $Author: thomas $
+ * 
+ * @author <a href="mailto:thomas@idega.com">thomas</a>
+ * @version $Revision: 1.40 $
  */
 public interface CaseBusiness extends IBOService {
-	/**
-	 * @see com.idega.block.process.business.CaseBusinessBean#createCase
-	 */
-	public Case createCase(int userID, String caseCode) throws CreateException,
-			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#createCase
 	 */
-	public Case createCase(User user, CaseCode code) throws CreateException,
-			java.rmi.RemoteException;
+	public Case createCase(int userID, String caseCode) throws CreateException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#createCase
+	 */
+	public Case createCase(User user, CaseCode code) throws CreateException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#createSubCase
 	 */
-	public Case createSubCase(Case oldCase) throws CreateException,
-			java.rmi.RemoteException;
+	public Case createSubCase(Case oldCase) throws CreateException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#createSubCase
 	 */
-	public Case createSubCase(Case oldCase, CaseCode newCaseCode)
-			throws CreateException, java.rmi.RemoteException;
+	public Case createSubCase(Case oldCase, CaseCode newCaseCode) throws CreateException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user)
-			throws FinderException, java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, CaseCode code)
-			throws FinderException, java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, String caseCode)
-			throws FinderException, java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user, String caseCode) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, CaseCode code,
-			CaseStatus status) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, String caseCode,
-			String caseStatus) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllActiveCasesForUser(User user, String caseCode, String caseStatus) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getAllCasesForUser(User user) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForGroup
 	 */
-	public Collection getAllCasesForGroup(Group group) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getAllCasesForGroup(Group group) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUserExceptCodes
 	 */
-	public Collection getAllCasesForUserExceptCodes(User user,
-			CaseCode[] codes, int startingCase, int numberOfCases)
+	public Collection getAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases)
 			throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getNumberOfCasesForUserExceptCodes
 	 */
-	public int getNumberOfCasesForUserExceptCodes(User user, CaseCode[] codes)
-			throws java.rmi.RemoteException;
+	public int getNumberOfCasesForUserExceptCodes(User user, CaseCode[] codes) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForGroupExceptCodes
 	 */
-	public Collection getAllCasesForGroupExceptCodes(Group group,
-			CaseCode[] codes) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUserAndGroupsExceptCodes
 	 */
-	public Collection getAllCasesForUserAndGroupsExceptCodes(User user,
-			Collection groups, CaseCode[] codes, int startingCase,
-			int numberOfCases) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes,
+			int startingCase, int numberOfCases) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getNumberOfCasesForUserAndGroupsExceptCodes
 	 */
-	public int getNumberOfCasesForUserAndGroupsExceptCodes(User user,
-			Collection groups, CaseCode[] codes)
+	public int getNumberOfCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes)
 			throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, CaseCode code)
-			throws FinderException, java.rmi.RemoteException;
+	public Collection getAllCasesForUser(User user, CaseCode code) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, String caseCode)
-			throws FinderException, java.rmi.RemoteException;
+	public Collection getAllCasesForUser(User user, String caseCode) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, String caseCode,
-			String caseStatus) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllCasesForUser(User user, String caseCode, String caseStatus) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, CaseCode code,
-			CaseStatus status) throws FinderException, java.rmi.RemoteException;
+	public Collection getAllCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDates
 	 */
-	public Collection getCaseLogsByDates(Timestamp fromDate, Timestamp toDate)
-			throws FinderException, java.rmi.RemoteException;
-
-	/**
-	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseCodeAndDates
-	 */
-	public Collection getCaseLogsByCaseCodeAndDates(CaseCode caseCode,
-			Timestamp fromDate, Timestamp toDate) throws FinderException,
+	public Collection getCaseLogsByDates(Timestamp fromDate, Timestamp toDate) throws FinderException,
 			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseCodeAndDates
 	 */
-	public Collection getCaseLogsByCaseCodeAndDates(String caseCode,
-			Timestamp fromDate, Timestamp toDate) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getCaseLogsByCaseCodeAndDates(CaseCode caseCode, Timestamp fromDate, Timestamp toDate)
+			throws FinderException, java.rmi.RemoteException;
 
 	/**
-	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDatesAndStatusChange
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseCodeAndDates
 	 */
-	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate,
-			Timestamp toDate, CaseStatus statusBefore, CaseStatus statusAfter)
+	public Collection getCaseLogsByCaseCodeAndDates(String caseCode, Timestamp fromDate, Timestamp toDate)
 			throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate,
-			Timestamp toDate, String statusBefore, String statusAfter)
-			throws FinderException, java.rmi.RemoteException;
+	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, CaseStatus statusBefore,
+			CaseStatus statusAfter) throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDatesAndStatusChange
+	 */
+	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore,
+			String statusAfter) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseAndDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByCaseAndDatesAndStatusChange(
-			CaseCode caseCode, Timestamp fromDate, Timestamp toDate,
-			String statusBefore, String statusAfter) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getCaseLogsByCaseAndDatesAndStatusChange(CaseCode caseCode, Timestamp fromDate, Timestamp toDate,
+			String statusBefore, String statusAfter) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseAndDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode,
-			Timestamp fromDate, Timestamp toDate, String statusBefore,
-			String statusAfter) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate,
+			String statusBefore, String statusAfter) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCase
 	 */
-	public Collection getCaseLogsByCase(Case theCase) throws FinderException,
-			java.rmi.RemoteException;
+	public Collection getCaseLogsByCase(Case theCase) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
 	 */
-	public Case getCase(int caseID) throws FinderException,
-			java.rmi.RemoteException;
+	public Case getCase(int caseID) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
 	 */
-	public Case getCase(Object casePK) throws FinderException,
-			java.rmi.RemoteException;
+	public Case getCase(Object casePK) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseCode
 	 */
-	public CaseCode getCaseCode(String caseCode) throws FinderException,
-			java.rmi.RemoteException;
+	public CaseCode getCaseCode(String caseCode) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseCodes
@@ -233,8 +217,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatus
 	 */
-	public CaseStatus getCaseStatus(String StatusCode)
-			throws java.rmi.RemoteException;
+	public CaseStatus getCaseStatus(String StatusCode) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusOpen
@@ -294,8 +277,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusPreliminary
 	 */
-	public CaseStatus getCaseStatusPreliminary()
-			throws java.rmi.RemoteException;
+	public CaseStatus getCaseStatusPreliminary() throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusContract
@@ -320,87 +302,76 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(int theCaseID, String newCaseStatus,
-			User performer) throws FinderException, java.rmi.RemoteException;
+	public void changeCaseStatus(int theCaseID, String newCaseStatus, User performer) throws FinderException,
+			java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			User performer) throws java.rmi.RemoteException;
+	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatusDoNotSendUpdates
 	 */
-	public void changeCaseStatusDoNotSendUpdates(Case theCase,
-			String newCaseStatus, User performer)
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer)
 			throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			User performer, Map attributes) throws java.rmi.RemoteException;
-
-	/**
-	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
-	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			User performer, Group handler) throws java.rmi.RemoteException;
-
-	/**
-	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
-	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			String comment, User performer, Group handler)
+	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Map attributes)
 			throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus,
-			User performer) throws java.rmi.RemoteException;
+	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Group handler)
+			throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			String comment, User performer, Group handler,
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler)
+			throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
+	 */
+	public void changeCaseStatus(Case theCase, CaseStatus newCaseStatus, User performer)
+			throws java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
+	 */
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler,
 			boolean canBeSameStatus) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			String comment, User performer, Group handler,
-			boolean canBeSameStatus, Map attributes)
-			throws java.rmi.RemoteException;
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler,
+			boolean canBeSameStatus, Map attributes) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
-	public void changeCaseStatus(Case theCase, String newCaseStatus,
-			String comment, User performer, Group handler,
-			boolean canBeSameStatus, Map attributes, boolean sendUpdates)
-			throws java.rmi.RemoteException;
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler,
+			boolean canBeSameStatus, Map attributes, boolean sendUpdates) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseDescription
 	 */
-	public String getLocalizedCaseDescription(Case theCase, Locale locale)
-			throws java.rmi.RemoteException;
+	public String getLocalizedCaseDescription(Case theCase, Locale locale) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseDescription
 	 */
-	public String getLocalizedCaseDescription(CaseCode theCaseCode,
-			Locale locale) throws java.rmi.RemoteException;
+	public String getLocalizedCaseDescription(CaseCode theCaseCode, Locale locale) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseStatusDescription
 	 */
-	public String getLocalizedCaseStatusDescription(CaseStatus status,
-			Locale locale) throws java.rmi.RemoteException;
+	public String getLocalizedCaseStatusDescription(CaseStatus status, Locale locale) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLastModifier
@@ -415,8 +386,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusCancelledString
 	 */
-	public String getCaseStatusCancelledString()
-			throws java.rmi.RemoteException;
+	public String getCaseStatusCancelledString() throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusInactiveString
@@ -451,8 +421,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#deleteCase
 	 */
-	public void deleteCase(Case theCase, User performer)
-			throws java.rmi.RemoteException;
+	public void deleteCase(Case theCase, User performer) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getSelectedCaseParameter
@@ -462,8 +431,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseBusiness
 	 */
-	public CaseBusiness getCaseBusiness(String caseCode)
-			throws FinderException, java.rmi.RemoteException;
+	public CaseBusiness getCaseBusiness(String caseCode) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getUrl
@@ -473,20 +441,17 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseSubject
 	 */
-	public String getCaseSubject(Case userCase, Locale currentLocale)
-			throws java.rmi.RemoteException;
+	public String getCaseSubject(Case userCase, Locale currentLocale) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#addCaseChangeListener
 	 */
-	public void addCaseChangeListener(CaseChangeListener myListener,
-			String caseCode) throws java.rmi.RemoteException;
+	public void addCaseChangeListener(CaseChangeListener myListener, String caseCode) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#addCaseChangeListener
 	 */
-	public void addCaseChangeListener(CaseChangeListener myListener,
-			String caseCode, String caseStatusTo)
+	public void addCaseChangeListener(CaseChangeListener myListener, String caseCode, String caseStatusTo)
 			throws java.rmi.RemoteException;
 
 }

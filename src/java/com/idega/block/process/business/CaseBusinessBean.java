@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.70 2006/03/20 14:18:02 palli Exp $
+ * $Id: CaseBusinessBean.java,v 1.71 2006/03/30 11:19:50 thomas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -17,11 +17,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
-
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
@@ -47,10 +45,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/03/20 14:18:02 $ by $Author: palli $
+ *  Last modified: $Date: 2006/03/30 11:19:50 $ by $Author: thomas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -647,7 +645,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return log.getPerformer();
 		}
 		catch (Exception e) {
-
+			// empty
 		}
 		return null;
 	}
@@ -724,10 +722,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if(subject!=null){
 			return subject;
 		}
-		else{
-			String ret = getLocalizedCaseDescription(userCase,currentLocale);
-			return ret;
-		}
+		return getLocalizedCaseDescription(userCase,currentLocale);
 	}
 
 	/**
@@ -845,5 +840,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		List list = getListenerListForCaseCodeAndStatus(caseCode,caseStatusTo);
 		list.add(myListener);
 	}
+	
 	
 }
