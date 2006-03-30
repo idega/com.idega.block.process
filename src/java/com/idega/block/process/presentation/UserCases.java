@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.14 2006/03/16 12:14:10 laddi Exp $
+ * $Id: UserCases.java,v 1.15 2006/03/30 11:23:00 thomas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -22,10 +22,13 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.message.business.MessageTypeManager;
+import com.idega.block.process.security.business.TicketBusiness;
+import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.builder.data.ICPage;
 import com.idega.event.IWPageEventListener;
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
@@ -40,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/03/16 12:14:10 $ by $Author: laddi $
+ * Last modified: $Date: 2006/03/30 11:23:00 $ by $Author: thomas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -135,6 +138,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		group = table.createBodyRowGroup();
 		int iRow = 1;
 		
+		TicketBusiness ticketBusiness = getTicketBusiness(iwc);
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
 			row = group.createRow();
@@ -192,6 +196,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				}
 				else if(caseUrl!=null){
 					Link link = new Link(subject,caseUrl);
+					String ticket = ticketBusiness.getEncodedTicket(userCase);
+					String parameterName =  ticketBusiness.getNameForEncodedTicket();
+					link.addParameter(parameterName, ticket);
 					cell.add(link);
 				}
 				else {
@@ -397,4 +404,15 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public void setMaximumNumberOfLetters(int maxNumberOfLetters) {
 		iMaxNumberOfLetters = maxNumberOfLetters;
 	}
+	
+	private TicketBusiness getTicketBusiness(IWApplicationContext iwac) {
+		try {
+			return (TicketBusiness) IBOLookup.getServiceInstance(iwac, TicketBusiness.class);
+		}
+		catch (IBOLookupException e) {
+			throw new IBORuntimeException();
+		}
+	}
+	
+	
 }
