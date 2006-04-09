@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.51 2006/03/23 15:38:14 thomas Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.52 2006/04/09 11:42:34 laddi Exp $
  *
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  *
@@ -49,10 +49,10 @@ import com.idega.util.IWTimestamp;
  * This class is convenient to extend the Case entity by adding a second table that is
  * one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2006/03/23 15:38:14 $ by $Author: thomas $
+ * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,MetaDataCapable,UniqueIDCapable {
 	private Case _case;
@@ -71,9 +71,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		this.getAttribute(getIDColumnName()).setAsPrimaryKey(true);
 	}
 	public Object ejbCreate() throws CreateException {
-		_case = this.getCaseHome().create();
-		_case.setStatus(this.getCaseStatusOpen());
-		this.setPrimaryKey(_case.getPrimaryKey());
+		this._case = this.getCaseHome().create();
+		this._case.setStatus(this.getCaseStatusOpen());
+		this.setPrimaryKey(this._case.getPrimaryKey());
 		return super.ejbCreate();
 	}
 	public void setDefaultValues() {
@@ -147,7 +147,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return true;
 	}
 	public Object ejbFindByPrimaryKey(Object key) throws FinderException {
-		_case = this.getCaseHome().findByPrimaryKey(key);
+		this._case = this.getCaseHome().findByPrimaryKey(key);
 		return super.ejbFindByPrimaryKey(key);
 	}
 
@@ -172,16 +172,16 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		}
 	}
 	protected Case getGeneralCase() {
-		if (_case == null) {
+		if (this._case == null) {
 			try {
-				_case = getCaseHome().findByPrimaryKey(this.getPrimaryKey());
+				this._case = getCaseHome().findByPrimaryKey(this.getPrimaryKey());
 			}
 			catch (FinderException fe) {
 				fe.printStackTrace();
 				throw new EJBException(fe.getMessage());
 			}
 		}
-		return _case;
+		return this._case;
 	}
 	public Timestamp getCreated() {
 		return getGeneralCase().getCreated();
@@ -470,15 +470,17 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}*/
 	
 	public Table idoTableGeneralCase(){
-	    if(genCaseTable==null)
-	        genCaseTable = new Table(getSQLGeneralCaseTableName(),"g");
-	    return genCaseTable;
+	    if(this.genCaseTable==null) {
+				this.genCaseTable = new Table(getSQLGeneralCaseTableName(),"g");
+			}
+	    return this.genCaseTable;
 	}
 	
 	public Table idoTableSubCase(){
-	    if(caseTable==null)
-	        caseTable = new Table(getTableName(),"a");
-	    return caseTable;
+	    if(this.caseTable==null) {
+				this.caseTable = new Table(getTableName(),"a");
+			}
+	    return this.caseTable;
 	}
 	
 	/**

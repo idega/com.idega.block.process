@@ -1,5 +1,5 @@
 /*
- * $Id: CaseCodeManager.java,v 1.1 2004/10/19 17:20:44 thomas Exp $
+ * $Id: CaseCodeManager.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
  * Created on Oct 19, 2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -19,10 +19,10 @@ import com.idega.idegaweb.IWApplicationContext;
 
 /**
  * 
- *  Last modified: $Date: 2004/10/19 17:20:44 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CaseCodeManager {
 	
@@ -73,9 +73,9 @@ public class CaseCodeManager {
 	}
 	
 	private Map getCaseCodeBusinessMap() {
-		if (caseCodeBusinessMap == null) {
-			caseCodeBusinessMap = new HashMap();
+		if (this.caseCodeBusinessMap == null) {
+			this.caseCodeBusinessMap = new HashMap();
 		}
-		return caseCodeBusinessMap;
+		return this.caseCodeBusinessMap;
 	}
 }

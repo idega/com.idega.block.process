@@ -1,5 +1,5 @@
 /*
- * $Id: CaseChangeEvent.java,v 1.2 2006/03/06 13:48:37 tryggvil Exp $
+ * $Id: CaseChangeEvent.java,v 1.3 2006/04/09 11:42:34 laddi Exp $
  * Created in 2006 by Tryggvi Larusson
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -20,10 +20,10 @@ import com.idega.core.user.data.User;
  * Event sent into a CaseChangeListener containing info about the 
  * change on the Case that is being made.
  * </p>
- *  Last modified: $Date: 2006/03/06 13:48:37 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CaseChangeEvent {
 	private Case theCase;
@@ -41,10 +41,10 @@ public class CaseChangeEvent {
 	 * @return Returns the attributes.
 	 */
 	public Map getAttributes() {
-		if(attributes==null){
-			attributes=new HashMap();
+		if(this.attributes==null){
+			this.attributes=new HashMap();
 		}
-		return attributes;
+		return this.attributes;
 	}
 
 	
@@ -60,7 +60,7 @@ public class CaseChangeEvent {
 	 * @return Returns the performer.
 	 */
 	public User getPerformer() {
-		return performer;
+		return this.performer;
 	}
 
 	
@@ -76,7 +76,7 @@ public class CaseChangeEvent {
 	 * @return Returns the statusFrom.
 	 */
 	public String getStatusFrom() {
-		return statusFrom;
+		return this.statusFrom;
 	}
 
 	
@@ -92,7 +92,7 @@ public class CaseChangeEvent {
 	 * @return Returns the statusTo.
 	 */
 	public String getStatusTo() {
-		return statusTo;
+		return this.statusTo;
 	}
 
 	
@@ -108,7 +108,7 @@ public class CaseChangeEvent {
 	 * @return Returns the theCase.
 	 */
 	public Case getCase() {
-		return theCase;
+		return this.theCase;
 	}
 
 	

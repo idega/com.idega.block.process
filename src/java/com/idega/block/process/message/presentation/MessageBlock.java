@@ -25,12 +25,12 @@ public abstract class MessageBlock extends CaseBlock {
 	private MessageBusiness messageBusiness;
 	
 	public void main(IWContext iwc) throws Exception {
-		messageBusiness = getMessageBusiness(iwc);
+		this.messageBusiness = getMessageBusiness(iwc);
 		super.main(iwc);
 	}
 
 	protected MessageBusiness getMessageBusiness() {
-		return messageBusiness;
+		return this.messageBusiness;
 	}
 
 	protected MessageBusiness getMessageBusiness(IWApplicationContext iwac) {

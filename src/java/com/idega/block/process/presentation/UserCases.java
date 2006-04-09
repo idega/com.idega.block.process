@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.15 2006/03/30 11:23:00 thomas Exp $
+ * $Id: UserCases.java,v 1.16 2006/04/09 11:42:34 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/03/30 11:23:00 $ by $Author: thomas $
+ * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -88,7 +88,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		headingLayer.add(new Text(getHeading()));
 		headerLayer.add(headingLayer);
 		
-		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), iMaxNumberOfEntries != -1 ? iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
+		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
 		
 		add(layer);
 	}
@@ -153,8 +153,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			try {
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
-				if (iMaxNumberOfLetters > 0 && iMaxNumberOfLetters < subject.length()) {
-					subject = subject.substring(0, (iMaxNumberOfLetters + 1)) + "...";
+				if (this.iMaxNumberOfLetters > 0 && this.iMaxNumberOfLetters < subject.length()) {
+					subject = subject.substring(0, (this.iMaxNumberOfLetters + 1)) + "...";
 				}
 				
 				IWTimestamp created = new IWTimestamp(userCase.getCreated());
@@ -300,23 +300,23 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	private CaseCode[] getUserHiddenCaseCodes(){
-		if (iHiddenCaseCodes == null){
-			iHiddenCaseCodes = new ArrayList();
+		if (this.iHiddenCaseCodes == null){
+			this.iHiddenCaseCodes = new ArrayList();
 		}
 		
-		iHiddenCaseCodes.addAll(MessageTypeManager.getInstance().getMessageCodes());
-		if (iHiddenCaseCodes.isEmpty()) {
+		this.iHiddenCaseCodes.addAll(MessageTypeManager.getInstance().getMessageCodes());
+		if (this.iHiddenCaseCodes.isEmpty()) {
 			return null;
 		}
 		
-		if (iHiddenCaseCodes.isEmpty()) {
+		if (this.iHiddenCaseCodes.isEmpty()) {
 			return null;
 		}
 		
-		CaseCode[] codes = new CaseCode[iHiddenCaseCodes.size()];
+		CaseCode[] codes = new CaseCode[this.iHiddenCaseCodes.size()];
 		
 		int index = 0;
-		Iterator iter = iHiddenCaseCodes.iterator();
+		Iterator iter = this.iHiddenCaseCodes.iterator();
 		while (iter.hasNext()) {
 			String code = (String) iter.next();
 			try {
@@ -335,8 +335,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	protected ICPage getPage(String caseCode, String caseStatus) {
-		if (pageMap != null) {
-			Object object = pageMap.get(caseCode);
+		if (this.pageMap != null) {
+			Object object = this.pageMap.get(caseCode);
 			if (object != null) {
 				if (object instanceof ICPage) {
 					return (ICPage) object;
@@ -351,31 +351,31 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	public void setHideCaseCode(CaseCode caseCode) {
-		if (iHiddenCaseCodes == null) {
-			iHiddenCaseCodes = new ArrayList();
+		if (this.iHiddenCaseCodes == null) {
+			this.iHiddenCaseCodes = new ArrayList();
 		}
-		iHiddenCaseCodes.add(caseCode);
+		this.iHiddenCaseCodes.add(caseCode);
 	}
 	
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
-		if (pageMap == null) {
-			pageMap = new HashMap();
+		if (this.pageMap == null) {
+			this.pageMap = new HashMap();
 		}
 		
-		Map statusMap = (Map) pageMap.get(caseCode);
+		Map statusMap = (Map) this.pageMap.get(caseCode);
 		if (statusMap == null) {
 			statusMap = new HashMap();
 		}
 		statusMap.put(caseStatus, page);
-		pageMap.put(caseCode, statusMap);
+		this.pageMap.put(caseCode, statusMap);
 	}
 	
 	public void setPage(String caseCode, ICPage page) {
-		if (pageMap == null) {
-			pageMap = new HashMap();
+		if (this.pageMap == null) {
+			this.pageMap = new HashMap();
 		}
 		
-		pageMap.put(caseCode, page);
+		this.pageMap.put(caseCode, page);
 	}
 
 	public boolean actionPerformed(IWContext iwc) throws IWException {
@@ -397,12 +397,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
-		iMaxNumberOfEntries = maxNumberOfEntries;
+		this.iMaxNumberOfEntries = maxNumberOfEntries;
 	}
 
 	
 	public void setMaximumNumberOfLetters(int maxNumberOfLetters) {
-		iMaxNumberOfLetters = maxNumberOfLetters;
+		this.iMaxNumberOfLetters = maxNumberOfLetters;
 	}
 	
 	private TicketBusiness getTicketBusiness(IWApplicationContext iwac) {

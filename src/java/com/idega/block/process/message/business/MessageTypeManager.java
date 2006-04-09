@@ -1,5 +1,5 @@
 /*
- * $Id: MessageTypeManager.java,v 1.2 2006/03/23 15:40:27 thomas Exp $
+ * $Id: MessageTypeManager.java,v 1.3 2006/04/09 11:42:34 laddi Exp $
  * Created on Oct 12, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -23,10 +23,10 @@ import com.idega.repository.data.SingletonRepository;
 
 
 /**
- * Last modified: $Date: 2006/03/23 15:40:27 $ by $Author: thomas $
+ * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MessageTypeManager implements Singleton {
 
@@ -48,7 +48,7 @@ public class MessageTypeManager implements Singleton {
 	 * @throws IDOLookupException
 	 */
 	public MessageHome getMessageHome() throws IDOLookupException {
-		return getMessageHome(defaultMessageType);
+		return getMessageHome(this.defaultMessageType);
 	}
 	
 	public MessageHome getMessageHome(CaseCode code) throws IDOLookupException {
@@ -66,7 +66,7 @@ public class MessageTypeManager implements Singleton {
 	 */
 	public MessageHome getMessageHome(String messageType) throws IDOLookupException {
 		if (messageType == null) {
-			messageType = defaultMessageType;
+			messageType = this.defaultMessageType;
 		}
 		Class dataClass = getDataClass(messageType);
 		if (dataClass == null) {
@@ -87,7 +87,7 @@ public class MessageTypeManager implements Singleton {
 	 * @param messageData
 	 */
 	public void addDataClassForDefaultType(String messageType, Class messageData) {
-		defaultMessageType = messageType;
+		this.defaultMessageType = messageType;
 		addDataClassForType(messageType, messageData);
 	}
 	
@@ -105,15 +105,15 @@ public class MessageTypeManager implements Singleton {
 	}
 	
 	private Map getMessageTypeDataMap() {
-		if (messageTypeDataMap == null) {
-			messageTypeDataMap = new HashMap();
+		if (this.messageTypeDataMap == null) {
+			this.messageTypeDataMap = new HashMap();
 		}
-		return messageTypeDataMap;
+		return this.messageTypeDataMap;
 	}
 	
 	public Collection getMessageCodes() {
-		if (messageTypeDataMap != null) {
-			return messageTypeDataMap.keySet();
+		if (this.messageTypeDataMap != null) {
+			return this.messageTypeDataMap.keySet();
 		}
 		return new ArrayList();
 	}

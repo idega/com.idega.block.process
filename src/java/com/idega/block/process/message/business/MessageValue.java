@@ -1,5 +1,5 @@
 /*
- * $Id: MessageValue.java,v 1.1 2005/10/13 18:20:38 laddi Exp $
+ * $Id: MessageValue.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
  * Created on Oct 12, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -15,10 +15,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/10/13 18:20:38 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MessageValue {
 
@@ -31,7 +31,7 @@ public class MessageValue {
   String messageType;
 
 	public String getBody() {
-		return body;
+		return this.body;
 	}
 	
 	public void setBody(String body) {
@@ -39,7 +39,7 @@ public class MessageValue {
 	}
 	
 	public Group getHandler() {
-		return handler;
+		return this.handler;
 	}
 	
 	public void setHandler(Group handler) {
@@ -47,7 +47,7 @@ public class MessageValue {
 	}
 	
 	public Case getParentCase() {
-		return parentCase;
+		return this.parentCase;
 	}
 	
 	public void setParentCase(Case parentCase) {
@@ -55,7 +55,7 @@ public class MessageValue {
 	}
 	
 	public User getReceiver() {
-		return receiver;
+		return this.receiver;
 	}
 	
 	public void setReceiver(User receiver) {
@@ -63,7 +63,7 @@ public class MessageValue {
 	}
 	
 	public User getSender() {
-		return sender;
+		return this.sender;
 	}
 	
 	public void setSender(User sender) {
@@ -71,7 +71,7 @@ public class MessageValue {
 	}
 	
 	public String getSubject() {
-		return subject;
+		return this.subject;
 	}
 	
 	public void setSubject(String subject) {
@@ -79,7 +79,7 @@ public class MessageValue {
 	}
 
 	public String getMessageType() {
-		return messageType;
+		return this.messageType;
 	}
 	
 	public void setMessageType(String messageType) {

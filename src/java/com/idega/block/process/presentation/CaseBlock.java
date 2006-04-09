@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBlock.java,v 1.3 2005/10/19 12:52:55 laddi Exp $
+ * $Id: CaseBlock.java,v 1.4 2006/04/09 11:42:34 laddi Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -23,10 +23,10 @@ import com.idega.user.business.UserBusiness;
 
 
 /**
- * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class CaseBlock extends Block {
 
@@ -50,20 +50,20 @@ public abstract class CaseBlock extends Block {
 	private void initialize(IWContext iwc) {
 		setResourceBundle(getResourceBundle(iwc));
 		setBundle(getBundle(iwc));
-		business = getCaseBusiness(iwc);
-		userBusiness = getUserBusiness(iwc);
+		this.business = getCaseBusiness(iwc);
+		this.userBusiness = getUserBusiness(iwc);
 	}
 	
 	protected IWBundle getBundle() {
-		return iwb;
+		return this.iwb;
 	}
 	
 	protected IWResourceBundle getResourceBundle() {
-		return iwrb;
+		return this.iwrb;
 	}
 	
 	protected CaseBusiness getBusiness() {
-		return business;
+		return this.business;
 	}
 
 	protected CaseBusiness getCaseBusiness(IWApplicationContext iwac) {
@@ -76,7 +76,7 @@ public abstract class CaseBlock extends Block {
 	}
 	
 	protected UserBusiness getUserBusiness() {
-		return userBusiness;
+		return this.userBusiness;
 	}
 	
 	private UserBusiness getUserBusiness(IWApplicationContext iwac) {

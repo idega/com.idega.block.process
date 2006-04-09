@@ -28,10 +28,10 @@ public class CaseSessionBean extends IBOSessionBean {
   }
 
   public CaseBusiness getCaseBusiness()throws RemoteException{
-    if(caseBusiness==null){
-      caseBusiness = (CaseBusiness)this.getServiceInstance(CaseBusiness.class);
+    if(this.caseBusiness==null){
+      this.caseBusiness = (CaseBusiness)this.getServiceInstance(CaseBusiness.class);
     }
-    return caseBusiness;
+    return this.caseBusiness;
   }
 
   /**

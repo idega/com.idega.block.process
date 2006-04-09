@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.6 2006/02/16 21:39:32 laddi Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.7 2006/04/09 11:42:34 laddi Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2006/02/16 21:39:32 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -57,8 +57,9 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 	}
 
 	public boolean isMessageRead(Message message) {
-		if ((message.getCaseStatus()).equals(getCaseStatusGranted()))
+		if ((message.getCaseStatus()).equals(getCaseStatusGranted())) {
 			return true;
+		}
 		return false;
 	}
 

@@ -1,5 +1,5 @@
 /*
- * $Id: TicketValidatorSessionListener.java,v 1.1 2006/03/30 11:21:39 thomas Exp $
+ * $Id: TicketValidatorSessionListener.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
  * Created on Mar 28, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -16,10 +16,10 @@ import javax.servlet.http.HttpSessionListener;
 
 /**
  * 
- *  Last modified: $Date: 2006/03/30 11:21:39 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TicketValidatorSessionListener implements HttpSessionListener {
 	
@@ -36,10 +36,10 @@ public class TicketValidatorSessionListener implements HttpSessionListener {
 	 * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
 	 */
 	public void sessionDestroyed(HttpSessionEvent sessionEvent) {
-		if (ticketValidator == null) {
-			ticketValidator = TicketValidator.getInstance();
+		if (this.ticketValidator == null) {
+			this.ticketValidator = TicketValidator.getInstance();
 		}
 		HttpSession session = sessionEvent.getSession();
-		ticketValidator.removeTicket(session);
+		this.ticketValidator.removeTicket(session);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * $Id: TicketValidator.java,v 1.1 2006/03/30 11:21:39 thomas Exp $
+ * $Id: TicketValidator.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
  * Created on Mar 29, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -37,10 +37,10 @@ import com.idega.util.datastructures.map.TimeLimitedMap;
 
 /**
  * 
- *  Last modified: $Date: 2006/03/30 11:21:39 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TicketValidator implements Singleton {
 	
@@ -61,15 +61,15 @@ public class TicketValidator implements Singleton {
 	
 	public void removeTicket(HttpSession session) {
 		String sessionId = session.getId();
-		sessionIdSession.remove(sessionId);
+		this.sessionIdSession.remove(sessionId);
 	}
 
 	public synchronized String addTicket(Case theCase) {
 		String personalId = theCase.getOwner().getPersonalID();
 		HttpSession session = IWContext.getInstance().getSession();
 		String sessionId = session.getId();
-		if (!sessionIdSession.containsKey(sessionId)) {
-			sessionIdSession.put(sessionId, session);
+		if (!this.sessionIdSession.containsKey(sessionId)) {
+			this.sessionIdSession.put(sessionId, session);
 		}
 		return getTicket(personalId, sessionId);
 	}
@@ -143,7 +143,7 @@ public class TicketValidator implements Singleton {
 	}
 		
 	private boolean isLoggedOnUsingSession(String sessionId, IWApplicationContext iwac) {
-		HttpSession session = (HttpSession) sessionIdSession.get(sessionId);
+		HttpSession session = (HttpSession) this.sessionIdSession.get(sessionId);
 		if (session == null ) {
 			return false;
 		}
@@ -154,7 +154,7 @@ public class TicketValidator implements Singleton {
 		}
 		catch (IllegalStateException ex) {
 			// cleaning...destroy that session
-			sessionIdSession.remove(sessionId);
+			this.sessionIdSession.remove(sessionId);
 			// session not valid
 			return false;
 		}
@@ -172,21 +172,21 @@ public class TicketValidator implements Singleton {
 	}
 	
 	private LoginBusinessBean getLoginBusinesBean(IWApplicationContext iwac) {
-		if (loginBusiness == null) {
-			loginBusiness = LoginBusinessBean.getLoginBusinessBean(iwac);
+		if (this.loginBusiness == null) {
+			this.loginBusiness = LoginBusinessBean.getLoginBusinessBean(iwac);
 		}
-		return loginBusiness;
+		return this.loginBusiness;
 	}
 	
 	private UserBusiness getUserBusiness(IWApplicationContext iwac) {
-		if (userBusiness == null) {
+		if (this.userBusiness == null) {
 			try {
-				userBusiness = (UserBusiness) IBOLookup.getServiceInstance(iwac, UserBusiness.class);
+				this.userBusiness = (UserBusiness) IBOLookup.getServiceInstance(iwac, UserBusiness.class);
 			}
 			catch (IBOLookupException e) {
 				throw new IBORuntimeException();
 			}
 		}
-		return userBusiness;
+		return this.userBusiness;
 	}
 }
