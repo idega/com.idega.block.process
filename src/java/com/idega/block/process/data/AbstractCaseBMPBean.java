@@ -1,11 +1,11 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.52 2006/04/09 11:42:34 laddi Exp $
- *
+ * $Id: AbstractCaseBMPBean.java,v 1.53 2006/04/11 08:44:42 laddi Exp $
+ * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
- *
- * This software is the proprietary information of Idega hf.
- * Use is subject to license terms.
- *
+ * 
+ * This software is the proprietary information of Idega hf. Use is subject to
+ * license terms.
+ * 
  */
 package com.idega.block.process.data;
 
@@ -13,10 +13,12 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
+
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOException;
@@ -43,51 +45,57 @@ import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
+
 /**
  * <p>
- * This entity class is a abstract class for extending the standard "Case" entity.<br/>
- * This class is convenient to extend the Case entity by adding a second table that is
- * one-to-one related to the base Case entity table.
+ * This entity class is a abstract class for extending the standard "Case"
+ * entity.<br/> This class is convenient to extend the Case entity by adding a
+ * second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
-public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,MetaDataCapable,UniqueIDCapable {
+public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
+
 	private Case _case;
-    private Table caseTable;
-    private Table genCaseTable;
+	private Table caseTable;
+	private Table genCaseTable;
+
 	/**
 	 * Returns a unique Key to identify this CaseCode
 	 */
 	public abstract String getCaseCodeKey();
+
 	/**
 	 * Returns a description for the CaseCode associated with this case type
 	 */
 	public abstract String getCaseCodeDescription();
+
 	public void addGeneralCaseRelation() {
 		this.addManyToOneRelationship(getIDColumnName(), "Case ID", Case.class);
 		this.getAttribute(getIDColumnName()).setAsPrimaryKey(true);
 	}
+
 	public Object ejbCreate() throws CreateException {
 		this._case = this.getCaseHome().create();
 		this._case.setStatus(this.getCaseStatusOpen());
 		this.setPrimaryKey(this._case.getPrimaryKey());
 		return super.ejbCreate();
 	}
+
 	public void setDefaultValues() {
-		/*try{
-		  System.out.println("AbstractCase : Calling setDefaultValues()");
-		  setCode(getCaseCodeKey());
-		}
-		catch(RemoteException e){
-		  throw new EJBException(e.getMessage());
-		}*/
+		/*
+		 * try{ System.out.println("AbstractCase : Calling setDefaultValues()");
+		 * setCode(getCaseCodeKey()); } catch(RemoteException e){ throw new
+		 * EJBException(e.getMessage()); }
+		 */
 	}
+
 	public void insertStartData() {
 		try {
-			//CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
+			// CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
 			CaseCodeHome cchome = (CaseCodeHome) IDOLookup.getHome(CaseCode.class);
 			CaseStatusHome cshome = (CaseStatusHome) IDOLookup.getHome(CaseStatus.class);
 			CaseCode code = cchome.create();
@@ -118,7 +126,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 						code.addAssociatedCaseStatus(status);
 					}
 					catch (Exception e) {
-						//e.printStackTrace();
+						// e.printStackTrace();
 						System.err.println("Error inserting CaseStatus for key: " + statusKey);
 					}
 				}
@@ -128,6 +136,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Could be ovverrided for extra CaseStatus Keys associated with this CaseCode
 	 * Returns an array of Strings.
@@ -135,17 +144,21 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	public String[] getCaseStatusKeys() {
 		return null;
 	}
+
 	/**
-	 * Could be ovverrided for extra CaseStatus Descriptions associated with this CaseCode
-	 * Returns an array of String descriptions
-	 * Does not need to return anything (but null), but if it returns a non-null value then the array must be as long as returned by getCaseStatusKeys()
+	 * Could be ovverrided for extra CaseStatus Descriptions associated with this
+	 * CaseCode Returns an array of String descriptions Does not need to return
+	 * anything (but null), but if it returns a non-null value then the array must
+	 * be as long as returned by getCaseStatusKeys()
 	 */
 	public String[] getCaseStatusDescriptions() {
 		return null;
 	}
+
 	protected boolean doInsertInCreate() {
 		return true;
 	}
+
 	public Object ejbFindByPrimaryKey(Object key) throws FinderException {
 		this._case = this.getCaseHome().findByPrimaryKey(key);
 		return super.ejbFindByPrimaryKey(key);
@@ -163,6 +176,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		super.remove();
 		getGeneralCase().remove();
 	}
+
 	protected CaseHome getCaseHome() {
 		try {
 			return (CaseHome) com.idega.data.IDOLookup.getHome(Case.class);
@@ -171,6 +185,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 			throw new IDORuntimeException(e.getMessage());
 		}
 	}
+
 	protected Case getGeneralCase() {
 		if (this._case == null) {
 			try {
@@ -183,168 +198,224 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		}
 		return this._case;
 	}
+
 	public Timestamp getCreated() {
 		return getGeneralCase().getCreated();
 	}
+
 	public void setCaseCode(CaseCode p0) {
 		getGeneralCase().setCaseCode(p0);
 	}
+
 	public void setParentCase(Case p0) {
 		getGeneralCase().setParentCase(p0);
 	}
+
 	public void setStatus(String p0) {
 		getGeneralCase().setStatus(p0);
 	}
+
 	public String getCode() {
 		if (this.getGeneralCase().getCode() == null) {
 			return this.getCaseCodeKey();
 		}
 		return this.getGeneralCase().getCode();
 	}
+
 	public void setCaseStatus(CaseStatus p0) {
 		this.getGeneralCase().setCaseStatus(p0);
 	}
+
 	public CaseCode getCaseCode() {
 		return this.getGeneralCase().getCaseCode();
 	}
+
 	public void setOwner(User p0) {
 		this.getGeneralCase().setOwner(p0);
 	}
+
+	public void setCreator(User p0) {
+		this.getGeneralCase().setCreator(p0);
+	}
+
 	public Case getParentCase() {
 		return this.getGeneralCase().getParentCase();
 	}
+
 	public void setCode(String p0) {
 		this.getGeneralCase().setCode(p0);
 	}
+
 	public User getOwner() {
 		return this.getGeneralCase().getOwner();
 	}
+
+	public User getCreator() {
+		return this.getGeneralCase().getCreator();
+	}
+
 	public CaseStatus getCaseStatus() {
 		return this.getGeneralCase().getCaseStatus();
 	}
+
 	public String getStatus() {
 		return this.getGeneralCase().getStatus();
 	}
+
 	public void setCreated(Timestamp p0) {
 		this.getGeneralCase().setCreated(p0);
 	}
+
 	public Collection getChildren() {
 		return this.getGeneralCase().getChildren();
 	}
+
 	public Iterator getChildrenIterator() {
 		return this.getGeneralCase().getChildrenIterator();
 	}
+
 	public boolean getAllowsChildren() {
 		return this.getGeneralCase().getAllowsChildren();
 	}
+
 	public ICTreeNode getChildAtIndex(int childIndex) {
 		return this.getGeneralCase().getChildAtIndex(childIndex);
 	}
+
 	public int getChildCount() {
 		return this.getGeneralCase().getChildCount();
 	}
+
 	public int getIndex(ICTreeNode node) {
 		return this.getGeneralCase().getIndex(node);
 	}
+
 	public ICTreeNode getParentNode() {
 		return this.getGeneralCase().getParentNode();
 	}
+
 	public boolean isLeaf() {
 		return this.getGeneralCase().isLeaf();
 	}
+
 	public String getNodeName() {
 		return this.getGeneralCase().getNodeName();
 	}
+
 	public String getNodeName(Locale locale) {
 		return this.getGeneralCase().getNodeName(locale);
 	}
+
 	public String getNodeName(Locale locale, IWApplicationContext iwac) {
 		return this.getGeneralCase().getNodeName(locale, iwac);
 	}
+
 	public int getNodeID() {
 		return this.getGeneralCase().getNodeID();
 	}
+
 	public int getSiblingCount() {
 		return this.getGeneralCase().getSiblingCount();
 	}
+
 	/**
 	 * @see com.idega.core.ICTreeNode#getNodeType()
 	 */
-	public int getNodeType(){
+	public int getNodeType() {
 		return -1;
 	}
 
 	public Group getHandler() {
 		return this.getGeneralCase().getHandler();
 	}
+
 	public int getHandlerId() {
 		return this.getGeneralCase().getHandlerId();
 	}
+
 	public void setHandler(Group handler) {
 		this.getGeneralCase().setHandler(handler);
 	}
+
 	public void setHandler(int handlerGroupID) {
 		this.getGeneralCase().setHandler(handlerGroupID);
 	}
 
 	/**
 	 * Returns the cASE_STATUS_CANCELLED_KEY.
+	 * 
 	 * @return String
 	 */
 	protected String getCaseStatusCancelled() {
 		return this.getCaseHome().getCaseStatusCancelled();
 	}
+
 	/**
 	 * Returns the cASE_STATUS_DENIED_KEY.
+	 * 
 	 * @return String
 	 */
 	protected String getCaseStatusDenied() {
 		return this.getCaseHome().getCaseStatusDenied();
 	}
+
 	/**
 	 * Returns the cASE_STATUS_GRANTED_KEY.
+	 * 
 	 * @return String
 	 */
 	protected String getCaseStatusGranted() {
 		return this.getCaseHome().getCaseStatusGranted();
 	}
+
 	/**
 	 * Returns the cASE_STATUS_INACTIVE_KEY.
+	 * 
 	 * @return String
 	 */
 	public String getCaseStatusInactive() {
 		return this.getCaseHome().getCaseStatusInactive();
 	}
+
 	/**
 	 * Returns the cASE_STATUS_OPEN_KEY.
+	 * 
 	 * @return String
 	 */
 	public String getCaseStatusOpen() {
 		return this.getCaseHome().getCaseStatusOpen();
 	}
+
 	/**
 	 * Returns the cASE_STATUS_REVIEW_KEY.
+	 * 
 	 * @return String
 	 */
 	public String getCaseStatusReview() {
 		return getCaseHome().getCaseStatusReview();
 	}
+
 	/**
 	 * Returns the CASE_STATUS_PRELIMINARY_KEY.
+	 * 
 	 * @return String
 	 */
 	public String getCaseStatusPreliminary() {
 		return getCaseHome().getCaseStatusPreliminary();
 	}
+
 	/**
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
+	 * 
 	 * @return String
 	 */
 	public String getCaseStatusContract() {
 		return getCaseHome().getCaseStatusContract();
 	}
+
 	/**
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
+	 * 
 	 * @return String
 	 */
 	public String getCaseStatusReady() {
@@ -354,398 +425,365 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	protected String getSQLGeneralCaseTableName() {
 		return CaseBMPBean.TABLE_NAME;
 	}
+
 	protected String getSQLGeneralCasePKColumnName() {
 		return CaseBMPBean.PK_COLUMN;
 	}
+
 	protected String getSQLGeneralCaseUserColumnName() {
 		return CaseBMPBean.COLUMN_USER;
 	}
+
 	protected String getSQLGeneralCaseHandlerColumnName() {
 		return CaseBMPBean.COLUMN_HANDLER;
 	}
+
 	protected String getSQLGeneralCaseCaseCodeColumnName() {
 		return CaseBMPBean.COLUMN_CASE_CODE;
 	}
+
 	protected String getSQLGeneralCaseCaseStatusColumnName() {
 		return CaseBMPBean.COLUMN_CASE_STATUS;
 	}
+
 	protected String getSQLGeneralCaseParentColumnName() {
 		return CaseBMPBean.COLUMN_PARENT_CASE;
 	}
+
 	protected String getSQLGeneralCaseCreatedColumnName() {
 		return CaseBMPBean.COLUMN_CREATED;
 	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode
 	 */
 	public Collection ejbFindAllCasesByStatus(CaseStatus caseStatus) throws FinderException {
 		return ejbFindAllCasesByStatus(caseStatus.getStatus());
 	}
 
 	/**
-	 * Finds all cases for the specified user and the associated caseCode and orders chronologically
+	 * Finds all cases for the specified user and the associated caseCode and
+	 * orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUser(User user) throws FinderException {
-		//IDOQuery sql = idoQueryGetAllCasesByUser(user);
-	    SelectQuery sql = idoSelectQueryGetAllCasesByUser(user);
+		// IDOQuery sql = idoQueryGetAllCasesByUser(user);
+		SelectQuery sql = idoSelectQueryGetAllCasesByUser(user);
 		return super.idoFindPKsByQuery(sql);
 	}
-	/**
-	 * Finds all cases for the specified user and the associated caseCode and orders chronologically
-	 *//*
-	public IDOQuery idoQueryGetAllCasesByUser(User user) {
-		String caseCode = this.getCaseCodeKey();
-		//StringBuffer sql = new StringBuffer();
-		IDOQuery sql = idoQuery();
-		sql.append("select * from ");
 
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseUserColumnName());
-		sql.append("=");
-		sql.append(user.getPrimaryKey().toString());
-		sql.append(" order by g.");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-
-		return sql;
-		//return (Collection) super.idoFindPKsBySQL(sql.toString());
-	}*/
 	/**
-	 * Finds all cases for the specified user and the associated caseCode and orders chronologically
+	 * Finds all cases for the specified user and the associated caseCode and
+	 * orders chronologically
 	 */
-	public SelectQuery idoSelectQueryGetAllCasesByUser(User user){
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    	query.addCriteria(idoCriteriaForUser(user));
-	    return query;
+	/*
+	 * public IDOQuery idoQueryGetAllCasesByUser(User user) { String caseCode =
+	 * this.getCaseCodeKey(); //StringBuffer sql = new StringBuffer(); IDOQuery
+	 * sql = idoQuery(); sql.append("select * from ");
+	 * 
+	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("=");
+	 * sql.append(user.getPrimaryKey().toString()); sql.append(" order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * 
+	 * return sql; //return (Collection) super.idoFindPKsBySQL(sql.toString()); }
+	 */
+	/**
+	 * Finds all cases for the specified user and the associated caseCode and
+	 * orders chronologically
+	 */
+	public SelectQuery idoSelectQueryGetAllCasesByUser(User user) {
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForUser(user));
+		return query;
 	}
 
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByStatus(String caseStatus) throws FinderException {
 		return idoFindPKsByQuery(idoSelectQueryGetAllCasesByStatus(caseStatus));
 	}
 
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
-	 *//*
-	public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus) {
-		String caseCode = this.getCaseCodeKey();
-		//StringBuffer sql = new StringBuffer();
-		IDOQuery sql = idoQuery();
-		sql.append("select * from ");
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-		sql.append("='");
-		sql.append(caseStatus);
-		sql.append("'");
-		//sql.append(" order by ");
-		//sql.append(this.getSQLGeneralCaseCreatedColumnName());
-
-		return sql;
-		//return (Collection) super.idoFindPKsBySQL(sql.toString());
-	}*/
-	
-	public Table idoTableGeneralCase(){
-	    if(this.genCaseTable==null) {
-				this.genCaseTable = new Table(getSQLGeneralCaseTableName(),"g");
-			}
-	    return this.genCaseTable;
-	}
-	
-	public Table idoTableSubCase(){
-	    if(this.caseTable==null) {
-				this.caseTable = new Table(getTableName(),"a");
-			}
-	    return this.caseTable;
-	}
-	
-	/**
-	 * Finds all cases for all users with the associated caseCode 
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
-	public SelectQuery idoSelectQueryGetAllCases(){
-	    String caseCode = this.getCaseCodeKey();
-	    	Table caseTable = idoTableGeneralCase();
-	    	Table subCasetable = idoTableSubCase();
-	    	SelectQuery query = new SelectQuery(caseTable);
-	    	query.addColumn(new WildCardColumn());
-	    	query.addCriteria(new JoinCriteria(new Column(caseTable,getSQLGeneralCasePKColumnName()),new Column(subCasetable,getIDColumnName())));
-	     query.addCriteria(new MatchCriteria(caseTable,getSQLGeneralCaseCaseCodeColumnName(),MatchCriteria.EQUALS,caseCode,true));
-	    	return query;
+	/*
+	 * public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus) { String
+	 * caseCode = this.getCaseCodeKey(); //StringBuffer sql = new StringBuffer();
+	 * IDOQuery sql = idoQuery(); sql.append("select * from ");
+	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append("='");
+	 * sql.append(caseStatus); sql.append("'"); //sql.append(" order by ");
+	 * //sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * 
+	 * return sql; //return (Collection) super.idoFindPKsBySQL(sql.toString()); }
+	 */
+
+	public Table idoTableGeneralCase() {
+		if (this.genCaseTable == null) {
+			this.genCaseTable = new Table(getSQLGeneralCaseTableName(), "g");
+		}
+		return this.genCaseTable;
 	}
-	
-	public Criteria idoCriteriaForStatus(CaseStatus caseStatus){
-	    return idoCriteriaForStatus(caseStatus.getStatus());
+
+	public Table idoTableSubCase() {
+		if (this.caseTable == null) {
+			this.caseTable = new Table(getTableName(), "a");
+		}
+		return this.caseTable;
 	}
-	
-	public Criteria idoCriteriaForStatus(String caseStatus){
-	    return new MatchCriteria(idoTableGeneralCase(),getSQLGeneralCaseCaseStatusColumnName(),MatchCriteria.EQUALS,caseStatus,true);
+
+	/**
+	 * Finds all cases for all users with the associated caseCode
+	 */
+	public SelectQuery idoSelectQueryGetAllCases() {
+		String caseCode = this.getCaseCodeKey();
+		Table caseTable = idoTableGeneralCase();
+		Table subCasetable = idoTableSubCase();
+		SelectQuery query = new SelectQuery(caseTable);
+		query.addColumn(new WildCardColumn());
+		query.addCriteria(new JoinCriteria(new Column(caseTable, getSQLGeneralCasePKColumnName()), new Column(subCasetable, getIDColumnName())));
+		query.addCriteria(new MatchCriteria(caseTable, getSQLGeneralCaseCaseCodeColumnName(), MatchCriteria.EQUALS, caseCode, true));
+		return query;
 	}
-	
-	public Criteria idoCriteriaForStatus(String[] caseStatus){
-	    return new InCriteria(idoTableGeneralCase(),getSQLGeneralCaseCaseStatusColumnName(),caseStatus);
+
+	public Criteria idoCriteriaForStatus(CaseStatus caseStatus) {
+		return idoCriteriaForStatus(caseStatus.getStatus());
 	}
-	
-	public Criteria idoCriteriaForUser(User user){
-	    return new MatchCriteria(idoTableGeneralCase(),getSQLGeneralCaseUserColumnName(),MatchCriteria.EQUALS,user.getPrimaryKey().toString());
+
+	public Criteria idoCriteriaForStatus(String caseStatus) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseStatusColumnName(), MatchCriteria.EQUALS, caseStatus, true);
 	}
-	
-	
-	public Criteria idoCriteriaForGroup(Group group){
-	    return new MatchCriteria(idoTableGeneralCase(),getSQLGeneralCaseHandlerColumnName(),MatchCriteria.EQUALS,group.getPrimaryKey().toString());
+
+	public Criteria idoCriteriaForStatus(String[] caseStatus) {
+		return new InCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseStatusColumnName(), caseStatus);
 	}
-	
-	public Criteria idoCriteriaForGroup(Collection groups){
-	    String[] groupIDs = new String[groups.size()];
+
+	public Criteria idoCriteriaForUser(User user) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseUserColumnName(), MatchCriteria.EQUALS, user.getPrimaryKey().toString());
+	}
+
+	public Criteria idoCriteriaForGroup(Group group) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseHandlerColumnName(), MatchCriteria.EQUALS, group.getPrimaryKey().toString());
+	}
+
+	public Criteria idoCriteriaForGroup(Collection groups) {
+		String[] groupIDs = new String[groups.size()];
 		int row = 0;
-		
+
 		Iterator iter = groups.iterator();
 		while (iter.hasNext()) {
 			Group element = (Group) iter.next();
 			groupIDs[row++] = element.getPrimaryKey().toString();
 		}
-		return new InCriteria(idoTableGeneralCase(),getSQLGeneralCaseHandlerColumnName(),groupIDs);
-	}
-	
-	public Criteria idoCriteriaForParentCase(Case parentCase){
-	    return new MatchCriteria(idoTableGeneralCase(),getSQLGeneralCaseParentColumnName(),MatchCriteria.EQUALS,parentCase.getPrimaryKey().toString());    
-	}
-	
-	public Criteria idoCriteriaForCreatedWithinDates(IWTimestamp theFrom,IWTimestamp theTo){
-	    IWTimestamp from = new IWTimestamp(theFrom);
-	    IWTimestamp to = new IWTimestamp(theTo);
-	    to.setHour(23);
-		to.setMinute(59);
-		to.setSecond(59);
-		from.setHour(0);
-		from.setMinute(0);
-		from.setSecond(0);
-	    return new AND(
-	            new MatchCriteria(idoTableGeneralCase(),getSQLGeneralCaseCreatedColumnName(),MatchCriteria.GREATEREQUAL,from.getTimestamp())
-	            ,new MatchCriteria(idoTableGeneralCase(),getSQLGeneralCaseCreatedColumnName(),MatchCriteria.LESSEQUAL,to.getTimestamp()));
-	}
-	
-	public Order idoOrderByCreationDate(boolean ascending){
-	    return new Order(new Column(idoTableGeneralCase(),getSQLGeneralCaseCreatedColumnName()),ascending);
-	}
-	
-	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
-	 */
-	public SelectQuery idoSelectQueryGetAllCasesByStatus(String caseStatus){
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    	query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		return new InCriteria(idoTableGeneralCase(), getSQLGeneralCaseHandlerColumnName(), groupIDs);
 	}
 
-	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode ,created between given timestamps
-	 *//*
-	public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus, IWTimestamp from, IWTimestamp to) {
-		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
+	public Criteria idoCriteriaForParentCase(Case parentCase) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseParentColumnName(), MatchCriteria.EQUALS, parentCase.getPrimaryKey().toString());
+	}
+
+	public Criteria idoCriteriaForCreatedWithinDates(IWTimestamp theFrom, IWTimestamp theTo) {
+		IWTimestamp from = new IWTimestamp(theFrom);
+		IWTimestamp to = new IWTimestamp(theTo);
 		to.setHour(23);
 		to.setMinute(59);
 		to.setSecond(59);
 		from.setHour(0);
 		from.setMinute(0);
 		from.setSecond(0);
-		sql.appendAnd();
-		sql.appendWithinStamps("g."+getSQLGeneralCaseCreatedColumnName(),from.getTimestamp(),to.getTimestamp());
-		//sql.append(" g.");
-		//sql.append(getSQLGeneralCaseCreatedColumnName());
-		//sql.appendGreaterThanOrEqualsSign();
-		//sql.append((Timestamp)from.getTimestamp());
-		//sql.append(" >= '");
-		//sql.append(from.toSQLString());
-		//sql.append("'");
-		//sql.appendAnd();
-		//sql.append(" g.");
-		//sql.append(getSQLGeneralCaseCreatedColumnName());
-		//sql.appendLessThanOrEqualsSign();
-		//sql.append((Timestamp)to.getTimestamp());
-		//sql.append(" <= '");
-		//sql.append(to.toSQLString());
-		//sql.append("'");
-		return sql;
-	}*/
-	
-	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode ,created between given timestamps
-	 */
-	public SelectQuery idoSelectQueryGetAllCasesByStatus(String caseStatus,IWTimestamp from,IWTimestamp to){
-	    SelectQuery query = idoSelectQueryGetAllCasesByStatus(caseStatus);
-	    query.addCriteria(idoCriteriaForCreatedWithinDates(from,to));
-	    return query;
-	} 
+		return new AND(new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCreatedColumnName(), MatchCriteria.GREATEREQUAL, from.getTimestamp()), new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCreatedColumnName(), MatchCriteria.LESSEQUAL, to.getTimestamp()));
+	}
+
+	public Order idoOrderByCreationDate(boolean ascending) {
+		return new Order(new Column(idoTableGeneralCase(), getSQLGeneralCaseCreatedColumnName()), ascending);
+	}
 
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
-	 *//*
-	public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String caseStatus, IWTimestamp from, IWTimestamp to) {
-		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus, from, to);
-		sql.append(" order by ");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return sql;
-	}*/
-	
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
+	 */
+	public SelectQuery idoSelectQueryGetAllCasesByStatus(String caseStatus) {
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
+	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode ,created between given timestamps
+	 */
+	/*
+	 * public IDOQuery idoQueryGetAllCasesByStatus(String caseStatus, IWTimestamp
+	 * from, IWTimestamp to) { IDOQuery sql =
+	 * idoQueryGetAllCasesByStatus(caseStatus); to.setHour(23); to.setMinute(59);
+	 * to.setSecond(59); from.setHour(0); from.setMinute(0); from.setSecond(0);
+	 * sql.appendAnd();
+	 * sql.appendWithinStamps("g."+getSQLGeneralCaseCreatedColumnName(),from.getTimestamp(),to.getTimestamp());
+	 * //sql.append(" g."); //sql.append(getSQLGeneralCaseCreatedColumnName());
+	 * //sql.appendGreaterThanOrEqualsSign();
+	 * //sql.append((Timestamp)from.getTimestamp()); //sql.append(" >= '");
+	 * //sql.append(from.toSQLString()); //sql.append("'"); //sql.appendAnd();
+	 * //sql.append(" g."); //sql.append(getSQLGeneralCaseCreatedColumnName());
+	 * //sql.appendLessThanOrEqualsSign();
+	 * //sql.append((Timestamp)to.getTimestamp()); //sql.append(" <= '");
+	 * //sql.append(to.toSQLString()); //sql.append("'"); return sql; }
+	 */
+
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode ,created between given timestamps
+	 */
+	public SelectQuery idoSelectQueryGetAllCasesByStatus(String caseStatus, IWTimestamp from, IWTimestamp to) {
+		SelectQuery query = idoSelectQueryGetAllCasesByStatus(caseStatus);
+		query.addCriteria(idoCriteriaForCreatedWithinDates(from, to));
+		return query;
+	}
+
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
+	 */
+	/*
+	 * public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String
+	 * caseStatus, IWTimestamp from, IWTimestamp to) { IDOQuery sql =
+	 * idoQueryGetAllCasesByStatus(caseStatus, from, to); sql.append(" order by
+	 * "); sql.append(this.getSQLGeneralCaseCreatedColumnName()); return sql; }
+	 */
+
+	/**
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public SelectQuery idoSelectQueryGetAllCasesByStatusOrderedByCreation(String caseStatus, IWTimestamp from, IWTimestamp to) {
-	    SelectQuery query = idoSelectQueryGetAllCasesByStatus(caseStatus, from,to);
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCasesByStatus(caseStatus, from, to);
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
 
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
-	 *//*
-	public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String caseStatus) {
-		IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
-		sql.append(" order by g.");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return sql;
-	}*/
-	
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
+	 */
+	/*
+	 * public IDOQuery idoQueryGetAllCasesByStatusOrderedByCreation(String
+	 * caseStatus) { IDOQuery sql = idoQueryGetAllCasesByStatus(caseStatus);
+	 * sql.append(" order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName()); return sql; }
+	 */
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public SelectQuery idoSelectQueryGetAllCasesByStatusOrderedByCreation(String caseStatus) {
-	    SelectQuery query = idoSelectQueryGetAllCasesByStatus(caseStatus);
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCasesByStatus(caseStatus);
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
 
 	/**
-	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for the specified user with the specified caseStatus and
+	 * the associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUserAndStatus(User user, String caseStatus) throws FinderException {
 		return idoFindPKsByQuery(idoSelectQueryGetAllCasesByUserAndStatus(user, caseStatus));
 	}
 
 	/**
-	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode and orders chronologically
-	 *//*
-	public IDOQuery idoQueryGetAllCasesByUserAndStatus(User user, String caseStatus) {
-		String caseCode = this.getCaseCodeKey();
-		//StringBuffer sql = new StringBuffer();
-		IDOQuery sql = idoQuery();
-		sql.append("select * from ");
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseUserColumnName());
-		sql.append("=");
-		sql.append(user.getPrimaryKey().toString());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-		sql.append("='");
-		sql.append(caseStatus);
-		sql.append("'");
-		sql.append(" order by g.");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		//return (Collection) super.idoFindPKsBySQL(sql.toString());
-		return sql;
-	}*/
-	
-	/**
-	 * Finds all cases for the specified user with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for the specified user with the specified caseStatus and
+	 * the associated caseCode and orders chronologically
 	 */
-	public SelectQuery idoSelectQueryGetAllCasesByUserAndStatus(User user, String caseStatus){
-	    SelectQuery query = idoSelectQueryGetAllCasesByUser(user);
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    return query;
+	/*
+	 * public IDOQuery idoQueryGetAllCasesByUserAndStatus(User user, String
+	 * caseStatus) { String caseCode = this.getCaseCodeKey(); //StringBuffer sql =
+	 * new StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select * from
+	 * "); sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("=");
+	 * sql.append(user.getPrimaryKey().toString()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append("='");
+	 * sql.append(caseStatus); sql.append("'"); sql.append(" order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName()); //return
+	 * (Collection) super.idoFindPKsBySQL(sql.toString()); return sql; }
+	 */
+
+	/**
+	 * Finds all cases for the specified user with the specified caseStatus and
+	 * the associated caseCode and orders chronologically
+	 */
+	public SelectQuery idoSelectQueryGetAllCasesByUserAndStatus(User user, String caseStatus) {
+		SelectQuery query = idoSelectQueryGetAllCasesByUser(user);
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		return query;
 	}
 
 	/**
-	 *Returns all the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 * Returns all the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
 	 */
 	public Collection ejbFindSubCasesUnder(Case theCase) throws FinderException {
 		return idoFindPKsByQuery(idoSelectQueryGetSubCasesUnder(theCase));
 	}
 
 	/**
-	 *Returns all the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
-	 *//*
-	public IDOQuery idoQueryGetSubCasesUnder(Case theCase) throws FinderException {
-		String caseCode = this.getCaseCodeKey();
-		//StringBuffer sql = new StringBuffer();
-		IDOQuery sql = idoQuery();
-		sql.append("select * from ");
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseParentColumnName());
-		sql.append("=");
-		sql.append(theCase.getPrimaryKey().toString());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" order by g.");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return sql;
-		//return (Collection) super.idoFindPKsBySQL(sql.toString());
-	}*/
-	
+	 * Returns all the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
+	 */
+	/*
+	 * public IDOQuery idoQueryGetSubCasesUnder(Case theCase) throws
+	 * FinderException { String caseCode = this.getCaseCodeKey(); //StringBuffer
+	 * sql = new StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select *
+	 * from "); sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseParentColumnName()); sql.append("=");
+	 * sql.append(theCase.getPrimaryKey().toString()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName()); return sql; //return
+	 * (Collection) super.idoFindPKsBySQL(sql.toString()); }
+	 */
+
 	/**
-	 *Returns all the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 * Returns all the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
 	 */
 	public SelectQuery idoSelectQueryGetSubCasesUnder(Case theCase) throws FinderException {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForParentCase(theCase));
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForParentCase(theCase));
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
 
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 * Counts the number of the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
 	 */
 	public int ejbHomeCountSubCasesUnder(Case theCase) {
 		try {
-		    SelectQuery sql = idoSelectQueryGetCountSubCasesUnder(theCase);
-			//IDOQuery sql = idoQueryGetCountSubCasesUnder(theCase);
-			//sql.append(this.getSQLGeneralCaseCreatedColumnName());
+			SelectQuery sql = idoSelectQueryGetCountSubCasesUnder(theCase);
+			// IDOQuery sql = idoQueryGetCountSubCasesUnder(theCase);
+			// sql.append(this.getSQLGeneralCaseCreatedColumnName());
 			return super.getNumberOfRecords(sql);
 		}
 		catch (java.sql.SQLException sqle) {
@@ -754,93 +792,74 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
-	 *//*
-	protected IDOQuery idoQueryGetCountSubCasesUnder(Case theCase) {
-		String caseCode = this.getCaseCodeKey();
-		//StringBuffer sql = new StringBuffer();
-		IDOQuery sql = idoQuery();
-		sql.append("select count(*) from ");
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseParentColumnName());
-		sql.append("=");
-		sql.append(theCase.getPrimaryKey().toString());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" order by g.");
-		sql.append(this.getSQLGeneralCaseCreatedColumnName());
-		return sql;
-		//return super.getNumberOfRecords(sql.toString());
-	}*/
-	
+	 * Counts the number of the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
+	 */
+	/*
+	 * protected IDOQuery idoQueryGetCountSubCasesUnder(Case theCase) { String
+	 * caseCode = this.getCaseCodeKey(); //StringBuffer sql = new StringBuffer();
+	 * IDOQuery sql = idoQuery(); sql.append("select count(*) from ");
+	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseParentColumnName()); sql.append("=");
+	 * sql.append(theCase.getPrimaryKey().toString()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName()); return sql; //return
+	 * super.getNumberOfRecords(sql.toString()); }
+	 */
+
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 * Counts the number of the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
 	 */
 	protected SelectQuery idoSelectQueryGetCountSubCasesUnder(Case theCase) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForParentCase(theCase));
-	    query.setAsCountQuery(true);
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForParentCase(theCase));
+		query.setAsCountQuery(true);
+		return query;
 	}
-	
 
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
-	 *//*
-	protected IDOQuery idoQueryGetCountCasesWithStatus(String caseStatus) {
-		String caseCode = this.getCaseCodeKey();
-		//StringBuffer sql = new StringBuffer();
-		IDOQuery sql = idoQuery();
-		sql.append("select count(*) from ");
-		sql.append(getSQLGeneralCaseTableName());
-		sql.append(" g,");
-		sql.append(this.getTableName());
-		sql.append(" a where g.");
-		sql.append(this.getSQLGeneralCasePKColumnName());
-		sql.append("=a.");
-		sql.append(this.getIDColumnName());
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-		sql.append("='");
-		sql.append(caseCode);
-		sql.append("'");
-		sql.append(" and g.");
-		sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-		sql.append("='");
-		sql.append(caseStatus);
-		sql.append("'");
-		return sql;
-		//return super.getNumberOfRecords(sql.toString());
-	}*/
-	
+	 * Counts the number of the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
+	 */
+	/*
+	 * protected IDOQuery idoQueryGetCountCasesWithStatus(String caseStatus) {
+	 * String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new
+	 * StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select count(*) from
+	 * "); sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append("='");
+	 * sql.append(caseStatus); sql.append("'"); return sql; //return
+	 * super.getNumberOfRecords(sql.toString()); }
+	 */
 
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 * Counts the number of the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
 	 */
 	protected SelectQuery idoSelectQueryGetCountCasesWithStatus(String caseStatus) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.setAsCountQuery(true);
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.setAsCountQuery(true);
+		return query;
 	}
 
 	/**
-	 *Counts the number of the subcases under the specified theCase and whith the associated CaseCode and orders chronologically
+	 * Counts the number of the subcases under the specified theCase and whith the
+	 * associated CaseCode and orders chronologically
 	 */
 	public int ejbHomeCountCasesWithStatus(String caseStatus) {
 		try {
-		    SelectQuery sql = idoSelectQueryGetCountCasesWithStatus(caseStatus); 
-			//IDOQuery sql = idoQueryGetCountCasesWithStatus(caseStatus);
+			SelectQuery sql = idoSelectQueryGetCountCasesWithStatus(caseStatus);
+			// IDOQuery sql = idoQueryGetCountCasesWithStatus(caseStatus);
 			return super.idoGetNumberOfRecords(sql);
 		}
 		catch (IDOException sqle) {
@@ -849,554 +868,445 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByStatusArray(String caseStatus[]) throws FinderException {
 
-		//IDOQuery sql = idoQueryGetAllCasesByStatusArray(caseStatus);
-	    SelectQuery sql = idoSelectQueryGetAllCasesByStatusArray(caseStatus);
+		// IDOQuery sql = idoQueryGetAllCasesByStatusArray(caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCasesByStatusArray(caseStatus);
 		return super.idoFindPKsByQuery(sql);
 	}
 
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUserAndStatusArray(User user, String caseStatus[]) throws FinderException {
-		//IDOQuery sql = idQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
-	    SelectQuery sql = idoSelectQueryGetAllCasesByUserAndStatusArray(user,caseStatus);
+		// IDOQuery sql = idQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
 		return super.idoFindPKsByQuery(sql);
 	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUserAndStatusArray(User user, String caseStatus[], int numberOfEntries, int startingEntry) throws FinderException {
-		//IDOQuery sql = idQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
-	    SelectQuery sql = idoSelectQueryGetAllCasesByUserAndStatusArray(user,caseStatus);
+		// IDOQuery sql = idQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCasesByUserAndStatusArray(user, caseStatus);
 		return super.idoFindPKsByQuery(sql, numberOfEntries, startingEntry);
 	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public int ejbHomeGetCountCasesByUserAndStatusArray(User user, String caseStatus[]) throws IDOException {
-		//IDOQuery sql = idQueryCountCasesByUserAndStatusArray(user, caseStatus);
-	    SelectQuery sql = idoSelectQueryCountCasesByUserAndStatusArray(user,caseStatus);
+		// IDOQuery sql = idQueryCountCasesByUserAndStatusArray(user, caseStatus);
+		SelectQuery sql = idoSelectQueryCountCasesByUserAndStatusArray(user, caseStatus);
 		return super.idoGetNumberOfRecords(sql);
 	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[], int numberOfEntries, int startingEntry) throws FinderException {
-		//IDOQuery sql = idQueryGetAllCasesByUserAndGroupsAndStatusArray(user, groups, caseStatus);
-	    SelectQuery sql  = idoSelectQueryGetAllCasesByUserAndGroupsAndStatusArray(user,groups,caseStatus);
+		// IDOQuery sql = idQueryGetAllCasesByUserAndGroupsAndStatusArray(user,
+		// groups, caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCasesByUserAndGroupsAndStatusArray(user, groups, caseStatus);
 		return super.idoFindPKsByQuery(sql, numberOfEntries, startingEntry);
 	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public int ejbHomeGetCountCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) throws IDOException {
-		//IDOQuery sql = idQueryCountCasesByUserAndGroupsAndStatusArray(user, groups, caseStatus);
-	    SelectQuery sql = idoSelectQueryCountCasesByUserAndGroupsAndStatusArray(user,groups,caseStatus);
+		// IDOQuery sql = idQueryCountCasesByUserAndGroupsAndStatusArray(user,
+		// groups, caseStatus);
+		SelectQuery sql = idoSelectQueryCountCasesByUserAndGroupsAndStatusArray(user, groups, caseStatus);
 		return super.idoGetNumberOfRecords(sql);
 	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByGroupAndStatusArray(Group group, String caseStatus[]) throws FinderException {
-		//IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group, caseStatus);
-	    SelectQuery sql = idoSelectQueryGetAllCasesByGroupAndStatusArray(group,caseStatus);
+		// IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group,
+		// caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCasesByGroupAndStatusArray(group, caseStatus);
 		return super.idoFindPKsByQuery(sql);
-	}	
+	}
+
 	/**
-	 * Finds all cases for all users with the specified caseStatus and the associated caseCode and orders chronologically
+	 * Finds all cases for all users with the specified caseStatus and the
+	 * associated caseCode and orders chronologically
 	 */
 	public Collection ejbFindAllCasesByGroupAndStatusArray(Group group, String caseStatus[], int numberOfEntries, int startingEntry) throws FinderException {
-		//IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group, caseStatus);
-	    SelectQuery sql = idoSelectQueryGetAllCasesByGroupAndStatusArray(group,caseStatus);
+		// IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group,
+		// caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCasesByGroupAndStatusArray(group, caseStatus);
 		return super.idoFindPKsByQuery(sql, numberOfEntries, startingEntry);
-	}	
-/*
-	protected IDOQuery idQueryGetAllCasesByUserAndStatusArray(User user, String caseStatus[]) {
-		try {
-			String caseCode = this.getCaseCodeKey();
-			//StringBuffer sql = new StringBuffer();
-			IDOQuery sql = idoQuery();
-			sql.append("select * from ");
-			sql.append(getSQLGeneralCaseTableName());
-			sql.append(" g,");
-			sql.append(this.getTableName());
-			sql.append(" a where g.");
-			sql.append(this.getSQLGeneralCasePKColumnName());
-			sql.append("=a.");
-			sql.append(this.getIDColumnName());
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-			sql.append("='");
-			sql.append(caseCode);
-			sql.append("'");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-			sql.append(" in (");
-			int length = caseStatus.length;
-			for (int i = 0; i < length; i++) {
-				sql.append("'");
-				sql.append(caseStatus[i]);
-				if (i != (length - 1))
-					sql.append("', ");
-				else
-					sql.append("'");
-			}
-			sql.append(")");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseUserColumnName());
-			sql.append("=");
-			sql.append(user.getPrimaryKey().toString());
-			sql.append(" order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
+	}
 
-			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
+	/*
+	 * protected IDOQuery idQueryGetAllCasesByUserAndStatusArray(User user, String
+	 * caseStatus[]) { try { String caseCode = this.getCaseCodeKey();
+	 * //StringBuffer sql = new StringBuffer(); IDOQuery sql = idoQuery();
+	 * sql.append("select * from "); sql.append(getSQLGeneralCaseTableName());
+	 * sql.append(" g,"); sql.append(this.getTableName()); sql.append(" a where
+	 * g."); sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in
+	 * ("); int length = caseStatus.length; for (int i = 0; i < length; i++) {
+	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1))
+	 * sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append("
+	 * and g."); sql.append(this.getSQLGeneralCaseUserColumnName());
+	 * sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.append("
+	 * order by g."); sql.append(this.getSQLGeneralCaseCreatedColumnName() + "
+	 * desc");
+	 * 
+	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " +
+	 * sql.toString());
+	 * 
+	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
+	 */
 
-			return sql;
-		}
-		catch (Exception e) {
-			throw new IDORuntimeException(e, this);
-		}
-	}*/
-	
 	protected SelectQuery idoSelectQueryGetAllCasesByUserAndStatusArray(User user, String caseStatus[]) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForUser(user));
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForUser(user));
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
+
 	/*
-	protected IDOQuery idQueryCountCasesByUserAndStatusArray(User user, String caseStatus[]) {
-		try {
-			String caseCode = this.getCaseCodeKey();
-			//StringBuffer sql = new StringBuffer();
-			IDOQuery sql = idoQuery();
-			sql.append("select count(*) from ");
-			sql.append(getSQLGeneralCaseTableName());
-			sql.append(" g,");
-			sql.append(this.getTableName());
-			sql.append(" a where g.");
-			sql.append(this.getSQLGeneralCasePKColumnName());
-			sql.append("=a.");
-			sql.append(this.getIDColumnName());
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-			sql.append("='");
-			sql.append(caseCode);
-			sql.append("'");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-			sql.append(" in (");
-			int length = caseStatus.length;
-			for (int i = 0; i < length; i++) {
-				sql.append("'");
-				sql.append(caseStatus[i]);
-				if (i != (length - 1))
-					sql.append("', ");
-				else
-					sql.append("'");
-			}
-			sql.append(")");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseUserColumnName());
-			sql.append("=");
-			sql.append(user.getPrimaryKey().toString());
-			sql.append(" order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * protected IDOQuery idQueryCountCasesByUserAndStatusArray(User user, String
+	 * caseStatus[]) { try { String caseCode = this.getCaseCodeKey();
+	 * //StringBuffer sql = new StringBuffer(); IDOQuery sql = idoQuery();
+	 * sql.append("select count(*) from ");
+	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in
+	 * ("); int length = caseStatus.length; for (int i = 0; i < length; i++) {
+	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1))
+	 * sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append("
+	 * and g."); sql.append(this.getSQLGeneralCaseUserColumnName());
+	 * sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.append("
+	 * order by g."); sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * 
+	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " +
+	 * sql.toString());
+	 * 
+	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
+	 */
 
-			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-
-			return sql;
-		}
-		catch (Exception e) {
-			throw new IDORuntimeException(e, this);
-		}
-	}*/
-	
 	protected SelectQuery idoSelectQueryCountCasesByUserAndStatusArray(User user, String caseStatus[]) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForUser(user));
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.setAsCountQuery(true);
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForUser(user));
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.setAsCountQuery(true);
+		return query;
 	}
+
 	/*
-	protected IDOQuery idQueryCountCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) {
-		String[] groupIDs = new String[groups.size()];
-		int row = 0;
-		
-		Iterator iter = groups.iterator();
-		while (iter.hasNext()) {
-			Group element = (Group) iter.next();
-			groupIDs[row++] = element.getPrimaryKey().toString();
-		}
+	 * protected IDOQuery idQueryCountCasesByUserAndGroupsAndStatusArray(User
+	 * user, Collection groups, String caseStatus[]) { String[] groupIDs = new
+	 * String[groups.size()]; int row = 0;
+	 * 
+	 * Iterator iter = groups.iterator(); while (iter.hasNext()) { Group element =
+	 * (Group) iter.next(); groupIDs[row++] = element.getPrimaryKey().toString(); }
+	 * 
+	 * try { String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new
+	 * StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select count(*) from
+	 * "); sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in
+	 * ("); int length = caseStatus.length; for (int i = 0; i < length; i++) {
+	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1))
+	 * sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append("
+	 * and (g."); sql.append(this.getSQLGeneralCaseUserColumnName());
+	 * sql.append("="); sql.append(user.getPrimaryKey().toString());
+	 * sql.appendOr(); sql.append(this.getSQLGeneralCaseHandlerColumnName());
+	 * sql.appendInArray(groupIDs); sql.append(") order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * 
+	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " +
+	 * sql.toString());
+	 * 
+	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
+	 */
 
-		try {
-			String caseCode = this.getCaseCodeKey();
-			//StringBuffer sql = new StringBuffer();
-			IDOQuery sql = idoQuery();
-			sql.append("select count(*) from ");
-			sql.append(getSQLGeneralCaseTableName());
-			sql.append(" g,");
-			sql.append(this.getTableName());
-			sql.append(" a where g.");
-			sql.append(this.getSQLGeneralCasePKColumnName());
-			sql.append("=a.");
-			sql.append(this.getIDColumnName());
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-			sql.append("='");
-			sql.append(caseCode);
-			sql.append("'");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-			sql.append(" in (");
-			int length = caseStatus.length;
-			for (int i = 0; i < length; i++) {
-				sql.append("'");
-				sql.append(caseStatus[i]);
-				if (i != (length - 1))
-					sql.append("', ");
-				else
-					sql.append("'");
-			}
-			sql.append(")");
-			sql.append(" and (g.");
-			sql.append(this.getSQLGeneralCaseUserColumnName());
-			sql.append("=");
-			sql.append(user.getPrimaryKey().toString());
-			sql.appendOr();
-			sql.append(this.getSQLGeneralCaseHandlerColumnName());
-			sql.appendInArray(groupIDs);
-			sql.append(") order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName());
-
-			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-
-			return sql;
-		}
-		catch (Exception e) {
-			throw new IDORuntimeException(e, this);
-		}
-	}*/
-	
 	protected SelectQuery idoSelectQueryCountCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForUser(user));
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.addCriteria(idoCriteriaForGroup(groups));
-	    query.setAsCountQuery(true);
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForUser(user));
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.addCriteria(idoCriteriaForGroup(groups));
+		query.setAsCountQuery(true);
+		return query;
 	}
+
 	/*
-	protected IDOQuery idQueryGetAllCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) {
-		String[] groupIDs = new String[groups.size()];
-		int row = 0;
-		
-		Iterator iter = groups.iterator();
-		while (iter.hasNext()) {
-			Group element = (Group) iter.next();
-			groupIDs[row++] = element.getPrimaryKey().toString();
-		}
+	 * protected IDOQuery idQueryGetAllCasesByUserAndGroupsAndStatusArray(User
+	 * user, Collection groups, String caseStatus[]) { String[] groupIDs = new
+	 * String[groups.size()]; int row = 0;
+	 * 
+	 * Iterator iter = groups.iterator(); while (iter.hasNext()) { Group element =
+	 * (Group) iter.next(); groupIDs[row++] = element.getPrimaryKey().toString(); }
+	 * 
+	 * try { String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new
+	 * StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select * from ");
+	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in
+	 * ("); int length = caseStatus.length; for (int i = 0; i < length; i++) {
+	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1))
+	 * sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append("
+	 * and (g."); sql.append(this.getSQLGeneralCaseUserColumnName());
+	 * sql.append("="); sql.append(user.getPrimaryKey().toString());
+	 * sql.appendOr(); sql.append(this.getSQLGeneralCaseHandlerColumnName());
+	 * sql.appendInArray(groupIDs); sql.append(") order by g.");
+	 * sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
+	 * 
+	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " +
+	 * sql.toString());
+	 * 
+	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
+	 */
 
-		try {
-			String caseCode = this.getCaseCodeKey();
-			//StringBuffer sql = new StringBuffer();
-			IDOQuery sql = idoQuery();
-			sql.append("select * from ");
-			sql.append(getSQLGeneralCaseTableName());
-			sql.append(" g,");
-			sql.append(this.getTableName());
-			sql.append(" a where g.");
-			sql.append(this.getSQLGeneralCasePKColumnName());
-			sql.append("=a.");
-			sql.append(this.getIDColumnName());
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-			sql.append("='");
-			sql.append(caseCode);
-			sql.append("'");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-			sql.append(" in (");
-			int length = caseStatus.length;
-			for (int i = 0; i < length; i++) {
-				sql.append("'");
-				sql.append(caseStatus[i]);
-				if (i != (length - 1))
-					sql.append("', ");
-				else
-					sql.append("'");
-			}
-			sql.append(")");
-			sql.append(" and (g.");
-			sql.append(this.getSQLGeneralCaseUserColumnName());
-			sql.append("=");
-			sql.append(user.getPrimaryKey().toString());
-			sql.appendOr();
-			sql.append(this.getSQLGeneralCaseHandlerColumnName());
-			sql.appendInArray(groupIDs);
-			sql.append(") order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
-
-			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-
-			return sql;
-		}
-		catch (Exception e) {
-			throw new IDORuntimeException(e, this);
-		}
-	}*/
-	
 	protected SelectQuery idoSelectQueryGetAllCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForUser(user));
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.addCriteria(idoCriteriaForGroup(groups));
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForUser(user));
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.addCriteria(idoCriteriaForGroup(groups));
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
+
 	/*
-	protected IDOQuery idQueryGetAllCasesByGroupAndStatusArray(Group group, String caseStatus[]) {
-		try {
-			String caseCode = this.getCaseCodeKey();
-			//StringBuffer sql = new StringBuffer();
-			IDOQuery sql = idoQuery();
-			sql.append("select * from ");
-			sql.append(getSQLGeneralCaseTableName());
-			sql.append(" g,");
-			sql.append(this.getTableName());
-			sql.append(" a where g.");
-			sql.append(this.getSQLGeneralCasePKColumnName());
-			sql.append("=a.");
-			sql.append(this.getIDColumnName());
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-			sql.append("='");
-			sql.append(caseCode);
-			sql.append("'");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-			sql.append(" in (");
-			int length = caseStatus.length;
-			for (int i = 0; i < length; i++) {
-				sql.append("'");
-				sql.append(caseStatus[i]);
-				if (i != (length - 1))
-					sql.append("', ");
-				else
-					sql.append("'");
-			}
-			sql.append(")"); 
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseHandlerColumnName());
-			sql.append("=");
-			sql.append(group.getPrimaryKey().toString());
-			sql.append(" order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * protected IDOQuery idQueryGetAllCasesByGroupAndStatusArray(Group group,
+	 * String caseStatus[]) { try { String caseCode = this.getCaseCodeKey();
+	 * //StringBuffer sql = new StringBuffer(); IDOQuery sql = idoQuery();
+	 * sql.append("select * from "); sql.append(getSQLGeneralCaseTableName());
+	 * sql.append(" g,"); sql.append(this.getTableName()); sql.append(" a where
+	 * g."); sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in
+	 * ("); int length = caseStatus.length; for (int i = 0; i < length; i++) {
+	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1))
+	 * sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append("
+	 * and g."); sql.append(this.getSQLGeneralCaseHandlerColumnName());
+	 * sql.append("="); sql.append(group.getPrimaryKey().toString()); sql.append("
+	 * order by g."); sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * 
+	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " +
+	 * sql.toString());
+	 * 
+	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
+	 */
 
-			debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-
-			return sql;
-		}
-		catch (Exception e) {
-			throw new IDORuntimeException(e, this);
-		}
-	}*/
-	
 	protected SelectQuery idoSelectQueryGetAllCasesByGroupAndStatusArray(Group group, String caseStatus[]) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.addCriteria(idoCriteriaForGroup(group));
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.addCriteria(idoCriteriaForGroup(group));
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
-		
-/*
-	protected IDOQuery idoQueryGetAllCasesByStatusArray(String caseStatus[]) {
-		try {
-			String caseCode = this.getCaseCodeKey();
-			//StringBuffer sql = new StringBuffer();
-			IDOQuery sql = idoQuery();
-			sql.append("select * from ");
-			sql.append(getSQLGeneralCaseTableName());
-			sql.append(" g,");
-			sql.append(this.getTableName());
-			sql.append(" a where g.");
-			sql.append(this.getSQLGeneralCasePKColumnName());
-			sql.append("=a.");
-			sql.append(this.getIDColumnName());
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseCodeColumnName());
-			sql.append("='");
-			sql.append(caseCode);
-			sql.append("'");
-			sql.append(" and g.");
-			sql.append(this.getSQLGeneralCaseCaseStatusColumnName());
-			sql.append(" in (");
-			int length = caseStatus.length;
-			for (int i = 0; i < length; i++) {
-				sql.append("'");
-				sql.append(caseStatus[i]);
-				if (i != (length - 1))
-					sql.append("', ");
-				else
-					sql.append("'");
-			}
-			sql.append(")");
-			sql.append(" order by g.");
-			sql.append(this.getSQLGeneralCaseCreatedColumnName());
 
-			debug("AbstractCase.idoQueryGetAllCasesByStatusArray(): sql = " + sql.toString());
-
-			return sql;
-		}
-		catch (Exception e) {
-			throw new IDORuntimeException(e, this);
-		}
-	}
-	*/
+	/*
+	 * protected IDOQuery idoQueryGetAllCasesByStatusArray(String caseStatus[]) {
+	 * try { String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new
+	 * StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select * from ");
+	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,");
+	 * sql.append(this.getTableName()); sql.append(" a where g.");
+	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a.");
+	 * sql.append(this.getIDColumnName()); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
+	 * sql.append(caseCode); sql.append("'"); sql.append(" and g.");
+	 * sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in
+	 * ("); int length = caseStatus.length; for (int i = 0; i < length; i++) {
+	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1))
+	 * sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append("
+	 * order by g."); sql.append(this.getSQLGeneralCaseCreatedColumnName());
+	 * 
+	 * debug("AbstractCase.idoQueryGetAllCasesByStatusArray(): sql = " +
+	 * sql.toString());
+	 * 
+	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
+	 */
 	protected SelectQuery idoSelectQueryGetAllCasesByStatusArray(String caseStatus[]) {
-	    SelectQuery query = idoSelectQueryGetAllCases();
-	    query.addCriteria(idoCriteriaForStatus(caseStatus));
-	    query.addOrder(idoOrderByCreationDate(true));
-	    return query;
+		SelectQuery query = idoSelectQueryGetAllCases();
+		query.addCriteria(idoCriteriaForStatus(caseStatus));
+		query.addOrder(idoOrderByCreationDate(true));
+		return query;
 	}
 
-	
 	public String getExternalId() {
 		return getGeneralCase().getExternalId();
 	}
+
 	public void setExternalId(String externalId) {
 		getGeneralCase().setExternalId(externalId);
 	}
+
 	public String getCaseNumber() {
 		return getGeneralCase().getCaseNumber();
 	}
+
 	public void setCaseNumber(String caseNumber) {
 		getGeneralCase().setCaseNumber(caseNumber);
 	}
+
 	public void setExternalHandler(User user) {
 		getGeneralCase().setExternalHandler(user);
 	}
+
 	public User getExternalHandler() {
 		return getGeneralCase().getExternalHandler();
 	}
+
 	public String getSubject() {
 		return getGeneralCase().getSubject();
 	}
+
 	public void setSubject(String subject) {
 		getGeneralCase().setSubject(subject);
 	}
+
 	public String getBody() {
 		return getGeneralCase().getBody();
 	}
+
 	public void setBody(String body) {
 		getGeneralCase().setBody(body);
 	}
-	
-	public String getUrl(){
+
+	public String getUrl() {
 		return getGeneralCase().getUrl();
 	}
-	
+
 	/**
-	 * Finds all cases with set metadata attributes with key metadataKey and value metadataValue
+	 * Finds all cases with set metadata attributes with key metadataKey and value
+	 * metadataValue
 	 */
-	public Collection ejbFindAllCasesByMetaData(String metadataKey,String metadataValue) throws FinderException {
-		//IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group, caseStatus);
-	    SelectQuery sql = idoSelectQueryGetAllCases();
-	    Table metadataTable = new Table(MetaData.class,"meta");
-	    Table caseTable = new Table(Case.class,"g");
-	    try {
-			sql.addManyToManyJoin(caseTable,metadataTable);
+	public Collection ejbFindAllCasesByMetaData(String metadataKey, String metadataValue) throws FinderException {
+		// IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group,
+		// caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCases();
+		Table metadataTable = new Table(MetaData.class, "meta");
+		Table caseTable = new Table(Case.class, "g");
+		try {
+			sql.addManyToManyJoin(caseTable, metadataTable);
 			sql.addCriteria(new MatchCriteria(metadataTable, MetaDataBMPBean.COLUMN_META_KEY, MatchCriteria.EQUALS, metadataKey));
 			sql.addCriteria(new MatchCriteria(metadataTable, MetaDataBMPBean.COLUMN_META_VALUE, MatchCriteria.EQUALS, metadataValue));
-	    }
+		}
 		catch (IDORelationshipException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return super.idoFindPKsByQuery(sql);
 	}
-	
+
 	/**
-	 *Sets all the metadata key/values for this instance with the given map where the is keys and values of String type.
+	 * Sets all the metadata key/values for this instance with the given map where
+	 * the is keys and values of String type.
 	 */
-	public void setMetaDataAttributes(java.util.Map map){
+	public void setMetaDataAttributes(java.util.Map map) {
 		getGeneralCase().setMetaDataAttributes(map);
 	}
+
 	/**
-	 *Gets all the metadata key/values for this instance with the given map where the keys and values of String type.
+	 * Gets all the metadata key/values for this instance with the given map where
+	 * the keys and values of String type.
 	 */
-	public java.util.Map getMetaDataAttributes(){
+	public java.util.Map getMetaDataAttributes() {
 		return getGeneralCase().getMetaDataAttributes();
 	}
 
 	/**
-	 *Sets all the metadata types this instance with the given map which is keys and values of String type.
+	 * Sets all the metadata types this instance with the given map which is keys
+	 * and values of String type.
 	 */
-	public java.util.Map getMetaDataTypes(){
+	public java.util.Map getMetaDataTypes() {
 		return getGeneralCase().getMetaDataTypes();
 	}
-	
+
 	/**
-	 *Set the metadata set for the key metaDataKey to value value
+	 * Set the metadata set for the key metaDataKey to value value
 	 */
-	public void setMetaData(String metaDataKey,String value){
-		getGeneralCase().setMetaData(metaDataKey,value);
+	public void setMetaData(String metaDataKey, String value) {
+		getGeneralCase().setMetaData(metaDataKey, value);
 	}
+
 	/**
-	 *Set the metadata set for the key metaDataKey to value value
+	 * Set the metadata set for the key metaDataKey to value value
 	 */
-	public void setMetaData(String metaDataKey,String value,String type){
-		getGeneralCase().setMetaData(metaDataKey,value,type);
+	public void setMetaData(String metaDataKey, String value, String type) {
+		getGeneralCase().setMetaData(metaDataKey, value, type);
 	}
+
 	/**
 	 * Gets the metadata set for the key metaDataKey
 	 */
-	public String getMetaData(String metaDataKey){
+	public String getMetaData(String metaDataKey) {
 		return getGeneralCase().getMetaData(metaDataKey);
 	}
 
 	/**
 	 * Rename a metadata key
 	 */
-	public void renameMetaData(String oldKeyName, String newKeyName){
-		getGeneralCase().renameMetaData(oldKeyName,newKeyName);
+	public void renameMetaData(String oldKeyName, String newKeyName) {
+		getGeneralCase().renameMetaData(oldKeyName, newKeyName);
 	}
 
 	/**
 	 * Rename a metadata key, and change the value
 	 */
-	public void renameMetaData(String oldKeyName, String newKeyName, String value){
-		getGeneralCase().renameMetaData(oldKeyName,newKeyName,value);
+	public void renameMetaData(String oldKeyName, String newKeyName, String value) {
+		getGeneralCase().renameMetaData(oldKeyName, newKeyName, value);
 	}
-	
+
 	/**
 	 * Gets the metadata for the key metaDataKey
 	 */
-	public boolean removeMetaData(String metaDataKey){
+	public boolean removeMetaData(String metaDataKey) {
 		return getGeneralCase().removeMetaData(metaDataKey);
 	}
-	
+
 	/**
 	 * @return The unique id string of the entity if it has it, otherwise null
 	 */
-	public String getUniqueId(){
+	public String getUniqueId() {
 		return getGeneralCase().getUniqueId();
 	}
-	
+
 	/**
-	 * Sets the Unique ID column.
-	 * This method should generally never be called manually
+	 * Sets the Unique ID column. This method should generally never be called
+	 * manually
+	 * 
 	 * @param uniqueId
 	 */
-	public void setUniqueId(String uniqueId){
+	public void setUniqueId(String uniqueId) {
 		getGeneralCase().setUniqueId(uniqueId);
 	}
-	
+
 }

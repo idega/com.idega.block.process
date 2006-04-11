@@ -1,6 +1,6 @@
 /*
- * $Id: CaseHome.java,v 1.22 2006/03/01 10:30:58 tryggvil Exp $
- * Created on Jan 6, 2006
+ * $Id: CaseHome.java,v 1.23 2006/04/11 08:44:42 laddi Exp $
+ * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  *
@@ -10,7 +10,9 @@
 package com.idega.block.process.data;
 
 import java.util.Collection;
+
 import javax.ejb.FinderException;
+
 import com.idega.data.IDOException;
 import com.idega.data.IDOHome;
 import com.idega.user.data.Group;
@@ -19,12 +21,12 @@ import com.idega.user.data.User;
 
 /**
  * <p>
- * TODO gimmi Describe Type CaseHome
+ * TODO laddi Describe Type CaseHome
  * </p>
- *  Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
  * 
- * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.22 $
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.23 $
  */
 public interface CaseHome extends IDOHome {
 
@@ -175,14 +177,12 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForUserExceptCodes
 	 */
-	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases)
-			throws FinderException;
+	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForUserByStatuses
 	 */
-	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases)
-			throws FinderException;
+	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCountOfAllCasesForUserByStatuses
@@ -192,8 +192,7 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForGroupsByStatuses
 	 */
-	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase,
-			int numberOfCases) throws FinderException;
+	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCountOfAllCasesForGroupsByStatuses
@@ -203,8 +202,7 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForGroupsAndUserExceptCodes
 	 */
-	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes,
-			int startingCase, int numberOfCases) throws FinderException;
+	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForGroupExceptCodes
@@ -219,11 +217,16 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetNumberOfCasesByGroupsOrUserExceptCodes
 	 */
-	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes)
-			throws IDOException;
+	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes) throws IDOException;
 
-
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindCaseByExternalId
+	 */
 	public Case findCaseByExternalId(String externalId) throws FinderException;
-	
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindCaseByUniqueId
+	 */
 	public Case findCaseByUniqueId(String uniqueId) throws FinderException;
+
 }

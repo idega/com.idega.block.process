@@ -1,6 +1,6 @@
 /*
- * $Id: Case.java,v 1.19 2006/03/01 10:30:58 tryggvil Exp $
- * Created on Jan 6, 2006
+ * $Id: Case.java,v 1.20 2006/04/11 08:44:42 laddi Exp $
+ * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  *
@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+
+
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOEntity;
 import com.idega.data.MetaDataCapable;
@@ -24,16 +26,14 @@ import com.idega.user.data.User;
 
 /**
  * <p>
- * Main type declared for the "Case" framework.
- * This type is implemented by different case types such as SchoolChoice, ChildcareApplication
- * etc. that each identify themselves with unique case codes.
+ * TODO laddi Describe Type Case
  * </p>
- *  Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
  * 
- * @author <a href="mailto:tryggvi@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.19 $
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.20 $
  */
-public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable,MetaDataCapable {
+public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setCode
@@ -101,6 +101,11 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable,MetaDataCap
 	public void setOwner(User owner);
 
 	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#setCreator
+	 */
+	public void setCreator(User creator);
+
+	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getHandler
 	 */
 	public Group getHandler();
@@ -124,6 +129,11 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable,MetaDataCap
 	 * @see com.idega.block.process.data.CaseBMPBean#getOwner
 	 */
 	public User getOwner();
+
+	/**
+	 * @see com.idega.block.process.data.CaseBMPBean#getCreator
+	 */
+	public User getCreator();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setExternalId
@@ -239,12 +249,10 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable,MetaDataCap
 	 * @see com.idega.block.process.data.CaseBMPBean#getAllowsChildren
 	 */
 	public boolean getAllowsChildren();
-	
+
 	/**
-	 * <p>
-	 * Get the URL to the page where to view/update the Case.
-	 * </p>
-	 * @return
+	 * @see com.idega.block.process.data.CaseBMPBean#getUrl
 	 */
 	public String getUrl();
+
 }

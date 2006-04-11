@@ -1,6 +1,6 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.22 2006/03/01 10:30:58 tryggvil Exp $
- * Created on Jan 6, 2006
+ * $Id: CaseHomeImpl.java,v 1.23 2006/04/11 08:44:42 laddi Exp $
+ * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
  *
@@ -10,7 +10,9 @@
 package com.idega.block.process.data;
 
 import java.util.Collection;
+
 import javax.ejb.FinderException;
+
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.user.data.Group;
@@ -19,12 +21,12 @@ import com.idega.user.data.User;
 
 /**
  * <p>
- * TODO gimmi Describe Type CaseHomeImpl
+ * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2006/03/01 10:30:58 $ by $Author: tryggvil $
+ *  Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
  * 
- * @author <a href="mailto:gimmi@idega.com">gimmi</a>
- * @version $Revision: 1.22 $
+ * @author <a href="mailto:laddi@idega.com">laddi</a>
+ * @version $Revision: 1.23 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -236,20 +238,16 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases)
-			throws FinderException {
+	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserExceptCodes(user, codes, startingCase,
-				numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserExceptCodes(user, codes, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
-	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases)
-			throws FinderException {
+	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserByStatuses(user, statuses,
-				startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserByStatuses(user, statuses, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -261,11 +259,9 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase,
-			int numberOfCases) throws FinderException {
+	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses,
-				startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -277,11 +273,9 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes,
-			int startingCase, int numberOfCases) throws FinderException {
+	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsAndUserExceptCodes(user, groups,
-				codes, startingCase, numberOfCases);
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -300,26 +294,25 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return theReturn;
 	}
 
-	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes)
-			throws IDOException {
+	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes) throws IDOException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		int theReturn = ((CaseBMPBean) entity).ejbHomeGetNumberOfCasesByGroupsOrUserExceptCodes(user, groups, codes);
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
-	
+
 	public Case findCaseByExternalId(String externalId) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		Integer id = ((CaseBMPBean) entity).ejbFindCaseByExternalId(externalId);
+		Object pk = ((CaseBMPBean) entity).ejbFindCaseByExternalId(externalId);
 		this.idoCheckInPooledEntity(entity);
-		return this.findByPrimaryKey(id);
+		return this.findByPrimaryKey(pk);
 	}
 
 	public Case findCaseByUniqueId(String uniqueId) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		Integer id = ((CaseBMPBean) entity).ejbFindCaseByUniqueId(uniqueId);
+		Object pk = ((CaseBMPBean) entity).ejbFindCaseByUniqueId(uniqueId);
 		this.idoCheckInPooledEntity(entity);
-		return this.findByPrimaryKey(id);
+		return this.findByPrimaryKey(pk);
 	}
-	
+
 }
