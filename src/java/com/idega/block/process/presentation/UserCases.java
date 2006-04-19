@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.17 2006/04/19 12:04:54 laddi Exp $
+ * $Id: UserCases.java,v 1.18 2006/04/19 12:31:47 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/04/19 12:04:54 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/19 12:31:47 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -154,6 +154,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			try {
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
+				String fullSubject = subject;
 				if (this.iMaxNumberOfLetters > 0 && this.iMaxNumberOfLetters < subject.length()) {
 					subject = subject.substring(0, (this.iMaxNumberOfLetters + 1)) + "...";
 				}
@@ -181,6 +182,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				String caseUrl =  caseBusiness.getUrl(userCase);
 				if (page != null) {
 					Link link = new Link(subject);
+					if (fullSubject.length() != subject.length()) {
+						link.setToolTip(fullSubject);
+					}
 					
 					Class eventListener = caseBusiness.getEventListener();
 					if (eventListener != null) {
@@ -197,13 +201,20 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				}
 				else if(caseUrl!=null){
 					Link link = new Link(subject,caseUrl);
+					if (fullSubject.length() != subject.length()) {
+						link.setToolTip(fullSubject);
+					}
 					String ticket = ticketBusiness.getEncodedTicket(userCase);
 					String parameterName =  ticketBusiness.getNameForEncodedTicket();
 					link.addParameter(parameterName, ticket);
 					cell.add(link);
 				}
 				else {
-					cell.add(new Text(subject));
+					Text subjectText = new Text(subject);
+					if (fullSubject.length() != subject.length()) {
+						subjectText.setToolTip(fullSubject);
+					}
+					cell.add(subjectText);
 				}
 
 				cell = row.createCell();
