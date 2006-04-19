@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.16 2006/04/09 11:42:34 laddi Exp $
+ * $Id: UserCases.java,v 1.17 2006/04/19 12:04:54 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/19 12:04:54 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -56,6 +56,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private Map pageMap;
 	private int iMaxNumberOfEntries = -1;
 	private int iMaxNumberOfLetters = -1;
+	private int iMaxNumberOfHandlerLetters = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -209,9 +210,16 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.setStyleClass("casesDate");
 				cell.add(new Text(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)));
 
+				Text handlerText = new Text("");
+				if (this.iMaxNumberOfHandlerLetters > 0 && handler.length() > this.iMaxNumberOfHandlerLetters) {
+					handlerText.setToolTip(handler);
+					handler = handler.substring(0, this.iMaxNumberOfHandlerLetters + 1) + "...";
+				}
+				handlerText.addToText(handler);
+				
 				cell = row.createCell();
 				cell.setStyleClass("casesHandler");
-				cell.add(new Text(handler));
+				cell.add(handlerText);
 				
 				cell = row.createCell();
 				cell.setStyleClass("casesStatus");
@@ -414,5 +422,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 	}
 	
-	
+	public void setMaximumHandlerLength(int maxNumberOfHandlerLetters) {
+		this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
+	}
 }
