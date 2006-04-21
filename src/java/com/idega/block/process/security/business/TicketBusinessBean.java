@@ -1,5 +1,5 @@
 /*
- * $Id: TicketBusinessBean.java,v 1.1 2006/03/30 11:21:39 thomas Exp $
+ * $Id: TicketBusinessBean.java,v 1.2 2006/04/21 15:05:50 thomas Exp $
  * Created on Mar 28, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -10,16 +10,16 @@
 package com.idega.block.process.security.business;
 
 import com.idega.block.process.data.Case;
-import com.idega.block.process.security.TicketValidator;
+import com.idega.block.sso.business.TicketValidator;
 import com.idega.business.IBOServiceBean;
 
 
 /**
  * 
- *  Last modified: $Date: 2006/03/30 11:21:39 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/04/21 15:05:50 $ by $Author: thomas $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TicketBusinessBean extends IBOServiceBean  implements TicketBusiness{
 	
@@ -30,13 +30,14 @@ public class TicketBusinessBean extends IBOServiceBean  implements TicketBusines
 	}
 	
 	public String getEncodedTicket(Case theCase) {
+		String personalId = theCase.getOwner().getPersonalID();
 		TicketValidator ticketValidator = TicketValidator.getInstance();
-		return ticketValidator.addTicket(theCase);
+		return ticketValidator.addTicket(personalId);
  	}
 	
 	public boolean validateTicket(String ticket) {
 		TicketValidator ticketValidator = TicketValidator.getInstance();
-		return ticketValidator.validateTicket(ticket);
+		return ticketValidator.isValid(ticket);
 	}
 	
 
