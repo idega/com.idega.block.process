@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.20 2006/04/25 13:23:50 thomas Exp $
+ * $Id: UserCases.java,v 1.21 2006/04/25 17:46:22 thomas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/04/25 13:23:50 $ by $Author: thomas $
+ * Last modified: $Date: 2006/04/25 17:46:22 $ by $Author: thomas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -180,6 +180,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.setStyleClass("casesDescription");
 				ICPage page = getPage(caseCode, caseStatus.getStatus());
 				String caseUrl =  caseBusiness.getUrl(userCase);
+				String ticket = null;
+				String parameterName = null;
+				if (caseUrl != null) {
+					ticket = ticketBusiness.getEncodedTicket(userCase);
+					parameterName =  ticketBusiness.getNameForEncodedTicket();
+				}
 				if (page != null) {
 					Link link = new Link(subject);
 					if (fullSubject.length() != subject.length()) {
@@ -204,8 +210,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					if (fullSubject.length() != subject.length()) {
 						link.setToolTip(fullSubject);
 					}
-					String ticket = ticketBusiness.getEncodedTicket(userCase);
-					String parameterName =  ticketBusiness.getNameForEncodedTicket();
 					link.addParameter(parameterName, ticket);
 					cell.add(link);
 				}
@@ -258,6 +262,14 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					
 					link.addParameter(caseBusiness.getSelectedCaseParameter(), userCase.getPrimaryKey().toString());
 					link.setPage(page);
+					cell.add(link);
+					addNonBrakingSpace = false;
+				}
+				else if(caseUrl != null) {
+					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")), caseUrl);
+					link.setStyleClass("caseEdit");
+					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
+					link.addParameter(parameterName, ticket);
 					cell.add(link);
 					addNonBrakingSpace = false;
 				}
