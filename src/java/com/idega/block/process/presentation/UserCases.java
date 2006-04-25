@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.19 2006/04/25 12:56:37 thomas Exp $
+ * $Id: UserCases.java,v 1.20 2006/04/25 13:23:50 thomas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/04/25 12:56:37 $ by $Author: thomas $
+ * Last modified: $Date: 2006/04/25 13:23:50 $ by $Author: thomas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -201,8 +201,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				}
 				else if(caseUrl!=null){
 					Link link = new Link(subject,caseUrl);
-					// opens in a new window
-					link.setTarget(Link.TARGET_BLANK_WINDOW);
 					if (fullSubject.length() != subject.length()) {
 						link.setToolTip(fullSubject);
 					}
