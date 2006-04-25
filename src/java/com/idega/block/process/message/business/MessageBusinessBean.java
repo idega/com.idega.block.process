@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.7 2006/04/09 11:42:34 laddi Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.8 2006/04/25 12:55:13 thomas Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/25 12:55:13 $ by $Author: thomas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -156,4 +156,20 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		}
 		return message;
 	}
+	
+	/**
+	 * This method is overwritten in CommuneMessageBusiness
+	 */
+	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException {	
+		MessageValue messageValue = new MessageValue();
+		messageValue.setSubject(subject);
+		messageValue.setBody(body);
+		messageValue.setReceiver(receiver);
+		messageValue.setParentCase(parentCase);
+		return createMessage(messageValue);
+	}
+		
+	
+	
+	
 }
