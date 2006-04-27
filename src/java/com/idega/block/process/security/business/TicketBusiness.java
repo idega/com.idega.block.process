@@ -1,5 +1,5 @@
 /*
- * $Id: TicketBusiness.java,v 1.1 2006/03/30 11:21:39 thomas Exp $
+ * $Id: TicketBusiness.java,v 1.2 2006/04/27 20:08:05 thomas Exp $
  * Created on Mar 28, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -15,10 +15,10 @@ import com.idega.business.IBOService;
 
 /**
  * 
- *  Last modified: $Date: 2006/03/30 11:21:39 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/04/27 20:08:05 $ by $Author: thomas $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface TicketBusiness extends IBOService {
 
@@ -35,5 +35,5 @@ public interface TicketBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.security.business.TicketBusinessBean#validateTicket
 	 */
-	public boolean validateTicket(String ticket) throws java.rmi.RemoteException;
+	public boolean validateTicket(String socialsecurity, String ticket) throws java.rmi.RemoteException;
 }

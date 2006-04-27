@@ -1,5 +1,5 @@
 /*
- * $Id: TicketBusinessBean.java,v 1.2 2006/04/21 15:05:50 thomas Exp $
+ * $Id: TicketBusinessBean.java,v 1.3 2006/04/27 20:08:05 thomas Exp $
  * Created on Mar 28, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -16,10 +16,10 @@ import com.idega.business.IBOServiceBean;
 
 /**
  * 
- *  Last modified: $Date: 2006/04/21 15:05:50 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/04/27 20:08:05 $ by $Author: thomas $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TicketBusinessBean extends IBOServiceBean  implements TicketBusiness{
 	
@@ -35,9 +35,9 @@ public class TicketBusinessBean extends IBOServiceBean  implements TicketBusines
 		return ticketValidator.addTicket(personalId);
  	}
 	
-	public boolean validateTicket(String ticket) {
+	public boolean validateTicket(String socialsecurity, String ticket) {
 		TicketValidator ticketValidator = TicketValidator.getInstance();
-		return ticketValidator.isValid(ticket);
+		return ticketValidator.isValid(socialsecurity, ticket);
 	}
 	
 
