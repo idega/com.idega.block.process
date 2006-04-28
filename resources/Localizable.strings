@@ -20,6 +20,13 @@ case_code_key.SYMEDAN=SYMEDAN
 case_code_key.SYMESYN=
 case_code_key.null=
 case_description=Tegund m\u00E1ls
+case_status_key.RECD=RECD
+case_status_key.HIRD=HIRD
+case_status_key.CANC=CANC
+case_status_key.HDEW=HDEW
+case_status_key.OOFD=OOFD
+case_status_key.QUIT=QUIT
+case_status_key.
 case_status_key.ARCH=\u00CD skjalageymslu
 case_status_key.ASWD=
 case_status_key.AVSL=Avslag
