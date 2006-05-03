@@ -57,6 +57,7 @@ public class UserMessagesList extends UserMessages {
 		Lists list = new Lists();
 		list.setStyleClass("userMessagesList");
 		
+		boolean first = true;
 		Collection cases = getMessages(iwc, 0, getMaxNumberOfEntries());
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
@@ -81,6 +82,13 @@ public class UserMessagesList extends UserMessages {
 			item.add(link);
 			if (!getMessageBusiness().isMessageRead(message)) {
 				item.setStyleClass("newMessage");
+			}
+			if (first) {
+				item.setStyleClass("firstChild");
+				first = false;
+			}
+			if (!iter.hasNext()) {
+				item.setStyleClass("lastChild");
 			}
 			list.add(item);
 		}
