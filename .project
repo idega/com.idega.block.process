@@ -6,7 +6,9 @@
   </comment>
   <projects>
     <project>com.idega.core</project>
+    <project>com.idega.block.sso</project>
     <project>org.apache.axis</project>
+    <project>com.idega.block.web2.0</project>
   </projects>
   <buildSpec>
     <buildCommand>
