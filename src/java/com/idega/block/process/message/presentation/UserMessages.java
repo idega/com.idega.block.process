@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.10 2006/04/09 11:42:34 laddi Exp $
+ * $Id: UserMessages.java,v 1.11 2006/05/18 11:16:42 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -35,16 +35,17 @@ import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2006/05/18 11:16:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
 	private String messageType;
 	private ICPage iViewerPage;
 	private int iMaxNumberOfEntries = -1;
+	private int iNumberOfEntriesShown = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -74,6 +75,9 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		ListNavigator navigator = new ListNavigator("userMessages", getMessageCount(iwc));
 		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
 		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("messages", "messages"));
+		if (this.iNumberOfEntriesShown > 0) {
+			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown);
+		}
 		navigationLayer.add(navigator);
 		
 		Layer headingLayer = new Layer(Layer.DIV);
@@ -272,5 +276,9 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
 	protected String getMessageType() {
 		return this.messageType;
+	}
+
+	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
+		this.iNumberOfEntriesShown = numberOfEntriesShown;
 	}
 }

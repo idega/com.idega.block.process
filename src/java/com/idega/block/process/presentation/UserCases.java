@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.21 2006/04/25 17:46:22 thomas Exp $
+ * $Id: UserCases.java,v 1.22 2006/05/18 11:16:42 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/04/25 17:46:22 $ by $Author: thomas $
+ * Last modified: $Date: 2006/05/18 11:16:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -57,6 +57,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private int iMaxNumberOfEntries = -1;
 	private int iMaxNumberOfLetters = -1;
 	private int iMaxNumberOfHandlerLetters = -1;
+	private int iNumberOfEntriesShown = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -82,6 +83,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		ListNavigator navigator = new ListNavigator("userCases", getCaseCount(iwc));
 		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
 		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("cases", "cases"));
+		if (this.iNumberOfEntriesShown > 0) {
+			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown);
+		}
 		navigationLayer.add(navigator);
 		
 		Layer headingLayer = new Layer(Layer.DIV);
@@ -447,5 +451,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	public void setMaximumHandlerLength(int maxNumberOfHandlerLetters) {
 		this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
+	}
+	
+	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
+		this.iNumberOfEntriesShown = numberOfEntriesShown;
 	}
 }
