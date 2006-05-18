@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.22 2006/05/18 11:16:42 laddi Exp $
+ * $Id: UserCases.java,v 1.23 2006/05/18 16:53:05 thomas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -22,10 +22,10 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.message.business.MessageTypeManager;
-import com.idega.block.process.security.business.TicketBusiness;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.core.accesscontrol.business.CredentialBusiness;
 import com.idega.core.builder.data.ICPage;
 import com.idega.event.IWPageEventListener;
 import com.idega.idegaweb.IWApplicationContext;
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/05/18 11:16:42 $ by $Author: laddi $
+ * Last modified: $Date: 2006/05/18 16:53:05 $ by $Author: thomas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -84,7 +84,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
 		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("cases", "cases"));
 		if (this.iNumberOfEntriesShown > 0) {
-			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown);
+			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown); 
 		}
 		navigationLayer.add(navigator);
 		
@@ -143,7 +143,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		group = table.createBodyRowGroup();
 		int iRow = 1;
 		
-		TicketBusiness ticketBusiness = getTicketBusiness(iwc);
+		CredentialBusiness credentialBusiness = getCredentialBusiness(iwc);
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
 			row = group.createRow();
@@ -184,12 +184,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.setStyleClass("casesDescription");
 				ICPage page = getPage(caseCode, caseStatus.getStatus());
 				String caseUrl =  caseBusiness.getUrl(userCase);
-				String ticket = null;
-				String parameterName = null;
-				if (caseUrl != null) {
-					ticket = ticketBusiness.getEncodedTicket(userCase);
-					parameterName =  ticketBusiness.getNameForEncodedTicket();
-				}
 				if (page != null) {
 					Link link = new Link(subject);
 					if (fullSubject.length() != subject.length()) {
@@ -214,7 +208,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					if (fullSubject.length() != subject.length()) {
 						link.setToolTip(fullSubject);
 					}
-					link.addParameter(parameterName, ticket);
+					credentialBusiness.addCredentialsToLink(link, iwc);
 					cell.add(link);
 				}
 				else {
@@ -273,7 +267,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")), caseUrl);
 					link.setStyleClass("caseEdit");
 					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
-					link.addParameter(parameterName, ticket);
+					credentialBusiness.addCredentialsToLink(link, iwc);
 					cell.add(link);
 					addNonBrakingSpace = false;
 				}
@@ -440,9 +434,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		this.iMaxNumberOfLetters = maxNumberOfLetters;
 	}
 	
-	private TicketBusiness getTicketBusiness(IWApplicationContext iwac) {
+	private CredentialBusiness getCredentialBusiness(IWApplicationContext iwac) {
 		try {
-			return (TicketBusiness) IBOLookup.getServiceInstance(iwac, TicketBusiness.class);
+			return (CredentialBusiness) IBOLookup.getServiceInstance(iwac, CredentialBusiness.class);
 		}
 		catch (IBOLookupException e) {
 			throw new IBORuntimeException();
