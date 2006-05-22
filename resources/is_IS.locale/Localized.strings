@@ -1,7 +1,7 @@
 Mobile_phone=Gsm\:
 _blank=Ey\u00F0a
 acc.app.acc.body1=G\u00F3\u00F0an dag,
-application.choice_received_body={1} hefur m\u00F3tteki\u00F0 grunnsk\u00F3laums\u00F3kn fyrir eftirfarandi nemanda\: {0}, {2}. Ums\u00F3knin ver\u00F0ur me\u00F0h\u00F6ndlu\u00F0 eins flj\u00F3tt og h\u00E6gt er. \u00DEegar \u00FEv\u00ED er loki\u00F0 muntu f\u00E1 skilabo\u00F0 \u00E1 uppgefi\u00F0 netfang sem og \u00ED \u00FEj\u00F3nustug\u00E1tt \u00FE\u00EDna. \u00DE\u00FA getur fylgst me\u00F0 st\u00F6\u00F0u m\u00E1la \u00ED m\u00E1lin m\u00EDn \u00ED \u00FEj\u00F3nustug\u00E1ttinni \u00FEinni.\r\n
+application.choice_received_body={1} hefur m\u00F3tteki\u00F0 grunnsk\u00F3laums\u00F3kn fyrir eftirfarandi nemanda\: {0}, {2}. \r\nUms\u00F3knin ver\u00F0ur me\u00F0h\u00F6ndlu\u00F0 eins flj\u00F3tt og h\u00E6gt er. \u00DEegar \u00FEv\u00ED er loki\u00F0 f\u00E6r\u00F0u skilabo\u00F0 \u00E1 uppgefi\u00F0 netfang og \u00ED \u00FEj\u00F3nustug\u00E1tt \u00FE\u00EDna. \u00DE\u00FA getur fylgst me\u00F0 st\u00F6\u00F0u m\u00E1la \u00ED M\u00E1lin m\u00EDn \u00ED \u00FEj\u00F3nustug\u00E1ttinni."\r\n
 application.choice_received_subject=Ums\u00F3kn um grunnsk\u00F3la m\u00F3ttekin
 application.home_school_choice_received_body={1} hefur m\u00F3tteki\u00F0 ums\u00F3kn um sk\u00F3lapl\u00E1ss vist fyrir eftirfarandi barn\:{0}, {2}. Ums\u00F3knin hefur veri\u00F0 sam\u00FEykkt n\u00FA \u00FEegar og viljum vi\u00F0 bj\u00F3\u00F0a barni\u00F0 velkomi\u00F0 \u00ED sk\u00F3lann.
 application.home_school_choice_received_subject=Ums\u00F3kn um heimask\u00F3la m\u00F3ttekin
@@ -75,7 +75,7 @@ school_choice.group_mesg_body2=B\u00FAi\u00F0 er a\u00F0 setja barni\u00F0 \u00E
 school_choice.group_mesg_body3=\u00ED sk\u00F3la
 school_choice.group_mesg_subj=Sk\u00F3lah\u00F3pur
 school_choice.prelim_mesg_body1=K\u00E6ra foreldri/forr\u00E1\u00F0ama\u00F0ur
-school_choice.prelim_mesg_body2=\u00DEa\u00F0 er b\u00FAi\u00F0 a\u00F0 sam\u00FEykkja ums\u00F3knina me\u00F0 fyrirvara. \u00DE\u00FA munt f\u00E1 senda sta\u00F0festingu innan t\u00ED\u00F0ar \u00E1 uppgefi\u00F0 netfang.
+school_choice.prelim_mesg_body2=\u00DEa\u00F0 er b\u00FAi\u00F0 a\u00F0 sam\u00FEykkja ums\u00F3knina me\u00F0 fyrirvara. Innan t\u00ED\u00F0ar f\u00E6r\u00F0u senda sta\u00F0festingu \u00E1 uppgefi\u00F0 netfang og \u00ED \u00FEj\u00F3nustug\u00E1ttina.
 school_choice.prelim_mesg_subj=Ums\u00F3kn sam\u00FEykkt me\u00F0 fyrirvara
 scr_schoolchoicereminder=\u00C1minning
 sender=Sendandi
