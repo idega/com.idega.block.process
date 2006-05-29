@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.59 2006/04/11 08:44:42 laddi Exp $
+ * $Id: CaseBMPBean.java,v 1.60 2006/05/29 18:21:39 tryggvil Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -38,10 +38,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
+ * Last modified: $Date: 2006/05/29 18:21:39 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.59 $
+ * @version $Revision: 1.60 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -937,6 +937,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 */
 	public String getUrl() {
 		return getMetaData(CaseConstants.METADATA_KEY_URL);
+	}
+	
+	public String getId(){
+		return getPrimaryKey().toString();
 	}
 
 }
