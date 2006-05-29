@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.53 2006/04/11 08:44:42 laddi Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.54 2006/05/29 22:29:09 tryggvil Exp $
  * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  * 
@@ -52,10 +52,10 @@ import com.idega.util.IWTimestamp;
  * entity.<br/> This class is convenient to extend the Case entity by adding a
  * second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
+ * Last modified: $Date: 2006/05/29 22:29:09 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
@@ -1307,6 +1307,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 */
 	public void setUniqueId(String uniqueId) {
 		getGeneralCase().setUniqueId(uniqueId);
+	}
+	
+	public String getId(){
+		return getPrimaryKey().toString();
 	}
 
 }
