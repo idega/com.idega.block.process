@@ -4,7 +4,18 @@
     <author email="tryggvi@idega.com">Tryggvi Larusson</author>
   </properties>
   <body>
-     	<release version="1.1.1" date="2005-05-27">
+  
+    <release version="3.1.0" date="2006-06-26">
+      <action dev="tryggvil" type="update">
+        Declaration of version for use with ePlatform release 3.1.0
+      </action>
+      <action dev="tryggvil" type="update">
+        Added new EventListener framework through CaseChangeEvent class. Makes it possible
+        to attach custom handler logic when changin Statuses of Cases.
+      </action>
+    </release>
+  
+    <release version="1.1.1" date="2005-05-27">
       <action dev="tryggvil" type="update">
         Declaration of version for use with core 3.0.5
       </action>              
