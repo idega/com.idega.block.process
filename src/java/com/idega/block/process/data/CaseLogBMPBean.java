@@ -48,7 +48,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		this.addManyToOneRelationship(COLUMN_CASE_STATUS_AFTER, "The CaseStatus after change", CaseStatus.class);
 		this.addManyToOneRelationship(COLUMN_PERFORMER, "The User who makes the change", User.class);
 		this.addAttribute(COLUMN_TIMESTAMP, "Timestamp of the change", Timestamp.class);
-		this.addAttribute(COLUMN_COMMENT, "Comment for change", String.class);
+		this.addAttribute(COLUMN_COMMENT, "Comment for change", String.class, 4000);
 	}
 
 	public void setDefaultValues() {
