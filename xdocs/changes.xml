@@ -5,6 +5,12 @@
   </properties>
   <body>
   
+    <release version="3.1.1" date="2006-07-03">
+      <action dev="laddi" type="update">
+        Increased maximum size of comment column in CaseLog BMP Bean.
+      </action>
+    </release>
+  
     <release version="3.1.0" date="2006-06-26">
       <action dev="tryggvil" type="update">
         Declaration of version for use with ePlatform release 3.1.0
