@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusiness.java,v 1.40 2006/03/30 11:19:50 thomas Exp $
+ * $Id: CaseBusiness.java,v 1.41 2006/10/23 11:31:20 laddi Exp $
  * Created on Mar 27, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -25,10 +25,10 @@ import com.idega.user.data.User;
 
 /**
  * 
- *  Last modified: $Date: 2006/03/30 11:19:50 $ by $Author: thomas $
+ *  Last modified: $Date: 2006/10/23 11:31:20 $ by $Author: laddi $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public interface CaseBusiness extends IBOService {
 
@@ -371,7 +371,7 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseStatusDescription
 	 */
-	public String getLocalizedCaseStatusDescription(CaseStatus status, Locale locale) throws java.rmi.RemoteException;
+	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) throws java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLastModifier

@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.23 2006/05/18 16:53:05 thomas Exp $
+ * $Id: UserCases.java,v 1.24 2006/10/23 11:31:20 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/05/18 16:53:05 $ by $Author: thomas $
+ * Last modified: $Date: 2006/10/23 11:31:20 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -173,7 +173,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				String caseCode = userCase.getCode();
 				row.setStyleClass(caseCode);
 				CaseStatus caseStatus = userCase.getCaseStatus();
-				String status = caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale());
+				String status = caseBusiness.getLocalizedCaseStatusDescription(userCase, caseStatus, iwc.getCurrentLocale());
 				
 				cell = row.createCell();
 				cell.setStyleClass("firstColumn");
