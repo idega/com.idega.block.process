@@ -5,6 +5,12 @@
   </properties>
   <body>
   
+    <release version="3.1.4" date="2006-10-31">
+      <action dev="sigtryggur" type="update">
+      	New translations
+      </action>
+    </release>
+    
     <release version="3.1.3" date="2006-10-20">
       <action dev="laddi" type="update">
       	Changed method in CaseBusiness to get localized case status description so that it also gets the Case itself as a parameter.
