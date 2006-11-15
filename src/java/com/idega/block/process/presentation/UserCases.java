@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.24 2006/10/23 11:31:20 laddi Exp $
+ * $Id: UserCases.java,v 1.25 2006/11/15 11:44:47 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/10/23 11:31:20 $ by $Author: laddi $
+ * Last modified: $Date: 2006/11/15 11:44:47 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -334,9 +334,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 		
 		this.iHiddenCaseCodes.addAll(MessageTypeManager.getInstance().getMessageCodes());
-		if (this.iHiddenCaseCodes.isEmpty()) {
-			return null;
-		}
 		
 		if (this.iHiddenCaseCodes.isEmpty()) {
 			return null;
@@ -379,7 +376,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return null;
 	}
 	
-	public void setHideCaseCode(CaseCode caseCode) {
+	public void setHideCaseCode(String caseCode) {
 		if (this.iHiddenCaseCodes == null) {
 			this.iHiddenCaseCodes = new ArrayList();
 		}
