@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: pom.xml,v 1.1 2006/10/12 12:41:39 gediminas Exp $ -->
+<!-- $Id: pom.xml,v 1.2 2006/11/23 13:48:12 civilis Exp $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <name>Process</name>
-  <groupId>bundles</groupId>
+  <groupId>com.idega.block.platform</groupId>
   <artifactId>com.idega.block.process</artifactId>
   <packaging>jar</packaging>
   <version>3.5.0</version>
