@@ -1,5 +1,5 @@
 /*
- * $Id: CaseCodeManager.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
+ * $Id: CaseCodeManager.java,v 1.1.2.1 2007/01/12 19:32:50 idegaweb Exp $
  * Created on Oct 19, 2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -19,10 +19,10 @@ import com.idega.idegaweb.IWApplicationContext;
 
 /**
  * 
- *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ *  Last modified: $Date: 2007/01/12 19:32:50 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1.2.1 $
  */
 public class CaseCodeManager {
 	

@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.9 2006/10/02 12:47:32 thomas Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.3.2.1 2007/01/12 19:32:44 idegaweb Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -22,15 +22,14 @@ import com.idega.data.IDOCreateException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookupException;
 import com.idega.data.IDOStoreException;
-import com.idega.idegaweb.IWCacheManager;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2006/10/02 12:47:32 $ by $Author: thomas $
+ * Last modified: $Date: 2007/01/12 19:32:44 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.3.2.1 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -45,15 +44,11 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 
 	public void deleteMessage(Object messagePK) throws FinderException {
 		Message message = getMessage(messagePK);
-		User owner = message.getOwner();
 		changeCaseStatus(message, getCaseStatusDeleted().getStatus(), message.getOwner());
-		IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + owner.getPrimaryKey().toString());
 	}
 
 	public void markMessageAsRead(Message message) {
-		User owner = message.getOwner();
-		changeCaseStatus(message, getCaseStatusGranted().getPrimaryKey().toString(), owner);
-		IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + owner.getPrimaryKey().toString());
+		changeCaseStatus(message, getCaseStatusGranted().getPrimaryKey().toString(), message.getOwner());
 	}
 
 	public boolean isMessageRead(Message message) {
@@ -149,30 +144,10 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 
 		try {
 			message.store();
-			IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + msgValue.getReceiver().getPrimaryKey().toString());
 		}
 		catch (IDOStoreException idos) {
 			throw new IDOCreateException(idos);
 		}
 		return message;
 	}
-	
-	/**
-	 * This method is overwritten in CommuneMessageBusiness
-	 */
-	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException {	
-		MessageValue messageValue = new MessageValue(); 
-		setSimpleMessage(messageValue, parentCase, receiver, subject, body);
-		return createMessage(messageValue);
-	}
-		
-	protected void setSimpleMessage(MessageValue messageValue, Case parentCase, User receiver, String subject, String body) {
-		messageValue.setSubject(subject);
-		messageValue.setBody(body);
-		messageValue.setReceiver(receiver);
-		messageValue.setParentCase(parentCase);
-	}
-	
-	
-	
 }

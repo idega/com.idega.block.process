@@ -11,7 +11,6 @@ package com.idega.block.process.message.presentation;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import com.idega.block.process.message.data.Message;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.text.Link;
@@ -24,23 +23,6 @@ public class UserMessagesList extends UserMessages {
 
 	private int iMaxNumberOfLetters;
 
-	public UserMessagesList() {
-		//setCacheable(getCacheKey(), (20 * 60 * 1000));
-	}
-	
-	/*public String getCacheKey() {
-		return MessageConstants.CACHE_KEY;
-	}
-	
-	protected String getCacheState(IWContext iwc, String cacheStatePrefix) {
-		if (iwc.isLoggedOn()) {
-			return cacheStatePrefix + "_" + iwc.getCurrentUser().getPrimaryKey().toString();
-		}
-		else {
-			return cacheStatePrefix;
-		}
-	}*/
-	
 	protected void present(IWContext iwc) throws Exception {
 		if (getMessageType() == null) {
 			add(new Text("No code set..."));
@@ -57,7 +39,6 @@ public class UserMessagesList extends UserMessages {
 		Lists list = new Lists();
 		list.setStyleClass("userMessagesList");
 		
-		boolean first = true;
 		Collection cases = getMessages(iwc, 0, getMaxNumberOfEntries());
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
@@ -82,13 +63,6 @@ public class UserMessagesList extends UserMessages {
 			item.add(link);
 			if (!getMessageBusiness().isMessageRead(message)) {
 				item.setStyleClass("newMessage");
-			}
-			if (first) {
-				item.setStyleClass("firstChild");
-				first = false;
-			}
-			if (!iter.hasNext()) {
-				item.setStyleClass("lastChild");
 			}
 			list.add(item);
 		}

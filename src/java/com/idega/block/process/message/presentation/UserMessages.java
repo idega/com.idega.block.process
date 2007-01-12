@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.11 2006/05/18 11:16:42 laddi Exp $
+ * $Id: UserMessages.java,v 1.4.2.1 2007/01/12 19:32:21 idegaweb Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -29,23 +29,25 @@ import com.idega.presentation.TableRow;
 import com.idega.presentation.TableRowGroup;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
+import com.idega.presentation.ui.CheckBox;
+import com.idega.presentation.ui.Form;
+import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2006/05/18 11:16:42 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/12 19:32:21 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.4.2.1 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
 	private String messageType;
 	private ICPage iViewerPage;
 	private int iMaxNumberOfEntries = -1;
-	private int iNumberOfEntriesShown = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -73,11 +75,6 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		headerLayer.add(navigationLayer);
 		
 		ListNavigator navigator = new ListNavigator("userMessages", getMessageCount(iwc));
-		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
-		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("messages", "messages"));
-		if (this.iNumberOfEntriesShown > 0) {
-			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown);
-		}
 		navigationLayer.add(navigator);
 		
 		Layer headingLayer = new Layer(Layer.DIV);
@@ -85,7 +82,19 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		headingLayer.add(new Text(getHeading()));
 		headerLayer.add(headingLayer);
 		
-		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
+		Form form = new Form();
+		form.setEventListener(UserMessages.class);
+		form.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
+		
+		Layer buttonLayer = new Layer(Layer.DIV);
+		buttonLayer.setStyleClass("buttonLayer");
+		
+		SubmitButton button = new SubmitButton(getResourceBundle().getLocalizedString("delete", "Delete"));
+		button.setStyleClass("button");
+		buttonLayer.add(button);
+		form.add(buttonLayer);
+		
+		layer.add(form);
 		
 		add(layer);
 	}
@@ -126,7 +135,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		cell = row.createHeaderCell();
 		cell.setStyleClass("lastColumn");
 		cell.setStyleClass("messageDelete");
-		cell.add(new Text(getResourceBundle().getLocalizedString("delete", "Delete")));
+		cell.add(Text.getNonBrakingSpace());
 		
 		group = table.createBodyRowGroup();
 		int iRow = 1;
@@ -184,13 +193,9 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			cell.setStyleClass("lastColumn");
 			cell.setStyleClass("messageDelete");
 			
-			link = new Link(getBundle(iwc).getImage("delete.png", getResourceBundle().getLocalizedString("delete_message", "Delete message")));
-			link.setStyleClass("deleteMessage");
-			link.setEventListener(UserMessages.class);
-			link.setOnClick("return confirm('" + getResourceBundle().getLocalizedString("delete_message_confirm", "Are you sure you want to delete this message?") + "');");
-			link.setToolTip(getResourceBundle().getLocalizedString("delete_message", "Delete message"));
-			link.addParameter(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
-			cell.add(link);
+			CheckBox box = new CheckBox(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
+			box.setStyleClass("checkbox");
+			cell.add(box);
 
 			if (iRow % 2 == 0) {
 				row.setStyleClass("evenRow");
@@ -241,8 +246,10 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	public boolean actionPerformed(IWContext iwc) throws IWException {
 		if (iwc.isParameterSet(PARAMETER_MESSAGE_PK)) {
 			try {
-				String messagePKs = iwc.getParameter(PARAMETER_MESSAGE_PK);
-				getMessageBusiness(iwc).deleteMessage(messagePKs);
+				String[] messagePKs = iwc.getParameterValues(PARAMETER_MESSAGE_PK);
+				for (int i = 0; i < messagePKs.length; i++) {
+					getMessageBusiness().deleteMessage(messagePKs[i]);
+				}
 				return true;
 			}
 			catch (FinderException fe) {
@@ -276,9 +283,5 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
 	protected String getMessageType() {
 		return this.messageType;
-	}
-
-	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
-		this.iNumberOfEntriesShown = numberOfEntriesShown;
 	}
 }

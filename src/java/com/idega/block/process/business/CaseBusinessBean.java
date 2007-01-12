@@ -1,20 +1,9 @@
-/*
- * $Id: CaseBusinessBean.java,v 1.73 2006/10/23 11:31:21 laddi Exp $
- * Created in 2002 by Tryggvi Larusson
- *
- * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
- *
- * This software is the proprietary information of Idega hf.
- * Use is subject to license terms.
- */
 package com.idega.block.process.business;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.ejb.CreateException;
@@ -28,7 +17,6 @@ import com.idega.block.process.data.CaseLog;
 import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
-import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
 import com.idega.data.IDOException;
@@ -42,20 +30,14 @@ import com.idega.user.data.UserHome;
 import com.idega.util.IWTimestamp;
 
 /**
- * <p>
- * This is the main logic class for the case/process module.
- * </p>
- *  Last modified: $Date: 2006/10/23 11:31:21 $ by $Author: laddi $
+ * Title: idegaWeb Description: Copyright: Copyright (c) 2001 Company: idega
+ * software
  * 
- * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.73 $
+ * @author <a href="mailto:tryggvi@idega.is">Tryggvi Larusson </a>
+ * @version 1.0
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
-	/**
-	 * Comment for <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 5676084152460108081L;
 	private String CASE_STATUS_OPEN_KEY;
 	private String CASE_STATUS_INACTIVE_KEY;
 	private String CASE_STATUS_GRANTED_KEY;
@@ -74,9 +56,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_WAITING;
 	
 	private Map _statusMap;
-
-	private static Map listenerCaseCodeMap;
-	private static Map listenerCaseCodeStatusMap;
 	
 	protected final static String PARAMETER_SELECTED_CASE = "sel_case_nr";
 	
@@ -466,11 +445,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString) {
-		
-		if(caseStatusString.length()>4){
-			caseStatusString=caseStatusString.substring(0,4);
-		}
-		
 		CaseStatus status = getCaseStatusFromMap(caseStatusString);
 		if (status != null) {
 			return status;
@@ -523,14 +497,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer) {
 		changeCaseStatus(theCase, newCaseStatus, performer, performer);
 	}
-	
-	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer) {
-		changeCaseStatus(theCase, newCaseStatus, null, performer, null, false, null, false);
-	}
-	
-	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer,Map attributes) {
-		changeCaseStatus(theCase, newCaseStatus, null, performer,null,false,attributes);
-	}
 
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Group handler) {
 		changeCaseStatus(theCase, newCaseStatus, null, performer, handler);
@@ -545,32 +511,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) {
-		changeCaseStatus(theCase,newCaseStatus,comment,performer,handler,canBeSameStatus,null);
-	}
-	
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
-		changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, canBeSameStatus, attributes, true);
-	}
-
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes, boolean sendUpdates) {
 		String oldCaseStatus = "";
 		try {
 			oldCaseStatus = theCase.getStatus();
-			Collection listeners = null;
-			if (sendUpdates) {
-				listeners = getCaseChangeListeners(theCase,newCaseStatus);
-			
-			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-				CaseChangeListener listener = (CaseChangeListener) iter.next();
-				CaseChangeEvent event = new CaseChangeEvent(theCase);
-				event.setPerformer(performer);
-				event.setStatusFrom(oldCaseStatus);
-				event.setStatusTo(newCaseStatus);
-				event.setAttributes(attributes);
-				listener.beforeCaseChange(event);
-			}
-			}
-			
+
 			theCase.setStatus(newCaseStatus);
 			if (handler != null) {
 				theCase.setHandler(handler);
@@ -590,26 +534,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				}
 				log.store();
 			}
-			
-			if (sendUpdates) {
-			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-				CaseChangeListener listener = (CaseChangeListener) iter.next();
-				CaseChangeEvent event = new CaseChangeEvent(theCase);
-				event.setPerformer(performer);
-				event.setStatusFrom(oldCaseStatus);
-				event.setStatusTo(newCaseStatus);
-				event.setAttributes(attributes);
-				listener.afterCaseChange(event);
-			}
-			}
-			
 		}
 		catch (CreateException e) {
 			throw new EJBException("Error changing case status: " + oldCaseStatus + " to " + newCaseStatus + ":" + e.getMessage());
 		}
 	}
 
-	
 	public String getLocalizedCaseDescription(Case theCase, Locale locale) {
 		return getLocalizedCaseDescription(theCase.getCaseCode(), locale);
 	}
@@ -618,7 +548,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return getLocalizedString("case_code_key." + theCaseCode.toString(), theCaseCode.toString());
 	}
 
-	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) {
+	public String getLocalizedCaseStatusDescription(CaseStatus status, Locale locale) {
 		return getLocalizedString("case_status_key." + status.toString(), status.toString());
 	}
 
@@ -645,7 +575,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return log.getPerformer();
 		}
 		catch (Exception e) {
-			// empty
+
 		}
 		return null;
 	}
@@ -682,7 +612,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public boolean canDeleteCase(Case theCase) {
-		return false;
+		return true;
 	}
 	
 	public void deleteCase(Case theCase, User performer) {
@@ -695,151 +625,4 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public String getSelectedCaseParameter(){
 		return PARAMETER_SELECTED_CASE;
 	}
-	
-	public CaseBusiness getCaseBusiness(String caseCode) throws FinderException {
-		CaseCode code = getCaseCodeHome().findByPrimaryKey(caseCode);
-		try {
-			return CaseCodeManager.getInstance().getCaseBusinessOrDefault(code, getIWApplicationContext());
-		}
-		catch (IBOLookupException e) {
-			throw new IBORuntimeException(e);
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.idega.block.process.business.CaseBusiness#getUrl(com.idega.block.process.data.Case)
-	 */
-	public String getUrl(Case userCase) {
-		String url = userCase.getUrl();
-		return url;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.idega.block.process.business.CaseBusiness#getCaseSubject(com.idega.block.process.data.Case, java.util.Locale)
-	 */
-	public String getCaseSubject(Case userCase, Locale currentLocale) {
-		String subject = userCase.getSubject();
-		if(subject!=null){
-			return subject;
-		}
-		return getLocalizedCaseDescription(userCase,currentLocale);
-	}
-
-	/**
-	 * <p>
-	 * Gets the CaseCode instance with primary key caseCode if it exitsts
-	 * in the databse. Else it is created inserted and returned.
-	 * </p>
-	 * @param caseCode
-	 * @return
-	 */
-	protected CaseCode getCaseCodeAndInstallIfNotExists(String caseCode) {
-		CaseCode code=null;
-		try {
-			code = getCaseCode(caseCode);
-		}
-		catch (FinderException e) {
-			try {
-				code = getCaseCodeHome().create();
-				if(caseCode.length()>7){
-					caseCode=caseCode.substring(0,7);
-				}
-				code.setCode(caseCode);
-				code.store();
-			}
-			catch (CreateException e1) {
-				throw new RuntimeException(e);
-			}
-		}
-		return code;
-	}
-
-
-	/**
-	 * <p>
-	 * TODO tryggvil describe method getCaseChangeListeners
-	 * </p>
-	 * @param theCase
-	 * @param newCaseStatus
-	 * @return
-	 */
-	protected List getCaseChangeListeners(Case theCase, String newCaseStatus) {
-		ArrayList list = new ArrayList();
-		String caseCode = theCase.getCode();
-		List codeList = getListenerListForCaseCode(caseCode);
-		list.addAll(codeList);
-		List statusList = getListenerListForCaseCodeAndStatus(caseCode,newCaseStatus);
-		list.addAll(statusList);
-		return list;
-	}
-	/**
-	 * <p>
-	 * Registers a listener on all status changes for all cases with given caseCode
-	 * </p>
-	 * @param myListener
-	 * @param caseCode
-	 * @param caseStatusTo
-	 */
-	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode){
-		List list = getListenerListForCaseCode(caseCode);
-		list.add(myListener);
-	}
-	
-	/**
-	 * <p>
-	 * TODO tryggvil describe method getListenerListForCaseCode
-	 * </p>
-	 * @param caseCode
-	 * @return
-	 */
-	protected List getListenerListForCaseCode(String caseCode) {
-		if(listenerCaseCodeMap==null){
-			listenerCaseCodeMap = new HashMap();
-		}
-		List listenerList = (List) listenerCaseCodeMap.get(caseCode);
-		if(listenerList==null){
-			listenerList = new ArrayList();
-			listenerCaseCodeMap.put(caseCode,listenerList);
-		}
-		return listenerList;
-	}
-
-	/**
-	 * <p>
-	 * TODO tryggvil describe method getListenerListForCaseCode
-	 * </p>
-	 * @param caseCode
-	 * @return
-	 */
-	protected List getListenerListForCaseCodeAndStatus(String caseCode,String caseStatus) {
-		if(listenerCaseCodeStatusMap==null){
-			listenerCaseCodeStatusMap = new HashMap();
-		}
-		Map statusMap = (Map) listenerCaseCodeStatusMap.get(caseCode);
-		if(statusMap==null){
-			statusMap = new HashMap();
-			listenerCaseCodeStatusMap.put(caseCode,statusMap);
-		}
-		List listenerList = (List) statusMap.get(caseStatus);
-		if(listenerList==null){
-			listenerList = new ArrayList();
-			statusMap.put(caseStatus,listenerList);
-		}
-		return listenerList;
-	}
-	/**
-	 * <p>
-	 * Registers a listener on a status change for all cases with given caseCode and when the status
-	 * is changed to caseStatusTo
-	 * </p>
-	 * @param myListener
-	 * @param caseCode
-	 * @param caseStatusTo
-	 */
-	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode,String caseStatusTo){
-		List list = getListenerListForCaseCodeAndStatus(caseCode,caseStatusTo);
-		list.add(myListener);
-	}
-	
-	
 }

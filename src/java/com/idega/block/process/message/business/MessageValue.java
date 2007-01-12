@@ -1,5 +1,5 @@
 /*
- * $Id: MessageValue.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
+ * $Id: MessageValue.java,v 1.1.2.1 2007/01/12 19:32:44 idegaweb Exp $
  * Created on Oct 12, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -15,10 +15,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/12 19:32:44 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1.2.1 $
  */
 public class MessageValue {
 

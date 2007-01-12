@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBlock.java,v 1.4 2006/04/09 11:42:34 laddi Exp $
+ * $Id: CaseBlock.java,v 1.3.2.1 2007/01/12 19:32:32 idegaweb Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -23,10 +23,10 @@ import com.idega.user.business.UserBusiness;
 
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/12 19:32:32 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.3.2.1 $
  */
 public abstract class CaseBlock extends Block {
 

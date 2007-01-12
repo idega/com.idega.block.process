@@ -1,5 +1,5 @@
 /*
- * $Id: MessageTypeManager.java,v 1.3 2006/04/09 11:42:34 laddi Exp $
+ * $Id: MessageTypeManager.java,v 1.1.2.1 2007/01/12 19:32:43 idegaweb Exp $
  * Created on Oct 12, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -17,57 +17,32 @@ import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.message.data.MessageHome;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
-import com.idega.repository.data.Instantiator;
-import com.idega.repository.data.Singleton;
-import com.idega.repository.data.SingletonRepository;
 
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/12 19:32:43 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1.2.1 $
  */
-public class MessageTypeManager implements Singleton {
+public class MessageTypeManager {
 
-	private String defaultMessageType = null;
+	private static MessageTypeManager messageTypeManager = null;
 	
 	private Map messageTypeDataMap = null;
 	
-	private static Instantiator instantiator = new Instantiator() { public Object getInstance() { return new MessageTypeManager();}};
-
-	public static MessageTypeManager getInstance() {
-		return (MessageTypeManager) SingletonRepository.getRepository().getInstance(MessageTypeManager.class,instantiator);
-	}
-
-	/**
-	 * Uses the default message type.
-	 * Works only if the default message type was set before.
-	 * 
-	 * @return the default message home 
-	 * @throws IDOLookupException
-	 */
-	public MessageHome getMessageHome() throws IDOLookupException {
-		return getMessageHome(this.defaultMessageType);
+	public static MessageTypeManager getInstance() { 
+		if (messageTypeManager == null) {
+			messageTypeManager = new MessageTypeManager();
+		}
+		return messageTypeManager;
 	}
 	
 	public MessageHome getMessageHome(CaseCode code) throws IDOLookupException {
 		return getMessageHome(code.getCode());
 	}
 	
-	/**
-	 * 
-	 * Uses the default message type if the specified message type is null.
-	 * Works only if a default message type was set before.
-	 * 
-	 * @param messageType
-	 * @return
-	 * @throws IDOLookupException
-	 */
 	public MessageHome getMessageHome(String messageType) throws IDOLookupException {
-		if (messageType == null) {
-			messageType = this.defaultMessageType;
-		}
 		Class dataClass = getDataClass(messageType);
 		if (dataClass == null) {
 			throw new IDOLookupException("[MessageTypeManager]: An entry for message of type "+ messageType +" could not be found");
@@ -79,23 +54,10 @@ public class MessageTypeManager implements Singleton {
 		addDataClassForType(code.getCode(), messageData);
 	}
 
-	/**
-	 * Sets the specified message type as default. 
-	 * The default message type remains accessible by the specified message type.
-	 * 
-	 * @param messageType
-	 * @param messageData
-	 */
-	public void addDataClassForDefaultType(String messageType, Class messageData) {
-		this.defaultMessageType = messageType;
-		addDataClassForType(messageType, messageData);
-	}
-	
-	
 	public void addDataClassForType(String messageType, Class messageData) {
 		getMessageTypeDataMap().put(messageType, messageData);
 	}
-	
+
 	private MessageHome getHome(Class dataClass) throws IDOLookupException {
 		return (MessageHome) IDOLookup.getHome(dataClass);
 	}

@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.25 2006/11/15 11:44:47 laddi Exp $
+ * $Id: UserCases.java,v 1.5.2.1 2007/01/12 19:32:32 idegaweb Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -22,13 +22,10 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.message.business.MessageTypeManager;
-import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
-import com.idega.core.accesscontrol.business.CredentialBusiness;
 import com.idega.core.builder.data.ICPage;
 import com.idega.event.IWPageEventListener;
-import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
@@ -43,10 +40,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/11/15 11:44:47 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/12 19:32:32 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.5.2.1 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -55,9 +52,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private Collection iHiddenCaseCodes;
 	private Map pageMap;
 	private int iMaxNumberOfEntries = -1;
-	private int iMaxNumberOfLetters = -1;
-	private int iMaxNumberOfHandlerLetters = -1;
-	private int iNumberOfEntriesShown = -1;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -81,11 +75,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		headerLayer.add(navigationLayer);
 		
 		ListNavigator navigator = new ListNavigator("userCases", getCaseCount(iwc));
-		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
-		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("cases", "cases"));
-		if (this.iNumberOfEntriesShown > 0) {
-			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown); 
-		}
 		navigationLayer.add(navigator);
 		
 		Layer headingLayer = new Layer(Layer.DIV);
@@ -138,12 +127,11 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		cell = row.createHeaderCell();
 		cell.setStyleClass("lastColumn");
 		cell.setStyleClass("casesEdit");
-		cell.add(new Text(getResourceBundle().getLocalizedString("view", "View")));
+		cell.add(Text.getNonBrakingSpace());
 		
 		group = table.createBodyRowGroup();
 		int iRow = 1;
 		
-		CredentialBusiness credentialBusiness = getCredentialBusiness(iwc);
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
 			row = group.createRow();
@@ -157,12 +145,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 			try {
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
-				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
-				String fullSubject = subject;
-				if (this.iMaxNumberOfLetters > 0 && this.iMaxNumberOfLetters < subject.length()) {
-					subject = subject.substring(0, (this.iMaxNumberOfLetters + 1)) + "...";
-				}
-				
+				String description = caseBusiness.getLocalizedCaseDescription(userCase, iwc.getCurrentLocale());
 				IWTimestamp created = new IWTimestamp(userCase.getCreated());
 				String handler = "-";
 				if (userCase.getHandler() != null) {
@@ -171,9 +154,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					}
 				}
 				String caseCode = userCase.getCode();
-				row.setStyleClass(caseCode);
 				CaseStatus caseStatus = userCase.getCaseStatus();
-				String status = caseBusiness.getLocalizedCaseStatusDescription(userCase, caseStatus, iwc.getCurrentLocale());
+				String status = caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale());
 				
 				cell = row.createCell();
 				cell.setStyleClass("firstColumn");
@@ -182,61 +164,18 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				
 				cell = row.createCell();
 				cell.setStyleClass("casesDescription");
-				ICPage page = getPage(caseCode, caseStatus.getStatus());
-				String caseUrl =  caseBusiness.getUrl(userCase);
-				if (page != null) {
-					Link link = new Link(subject);
-					if (fullSubject.length() != subject.length()) {
-						link.setToolTip(fullSubject);
-					}
-					
-					Class eventListener = caseBusiness.getEventListener();
-					if (eventListener != null) {
-						link.setEventListener(eventListener);
-					}
-					Map parameters = caseBusiness.getCaseParameters(userCase);
-					if (parameters != null) {
-						link.setParameter(parameters);
-					}
-					
-					link.addParameter(caseBusiness.getSelectedCaseParameter(), userCase.getPrimaryKey().toString());
-					link.setPage(page);
-					cell.add(link);
-				}
-				else if(caseUrl!=null){
-					Link link = new Link(subject,caseUrl);
-					if (fullSubject.length() != subject.length()) {
-						link.setToolTip(fullSubject);
-					}
-					credentialBusiness.addCredentialsToLink(link, iwc);
-					cell.add(link);
-				}
-				else {
-					Text subjectText = new Text(subject);
-					if (fullSubject.length() != subject.length()) {
-						subjectText.setToolTip(fullSubject);
-					}
-					cell.add(subjectText);
-				}
+				cell.add(new Text(description));
 
 				cell = row.createCell();
 				cell.setStyleClass("casesDate");
 				cell.add(new Text(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)));
 
-				Text handlerText = new Text("");
-				if (this.iMaxNumberOfHandlerLetters > 0 && handler.length() > this.iMaxNumberOfHandlerLetters) {
-					handlerText.setToolTip(handler);
-					handler = handler.substring(0, this.iMaxNumberOfHandlerLetters + 1) + "...";
-				}
-				handlerText.addToText(handler);
-				
 				cell = row.createCell();
 				cell.setStyleClass("casesHandler");
-				cell.add(handlerText);
+				cell.add(new Text(handler));
 				
 				cell = row.createCell();
 				cell.setStyleClass("casesStatus");
-				cell.setStyleClass(caseStatus.getStatus());
 				cell.add(new Text(status));
 
 				cell = row.createCell();
@@ -244,8 +183,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.setStyleClass("casesEdit");
 
 				boolean addNonBrakingSpace = true;
+				ICPage page = getPage(caseCode, caseStatus.getStatus());
 				if (page != null) {
-					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")));
+					Link link = new Link(getBundle(iwc).getImage("edit.gif"));
 					link.setStyleClass("caseEdit");
 					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
 					
@@ -263,22 +203,13 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					cell.add(link);
 					addNonBrakingSpace = false;
 				}
-				else if(caseUrl != null) {
-					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")), caseUrl);
-					link.setStyleClass("caseEdit");
-					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
-					credentialBusiness.addCredentialsToLink(link, iwc);
-					cell.add(link);
-					addNonBrakingSpace = false;
-				}
 				
 				if (caseBusiness.canDeleteCase(userCase)) {
-					Link link = new Link(getBundle(iwc).getImage("delete.png", getResourceBundle().getLocalizedString("delete_case", "Delete case")));
+					Link link = new Link(getBundle(iwc).getImage("delete.gif"));
 					link.setStyleClass("caseDelete");
 					link.setEventListener(UserCases.class);
 					link.setToolTip(getResourceBundle().getLocalizedString("delete_case", "Delete case"));
 					link.addParameter(PARAMETER_CASE_PK, userCase.getPrimaryKey().toString());
-					link.setClickConfirmation(getResourceBundle().getLocalizedString("confirm_case_delete", "Are you sure you want to delete this case?"));
 					cell.add(link);
 					addNonBrakingSpace = false;
 				}
@@ -334,6 +265,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 		
 		this.iHiddenCaseCodes.addAll(MessageTypeManager.getInstance().getMessageCodes());
+		if (this.iHiddenCaseCodes.isEmpty()) {
+			return null;
+		}
 		
 		if (this.iHiddenCaseCodes.isEmpty()) {
 			return null;
@@ -376,7 +310,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return null;
 	}
 	
-	public void setHideCaseCode(String caseCode) {
+	public void setHideCaseCode(CaseCode caseCode) {
 		if (this.iHiddenCaseCodes == null) {
 			this.iHiddenCaseCodes = new ArrayList();
 		}
@@ -424,27 +358,5 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
 		this.iMaxNumberOfEntries = maxNumberOfEntries;
-	}
-
-	
-	public void setMaximumNumberOfLetters(int maxNumberOfLetters) {
-		this.iMaxNumberOfLetters = maxNumberOfLetters;
-	}
-	
-	private CredentialBusiness getCredentialBusiness(IWApplicationContext iwac) {
-		try {
-			return (CredentialBusiness) IBOLookup.getServiceInstance(iwac, CredentialBusiness.class);
-		}
-		catch (IBOLookupException e) {
-			throw new IBORuntimeException();
-		}
-	}
-	
-	public void setMaximumHandlerLength(int maxNumberOfHandlerLetters) {
-		this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
-	}
-	
-	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
-		this.iNumberOfEntriesShown = numberOfEntriesShown;
 	}
 }
