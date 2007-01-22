@@ -5,6 +5,12 @@
   </properties>
   <body>
   
+    <release version="3.1.6" date="2007-01-22">
+      <action dev="eiki" type="update">
+      	Adding credentials property for UserCases module (required by VUF - Reykjavik).
+      </action>
+    </release>
+    
     <release version="3.1.5" date="2007-01-10">
       <action dev="eiki" type="update">
       	Localizing in english, also removed some empty localization keys
