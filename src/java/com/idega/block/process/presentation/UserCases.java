@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.25 2006/11/15 11:44:47 laddi Exp $
+ * $Id: UserCases.java,v 1.26 2007/01/22 08:25:25 tryggvil Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -43,10 +43,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2006/11/15 11:44:47 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/22 08:25:25 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -58,6 +58,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private int iMaxNumberOfLetters = -1;
 	private int iMaxNumberOfHandlerLetters = -1;
 	private int iNumberOfEntriesShown = -1;
+	private boolean addCredentialsToExernalUrls=false;
+
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -208,7 +210,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					if (fullSubject.length() != subject.length()) {
 						link.setToolTip(fullSubject);
 					}
-					credentialBusiness.addCredentialsToLink(link, iwc);
+					if(isAddCredentialsToExernalUrls()){
+						credentialBusiness.addCredentialsToLink(link, iwc);
+					}
 					cell.add(link);
 				}
 				else {
@@ -267,7 +271,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")), caseUrl);
 					link.setStyleClass("caseEdit");
 					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
-					credentialBusiness.addCredentialsToLink(link, iwc);
+					if(isAddCredentialsToExernalUrls()){
+						credentialBusiness.addCredentialsToLink(link, iwc);
+					}
 					cell.add(link);
 					addNonBrakingSpace = false;
 				}
@@ -446,5 +452,21 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
 		this.iNumberOfEntriesShown = numberOfEntriesShown;
+	}
+
+	
+	/**
+	 * @return the addCredentialsToExernalUrls
+	 */
+	public boolean isAddCredentialsToExernalUrls() {
+		return addCredentialsToExernalUrls;
+	}
+
+	
+	/**
+	 * @param addCredentialsToExernalUrls the addCredentialsToExernalUrls to set
+	 */
+	public void setAddCredentialsToExernalUrls(boolean addCredentialsToExernalUrls) {
+		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
 	}
 }
