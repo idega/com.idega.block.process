@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.73.2.1 2007/01/30 07:07:19 eiki Exp $
+ * $Id: CaseBusinessBean.java,v 1.73.2.2 2007/01/31 10:09:17 eiki Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -52,10 +52,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2007/01/30 07:07:19 $ by $Author: eiki $
+ *  Last modified: $Date: 2007/01/31 10:09:17 $ by $Author: eiki $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.73.2.1 $
+ * @version $Revision: 1.73.2.2 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -898,9 +898,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				}
 				catch(NotLoggedOnException ex){
 				}
+				
+				if(user!=null){
+					locale = getUserBusiness().getUsersPreferredLocale(user);
+				}
 			}
-			
-			locale = getUserBusiness().getUsersPreferredLocale(user);
 		} catch (IBOLookupException e) {
 			e.printStackTrace();
 		}

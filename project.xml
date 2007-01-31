@@ -5,7 +5,7 @@
   <pomVersion>3</pomVersion>
   <name>idegaWeb Process Block</name>
   <artifactId>com.idega.block.process</artifactId>
-  <currentVersion>3.1.7</currentVersion>
+  <currentVersion>3.1.8</currentVersion>
   <inceptionYear>2000</inceptionYear>
   <shortDescription>Process</shortDescription>
   <versions>

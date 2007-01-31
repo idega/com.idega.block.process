@@ -4,7 +4,13 @@
     <author email="tryggvi@idega.com">Tryggvi Larusson</author>
   </properties>
   <body>
-  
+
+    <release version="3.1.8" date="2007-01-31">
+      <action dev="eiki" type="fix">
+      	Fixed NullPointerException in CaseBusiness
+      </action>
+    </release>
+      
     <release version="3.1.7" date="2007-01-30">
       <action dev="eiki" type="update">
       	Added methods in CaseBusiness to get a users preferred IWRB by his preferred locale and deprecated getLocalizedString but improved it though.
