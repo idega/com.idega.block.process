@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.73.2.2 2007/01/31 10:09:17 eiki Exp $
+ * $Id: CaseBusinessBean.java,v 1.73.2.3 2007/02/05 04:50:08 eiki Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -52,10 +52,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2007/01/31 10:09:17 $ by $Author: eiki $
+ *  Last modified: $Date: 2007/02/05 04:50:08 $ by $Author: eiki $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.73.2.2 $
+ * @version $Revision: 1.73.2.3 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -891,18 +891,19 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public IWResourceBundle getIWResourceBundleForUser(User user, IWContext iwc, IWBundle bundle){
 		Locale locale = null;
 
-		try {
-			if(iwc!=null && user==null){
-				try{
-					user = iwc.getCurrentUser();
-				}
-				catch(NotLoggedOnException ex){
-				}
-				
-				if(user!=null){
-					locale = getUserBusiness().getUsersPreferredLocale(user);
-				}
+		if(iwc!=null && user==null){
+			try{
+				user = iwc.getCurrentUser();
 			}
+			catch(NotLoggedOnException ex){
+			}
+		}
+		
+		try {
+			if(user!=null){
+				locale = getUserBusiness().getUsersPreferredLocale(user);
+			}
+
 		} catch (IBOLookupException e) {
 			e.printStackTrace();
 		}
