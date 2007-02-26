@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.54 2006/05/29 22:29:09 tryggvil Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.54.2.1 2007/02/26 01:16:07 tryggvil Exp $
  * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  * 
@@ -52,10 +52,10 @@ import com.idega.util.IWTimestamp;
  * entity.<br/> This class is convenient to extend the Case entity by adding a
  * second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2006/05/29 22:29:09 $ by $Author: tryggvil $
+ * Last modified: $Date: 2007/02/26 01:16:07 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.54.2.1 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
@@ -1226,6 +1226,47 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return super.idoFindPKsByQuery(sql);
 	}
 
+	/**
+	 * Finds all cases with set metadata attributes with key metadataKey and value, and not the value 'notValue'
+	 * This is because there have been cases of duplicate keys for the same record with different set values.
+	 * metadataValue
+	 */
+	public Collection ejbFindAllCasesByMetaDataNotDuplicateWithValue(String metadataKey, String metadataValue,String notValue) throws FinderException {
+		// IDOQuery sql = idQueryGetAllCasesByGroupAndStatusArray(group,
+		// caseStatus);
+		SelectQuery sql = idoSelectQueryGetAllCases();
+		Table metadataTable = new Table(MetaData.class, "meta");
+		Table caseTable = new Table(Case.class, "g");
+		try {
+			sql.addManyToManyJoin(caseTable, metadataTable, "mp");
+			sql.addCriteria(new MatchCriteria(metadataTable, MetaDataBMPBean.COLUMN_META_KEY, MatchCriteria.EQUALS, metadataKey));
+			sql.addCriteria(new MatchCriteria(metadataTable, MetaDataBMPBean.COLUMN_META_VALUE, MatchCriteria.EQUALS, metadataValue));
+			
+			Table caseTable2 = new Table(Case.class, "cs");
+			Table metadataTable2 = new Table(MetaData.class, "meta2");
+			SelectQuery subSelect = new SelectQuery(caseTable2);
+			
+			String caseIdColumnName = CaseBMPBean.TABLE_NAME+"_ID";
+			
+			String metaIdColumnName = MetaDataBMPBean.TABLE_NAME+"_ID";
+			subSelect.addColumn(caseTable2,caseIdColumnName);
+			
+			subSelect.addManyToManyJoin(caseTable2, metadataTable2, "mp2");
+			subSelect.addCriteria(new MatchCriteria(metadataTable2, MetaDataBMPBean.COLUMN_META_KEY, MatchCriteria.EQUALS, metadataKey));
+			subSelect.addCriteria(new MatchCriteria(metadataTable2, MetaDataBMPBean.COLUMN_META_VALUE, MatchCriteria.EQUALS, notValue));
+			
+			sql.addCriteria(new InCriteria(caseTable, caseIdColumnName,subSelect,true));
+			
+			
+		}
+		catch (IDORelationshipException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return super.idoFindPKsByQuery(sql);
+	}
+
+	
 	/**
 	 * Sets all the metadata key/values for this instance with the given map where
 	 * the is keys and values of String type.

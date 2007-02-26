@@ -4,13 +4,18 @@
     <author email="tryggvi@idega.com">Tryggvi Larusson</author>
   </properties>
   <body>
-
+  
+    <release version="3.1.10" date="2007-02-05">
+      <action dev="tryggvil" type="update">
+      	Added method ejbFindAllCasesByMetaDataNotDuplicateWithValue in AbstractCaseBMPBean
+      </action>
+    </release>
+      
     <release version="3.1.9" date="2007-02-05">
       <action dev="eiki" type="fix">
       	Fixed logic error getting users preferred locale in CaseBusiness
       </action>
     </release>
-      
       
     <release version="3.1.8" date="2007-01-31">
       <action dev="eiki" type="fix">
