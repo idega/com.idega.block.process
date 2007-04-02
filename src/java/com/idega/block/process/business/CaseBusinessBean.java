@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.73 2006/10/23 11:31:21 laddi Exp $
+ * $Id: CaseBusinessBean.java,v 1.74 2007/04/02 09:43:05 civilis Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -17,9 +17,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
+
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
@@ -31,11 +33,16 @@ import com.idega.block.process.data.CaseStatusHome;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
+import com.idega.core.accesscontrol.business.NotLoggedOnException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.data.IDOStoreException;
 import com.idega.idegaweb.IWBundle;
+import com.idega.idegaweb.IWResourceBundle;
+import com.idega.idegaweb.UnavailableIWContext;
+import com.idega.presentation.IWContext;
+import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
@@ -45,10 +52,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2006/10/23 11:31:21 $ by $Author: laddi $
+ *  Last modified: $Date: 2007/04/02 09:43:05 $ by $Author: civilis $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -507,12 +514,48 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return getIWApplicationContext().getIWMainApplication().getSettings().getDefaultLocale();
 	}
 
+	/**
+	 * @deprecated Use getIWResourceBundleForUser. This method was deprecated because it is most often used to localize messages but ignores that the user might have a preferred language! Please use getIWResourceBundleForUser(...) to get the iwrb (locale) the user prefers.
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
 	protected String getLocalizedString(String key, String defaultValue) {
-		return getLocalizedString(key, defaultValue, this.getDefaultLocale());
+		//at least a little better although it should still be deprecated, try to get the current locale, user etc. fallback on server default value
+		try {
+			IWContext iwc = IWContext.getInstance();
+			User user = null;
+			try {
+				user = iwc.getCurrentUser();
+			} catch (NotLoggedOnException e1) {
+			}
+			
+			if(user!=null){
+				IWResourceBundle iwrb = this.getIWResourceBundleForUser(user, iwc);
+				return iwrb.getLocalizedString(key, defaultValue);
+			}else{
+				return getLocalizedString(key, defaultValue, iwc.getCurrentLocale());
+			}
+		} catch (UnavailableIWContext e) {
+			return getLocalizedString(key, defaultValue, this.getDefaultLocale());
+		}
 	}
 
+	
 	protected String getLocalizedString(String key, String defaultValue, Locale locale) {
 		return getBundle().getResourceBundle(locale).getLocalizedString(key, defaultValue);
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @param user
+	 * @param iwc
+	 * @return Gets a localized string in the users preferred language
+	 */
+	protected String getLocalizedStringForUser(String key, String defaultValue, User user, IWContext iwc) {
+		return this.getIWResourceBundleForUser(user, iwc).getLocalizedString(key, defaultValue);
 	}
 
 	public void changeCaseStatus(int theCaseID, String newCaseStatus, User performer) throws FinderException {
@@ -615,11 +658,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	public String getLocalizedCaseDescription(CaseCode theCaseCode, Locale locale) {
-		return getLocalizedString("case_code_key." + theCaseCode.toString(), theCaseCode.toString());
+		return getLocalizedString("case_code_key." + theCaseCode.toString(), theCaseCode.toString(),locale);
 	}
 
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) {
-		return getLocalizedString("case_status_key." + status.toString(), status.toString());
+		return getLocalizedString("case_status_key." + status.toString(), status.toString(),locale);
 	}
 
 	private static final String PROC_CASE_BUNDLE_IDENTIFIER = "com.idega.block.process";
@@ -839,6 +882,68 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode,String caseStatusTo){
 		List list = getListenerListForCaseCodeAndStatus(caseCode,caseStatusTo);
 		list.add(myListener);
+	}
+	
+	/**
+	 * 
+	 * @return The iwrb in the locale that is preferred by the user or current locale if the user does not prefer any.
+	 */
+	public IWResourceBundle getIWResourceBundleForUser(User user, IWContext iwc, IWBundle bundle){
+		Locale locale = null;
+
+		if(iwc!=null && user==null){
+			try{
+				user = iwc.getCurrentUser();
+			}
+			catch(NotLoggedOnException ex){
+			}
+		}
+		
+		try {
+			if(user!=null){
+				locale = getUserBusiness().getUsersPreferredLocale(user);
+			}
+
+		} catch (IBOLookupException e) {
+			e.printStackTrace();
+		}
+
+		if(locale!=null){
+			return bundle.getResourceBundle(locale);
+		}
+		else{
+			if(iwc!=null){
+				return bundle.getResourceBundle(iwc);	
+			}
+			else{
+				try {
+					iwc = IWContext.getInstance();
+					return bundle.getResourceBundle(iwc);	
+				} catch (UnavailableIWContext e) {
+					return bundle.getResourceBundle(this.getDefaultLocale());
+				}
+			}
+		}
+
+	}
+	
+	/**
+	 * @return The iwrb in the locale that is preferred by the user or current locale if the user does not prefer any.
+	 */
+	public IWResourceBundle getIWResourceBundleForUser(User user, IWContext iwc){
+		 return getIWResourceBundleForUser(user,iwc,this.getBundle());
+	}
+	
+	
+	/**
+	 * @return Warning use as a last resort if you have a way of getting IWContext (this will try to get it). Returns the iwrb in the locale that is preferred by the user or servers DEFAULT locale if the user does not prefer any. 
+	 */
+	public IWResourceBundle getIWResourceBundleForUser(User user){
+		 return getIWResourceBundleForUser(user,null,this.getBundle());
+	}
+	
+	private UserBusiness getUserBusiness() throws IBOLookupException {
+		return (UserBusiness) this.getServiceInstance(UserBusiness.class);
 	}
 	
 	
