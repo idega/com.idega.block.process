@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: pom.xml,v 1.4 2007/04/18 00:00:57 tryggvil Exp $ -->
+<!-- $Id: pom.xml,v 1.5 2007/04/18 00:36:03 tryggvil Exp $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -16,6 +16,11 @@
     <artifactId>com.idega.block.base</artifactId>
     <version>4.0-SNAPSHOT</version>
   </parent>
+  <scm>
+    <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
+    <developerConnection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</developerConnection>
+  </scm>
+
   <developers>
     <developer>
       <name>Tryggvi Larusson</name>
