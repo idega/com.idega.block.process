@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: pom.xml,v 1.3 2006/11/27 10:46:36 gediminas Exp $ -->
+<!-- $Id: pom.xml,v 1.4 2007/04/18 00:00:57 tryggvil Exp $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -8,13 +8,13 @@
   <groupId>com.idega.block.platform</groupId>
   <artifactId>com.idega.block.process</artifactId>
   <packaging>jar</packaging>
-  <version>3.5.0</version>
+  <version>4.0-SNAPSHOT</version>
   <inceptionYear>2005</inceptionYear>
   <description>idegaWeb Process Block</description>
   <parent>
     <groupId>com.idega.block.platform</groupId>
     <artifactId>com.idega.block.base</artifactId>
-    <version>3.5.0</version>
+    <version>4.0-SNAPSHOT</version>
   </parent>
   <developers>
     <developer>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.core</artifactId>
-      <version>3.5.0</version>
+      <version>4.0-SNAPSHOT</version>
       <type>jar</type>
      </dependency>
   </dependencies>
