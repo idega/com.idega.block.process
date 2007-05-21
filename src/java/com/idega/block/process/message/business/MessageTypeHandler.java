@@ -1,5 +1,5 @@
 /*
- * $Id: MessageTypeHandler.java,v 1.1 2005/10/19 12:52:55 laddi Exp $
+ * $Id: MessageTypeHandler.java,v 1.2 2007/05/21 09:57:34 valdas Exp $
  * Created on Oct 19, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -26,10 +26,10 @@ import com.idega.presentation.ui.DropdownMenu;
 
 
 /**
- * Last modified: $Date: 2005/10/19 12:52:55 $ by $Author: laddi $
+ * Last modified: $Date: 2007/05/21 09:57:34 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MessageTypeHandler implements ICPropertyHandler {
 
@@ -43,7 +43,7 @@ public class MessageTypeHandler implements ICPropertyHandler {
 	/* (non-Javadoc)
 	 * @see com.idega.core.builder.presentation.ICPropertyHandler#getHandlerObject(java.lang.String, java.lang.String, com.idega.presentation.IWContext)
 	 */
-	public PresentationObject getHandlerObject(String name, String stringValue, IWContext iwc) {
+	public PresentationObject getHandlerObject(String name, String stringValue, IWContext iwc, boolean oldGenerationHandler) {
 		DropdownMenu menu = new DropdownMenu(name);
 		menu.addMenuElementFirst("", "Select");
 		
