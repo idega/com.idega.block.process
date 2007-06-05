@@ -69,6 +69,11 @@
       <name>3.1.11</name>
       <tag>PROCESS_3_1_11</tag>
     </version>
+    <version>
+      <id>3.1.12</id>
+      <name>3.1.12</name>
+      <tag>PROCESS_3_1_12</tag>
+    </version>
   </versions>
   <branches/>
   <developers>
@@ -108,7 +113,7 @@
       <version>3.1.44</version>
       <type>jar</type>
       <url>http://www.idega.com/</url>
-            <properties>
+      <properties>
         <eclipse.dependency>true</eclipse.dependency>
       </properties>
     </dependency>
