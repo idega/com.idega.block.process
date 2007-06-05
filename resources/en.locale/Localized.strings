@@ -4,6 +4,7 @@ school_choice.group_mesg_body2=Your child has been placed in group
 cca_type=Type
 case_code_key.SYMEBRV=Letter for printout
 case_status_key.OMPR=Retried
+case_code_key.ELINST=Electrical Installation
 cancel=Cancel
 school.school_type_F\u00F6rskola=
 viewpoint.confirmEnterViewpoint=Thank you dfor your viewpoint. It is now a case in Nacka24 and a manager will handle and aswer it.\r\n
