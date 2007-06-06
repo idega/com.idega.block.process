@@ -1,5 +1,5 @@
 /*
- * $Id: CaseCodeManager.java,v 1.2.2.1 2007/06/06 10:21:13 thomas Exp $
+ * $Id: CaseCodeManager.java,v 1.2.2.2 2007/06/06 10:22:10 thomas Exp $
  * Created on Oct 19, 2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -11,8 +11,8 @@ package com.idega.block.process.business;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.idega.block.process.data.CaseCode;
-import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
@@ -23,10 +23,10 @@ import com.idega.repository.data.SingletonRepository;
 
 /**
  * 
- *  Last modified: $Date: 2007/06/06 10:21:13 $ by $Author: thomas $
+ *  Last modified: $Date: 2007/06/06 10:22:10 $ by $Author: thomas $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.2.2.1 $
+ * @version $Revision: 1.2.2.2 $
  */
 public class CaseCodeManager implements Singleton{
 	
