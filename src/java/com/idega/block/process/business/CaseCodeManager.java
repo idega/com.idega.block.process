@@ -1,5 +1,5 @@
 /*
- * $Id: CaseCodeManager.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
+ * $Id: CaseCodeManager.java,v 1.2.2.1 2007/06/06 10:21:13 thomas Exp $
  * Created on Oct 19, 2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -12,31 +12,31 @@ package com.idega.block.process.business;
 import java.util.HashMap;
 import java.util.Map;
 import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
+import com.idega.repository.data.Instantiator;
+import com.idega.repository.data.Singleton;
+import com.idega.repository.data.SingletonRepository;
 
 
 /**
  * 
- *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ *  Last modified: $Date: 2007/06/06 10:21:13 $ by $Author: thomas $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.2.2.1 $
  */
-public class CaseCodeManager {
-	
-	private static CaseCodeManager caseCodeManager = null;
+public class CaseCodeManager implements Singleton{
 	
 	private Map caseCodeBusinessMap = null;
 	
-	public static CaseCodeManager getInstance() { 
-		if (caseCodeManager == null) {
-			caseCodeManager = new CaseCodeManager();
-		}
-		return caseCodeManager;
+	private static Instantiator instantiator = new Instantiator() { public Object getInstance() { return new CaseCodeManager();}};
+
+	public static CaseCodeManager getInstance() {
+		return (CaseCodeManager) SingletonRepository.getRepository().getInstance(CaseCodeManager.class,instantiator);
 	}
-	
 	
 	public CaseBusiness getCaseBusinessOrDefault(CaseCode caseCode, IWApplicationContext iwac) throws IBOLookupException {
 		Class businessClass = getBusinessClass(caseCode);
