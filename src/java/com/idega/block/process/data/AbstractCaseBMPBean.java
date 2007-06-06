@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.54.2.2 2007/02/27 15:20:57 laddi Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.54.2.3 2007/06/06 15:37:12 thomas Exp $
  * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  * 
@@ -50,10 +50,10 @@ import com.idega.util.IWTimestamp;
  * This entity class is a abstract class for extending the standard "Case" entity.<br/> This class is convenient to extend the Case entity by adding
  * a second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2007/02/27 15:20:57 $ by $Author: laddi $
+ * Last modified: $Date: 2007/06/06 15:37:12 $ by $Author: thomas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.54.2.2 $
+ * @version $Revision: 1.54.2.3 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
@@ -159,9 +159,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	public void store() throws IDOStoreException {
-		if (this.getGeneralCase().getCode() == null) {
-			this.setCode(this.getCaseCodeKey());
-		}
+		initializeCaseCodeIfNull();
 		getGeneralCase().store();
 		super.store();
 	}
@@ -210,9 +208,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	public String getCode() {
-		if (this.getGeneralCase().getCode() == null) {
-			return this.getCaseCodeKey();
-		}
+		initializeCaseCodeIfNull();
 		return this.getGeneralCase().getCode();
 	}
 
@@ -221,6 +217,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	public CaseCode getCaseCode() {
+		initializeCaseCodeIfNull();
 		return this.getGeneralCase().getCaseCode();
 	}
 
@@ -1204,6 +1201,15 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	public String getId() {
 		return getPrimaryKey().toString();
+	}
+	
+	// set case code (of general case) to case code key (of this instance) 
+	// if the case code (of general case) is not set
+	// this happens when the case was just created
+	private void initializeCaseCodeIfNull() {
+		if (getGeneralCase().getCode() == null) {
+			setCode(getCaseCodeKey());
+		}
 	}
 
 }

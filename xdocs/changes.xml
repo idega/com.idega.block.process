@@ -5,6 +5,12 @@
 	</properties>
 	<body>
 
+	<release version="3.1.14" date="2007-06-06">
+	<action dev="thomas" type="fix">
+	Fixed bug that getCaseCode() returns null if a case is created but not stored yet
+	</action>
+</release>
+	
 	<release version="3.1.13" date="2007-06-06">
 	<action dev="thomas" type="fix">
 	changed implementation to use SingletonRepository (in that way the call is threadsafe and
