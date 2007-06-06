@@ -1,5 +1,5 @@
 /*
- * $Id: CaseCodeManager.java,v 1.2 2006/04/09 11:42:34 laddi Exp $
+ * $Id: CaseCodeManager.java,v 1.3 2007/06/06 10:35:44 thomas Exp $
  * Created on Oct 19, 2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -19,24 +19,20 @@ import com.idega.idegaweb.IWApplicationContext;
 
 /**
  * 
- *  Last modified: $Date: 2006/04/09 11:42:34 $ by $Author: laddi $
+ *  Last modified: $Date: 2007/06/06 10:35:44 $ by $Author: thomas $
  * 
  * @author <a href="mailto:thomas@idega.com">thomas</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class CaseCodeManager {
-	
-	private static CaseCodeManager caseCodeManager = null;
+public class CaseCodeManager implements Singleton{
 	
 	private Map caseCodeBusinessMap = null;
 	
-	public static CaseCodeManager getInstance() { 
-		if (caseCodeManager == null) {
-			caseCodeManager = new CaseCodeManager();
-		}
-		return caseCodeManager;
+	private static Instantiator instantiator = new Instantiator() { public Object getInstance() { return new CaseCodeManager();}};
+
+	public static CaseCodeManager getInstance() {
+		return (CaseCodeManager) SingletonRepository.getRepository().getInstance(CaseCodeManager.class,instantiator);
 	}
-	
 	
 	public CaseBusiness getCaseBusinessOrDefault(CaseCode caseCode, IWApplicationContext iwac) throws IBOLookupException {
 		Class businessClass = getBusinessClass(caseCode);
