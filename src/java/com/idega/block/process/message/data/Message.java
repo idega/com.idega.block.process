@@ -4,6 +4,8 @@ import com.idega.user.data.User;
 
 public interface Message extends com.idega.data.IDOEntity,com.idega.block.process.data.Case
 {
+ public String getContentCode();
+ public void setContentCode(java.lang.String p0);
  public void setBody(java.lang.String p0);
  public void setSubject(java.lang.String p0);
  public java.lang.String getSubject();
