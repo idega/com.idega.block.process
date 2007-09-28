@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: pom.xml,v 1.7 2007/09/28 07:07:57 valdas Exp $ -->
+<!-- $Id: pom.xml,v 1.8 2007/09/28 11:43:26 valdas Exp $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -55,10 +55,6 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.core</artifactId>
-     </dependency>
-     <dependency>
-     	<groupId>com.idega.block.addon</groupId>
-     	<artifactId>org.jboss.jbpm</artifactId>
      </dependency>
   </dependencies>
 </project>

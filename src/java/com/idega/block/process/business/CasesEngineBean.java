@@ -7,9 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-
-import org.jbpm.graph.def.ProcessDefinition;
-import org.jbpm.graph.exe.ProcessInstance;
 import org.jdom.Document;
 
 import com.idega.block.process.data.Case;
@@ -22,7 +19,6 @@ import com.idega.builder.business.AdvancedPropertyComparator;
 import com.idega.core.builder.business.BuilderService;
 import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.idegaweb.IWResourceBundle;
-import com.idega.jbpm.business.JbpmProcessBusinessBean;
 import com.idega.presentation.IWContext;
 import com.idega.user.data.User;
 import com.idega.util.CoreUtil;
@@ -30,11 +26,11 @@ import com.idega.util.CoreUtil;
 public class CasesEngineBean implements CasesEngine {
 	
 	private BuilderService service = null;
-	private JbpmProcessBusinessBean jbpmBean = null;
+	//private JbpmProcessBusinessBean jbpmBean = null;
 	
-	public CasesEngineBean(JbpmProcessBusinessBean jbpmBean) {
+	/*public CasesEngineBean(JbpmProcessBusinessBean jbpmBean) {
 		this.jbpmBean = jbpmBean;
-	}
+	}*/
 	
 	private BuilderService getBuilderService(IWContext iwc) throws NullPointerException {
 		if (service == null) {
@@ -55,14 +51,14 @@ public class CasesEngineBean implements CasesEngine {
 		
 		List<Case> cases = new ArrayList<Case>();
 		
-		ProcessDefinition pd = jbpmBean.getProcessDefinition(caseType);
-		if (pd == null) {
-			return null;
-		}
-		List<ProcessInstance> instances = jbpmBean.getProcessInstances(pd);
-		if (instances == null) {
-			return null;
-		}
+//		ProcessDefinition pd = jbpmBean.getProcessDefinition(caseType);
+//		if (pd == null) {
+//			return null;
+//		}
+//		List<ProcessInstance> instances = jbpmBean.getProcessInstances(pd);
+//		if (instances == null) {
+//			return null;
+//		}
 		
 		//	TODO: implement real logic
 		Case fake = new CaseBMPBean();
@@ -169,7 +165,7 @@ public class CasesEngineBean implements CasesEngine {
 	public List<AdvancedProperty> getCasesTypes(IWContext iwc, boolean sort) {
 		List<AdvancedProperty> types = new ArrayList<AdvancedProperty>();
 		
-		List<ProcessDefinition> definitions = jbpmBean.getProcessList();
+		/*List<ProcessDefinition> definitions = jbpmBean.getProcessList();
 		if (definitions == null) {
 			return null;
 		}
@@ -178,7 +174,7 @@ public class CasesEngineBean implements CasesEngine {
 		for (int i = 0; i < definitions.size(); i++) {
 			pd = definitions.get(i);
 			types.add(new AdvancedProperty(String.valueOf(pd.getId()), pd.getName()));
-		}
+		}*/
 		
 		if (types.size() == 0) {
 			return null;
