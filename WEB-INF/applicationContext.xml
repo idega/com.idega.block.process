@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<bean id="casesEngine" class="com.idega.block.process.business.CasesEngineBean" scope="session">
+		<constructor-arg>
+			<ref bean="jbpmProcessBusiness" />
+		</constructor-arg>
+	</bean>
+	<bean id="casesPresentationHelper" class="com.idega.block.process.presentation.CasesPresentationHelper" scope="singleton" />
+</beans>

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.60 2006/05/29 18:21:39 tryggvil Exp $
+ * $Id: CaseBMPBean.java,v 1.61 2007/09/28 07:07:57 valdas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -15,7 +15,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
-import com.idega.block.process.business.CaseConstants;
+
+import com.idega.block.process.business.ProcessConstants;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
@@ -38,10 +39,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2006/05/29 18:21:39 $ by $Author: tryggvil $
+ * Last modified: $Date: 2007/09/28 07:07:57 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -936,7 +937,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 * @see com.idega.block.process.data.Case#getUrl()
 	 */
 	public String getUrl() {
-		return getMetaData(CaseConstants.METADATA_KEY_URL);
+		return getMetaData(ProcessConstants.METADATA_KEY_URL);
 	}
 	
 	public String getId(){

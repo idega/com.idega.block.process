@@ -1,0 +1,40 @@
+.egovCasesTable {
+	width: 100%;
+}
+
+.tableHeaderCell {
+	cursor: pointer;
+}
+
+.casesSearchButtonsContainerStyle {
+	float: right;
+}
+
+.textInputForCasesSearchStyleClass {
+	width: 100%;
+}
+
+.casesSearchTableStyle {
+	width: 98%;
+}
+
+tr.hide {
+	display: none;
+}
+
+.caseOverviewLabel {
+	float: left;
+	width: 140px;
+	font-family: "Lucida Grande","Lucida Sans Unicode",Geneva,Arial,Verdana,sans-serif;
+	font-size:12px;
+	font-weight: bold;
+}
+
+.caseOverviewValue {
+	font-family: "Lucida Grande","Lucida Sans Unicode",Geneva,Arial,Verdana,sans-serif;
+	font-size:12px;
+}
+
+.casesListViewerTableRowCellStyle {
+	cursor: pointer;
+}

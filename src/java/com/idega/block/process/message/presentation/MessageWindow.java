@@ -9,7 +9,7 @@
  */
 package com.idega.block.process.message.presentation;
 
-import com.idega.block.process.business.CaseConstants;
+import com.idega.block.process.business.ProcessConstants;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
@@ -47,6 +47,6 @@ public class MessageWindow extends Window {
 	}
 	
 	public String getBundleIdentifier() {
-		return CaseConstants.IW_BUNDLE_IDENTIFIER;
+		return ProcessConstants.IW_BUNDLE_IDENTIFIER;
 	}
 }
