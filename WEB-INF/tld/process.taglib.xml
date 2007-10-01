@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+  
+<facelet-taglib>
+
+	<namespace>http://xmlns.idega.com/com.idega.block.process</namespace>
+	
+	<tag>
+		<tag-name>CasesListViewer</tag-name>
+		<component>
+            <component-type>CasesListViewer</component-type>
+        </component>
+	</tag>
+	<tag>
+		<tag-name>CasesTypesSelector</tag-name>
+		<component>
+            <component-type>CasesTypesSelector</component-type>
+        </component>
+	</tag>
+	
+</facelet-taglib>
