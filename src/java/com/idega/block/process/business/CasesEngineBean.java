@@ -63,35 +63,35 @@ public class CasesEngineBean implements CasesEngine {
 		//	TODO: implement real logic
 		Case fake = new CaseBMPBean();
 		fake.setCreator(user);
-		fake.setCaseNumber(String.valueOf(new Random().nextInt()));
+		fake.setCaseNumber(String.valueOf(new Random().nextInt(Integer.MAX_VALUE)));
 		fake.setStatus("Processed");
 		fake.setCreated(new Timestamp(System.currentTimeMillis()));
 		cases.add(fake);
 		
 		fake = new CaseBMPBean();
 		fake.setCreator(user);
-		fake.setCaseNumber(String.valueOf(new Random().nextInt()));
+		fake.setCaseNumber(String.valueOf(new Random().nextInt(Integer.MAX_VALUE)));
 		fake.setStatus("Handled");
 		fake.setCreated(new Timestamp(System.currentTimeMillis()));
 		cases.add(fake);
 		
 		fake = new CaseBMPBean();
 		fake.setCreator(user);
-		fake.setCaseNumber(String.valueOf(new Random().nextInt()));
+		fake.setCaseNumber(String.valueOf(new Random().nextInt(Integer.MAX_VALUE)));
 		fake.setStatus("Submitted");
 		fake.setCreated(new Timestamp(System.currentTimeMillis()));
 		cases.add(fake);
 		
 		fake = new CaseBMPBean();
 		fake.setCreator(user);
-		fake.setCaseNumber(String.valueOf(new Random().nextInt()));
+		fake.setCaseNumber(String.valueOf(new Random().nextInt(Integer.MAX_VALUE)));
 		fake.setStatus("Rejected");
 		fake.setCreated(new Timestamp(System.currentTimeMillis()));
 		cases.add(fake);
 		
 		fake = new CaseBMPBean();
 		fake.setCreator(user);
-		fake.setCaseNumber(String.valueOf(new Random().nextInt()));
+		fake.setCaseNumber(String.valueOf(new Random().nextInt(Integer.MAX_VALUE)));
 		fake.setStatus("-");
 		fake.setCreated(new Timestamp(System.currentTimeMillis()));
 		cases.add(fake);
@@ -134,7 +134,7 @@ public class CasesEngineBean implements CasesEngine {
 		//	TODO: implement real logic
 		Case fake = new CaseBMPBean();
 		fake.setCreator(CoreUtil.getIWContext().getCurrentUser());
-		fake.setCaseNumber(String.valueOf(new Random().nextInt()));
+		fake.setCaseNumber(String.valueOf(new Random().nextInt(Integer.MAX_VALUE)));
 		fake.setStatus("Submitted");
 		fake.setCreated(new Timestamp(System.currentTimeMillis()));
 		return fake;
@@ -175,6 +175,10 @@ public class CasesEngineBean implements CasesEngine {
 			pd = definitions.get(i);
 			types.add(new AdvancedProperty(String.valueOf(pd.getId()), pd.getName()));
 		}*/
+		
+		//	TODO: implement real logic
+		types.add(new AdvancedProperty("1", "Electronic Devices"));
+		types.add(new AdvancedProperty("2", "Dangerous Products"));
 		
 		if (types.size() == 0) {
 			return null;
