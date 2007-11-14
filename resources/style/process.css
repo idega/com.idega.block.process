@@ -227,3 +227,13 @@ body.messageViewerWindow div.buttonLayer {
 	bottom: 0px;
 	right: 0px;
 }
+
+body.Process .ws_main {
+	top: 85px !important;
+	left: 5px !important;
+	right: 5px !important;
+	bottom: 5px !important;
+	border: 1px #d7d7d7 solid;
+	background-color: #fff;
+	padding: 15px;
+}
