@@ -49,6 +49,8 @@ public class CasesPresentationHelper implements Singleton {
 		
 		Table2 casesTable = new Table2();
 		casesTable.getId();
+		casesTable.setCellpadding(0);
+		casesTable.setCellspacing(0);
 		if (tableSortable) {
 			casesTable.setStyleClass("egovCasesTable");
 		}
@@ -91,6 +93,9 @@ public class CasesPresentationHelper implements Singleton {
 			}
 			else {
 				row.setStyleClass("oddRow");
+			}
+			if ((i+1) == cases.size()) {
+				row.setStyleClass("lastRow");
 			}
 			
 			row.setMarkupAttribute(caseIdAttribute, caseId);

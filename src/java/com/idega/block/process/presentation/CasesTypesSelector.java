@@ -19,10 +19,12 @@ public class CasesTypesSelector extends IWBaseComponent {
 
 	private String casesTypeSelectorStyle = "casesTypeSelectorStyle";
 	
+	@Override
 	protected void initializeComponent(FacesContext context) {
 		IWContext iwc = IWContext.getIWContext(context);
 		
 		Layer container = new Layer();
+		container.setStyleClass("casesTypeSelector");
 		add(container);
 		
 		Text selectCaseType = new Text(getIWResourceBundle(iwc, ProcessConstants.IW_BUNDLE_IDENTIFIER).getLocalizedString("select_case_type", "Select case type: "));
@@ -35,6 +37,7 @@ public class CasesTypesSelector extends IWBaseComponent {
 		addCasesTypes(iwc, casesTypesMenu);
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	protected void updateComponent(FacesContext context) {
 		IWContext iwc = IWContext.getIWContext(context);
@@ -91,6 +94,7 @@ public class CasesTypesSelector extends IWBaseComponent {
 		}
 	}
 	
+	@Override
 	public Object saveState(FacesContext ctx) {
 		Object values[] = new Object[2];
 		values[0] = super.saveState(ctx);
@@ -98,6 +102,7 @@ public class CasesTypesSelector extends IWBaseComponent {
 		return values;
 	}
 
+	@Override
 	public void restoreState(FacesContext ctx, Object state) {
 		Object values[] = (Object[]) state;
 		casesTypeSelectorStyle = (String) values[1];
