@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.54.2.3 2007/06/06 15:37:12 thomas Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.54.2.4 2007/12/04 04:36:30 tryggvil Exp $
  * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  * 
@@ -50,10 +50,10 @@ import com.idega.util.IWTimestamp;
  * This entity class is a abstract class for extending the standard "Case" entity.<br/> This class is convenient to extend the Case entity by adding
  * a second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2007/06/06 15:37:12 $ by $Author: thomas $
+ * Last modified: $Date: 2007/12/04 04:36:30 $ by $Author: tryggvil $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.54.2.3 $
+ * @version $Revision: 1.54.2.4 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
@@ -443,6 +443,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	protected String getSQLGeneralCaseCreatedColumnName() {
 		return CaseBMPBean.COLUMN_CREATED;
+	}
+	
+	protected String getSQLGeneralCaseExternalIdColumnName() {
+		return CaseBMPBean.COLUMN_EXTERNAL_ID;
 	}
 
 	/**
@@ -1210,6 +1214,25 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		if (getGeneralCase().getCode() == null) {
 			setCode(getCaseCodeKey());
 		}
+	}
+
+	public Criteria idoCriteriaForExternalId(String externalId) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseExternalIdColumnName(), MatchCriteria.EQUALS, externalId);
+	}
+	
+	public Criteria idoJoinCriteraWithBaseCaseTable(){
+		Table subCasetable = idoTableSubCase();
+		return new JoinCriteria(new Column(idoTableGeneralCase(), getSQLGeneralCasePKColumnName()), new Column(subCasetable, getIDColumnName()));
+
+	}
+	
+	public Object ejbFindByExternalId(String externalId) throws FinderException {
+		SelectQuery query = new SelectQuery(idoTableSubCase());
+		query.addColumn(new Column(idoTableSubCase(),getIDColumnName()));
+		query.addCriteria(idoJoinCriteraWithBaseCaseTable());
+		query.addCriteria(idoCriteriaForExternalId(externalId));
+		return idoFindOnePKByQuery(query);
+		
 	}
 
 }
