@@ -74,7 +74,7 @@ public class CasesTypesSelector extends IWBaseComponent {
 	private void addCasesTypes(IWContext iwc, DropdownMenu menu) {
 		menu.removeElements();
 		
-		CasesEngine engine = (CasesEngine) SpringBeanLookup.getInstance().getSpringBean(iwc, CasesEngine.class);
+		CasesEngine engine = SpringBeanLookup.getInstance().getSpringBean(iwc, CasesEngine.class);
 		List<AdvancedProperty> types = engine.getCasesTypes(iwc, true);
 		if (types == null) {
 			menu.setDisabled(true);

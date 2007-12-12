@@ -71,7 +71,7 @@ public class CaseOverviewViewer extends IWBaseComponent {
 			container.add(new Text(getResourceBundle(iwc).getLocalizedString("error", "Error!")));
 			return;
 		}
-		CasesEngine engine = (CasesEngine) SpringBeanLookup.getInstance().getSpringBean(iwc, CasesEngine.class);
+		CasesEngine engine = SpringBeanLookup.getInstance().getSpringBean(iwc, CasesEngine.class);
 		if (engine == null) {
 			container.add(new Text(getResourceBundle(iwc).getLocalizedString("error", "Error!")));
 			return;

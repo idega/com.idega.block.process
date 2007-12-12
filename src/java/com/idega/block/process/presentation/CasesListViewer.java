@@ -90,11 +90,11 @@ public class CasesListViewer extends IWBaseComponent {
 			return false;
 		}
 		
-		casesEngine = (CasesEngine) SpringBeanLookup.getInstance().getSpringBean(iwc, CasesEngine.class);
+		casesEngine = SpringBeanLookup.getInstance().getSpringBean(iwc, CasesEngine.class);
 		if (casesEngine == null) {
 			return false;
 		}
-		helper = (CasesPresentationHelper) SpringBeanLookup.getInstance().getSpringBean(iwc, CasesPresentationHelper.class);
+		helper = SpringBeanLookup.getInstance().getSpringBean(iwc, CasesPresentationHelper.class);
 		if (helper == null) {
 			return false;
 		}
