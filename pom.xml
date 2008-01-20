@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: pom.xml,v 1.8 2007/09/28 11:43:26 valdas Exp $ -->
+<!-- $Id: pom.xml,v 1.9 2008/01/20 17:32:59 civilis Exp $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.idega.block.platform</groupId>
+    <artifactId>com.idega.block.base</artifactId>
+    <version>4.0.0</version>
+  </parent>
   <name>Process</name>
   <groupId>com.idega.block.platform</groupId>
   <artifactId>com.idega.block.process</artifactId>
   <packaging>jar</packaging>
-  <version>4.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <inceptionYear>2005</inceptionYear>
   <description>idegaWeb Process Block</description>
-  <parent>
-    <groupId>com.idega.block.platform</groupId>
-    <artifactId>com.idega.block.base</artifactId>
-    <version>4.0-SNAPSHOT</version>
-  </parent>
+  
   <scm>
+    <!--
+    <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
+    <developerConnection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</developerConnection> 
+     -->
     <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
     <developerConnection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</developerConnection>
   </scm>
@@ -55,6 +60,7 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.core</artifactId>
+      <version>4.0.0</version>
      </dependency>
   </dependencies>
 </project>
