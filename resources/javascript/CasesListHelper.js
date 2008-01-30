@@ -105,7 +105,7 @@ function registerSearchWindowActions() {
 }
 
 function openTableFilter() {
-	MOOdalBox.init({resizeDuration: 50, evalScripts: true, animateCaption: false});
+	MOOdalBox.init({resizeDuration: 0, evalScripts: true, animateCaption: false});
 	var result = MOOdalBox.open('/servlet/ObjectInstanciator?idegaweb_instance_class=' + SEARCH_WINDOW_CLASS, SEARCH_WINDOW_TITLE, '300 100');
 	return false;
 }
