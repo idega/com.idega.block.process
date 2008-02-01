@@ -1,5 +1,5 @@
 /*
- * $Id: IWBundleStarter.java,v 1.2 2007/09/28 07:07:57 valdas Exp $
+ * $Id: IWBundleStarter.java,v 1.3 2008/02/01 12:21:03 civilis Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -10,17 +10,16 @@
 package com.idega.block.process;
 
 import com.idega.block.process.business.ProcessConstants;
-import com.idega.block.process.view.ProcessViewManager;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWBundleStartable;
 import com.idega.idegaweb.include.GlobalIncludeManager;
 
 
 /**
- * Last modified: $Date: 2007/09/28 07:07:57 $ by $Author: valdas $
+ * Last modified: $Date: 2008/02/01 12:21:03 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class IWBundleStarter implements IWBundleStartable {
 
@@ -31,8 +30,10 @@ public class IWBundleStarter implements IWBundleStartable {
 		GlobalIncludeManager includeManager = GlobalIncludeManager.getInstance();
 		includeManager.addBundleStyleSheet(ProcessConstants.IW_BUNDLE_IDENTIFIER, "/style/process.css");
 		
+		/*
 		ProcessViewManager viewManager = ProcessViewManager.getInstance(starterBundle.getApplication());
 		viewManager.initializeStandardNodes(starterBundle);
+		*/
 	}
 
 	/* (non-Javadoc)
