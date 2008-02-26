@@ -1,5 +1,5 @@
 /*
- * $Id: Case.java,v 1.20 2006/04/11 08:44:42 laddi Exp $
+ * $Id: Case.java,v 1.21 2008/02/26 17:57:52 civilis Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -28,10 +28,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type Case
  * </p>
- *  Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
+ *  Last modified: $Date: 2008/02/26 17:57:52 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -255,4 +255,7 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	 */
 	public String getUrl();
 
+	public String getCaseManagerType();
+	
+	public void setCaseManagerType(String type);
 }

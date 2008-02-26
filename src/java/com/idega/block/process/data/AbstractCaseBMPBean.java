@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.57 2007/06/06 16:01:03 thomas Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.58 2008/02/26 17:57:52 civilis Exp $
  * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  * 
@@ -50,10 +50,10 @@ import com.idega.util.IWTimestamp;
  * This entity class is a abstract class for extending the standard "Case" entity.<br/> This class is convenient to extend the Case entity by adding
  * a second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2007/06/06 16:01:03 $ by $Author: thomas $
+ * Last modified: $Date: 2008/02/26 17:57:52 $ by $Author: civilis $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
@@ -435,6 +435,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	protected String getSQLGeneralCaseCaseStatusColumnName() {
 		return CaseBMPBean.COLUMN_CASE_STATUS;
+	}
+	
+	protected String getSQLGeneralCaseCaseManagerTypeColumnName() {
+		return CaseBMPBean.COLUMN_CASE_MANAGER_TYPE;
 	}
 
 	protected String getSQLGeneralCaseParentColumnName() {
@@ -1211,5 +1215,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 			setCode(getCaseCodeKey());
 		}
 	}
+	
+	public String getCaseManagerType() {
+		return getGeneralCase().getCaseManagerType();
+	}
 
+	public void setCaseManagerType(String type) {
+		getGeneralCase().setCaseManagerType(type);
+	}
 }

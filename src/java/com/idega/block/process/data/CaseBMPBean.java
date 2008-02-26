@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.61 2007/09/28 07:07:57 valdas Exp $
+ * $Id: CaseBMPBean.java,v 1.62 2008/02/26 17:57:52 civilis Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -39,10 +39,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2007/09/28 07:07:57 $ by $Author: valdas $
+ * Last modified: $Date: 2008/02/26 17:57:52 $ by $Author: civilis $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -60,6 +60,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String COLUMN_EXTERNAL_HANDLER_ID = "EXTERNAL_HANDLER_ID";
 	static final String COLUMN_CASE_SUBJECT = "CASE_SUBJECT";
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
+	static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
 
 	static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
@@ -97,6 +98,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addUniqueIDColumn();
 		addAttribute(COLUMN_CASE_SUBJECT, "Case subject", String.class);
 		addAttribute(COLUMN_CASE_BODY, "Case subject", String.class, 4000);
+		addAttribute(COLUMN_CASE_MANAGER_TYPE, "Case manager type", String.class);
 		addMetaDataRelationship();
 
 		addIndex("IDX_PROC_CASE_2", new String[] { getIDColumnName(), COLUMN_USER });
@@ -183,6 +185,14 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	public void setCaseStatus(CaseStatus status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
+	}
+	
+	public String getCaseManagerType() {
+		return getStringColumnValue(COLUMN_CASE_MANAGER_TYPE);
+	}
+	
+	public void setCaseManagerType(String type) {
+		setColumn(COLUMN_CASE_MANAGER_TYPE, type);
 	}
 
 	public CaseStatus getCaseStatus() {
