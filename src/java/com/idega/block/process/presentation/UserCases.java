@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.26 2007/01/22 08:25:25 tryggvil Exp $
+ * $Id: UserCases.java,v 1.27 2008/02/26 19:28:17 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -9,19 +9,31 @@
  */
 package com.idega.block.process.presentation;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.ejb.FinderException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
+import com.idega.block.process.business.CaseManager;
+import com.idega.block.process.business.CaseManagersProvider;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.message.business.MessageTypeManager;
+import com.idega.block.process.presentation.beans.CaseManagerState;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -39,18 +51,27 @@ import com.idega.presentation.TableRow;
 import com.idega.presentation.TableRowGroup;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
+import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
+import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2007/01/22 08:25:25 $ by $Author: tryggvil $
+ * Last modified: $Date: 2008/02/26 19:28:17 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
-	private static final String PARAMETER_CASE_PK = "uc_case_pk";
+	private static final String PARAMETER_UC_CASE_PK = "uc_case_pk";
+	public static final String PARAMETER_CASE_PK = "prm_case_pk";
+	public static final String PARAMETER_ACTION = "cp_prm_action";
+	
+	public static final int ACTION_VIEW = 1;
+	public static final int SHOW_CASE_HANDLER = 7;
+	
+	private static final String caseManagerFacet = "caseManager";
 	
 	private Collection iHiddenCaseCodes;
 	private Map pageMap;
@@ -60,44 +81,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private int iNumberOfEntriesShown = -1;
 	private boolean addCredentialsToExernalUrls=false;
 
-
-	/* (non-Javadoc)
-	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
-	 */
+	@Override
 	protected void present(IWContext iwc) throws Exception {
-		if (!iwc.isLoggedOn()) {
-			add(new Text("No user logged on..."));
-			return;
-		}
-
-		Layer layer = new Layer(Layer.DIV);
-		layer.setStyleClass("caseElement");
-		layer.setID("userCases");
-		
-		Layer headerLayer = new Layer(Layer.DIV);
-		headerLayer.setStyleClass("caseHeader");
-		layer.add(headerLayer);
-		
-		Layer navigationLayer = new Layer(Layer.DIV);
-		navigationLayer.setStyleClass("caseNavigation");
-		headerLayer.add(navigationLayer);
-		
-		ListNavigator navigator = new ListNavigator("userCases", getCaseCount(iwc));
-		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
-		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("cases", "cases"));
-		if (this.iNumberOfEntriesShown > 0) {
-			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown); 
-		}
-		navigationLayer.add(navigator);
-		
-		Layer headingLayer = new Layer(Layer.DIV);
-		headingLayer.setStyleClass("caseHeading");
-		headingLayer.add(new Text(getHeading()));
-		headerLayer.add(headingLayer);
-		
-		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
-		
-		add(layer);
 	}
 	
 	protected String getHeading() {
@@ -112,7 +97,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		table.setCellpadding(0);
 		table.setCellspacing(0);
 		
-		Collection cases = getCases(iwc, startingEntry, numberOfEntries);
+		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 
 		TableRowGroup group = table.createHeaderRowGroup();
 		TableRow row = group.createRow();
@@ -146,10 +131,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		int iRow = 1;
 		
 		CredentialBusiness credentialBusiness = getCredentialBusiness(iwc);
-		Iterator iter = cases.iterator();
+		
+		Iterator<Case> iter = cases.iterator();
+		
 		while (iter.hasNext()) {
 			row = group.createRow();
-			Case userCase = (Case) iter.next();
+			Case userCase = iter.next();
 			if (iRow == 1) {
 				row.setStyleClass("firstRow");
 			}
@@ -158,6 +145,14 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			}
 
 			try {
+				
+				CaseManager caseHandler;
+				
+				if(userCase.getCaseManagerType() != null)
+					caseHandler = getCaseHandlersProvider().getCaseHandler(userCase.getCaseManagerType());
+				else 
+					caseHandler = null;
+				
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
 				String fullSubject = subject;
@@ -248,7 +243,16 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell.setStyleClass("casesEdit");
 
 				boolean addNonBrakingSpace = true;
-				if (page != null) {
+				
+				if(caseHandler != null) {
+
+					List<Link> links = caseHandler.getCaseLinks(userCase);
+					
+					if(links != null)
+						for (Link link : links)
+							cell.add(link);
+					
+				} else if (page != null) {
 					Link link = new Link(getBundle(iwc).getImage("edit.png", getResourceBundle().getLocalizedString("edit_case", "Edit case")));
 					link.setStyleClass("caseEdit");
 					link.setToolTip(getResourceBundle().getLocalizedString("edit_case", "Edit case"));
@@ -283,7 +287,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					link.setStyleClass("caseDelete");
 					link.setEventListener(UserCases.class);
 					link.setToolTip(getResourceBundle().getLocalizedString("delete_case", "Delete case"));
-					link.addParameter(PARAMETER_CASE_PK, userCase.getPrimaryKey().toString());
+					link.addParameter(PARAMETER_UC_CASE_PK, userCase.getPrimaryKey().toString());
 					link.setClickConfirmation(getResourceBundle().getLocalizedString("confirm_case_delete", "Are you sure you want to delete this case?"));
 					cell.add(link);
 					addNonBrakingSpace = false;
@@ -310,17 +314,19 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return table;
 	}
 
-	protected Collection getCases(IWContext iwc, int startingEntry, int numberOfEntries) {
+	protected Collection<Case> getCases(IWContext iwc, int startingEntry, int numberOfEntries) {
 		try {
-			return getBusiness().getAllCasesForUserExceptCodes(iwc.getCurrentUser(), getUserHiddenCaseCodes(), startingEntry, numberOfEntries);
-		}
-		catch (FinderException fe) {
+			@SuppressWarnings("unchecked")
+			Collection<Case> cases = getBusiness().getAllCasesForUserExceptCodes(iwc.getCurrentUser(), getUserHiddenCaseCodes(), startingEntry, numberOfEntries);
+			return cases;
+			
+		} catch (FinderException fe) {
 			log(fe);
-			return new ArrayList();
+			return Collections.emptyList();
 		}
 		catch (RemoteException re) {
 			log(re);
-			return new ArrayList();
+			return Collections.emptyList();
 		}
 	}
 	
@@ -411,9 +417,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 
 	public boolean actionPerformed(IWContext iwc) throws IWException {
-		if (iwc.isParameterSet(PARAMETER_CASE_PK)) {
+		if (iwc.isParameterSet(PARAMETER_UC_CASE_PK)) {
 			try {
-				Case userCase = getCaseBusiness(iwc).getCase(iwc.getParameter(PARAMETER_CASE_PK));
+				Case userCase = getCaseBusiness(iwc).getCase(iwc.getParameter(PARAMETER_UC_CASE_PK));
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				caseBusiness.deleteCase(userCase, iwc.getCurrentUser());
 				return true;
@@ -468,5 +474,135 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	 */
 	public void setAddCredentialsToExernalUrls(boolean addCredentialsToExernalUrls) {
 		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
+	}
+	
+	public CaseManagersProvider getCaseHandlersProvider() {
+		
+		return (CaseManagersProvider)WFUtil.getBeanInstance(CaseManagersProvider.beanIdentifier);
+	}
+	
+	public void showCaseHandlerView(IWContext iwc) {
+		
+		try {
+			Case theCase = getBusiness().getCase(iwc.getParameter(PARAMETER_CASE_PK));
+			String caseHandlerType = theCase.getCaseManagerType();
+			
+			if(caseHandlerType == null || CoreConstants.EMPTY.equals(caseHandlerType)) {
+				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handlerType resolved from case, though showCaseHandlerView method was called");
+				return;
+			}
+			
+			CaseManager caseHandler = getCaseHandlersProvider().getCaseHandler(caseHandlerType);
+			
+			if(caseHandler == null) {
+				
+				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handler found for case handler type provided: "+caseHandlerType);
+				return;
+			}
+			
+			CaseManagerState caseHandlerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
+			caseHandlerState.setCaseId(new Integer(String.valueOf(theCase.getPrimaryKey())));
+			caseHandlerState.setShowCaseHandler(true);
+			
+			UIComponent view = caseHandler.getView(iwc, theCase);
+			getFacets().put(caseManagerFacet, view);
+			
+		} catch (FinderException fe) {
+			fe.printStackTrace();
+			throw new IBORuntimeException(fe);
+		} catch (RemoteException fe) {
+			fe.printStackTrace();
+			throw new IBORuntimeException(fe);
+		}
+	}
+	
+	@Override
+	public void encodeBegin(FacesContext fc) throws IOException {
+		super.encodeBegin(fc);
+		
+		IWContext iwc = IWContext.getIWContext(fc);
+		
+		if (!iwc.isLoggedOn()) {
+			add(new Text("No user logged on..."));
+			return;
+		}
+		
+		try {
+			display(iwc);
+		
+		} catch (IOException e) {
+			throw e;
+		} catch (Exception e) {
+			Logger.getLogger(getClassName()).log(Level.SEVERE, "Exception while displaying CasesProcessor", e);
+		}
+	}
+	
+	@Override
+	public void encodeChildren(FacesContext context) throws IOException {
+		super.encodeChildren(context);
+		
+		CaseManagerState caseHandlerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
+		
+		if(caseHandlerState.getShowCaseHandler()) {
+			
+			UIComponent facet = getFacet(caseManagerFacet);
+			renderChild(context, facet);
+		}
+	}
+	
+	protected void display(IWContext iwc) throws Exception {
+
+		CaseManagerState caseManagerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
+		
+		if(!caseManagerState.getShowCaseHandler()) {
+			
+			switch (parseAction(iwc)) {
+			
+				case SHOW_CASE_HANDLER:
+					showCaseHandlerView(iwc);
+					break;
+				default:
+					showList(iwc);
+			}
+		}
+	}
+	
+	protected void showList(IWContext iwc) throws RemoteException {
+
+		Layer layer = new Layer(Layer.DIV);
+		layer.setStyleClass("caseElement");
+		layer.setID("userCases");
+		
+		Layer headerLayer = new Layer(Layer.DIV);
+		headerLayer.setStyleClass("caseHeader");
+		layer.add(headerLayer);
+		
+		Layer navigationLayer = new Layer(Layer.DIV);
+		navigationLayer.setStyleClass("caseNavigation");
+		headerLayer.add(navigationLayer);
+		
+		ListNavigator navigator = new ListNavigator("userCases", getCaseCount(iwc));
+		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
+		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("cases", "cases"));
+		if (this.iNumberOfEntriesShown > 0) {
+			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown); 
+		}
+		navigationLayer.add(navigator);
+		
+		Layer headingLayer = new Layer(Layer.DIV);
+		headingLayer.setStyleClass("caseHeading");
+		headingLayer.add(new Text(getHeading()));
+		headerLayer.add(headingLayer);
+		
+		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
+		
+		add(layer);
+	}
+	
+	private int parseAction(IWContext iwc) {
+		if (iwc.isParameterSet(PARAMETER_ACTION)) {
+			return Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
+		}
+		return ACTION_VIEW;
 	}
 }
