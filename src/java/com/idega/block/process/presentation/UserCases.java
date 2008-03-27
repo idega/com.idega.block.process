@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.27 2008/02/26 19:28:17 civilis Exp $
+ * $Id: UserCases.java,v 1.28 2008/03/27 08:46:36 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -57,10 +57,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/02/26 19:28:17 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/27 08:46:36 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -485,26 +485,28 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		
 		try {
 			Case theCase = getBusiness().getCase(iwc.getParameter(PARAMETER_CASE_PK));
-			String caseHandlerType = theCase.getCaseManagerType();
+			String caseManagerType = theCase.getCaseManagerType();
 			
-			if(caseHandlerType == null || CoreConstants.EMPTY.equals(caseHandlerType)) {
+			if(caseManagerType == null || CoreConstants.EMPTY.equals(caseManagerType)) {
 				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handlerType resolved from case, though showCaseHandlerView method was called");
 				return;
 			}
 			
-			CaseManager caseHandler = getCaseHandlersProvider().getCaseHandler(caseHandlerType);
+			CaseManager caseManager = getCaseHandlersProvider().getCaseHandler(caseManagerType);
 			
-			if(caseHandler == null) {
+			if(caseManager == null) {
 				
-				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handler found for case handler type provided: "+caseHandlerType);
+				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handler found for case handler type provided: "+caseManagerType);
 				return;
 			}
 			
-			CaseManagerState caseHandlerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
-			caseHandlerState.setCaseId(new Integer(String.valueOf(theCase.getPrimaryKey())));
-			caseHandlerState.setShowCaseHandler(true);
+			CaseManagerState caseManagerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
+			caseManagerState.setCaseId(new Integer(String.valueOf(theCase.getPrimaryKey())));
+			caseManagerState.setShowCaseHandler(true);
+			caseManagerState.setFullView(false);
+			caseManagerState.setInCasesComponent(true);
 			
-			UIComponent view = caseHandler.getView(iwc, theCase);
+			UIComponent view = caseManager.getView(iwc, theCase);
 			getFacets().put(caseManagerFacet, view);
 			
 		} catch (FinderException fe) {

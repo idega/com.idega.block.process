@@ -5,6 +5,4 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
         
     <bean id="casesHandlersProvider" class="com.idega.block.process.business.CaseManagersProvider" scope="singleton" />
-    
-    <bean id="caseHandlerState" class="com.idega.block.process.presentation.beans.CaseManagerState" scope="request" />
 </beans>

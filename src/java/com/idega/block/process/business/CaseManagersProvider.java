@@ -13,15 +13,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2008/02/26 19:28:36 $ by $Author: civilis $
+ * Last modified: $Date: 2008/03/27 08:46:36 $ by $Author: civilis $
  */
+@Scope("singleton")
+@Service(CaseManagersProvider.beanIdentifier)
 public class CaseManagersProvider implements ApplicationListener, ApplicationContextAware {
 	
 	public static final String beanIdentifier = "casesHandlersProvider";
