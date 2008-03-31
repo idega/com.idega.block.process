@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page-templates>
+	<page name="Cases" type="cases" iconfile="idegaweb/bundles/com.idega.block.process.bundle/resources/images/pageIcons/cases.png" templatefile="idegaweb/bundles/com.idega.block.process.bundle/resources/pages/idega_process_cases.xml"></page>	
+
+	<page name="Messages" type="messages" iconfile="idegaweb/bundles/com.idega.block.process.bundle/resources/images/pageIcons/messages.png" templatefile="idegaweb/bundles/com.idega.block.process.bundle/resources/pages/idega_process_messages.xml"></page>	
+
+	<page name="Message viewer" type="messageViewer" iconfile="idegaweb/bundles/com.idega.block.process.bundle/resources/images/pageIcons/messageViewer.png" templatefile="idegaweb/bundles/com.idega.block.process.bundle/resources/pages/idega_process_messageviewer.xml"></page>	
+
+</page-templates>
