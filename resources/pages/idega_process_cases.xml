@@ -17,6 +17,21 @@
     			<value>1</value>
     			<type>java.lang.String</type>
     		</property>
+    		<property>
+    			<name>:method:1:implied:void:setHideCaseCode:java.lang.String:</name>
+    			<value>SYMEDAN</value>
+    			<type>java.lang.String</type>
+    		</property>
+    		<property>
+    			<name>:method:1:implied:void:setHideCaseCode:java.lang.String:</name>
+    			<value>SYMEBRV</value>
+    			<type>java.lang.String</type>
+    		</property>
+    		<property>
+    			<name>:method:1:implied:void:setHideCaseCode:java.lang.String:</name>
+    			<value>SYMEARK</value>
+    			<type>java.lang.String</type>
+    		</property>
     	</module>
     	<module id="" class="com.idega.block.process.message.presentation.UserMessages">
     		<property>
