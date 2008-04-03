@@ -2,15 +2,19 @@ package com.idega.block.process.presentation.beans;
 
 import java.io.Serializable;
 
+import javax.faces.context.FacesContext;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import com.idega.block.process.presentation.UserCases;
 
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/03/27 08:46:36 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/03 13:43:07 $ by $Author: civilis $
  *
  */
 @Scope("request")
@@ -27,6 +31,15 @@ public class CaseManagerState implements Serializable {
 	private Boolean inCasesComponent;
 	
 	public Integer getCaseId() {
+		
+		if(caseId == null) {
+			
+			String caseIdPar = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(UserCases.PARAMETER_CASE_PK);
+			
+			if(caseIdPar != null)
+				caseId = new Integer(caseIdPar);
+		}
+		
 		return caseId;
 	}
 	public void setCaseId(Integer caseId) {

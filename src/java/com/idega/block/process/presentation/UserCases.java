@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.28 2008/03/27 08:46:36 civilis Exp $
+ * $Id: UserCases.java,v 1.29 2008/04/03 13:43:07 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -57,10 +57,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/03/27 08:46:36 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/03 13:43:07 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -246,7 +246,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				
 				if(caseHandler != null) {
 
-					List<Link> links = caseHandler.getCaseLinks(userCase);
+					List<Link> links = caseHandler.getCaseLinks(userCase, "temp_usercases");
 					
 					if(links != null)
 						for (Link link : links)
