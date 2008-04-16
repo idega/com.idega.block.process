@@ -1,5 +1,5 @@
 /*
- * $Id: AbstractCaseBMPBean.java,v 1.58 2008/02/26 17:57:52 civilis Exp $
+ * $Id: AbstractCaseBMPBean.java,v 1.59 2008/04/16 18:38:01 valdas Exp $
  * 
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
  * 
@@ -50,10 +50,10 @@ import com.idega.util.IWTimestamp;
  * This entity class is a abstract class for extending the standard "Case" entity.<br/> This class is convenient to extend the Case entity by adding
  * a second table that is one-to-one related to the base Case entity table.
  * <p>
- * Last modified: $Date: 2008/02/26 17:57:52 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/16 18:38:01 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.58 $
+ * @version $Revision: 1.59 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
@@ -1222,5 +1222,27 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	public void setCaseManagerType(String type) {
 		getGeneralCase().setCaseManagerType(type);
+	}
+	
+	protected String getSQLGeneralCaseExternalIdColumnName() {
+		return CaseBMPBean.COLUMN_EXTERNAL_ID;
+	}
+	
+	public Criteria idoCriteriaForExternalId(String externalId) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseExternalIdColumnName(), MatchCriteria.EQUALS, externalId);
+	}
+	
+	public Criteria idoJoinCriteraWithBaseCaseTable(){
+		Table subCasetable = idoTableSubCase();
+		return new JoinCriteria(new Column(idoTableGeneralCase(), getSQLGeneralCasePKColumnName()), new Column(subCasetable, getIDColumnName()));
+
+	}
+	
+	public Object ejbFindByExternalId(String externalId) throws FinderException {
+		SelectQuery query = new SelectQuery(idoTableSubCase());
+		query.addColumn(new Column(idoTableSubCase(),getIDColumnName()));
+		query.addCriteria(idoJoinCriteraWithBaseCaseTable());
+		query.addCriteria(idoCriteriaForExternalId(externalId));
+		return idoFindOnePKByQuery(query);	
 	}
 }
