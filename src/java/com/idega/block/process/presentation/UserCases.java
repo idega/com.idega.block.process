@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.29 2008/04/03 13:43:07 civilis Exp $
+ * $Id: UserCases.java,v 1.30 2008/04/21 17:34:24 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -57,10 +57,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/04/03 13:43:07 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/21 17:34:24 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -146,12 +146,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 			try {
 				
-				CaseManager caseHandler;
+				CaseManager caseManager;
 				
 				if(userCase.getCaseManagerType() != null)
-					caseHandler = getCaseHandlersProvider().getCaseHandler(userCase.getCaseManagerType());
+					caseManager = getCaseHandlersProvider().getCaseHandler(userCase.getCaseManagerType());
 				else 
-					caseHandler = null;
+					caseManager = null;
 				
 				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(userCase.getCaseCode(), iwc);
 				String subject = caseBusiness.getCaseSubject(userCase, iwc.getCurrentLocale());
@@ -175,7 +175,18 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				cell = row.createCell();
 				cell.setStyleClass("firstColumn");
 				cell.setStyleClass("casesCount");
-				cell.add(new Text(userCase.getPrimaryKey().toString()));
+				
+				String caseIdentifier;
+				
+				if(caseManager != null)
+					caseIdentifier = caseManager.getProcessIdentifier(userCase);
+				else
+					caseIdentifier = null;
+				
+				if(caseIdentifier != null)
+					cell.add(new Text(caseIdentifier));
+				else
+					cell.add(new Text(userCase.getPrimaryKey().toString()));
 				
 				cell = row.createCell();
 				cell.setStyleClass("casesDescription");
@@ -244,9 +255,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 				boolean addNonBrakingSpace = true;
 				
-				if(caseHandler != null) {
+				if(caseManager != null) {
 
-					List<Link> links = caseHandler.getCaseLinks(userCase, "temp_usercases");
+					List<Link> links = caseManager.getCaseLinks(userCase, "temp_usercases");
 					
 					if(links != null)
 						for (Link link : links)
