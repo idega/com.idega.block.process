@@ -9,10 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +19,22 @@ import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/03/27 08:46:36 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/21 05:03:02 $ by $Author: civilis $
  */
 @Scope("singleton")
 @Service(CaseManagersProvider.beanIdentifier)
-public class CaseManagersProvider implements ApplicationListener, ApplicationContextAware {
+public class CaseManagersProvider implements ApplicationContextAware {
 	
 	public static final String beanIdentifier = "casesHandlersProvider";
 	
 	private ApplicationContext applicationContext;
-	private Map<String, String> caseHandlersTypesBeanIdentifiers;
+	private final Map<String, String> caseHandlersTypesBeanIdentifiers;
+	
+	public CaseManagersProvider() {
+		caseHandlersTypesBeanIdentifiers = new HashMap<String, String>();
+	}
 	
 	public CaseManager getCaseHandler(String handlerType) {
 		
@@ -60,20 +63,17 @@ public class CaseManagersProvider implements ApplicationListener, ApplicationCon
 		return handlers;
 	}
 	
-	public void onApplicationEvent(ApplicationEvent applicationEvent) {
+	@Autowired(required=false)
+	public void setCaseManagers(List<CaseManager> caseManagers) {
 		
-		if(applicationEvent instanceof CaseManagerPluggedInEvent) {
+		for (CaseManager caseManager : caseManagers) {
+		
+			String beanIdentifier = caseManager.getBeanIdentifier();
 			
-			CaseManager caseHandler = ((CaseManagerPluggedInEvent)applicationEvent).getCaseHandler();
-			
-			String beanIdentifier = caseHandler.getBeanIdentifier();
-			
-			if(beanIdentifier != null) {
-				
-				getCaseHandlersTypesBeanIdentifiers().put(caseHandler.getType(), beanIdentifier);
-			} else {
-				Logger.getLogger(getClass().getName()).log(Level.WARNING, "No bean identifier provided for case handler. Skipping. Class name: "+caseHandler.getClass().getName());
-			}
+			if(beanIdentifier != null)
+				getCaseHandlersTypesBeanIdentifiers().put(caseManager.getType(), beanIdentifier);
+			else
+				Logger.getLogger(getClass().getName()).log(Level.WARNING, "No bean identifier provided for case handler. Skipping. Class name: "+caseManager.getClass().getName());
 		}
 	}
 
@@ -86,10 +86,6 @@ public class CaseManagersProvider implements ApplicationListener, ApplicationCon
 	}
 
 	protected Map<String, String> getCaseHandlersTypesBeanIdentifiers() {
-		
-		if(caseHandlersTypesBeanIdentifiers == null)
-			caseHandlersTypesBeanIdentifiers = new HashMap<String, String>();
-		
 		return caseHandlersTypesBeanIdentifiers;
 	}
 }

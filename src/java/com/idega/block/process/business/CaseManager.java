@@ -13,9 +13,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/04/03 13:43:06 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/21 05:03:02 $ by $Author: civilis $
  *
  */
 public interface CaseManager {
@@ -23,6 +23,8 @@ public interface CaseManager {
 	public abstract String getBeanIdentifier();
 	
 	public abstract String getType();
+	
+	public abstract String getProcessIdentifier(Case theCase);
 	
 	public abstract List<Link> getCaseLinks(Case theCase, String componentType);
 	
