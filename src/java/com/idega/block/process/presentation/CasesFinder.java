@@ -23,6 +23,7 @@ public class CasesFinder extends IWBaseComponent {
 	
 	private String searchTextInputStyle = "textInputForCasesSearchStyleClass";
 	
+	@Override
 	protected void initializeComponent(FacesContext context) {
 		IWContext iwc = IWContext.getIWContext(context);
 		
@@ -69,8 +70,7 @@ public class CasesFinder extends IWBaseComponent {
 		
 		add(container);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	private void addCasesColumnsForSearch(IWContext iwc, DropdownMenu columnsMenu) {
 		Object o = iwc.getSessionAttribute(ProcessConstants.getKeyForCasesColumnsAttribute(iwc));
 		if (o instanceof List) {
@@ -85,6 +85,7 @@ public class CasesFinder extends IWBaseComponent {
 		}
 	}
 	
+	@Override
 	public Object saveState(FacesContext ctx) {
 		Object values[] = new Object[2];
 		values[0] = super.saveState(ctx);
@@ -92,10 +93,10 @@ public class CasesFinder extends IWBaseComponent {
 		return values;
 	}
 
+	@Override
 	public void restoreState(FacesContext ctx, Object state) {
 		Object values[] = (Object[]) state;
 		super.restoreState(ctx, values[0]);
 		searchTextInputStyle = (String) values[1];
 	}
-
 }

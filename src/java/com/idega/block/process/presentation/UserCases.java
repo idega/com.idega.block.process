@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.30 2008/04/21 17:34:24 civilis Exp $
+ * $Id: UserCases.java,v 1.31 2008/04/24 23:34:01 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -57,10 +57,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/04/21 17:34:24 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/24 23:34:01 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -327,7 +327,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	protected Collection<Case> getCases(IWContext iwc, int startingEntry, int numberOfEntries) {
 		try {
-			@SuppressWarnings("unchecked")
 			Collection<Case> cases = getBusiness().getAllCasesForUserExceptCodes(iwc.getCurrentUser(), getUserHiddenCaseCodes(), startingEntry, numberOfEntries);
 			return cases;
 			
