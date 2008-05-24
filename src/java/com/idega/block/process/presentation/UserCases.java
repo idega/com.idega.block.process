@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.31 2008/04/24 23:34:01 laddi Exp $
+ * $Id: UserCases.java,v 1.32 2008/05/24 10:14:08 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -51,16 +51,15 @@ import com.idega.presentation.TableRow;
 import com.idega.presentation.TableRowGroup;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
-import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/04/24 23:34:01 $ by $Author: laddi $
+ * Last modified: $Date: 2008/05/24 10:14:08 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -69,7 +68,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public static final String PARAMETER_ACTION = "cp_prm_action";
 	
 	public static final int ACTION_VIEW = 1;
-	public static final int SHOW_CASE_HANDLER = 7;
+	//public static final int SHOW_CASE_HANDLER = 7;
 	
 	private static final String caseManagerFacet = "caseManager";
 	
@@ -491,6 +490,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return (CaseManagersProvider)WFUtil.getBeanInstance(CaseManagersProvider.beanIdentifier);
 	}
 	
+	/*
 	public void showCaseHandlerView(IWContext iwc) {
 		
 		try {
@@ -527,6 +527,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			throw new IBORuntimeException(fe);
 		}
 	}
+	*/
 	
 	@Override
 	public void encodeBegin(FacesContext fc) throws IOException {
@@ -563,7 +564,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	protected void display(IWContext iwc) throws Exception {
+		
+		showList(iwc);
 
+		/*
 		CaseManagerState caseManagerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
 		
 		if(!caseManagerState.getShowCaseHandler()) {
@@ -577,6 +581,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 					showList(iwc);
 			}
 		}
+		*/
 	}
 	
 	protected void showList(IWContext iwc) throws RemoteException {
