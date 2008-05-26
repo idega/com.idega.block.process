@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.32 2008/05/24 10:14:08 civilis Exp $
+ * $Id: UserCases.java,v 1.33 2008/05/26 16:46:36 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,16 +26,16 @@ import javax.faces.context.FacesContext;
 
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
-import com.idega.block.process.business.CaseManager;
 import com.idega.block.process.business.CaseManagersProvider;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
-import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.block.process.presentation.beans.CaseManagerState;
+import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.business.SpringBeanLookup;
 import com.idega.core.accesscontrol.business.CredentialBusiness;
 import com.idega.core.builder.data.ICPage;
 import com.idega.event.IWPageEventListener;
@@ -45,21 +44,15 @@ import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.ListNavigator;
-import com.idega.presentation.Table2;
-import com.idega.presentation.TableCell2;
-import com.idega.presentation.TableRow;
-import com.idega.presentation.TableRowGroup;
-import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
-import com.idega.util.IWTimestamp;
 import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/05/24 10:14:08 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/26 16:46:36 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -88,8 +81,13 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return getResourceBundle().getLocalizedString("user_cases", "User cases");
 	}
 	
-	private Table2 getCaseTable(IWContext iwc, int startingEntry, int numberOfEntries) throws RemoteException {
-		Table2 table = new Table2();
+	private UIComponent getCasesList(IWContext iwc, int startingEntry, int numberOfEntries) throws RemoteException {
+		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
+		
+		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) SpringBeanLookup.getInstance().getSpringBean(iwc.getServletContext(), GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
+		return listBuilder.getCasesList(iwc, cases, "userCases");
+		
+		/*Table2 table = new Table2();
 		table.setStyleClass("caseTable");
 		table.setStyleClass("ruler");
 		table.setWidth("100%");
@@ -321,7 +319,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			iRow++;
 		}
 		
-		return table;
+		return table;*/
 	}
 
 	protected Collection<Case> getCases(IWContext iwc, int startingEntry, int numberOfEntries) {
@@ -611,7 +609,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		headingLayer.add(new Text(getHeading()));
 		headerLayer.add(headingLayer);
 		
-		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
+		layer.add(getCasesList(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
 		
 		add(layer);
 	}
