@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.62 2008/02/26 17:57:52 civilis Exp $
+ * $Id: CaseBMPBean.java,v 1.63 2008/05/27 12:24:58 valdas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.logging.Level;
+
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 
@@ -39,10 +41,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2008/02/26 17:57:52 $ by $Author: civilis $
+ * Last modified: $Date: 2008/05/27 12:24:58 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -755,6 +757,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 */
 	public Collection ejbFindAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		IDOQuery query = idoQueryGetAllCasesForUserExceptCodes(user, codes);
+		log(Level.INFO, "UserCases: " + query);
 		return super.idoFindPKsByQuery(query, numberOfCases, startingCase);
 		/*
 		 * return (Collection) super.idoFindPKsBySQL( "select * from " +
