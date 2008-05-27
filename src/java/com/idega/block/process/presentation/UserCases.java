@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.33 2008/05/26 16:46:36 valdas Exp $
+ * $Id: UserCases.java,v 1.34 2008/05/27 12:25:30 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -49,10 +49,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/05/26 16:46:36 $ by $Author: valdas $
+ * Last modified: $Date: 2008/05/27 12:25:30 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -85,9 +85,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 		
 		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) SpringBeanLookup.getInstance().getSpringBean(iwc.getServletContext(), GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
-		return listBuilder.getCasesList(iwc, cases, "userCases");
+		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, "userCases", isAddCredentialsToExernalUrls());
 		
-		/*Table2 table = new Table2();
+		/*
+		Table2 table = new Table2();
 		table.setStyleClass("caseTable");
 		table.setStyleClass("ruler");
 		table.setWidth("100%");
