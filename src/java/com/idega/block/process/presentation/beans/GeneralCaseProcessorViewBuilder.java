@@ -1,0 +1,15 @@
+package com.idega.block.process.presentation.beans;
+
+import java.rmi.RemoteException;
+
+import javax.faces.component.UIComponent;
+
+import com.idega.presentation.IWContext;
+
+public interface GeneralCaseProcessorViewBuilder {
+
+	public static final String SPRING_BEAN_IDENTIFIER = "GeneralCaseProcessorViewBuilder";
+	
+	public UIComponent getCaseProcessorView(IWContext iwc) throws RemoteException;
+	
+}

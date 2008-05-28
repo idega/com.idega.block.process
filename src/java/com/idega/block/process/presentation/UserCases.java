@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.34 2008/05/27 12:25:30 valdas Exp $
+ * $Id: UserCases.java,v 1.35 2008/05/28 08:03:38 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -31,6 +31,7 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.block.process.presentation.beans.CaseManagerState;
+import com.idega.block.process.presentation.beans.GeneralCaseProcessorViewBuilder;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
@@ -44,15 +45,16 @@ import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.ListNavigator;
+import com.idega.presentation.text.Heading3;
 import com.idega.presentation.text.Text;
 import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/05/27 12:25:30 $ by $Author: valdas $
+ * Last modified: $Date: 2008/05/28 08:03:38 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -61,7 +63,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public static final String PARAMETER_ACTION = "cp_prm_action";
 	
 	public static final int ACTION_VIEW = 1;
-	//public static final int SHOW_CASE_HANDLER = 7;
+	public static final int ACTION_BPM_PROCESS = 8;
 	
 	private static final String caseManagerFacet = "caseManager";
 	
@@ -563,24 +565,43 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	protected void display(IWContext iwc) throws Exception {
-		
-		showList(iwc);
-
-		/*
-		CaseManagerState caseManagerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
-		
-		if(!caseManagerState.getShowCaseHandler()) {
-			
-			switch (parseAction(iwc)) {
-			
-				case SHOW_CASE_HANDLER:
-					showCaseHandlerView(iwc);
-					break;
-				default:
-					showList(iwc);
+		Integer action = null;
+		if (iwc.isParameterSet(UserCases.PARAMETER_ACTION)) {
+			try {
+			action = Integer.parseInt(iwc.getParameter(UserCases.PARAMETER_ACTION));
+			} catch(NumberFormatException e) {
+				e.printStackTrace();
 			}
 		}
-		*/
+		
+		if (action == null) {
+			showList(iwc);
+			return;
+		}
+		
+		switch (action) {
+			case ACTION_BPM_PROCESS:
+				showProcessorForBpm(iwc);
+				break;
+	
+			default:
+				showList(iwc);
+				break;
+		}
+	}
+	
+	private void showProcessorForBpm(IWContext iwc) throws NullPointerException {
+		GeneralCaseProcessorViewBuilder processorView = (GeneralCaseProcessorViewBuilder) SpringBeanLookup.getInstance().getSpringBean(iwc.getServletContext(), GeneralCaseProcessorViewBuilder.SPRING_BEAN_IDENTIFIER);
+		UIComponent view = null;
+		try {
+			view = processorView.getCaseProcessorView(iwc);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		if (view == null) {
+			view = new Heading3(getResourceBundle(iwc).getLocalizedString("cases_list.can_not_get_case_view", "Sorry, error occurred - can not generate case processor view."));
+		}
+		add(view);
 	}
 	
 	protected void showList(IWContext iwc) throws RemoteException {
