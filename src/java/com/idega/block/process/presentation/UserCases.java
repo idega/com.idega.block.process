@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.35 2008/05/28 08:03:38 valdas Exp $
+ * $Id: UserCases.java,v 1.36 2008/05/29 15:12:25 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -51,10 +51,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/05/28 08:03:38 $ by $Author: valdas $
+ * Last modified: $Date: 2008/05/29 15:12:25 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -66,6 +66,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public static final int ACTION_BPM_PROCESS = 8;
 	
 	private static final String caseManagerFacet = "caseManager";
+	
+	public static final String TYPE = "UserCases";
 	
 	private Collection iHiddenCaseCodes;
 	private Map pageMap;
@@ -87,7 +89,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 		
 		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) SpringBeanLookup.getInstance().getSpringBean(iwc.getServletContext(), GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
-		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, "userCases", isAddCredentialsToExernalUrls());
+		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls());
 		
 		/*
 		Table2 table = new Table2();

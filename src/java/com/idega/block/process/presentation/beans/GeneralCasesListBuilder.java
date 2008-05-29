@@ -13,8 +13,9 @@ public interface GeneralCasesListBuilder {
 	public static final String SPRING_BEAN_IDENTIFIER = "GeneralCasesListBuilder";
 	
 	@SuppressWarnings("unchecked")
-	public UIComponent getCasesList(IWContext iwc, Collection cases, String prefix, boolean showCheckBoxes);
+	public UIComponent getCasesList(IWContext iwc, Collection cases, String casesType, boolean showCheckBoxes);
 	
-	public UIComponent getUserCasesList(IWContext iwc, Collection<Case> cases, Map pages, String prefix, boolean addCredentialsToExernalUrls);
+	@SuppressWarnings("unchecked")
+	public UIComponent getUserCasesList(IWContext iwc, Collection<Case> cases, Map pages, String casesType, boolean addCredentialsToExernalUrls);
 	
 }
