@@ -19,9 +19,9 @@ import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/04/21 05:03:02 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/01 17:00:56 $ by $Author: civilis $
  */
 @Scope("singleton")
 @Service(CaseManagersProvider.beanIdentifier)
@@ -30,37 +30,37 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	public static final String beanIdentifier = "casesHandlersProvider";
 	
 	private ApplicationContext applicationContext;
-	private final Map<String, String> caseHandlersTypesBeanIdentifiers;
+	private final Map<String, String> caseManagersTypesBeanIdentifiers;
 	
 	public CaseManagersProvider() {
-		caseHandlersTypesBeanIdentifiers = new HashMap<String, String>();
+		caseManagersTypesBeanIdentifiers = new HashMap<String, String>();
 	}
 	
-	public CaseManager getCaseHandler(String handlerType) {
+	public CaseManager getCaseManager(String managerType) {
 		
-		if(handlerType == null || CoreConstants.EMPTY.equals(handlerType))
+		if(managerType == null || CoreConstants.EMPTY.equals(managerType))
 			throw new IllegalArgumentException("No or empty handlerType provided");
 		
-		if(!getCaseHandlersTypesBeanIdentifiers().containsKey(handlerType))
-			throw new IllegalArgumentException("No case handler bound to handler type provided: "+handlerType);
+		if(!getCaseHandlersTypesBeanIdentifiers().containsKey(managerType))
+			throw new IllegalArgumentException("No case handler bound to handler type provided: "+managerType);
 		
-		String beanIdentifier = getCaseHandlersTypesBeanIdentifiers().get(handlerType);
+		String beanIdentifier = getCaseHandlersTypesBeanIdentifiers().get(managerType);
 		return (CaseManager)getApplicationContext().getBean(beanIdentifier);
 	}
 	
-	public List<CaseManager> getCaseHandlers() {
+	public List<CaseManager> getCaseManagers() {
 		
-		List<CaseManager> handlers = new ArrayList<CaseManager>(caseHandlersTypesBeanIdentifiers.size());
+		List<CaseManager> managers = new ArrayList<CaseManager>(caseManagersTypesBeanIdentifiers.size());
 		
-		for (String handlerIdentifier : caseHandlersTypesBeanIdentifiers.values()) {
+		for (String handlerIdentifier : caseManagersTypesBeanIdentifiers.values()) {
 			
 			CaseManager handler = (CaseManager)getApplicationContext().getBean(handlerIdentifier);
 			
 			if(handler != null)
-				handlers.add(handler);
+				managers.add(handler);
 		}
 		
-		return handlers;
+		return managers;
 	}
 	
 	@Autowired(required=false)
@@ -86,6 +86,6 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	}
 
 	protected Map<String, String> getCaseHandlersTypesBeanIdentifiers() {
-		return caseHandlersTypesBeanIdentifiers;
+		return caseManagersTypesBeanIdentifiers;
 	}
 }
