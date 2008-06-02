@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.36 2008/05/29 15:12:25 valdas Exp $
+ * $Id: UserCases.java,v 1.37 2008/06/02 19:05:37 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -51,10 +51,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/05/29 15:12:25 $ by $Author: valdas $
+ * Last modified: $Date: 2008/06/02 19:05:37 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -63,7 +63,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public static final String PARAMETER_ACTION = "cp_prm_action";
 	
 	public static final int ACTION_VIEW = 1;
-	public static final int ACTION_BPM_PROCESS = 8;
+	public static final int ACTION_CASE_MANAGER_VIEW = 8;
 	
 	private static final String caseManagerFacet = "caseManager";
 	
@@ -582,7 +582,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 		
 		switch (action) {
-			case ACTION_BPM_PROCESS:
+			case ACTION_CASE_MANAGER_VIEW:
 				showProcessorForBpm(iwc);
 				break;
 	
