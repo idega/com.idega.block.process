@@ -21,7 +21,7 @@ public class CaseComparator implements Comparator<Case> {
 			return 0;
 		}
 		
-		return time1.isEarlierThan(time2) ? 1 : 0;
+		return time1.compareTo(time2);
 	}
 
 }
