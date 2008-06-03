@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.37 2008/06/02 19:05:37 civilis Exp $
+ * $Id: UserCases.java,v 1.38 2008/06/03 09:31:56 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -31,30 +31,24 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.block.process.presentation.beans.CaseManagerState;
-import com.idega.block.process.presentation.beans.GeneralCaseProcessorViewBuilder;
+import com.idega.block.process.presentation.beans.GeneralCaseManagerViewBuilder;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
-import com.idega.business.IBOLookup;
-import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
-import com.idega.business.SpringBeanLookup;
-import com.idega.core.accesscontrol.business.CredentialBusiness;
 import com.idega.core.builder.data.ICPage;
 import com.idega.event.IWPageEventListener;
-import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.ListNavigator;
-import com.idega.presentation.text.Heading3;
 import com.idega.presentation.text.Text;
 import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/06/02 19:05:37 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/03 09:31:56 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -88,7 +82,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private UIComponent getCasesList(IWContext iwc, int startingEntry, int numberOfEntries) throws RemoteException {
 		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 		
-		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) SpringBeanLookup.getInstance().getSpringBean(iwc.getServletContext(), GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
+		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) WFUtil.getBeanInstance(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
 		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls());
 		
 		/*
@@ -455,15 +449,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		this.iMaxNumberOfLetters = maxNumberOfLetters;
 	}
 	
-	private CredentialBusiness getCredentialBusiness(IWApplicationContext iwac) {
-		try {
-			return (CredentialBusiness) IBOLookup.getServiceInstance(iwac, CredentialBusiness.class);
-		}
-		catch (IBOLookupException e) {
-			throw new IBORuntimeException();
-		}
-	}
-	
 	public void setMaximumHandlerLength(int maxNumberOfHandlerLetters) {
 		this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
 	}
@@ -492,45 +477,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		
 		return (CaseManagersProvider)WFUtil.getBeanInstance(CaseManagersProvider.beanIdentifier);
 	}
-	
-	/*
-	public void showCaseHandlerView(IWContext iwc) {
-		
-		try {
-			Case theCase = getBusiness().getCase(iwc.getParameter(PARAMETER_CASE_PK));
-			String caseManagerType = theCase.getCaseManagerType();
-			
-			if(caseManagerType == null || CoreConstants.EMPTY.equals(caseManagerType)) {
-				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handlerType resolved from case, though showCaseHandlerView method was called");
-				return;
-			}
-			
-			CaseManager caseManager = getCaseHandlersProvider().getCaseHandler(caseManagerType);
-			
-			if(caseManager == null) {
-				
-				Logger.getLogger(getClassName()).log(Level.SEVERE, "No case handler found for case handler type provided: "+caseManagerType);
-				return;
-			}
-			
-			CaseManagerState caseManagerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
-			caseManagerState.setCaseId(new Integer(String.valueOf(theCase.getPrimaryKey())));
-			caseManagerState.setShowCaseHandler(true);
-			caseManagerState.setFullView(false);
-			caseManagerState.setInCasesComponent(true);
-			
-			UIComponent view = caseManager.getView(iwc, theCase);
-			getFacets().put(caseManagerFacet, view);
-			
-		} catch (FinderException fe) {
-			fe.printStackTrace();
-			throw new IBORuntimeException(fe);
-		} catch (RemoteException fe) {
-			fe.printStackTrace();
-			throw new IBORuntimeException(fe);
-		}
-	}
-	*/
 	
 	@Override
 	public void encodeBegin(FacesContext fc) throws IOException {
@@ -570,7 +516,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		Integer action = null;
 		if (iwc.isParameterSet(UserCases.PARAMETER_ACTION)) {
 			try {
-			action = Integer.parseInt(iwc.getParameter(UserCases.PARAMETER_ACTION));
+				action = Integer.parseInt(iwc.getParameter(UserCases.PARAMETER_ACTION));
 			} catch(NumberFormatException e) {
 				e.printStackTrace();
 			}
@@ -593,16 +539,18 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	private void showProcessorForBpm(IWContext iwc) throws NullPointerException {
-		GeneralCaseProcessorViewBuilder processorView = (GeneralCaseProcessorViewBuilder) SpringBeanLookup.getInstance().getSpringBean(iwc.getServletContext(), GeneralCaseProcessorViewBuilder.SPRING_BEAN_IDENTIFIER);
+		GeneralCaseManagerViewBuilder processorView = (GeneralCaseManagerViewBuilder) WFUtil.getBeanInstance(GeneralCaseManagerViewBuilder.SPRING_BEAN_IDENTIFIER);
 		UIComponent view = null;
 		try {
-			view = processorView.getCaseProcessorView(iwc);
+			view = processorView.getCaseManagerView(iwc);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+		
 		if (view == null) {
-			view = new Heading3(getResourceBundle(iwc).getLocalizedString("cases_list.can_not_get_case_view", "Sorry, error occurred - can not generate case processor view."));
+			return;
 		}
+		
 		add(view);
 	}
 	
@@ -636,12 +584,5 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		layer.add(getCasesList(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
 		
 		add(layer);
-	}
-	
-	private int parseAction(IWContext iwc) {
-		if (iwc.isParameterSet(PARAMETER_ACTION)) {
-			return Integer.parseInt(iwc.getParameter(PARAMETER_ACTION));
-		}
-		return ACTION_VIEW;
 	}
 }
