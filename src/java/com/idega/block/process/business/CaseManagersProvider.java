@@ -15,13 +15,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.idega.builder.bean.AdvancedProperty;
 import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/06/01 17:00:56 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/06 14:22:16 $ by $Author: civilis $
  */
 @Scope("singleton")
 @Service(CaseManagersProvider.beanIdentifier)
@@ -46,6 +47,24 @@ public class CaseManagersProvider implements ApplicationContextAware {
 		
 		String beanIdentifier = getCaseHandlersTypesBeanIdentifiers().get(managerType);
 		return (CaseManager)getApplicationContext().getBean(beanIdentifier);
+	}
+	
+	public List<AdvancedProperty> getExistingProcesses() {
+		
+		List<CaseManager> caseManagers = getCaseManagers();
+		
+		if(caseManagers != null) {
+			
+			for (CaseManager caseManager : caseManagers) {
+				
+				List<AdvancedProperty> allProcesses = caseManager.getAllCaseProcesses();
+				
+				if(allProcesses != null)
+					return allProcesses;
+			}
+		}
+		
+		return null;
 	}
 	
 	public List<CaseManager> getCaseManagers() {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 
 import com.idega.block.process.data.Case;
+import com.idega.builder.bean.AdvancedProperty;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.text.Link;
 import com.idega.user.data.User;
@@ -13,9 +14,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/04/21 05:03:02 $ by $Author: civilis $
+ * Last modified: $Date: 2008/06/06 14:22:16 $ by $Author: civilis $
  *
  */
 public interface CaseManager {
@@ -31,4 +32,10 @@ public interface CaseManager {
 	public abstract UIComponent getView(IWContext iwc, Case theCase);
 	
 	public abstract Collection<? extends Case> getCases(User user, String casesComponentType);
+	
+	/**
+	 * TODO: this should be replaced with more wise one, in some different class. temporary solution
+	 * @return returns all case bound processes
+	 */
+	public abstract List<AdvancedProperty> getAllCaseProcesses();
 }
