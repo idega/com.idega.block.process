@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.38 2008/06/03 09:31:56 valdas Exp $
+ * $Id: UserCases.java,v 1.39 2008/06/18 13:02:39 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,15 +40,16 @@ import com.idega.idegaweb.IWException;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.ListNavigator;
+import com.idega.presentation.text.Heading1;
 import com.idega.presentation.text.Text;
 import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/06/03 09:31:56 $ by $Author: valdas $
+ * Last modified: $Date: 2008/06/18 13:02:39 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -564,6 +565,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		headerLayer.setStyleClass("caseHeader");
 		layer.add(headerLayer);
 		
+		headerLayer.add(new Heading1(getHeading()));
+		
 		Layer navigationLayer = new Layer(Layer.DIV);
 		navigationLayer.setStyleClass("caseNavigation");
 		headerLayer.add(navigationLayer);
@@ -575,11 +578,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown); 
 		}
 		navigationLayer.add(navigator);
-		
-		Layer headingLayer = new Layer(Layer.DIV);
-		headingLayer.setStyleClass("caseHeading");
-		headingLayer.add(new Text(getHeading()));
-		headerLayer.add(headingLayer);
 		
 		layer.add(getCasesList(iwc, navigator.getStartingEntry(iwc), this.iMaxNumberOfEntries != -1 ? this.iMaxNumberOfEntries : navigator.getNumberOfEntriesPerPage(iwc)));
 		

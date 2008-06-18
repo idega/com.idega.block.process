@@ -1,26 +1,24 @@
 /* CSS Document */
 
+#userCases {
+	margin-bottom: 24px;
+}
+
 body.messageViewerWindow {
 	padding: 0;
 	margin: 0;
 }
 
 table.caseTable tbody tr td, table.caseTable thead tr th {
-	font-size: 11px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	padding: 5px 8px;
 	empty-cells: show;
-	color: #303030;
 }
 
 table.caseTable td a, th a {
-	color: #303030;
 	text-decoration: none;
 }
 
 table.caseTable td a, table.caseTable td a:hover {
-	font-size: 11px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
 
 table.caseTable td a:hover, th a:hover {
@@ -28,7 +26,6 @@ table.caseTable td a:hover, th a:hover {
 }
 
 table.caseTable thead tr {
-	background-color: #E8E8E8;
 	text-align: left;
 }
 
@@ -58,11 +55,11 @@ table.caseTable tBody tr.newEntry {
 }
 
 table.caseTable th.firstColumn, td.firstColumn {
-	padding-left: 17px;
+	padding-left: 0;
 }
 
 table.caseTable th.lastColumn, td.lastColumn {
-	padding-right: 17px;
+	padding-right: 0;
 }
 
 table.caseTable .messageDelete {
@@ -88,29 +85,13 @@ table.caseTable .caseEdit, .caseDelete {
 }
 
 div.caseHeader {
-	min-height: 40px;
-	border: 1px #FEEBA3 solid;
-	border-bottom: 0;
-	background: url(/n24/idegaweb/bundles/com.idega.block.process.bundle/resources/head-tiler.gif) repeat-x;
-}
-
-div.caseHeading {
 	position: relative;
-	top: 18px;
-	left: 16px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #303030;
-	text-shadow: #FFFFFF 2px 2px 1px;
-	width: 100px;
+	width: 100%;
+	overflow: hidden;
 }
 
 div.caseNavigation {
-	position: relative;
 	float: right;
-	top: 14px;
-	padding-right: 15px;
 }
 
 div.caseNavigation ul {
@@ -120,14 +101,11 @@ div.caseNavigation ul {
 	padding: 0 14px 0 0;
 	float: left;
 	font-weight: bold;
-	font-size: 11px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #303030;
 }
 
 div.caseNavigation select {
-	font-size: 9px;
-	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
 }
 
 div.caseNavigation ul li {
@@ -136,9 +114,6 @@ div.caseNavigation ul li {
 }
 
 div.caseNavigation ul li a {
-	font-size: 11px;
-	color: #303030;
-	text-decoration: underline;
 }
 
 div.caseNavigation ul li a:hover {
@@ -155,7 +130,7 @@ div.caseNavigation ul li a.currentPage:hover {
 	text-decoration: underline;
 }
 
-input.checkbox {
+table.caseTable input.checkbox {
 	width: 11px;
 	height: 11px;
 	padding: 0;

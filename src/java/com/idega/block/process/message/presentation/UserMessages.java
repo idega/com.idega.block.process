@@ -1,5 +1,5 @@
 /*
- * $Id: UserMessages.java,v 1.11 2006/05/18 11:16:42 laddi Exp $
+ * $Id: UserMessages.java,v 1.12 2008/06/18 13:02:39 laddi Exp $
  * Created on Oct 13, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -13,7 +13,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.ejb.FinderException;
+
 import com.idega.block.process.message.data.Message;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.builder.data.ICPage;
@@ -27,6 +29,7 @@ import com.idega.presentation.Table2;
 import com.idega.presentation.TableCell2;
 import com.idega.presentation.TableRow;
 import com.idega.presentation.TableRowGroup;
+import com.idega.presentation.text.Heading1;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.user.data.User;
@@ -35,10 +38,10 @@ import com.idega.util.text.Name;
 
 
 /**
- * Last modified: $Date: 2006/05/18 11:16:42 $ by $Author: laddi $
+ * Last modified: $Date: 2008/06/18 13:02:39 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
 	
@@ -50,6 +53,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
 	 */
+	@Override
 	protected void present(IWContext iwc) throws Exception {
 		if (getMessageType() == null) {
 			add(new Text("No code set..."));
@@ -68,6 +72,8 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		headerLayer.setStyleClass("caseHeader");
 		layer.add(headerLayer);
 		
+		headerLayer.add(new Heading1(getHeading()));
+
 		Layer navigationLayer = new Layer(Layer.DIV);
 		navigationLayer.setStyleClass("caseNavigation");
 		headerLayer.add(navigationLayer);
@@ -79,11 +85,6 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown);
 		}
 		navigationLayer.add(navigator);
-		
-		Layer headingLayer = new Layer(Layer.DIV);
-		headingLayer.setStyleClass("caseHeading");
-		headingLayer.add(new Text(getHeading()));
-		headerLayer.add(headingLayer);
 		
 		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
 		
