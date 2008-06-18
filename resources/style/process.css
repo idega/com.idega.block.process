@@ -14,14 +14,14 @@ table.caseTable tbody tr td, table.caseTable thead tr th {
 	empty-cells: show;
 }
 
-table.caseTable td a, th a {
+table.caseTable td a, table.caseTable th a {
 	text-decoration: none;
 }
 
 table.caseTable td a, table.caseTable td a:hover {
 }
 
-table.caseTable td a:hover, th a:hover {
+table.caseTable td a:hover, table.caseTable th a:hover {
 	text-decoration: underline;
 }
 
