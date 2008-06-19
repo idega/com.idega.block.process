@@ -14,14 +14,14 @@ table.caseTable tbody tr td, table.caseTable thead tr th {
 	empty-cells: show;
 }
 
-table.caseTable td a, table.caseTable th a {
+table.caseTable td a, th a {
 	text-decoration: none;
 }
 
 table.caseTable td a, table.caseTable td a:hover {
 }
 
-table.caseTable td a:hover, table.caseTable th a:hover {
+table.caseTable td a:hover, th a:hover {
 	text-decoration: underline;
 }
 
@@ -30,7 +30,8 @@ table.caseTable thead tr {
 }
 
 table.caseTable thead tr th {
-	border-top: 1px #CCCCCC solid;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
 }
 
 table.caseTable tbody tr {
@@ -39,7 +40,7 @@ table.caseTable tbody tr {
 }
 
 table.caseTable tBody tr td {
-	border-top: 1px #D5D5D5 solid;
+	border-bottom: 1px #ccc solid;
 }
 
 table.caseTable tBody tr.oddRow {
@@ -51,23 +52,20 @@ table.caseTable tBody tr.evenRow {
 }
 
 table.caseTable tBody tr.newEntry {
-	font-weight: bold;
+	background-color: #efefef;
 }
 
-table.caseTable th.firstColumn, td.firstColumn {
-	padding-left: 0;
+table.caseTable th.firstColumn, table.caseTable td.firstColumn {
 }
 
-table.caseTable th.lastColumn, td.lastColumn {
-	padding-right: 0;
+table.caseTable th.lastColumn, table.caseTable td.lastColumn {
 }
 
 table.caseTable .messageDelete {
-	width: 11px;
+	text-align: center;
 }
 
-table.caseTable .casesCount, .messageCount {
-	width: 20px;
+table.caseTable .casesCount, table.caseTable .messageCount {
 	text-align: center;
 }
 
@@ -80,7 +78,7 @@ table.caseTable .casesEdit {
 	padding-right: 17px;
 }
 
-table.caseTable .caseEdit, .caseDelete {
+table.caseTable .caseEdit, table.caseTable .caseDelete {
 	padding-left: 3px;
 }
 
@@ -88,24 +86,31 @@ div.caseHeader {
 	position: relative;
 	width: 100%;
 	overflow: hidden;
+	margin-bottom: 12px;
+}
+
+div.caseHeader h1 {
+	float: left;
 }
 
 div.caseNavigation {
 	float: right;
+	margin-top: 4px;
 }
 
 div.caseNavigation ul {
 	list-style-type: none;
 	clear: none;
 	margin: 0;
-	padding: 0 14px 0 0;
+	margin-right: 18px;
 	float: left;
 	font-weight: bold;
-	color: #303030;
+	line-height: 18px;
 }
 
 div.caseNavigation select {
-	font-size: 10px;
+	font-size: 11px;
+	margin: 0;
 }
 
 div.caseNavigation ul li {
@@ -145,7 +150,7 @@ input.button {
 }
 
 table.caseTable tBody tr.ruled{
-	background: #FEF9E6;
+	background: #dfdfdf;
 }
 
 div.caseFooter {
@@ -159,20 +164,21 @@ div.caseFooter input {
 }
 
 div.messageDiv {
-	margin-top: 10px;
+	margin-top: 16px;
 }
 
 div.messageItem {
 	clear: left;
 	font-size: 11px;
-	margin-bottom: 3px;
+	margin-bottom: 6px;
 }
 
 div.messageItem h1 {
 	float: left;
 	margin: 0;
-	font-size: 11px;
-	width: 70px;
+	font-size: 12px;
+	font-weight: bold;
+	width: 80px;
 	text-align: right;
 	padding-right: 10px;
 }
@@ -188,7 +194,7 @@ div#messageBody h1 {
 div#messageBody {
 	margin-top: 6px;
 	padding: 8px;
-	border-top: 1px #CCCCCC solid;
+	border-top: 1px #ccc solid;
 }
 
 div.buttonLayer {

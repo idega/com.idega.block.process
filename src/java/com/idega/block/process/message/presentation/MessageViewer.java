@@ -22,6 +22,7 @@ import com.idega.util.text.TextSoap;
 
 public class MessageViewer extends MessageBlock {
 
+	@Override
 	protected void present(IWContext iwc) throws Exception {
 		if (iwc.isParameterSet(PARAMETER_MESSAGE_PK)) {
 			Layer layer = new Layer(Layer.DIV);
@@ -32,10 +33,7 @@ public class MessageViewer extends MessageBlock {
 			headerLayer.setStyleClass("caseHeader");
 			layer.add(headerLayer);
 			
-			Layer headingLayer = new Layer(Layer.DIV);
-			headingLayer.setStyleClass("caseHeading");
-			headingLayer.add(new Text(getResourceBundle().getLocalizedString("message.viewer", "Message")));
-			headerLayer.add(headingLayer);
+			headerLayer.add(new Heading1(getResourceBundle().getLocalizedString("message.viewer", "Message")));
 			
 			Layer messageLayer = new Layer(Layer.DIV);
 			messageLayer.setStyleClass("messageDiv");
