@@ -88,10 +88,16 @@ div.caseHeader {
 	position: relative;
 	width: 100%;
 	overflow: hidden;
+	margin-bottom: 16px;
+}
+
+div.caseHeader h1 {
+	float: left;
 }
 
 div.caseNavigation {
 	float: right;
+	margin-top: 6px;
 }
 
 div.caseNavigation ul {
@@ -165,14 +171,15 @@ div.messageDiv {
 div.messageItem {
 	clear: left;
 	font-size: 11px;
-	margin-bottom: 3px;
+	margin-bottom: 6px;
 }
 
 div.messageItem h1 {
 	float: left;
 	margin: 0;
-	font-size: 11px;
-	width: 70px;
+	font-size: 12px;
+	width: 80px;
+	font-weight: bold;
 	text-align: right;
 	padding-right: 10px;
 }
