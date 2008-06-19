@@ -30,7 +30,8 @@ table.caseTable thead tr {
 }
 
 table.caseTable thead tr th {
-	border-top: 1px #CCCCCC solid;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
 }
 
 table.caseTable tbody tr {
@@ -38,8 +39,8 @@ table.caseTable tbody tr {
 	text-align: left;
 }
 
-table.caseTable tBody tr td {
-	border-top: 1px #D5D5D5 solid;
+table.caseTable tbody tr td {
+	border-bottom: 1px #D5D5D5 solid;
 }
 
 table.caseTable tBody tr.oddRow {
@@ -51,23 +52,20 @@ table.caseTable tBody tr.evenRow {
 }
 
 table.caseTable tBody tr.newEntry {
-	font-weight: bold;
+	background-color: #efefef;
 }
 
-table.caseTable th.firstColumn, td.firstColumn {
-	padding-left: 0;
+table.caseTable th.firstColumn, table.caseTable td.firstColumn {
 }
 
-table.caseTable th.lastColumn, td.lastColumn {
-	padding-right: 0;
+table.caseTable th.lastColumn, table.caseTable td.lastColumn {
 }
 
 table.caseTable .messageDelete {
-	width: 11px;
+	text-align: center;
 }
 
-table.caseTable .casesCount, .messageCount {
-	width: 20px;
+table.caseTable .casesCount, table.caseTable .messageCount {
 	text-align: center;
 }
 
@@ -151,7 +149,7 @@ input.button {
 }
 
 table.caseTable tBody tr.ruled{
-	background: #FEF9E6;
+	background: #dfdfdf;
 }
 
 div.caseFooter {
