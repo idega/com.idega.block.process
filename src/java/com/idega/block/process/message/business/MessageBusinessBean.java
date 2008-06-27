@@ -1,5 +1,5 @@
 /*
- * $Id: MessageBusinessBean.java,v 1.9 2006/10/02 12:47:32 thomas Exp $ Created on Oct 12,
+ * $Id: MessageBusinessBean.java,v 1.10 2008/06/27 11:55:54 alexis Exp $ Created on Oct 12,
  * 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2006/10/02 12:47:32 $ by $Author: thomas $
+ * Last modified: $Date: 2008/06/27 11:55:54 $ by $Author: alexis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MessageBusinessBean extends CaseBusinessBean implements MessageBusiness, CaseBusiness {
 
@@ -83,7 +83,7 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		Case theCase = getCase(new Integer(messagePK.toString()).intValue());
 		return getMessage(theCase.getCode(), messagePK);
 	}
-	
+
 	public Message getMessage(String messageType, Object messagePK) throws FinderException {
 		return getMessageHome(messageType).findByPrimaryKey(messagePK);
 	}
@@ -138,12 +138,12 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		if (msgValue.getSender() != null) {
 			message.setSender(msgValue.getSender());
 		}
-		if (message.getHandler() != null) {
+		if (msgValue.getHandler() != null) {
 			message.setHandler(msgValue.getHandler());
 		}
 		message.setSubject(msgValue.getSubject());
 		message.setBody(msgValue.getBody());
-		if (message.getParentCase() != null) {
+		if (msgValue.getParentCase() != null) {
 			message.setParentCase(msgValue.getParentCase());
 		}
 
@@ -156,23 +156,21 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		}
 		return message;
 	}
-	
+
 	/**
 	 * This method is overwritten in CommuneMessageBusiness
 	 */
-	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException {	
-		MessageValue messageValue = new MessageValue(); 
+	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException {
+		MessageValue messageValue = new MessageValue();
 		setSimpleMessage(messageValue, parentCase, receiver, subject, body);
 		return createMessage(messageValue);
 	}
-		
+
 	protected void setSimpleMessage(MessageValue messageValue, Case parentCase, User receiver, String subject, String body) {
 		messageValue.setSubject(subject);
 		messageValue.setBody(body);
 		messageValue.setReceiver(receiver);
 		messageValue.setParentCase(parentCase);
 	}
-	
-	
-	
+
 }
