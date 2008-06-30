@@ -11,6 +11,7 @@ import com.idega.presentation.IWContext;
 public interface GeneralCasesListBuilder {
 
 	public static final String SPRING_BEAN_IDENTIFIER = "GeneralCasesListBuilder";
+	public static final String MAIN_CASES_LIST_CONTAINER_STYLE = "mainCasesListContainerStyleClass";
 	
 	@SuppressWarnings("unchecked")
 	public abstract UIComponent getCasesList(IWContext iwc, Collection cases, String casesType, boolean showCheckBoxes);
