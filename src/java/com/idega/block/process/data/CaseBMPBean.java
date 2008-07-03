@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.63 2008/05/27 12:24:58 valdas Exp $
+ * $Id: CaseBMPBean.java,v 1.64 2008/07/03 16:19:31 civilis Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -41,10 +41,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2008/05/27 12:24:58 $ by $Author: valdas $
+ * Last modified: $Date: 2008/07/03 16:19:31 $ by $Author: civilis $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -53,14 +53,14 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
 	public static final String COLUMN_CREATED = "CREATED";
 	static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID";
-	static final String COLUMN_USER = "USER_ID";
+	public static final String COLUMN_USER = "USER_ID";
 	static final String COLUMN_CREATOR = "CREATOR_ID";
 	static final String COLUMN_HANDLER = "HANDLER_GROUP_ID";
 	static final String PK_COLUMN = TABLE_NAME + "_ID";
 	static final String COLUMN_EXTERNAL_ID = "EXTERNAL_ID";
 	static final String COLUMN_CASE_NUMBER = "CASE_NUMBER";
 	static final String COLUMN_EXTERNAL_HANDLER_ID = "EXTERNAL_HANDLER_ID";
-	static final String COLUMN_CASE_SUBJECT = "CASE_SUBJECT";
+	public static final String COLUMN_CASE_SUBJECT = "CASE_SUBJECT";
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
 	static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
 
