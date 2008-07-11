@@ -15,7 +15,7 @@ public class CaseComparator implements Comparator<Case> {
 			return 0;
 		}
 		
-		return time1.compareTo(time2);
+		return -time1.compareTo(time2);
 	}
 
 }
