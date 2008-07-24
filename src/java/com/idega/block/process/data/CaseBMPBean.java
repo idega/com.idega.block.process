@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.64 2008/07/03 16:19:31 civilis Exp $
+ * $Id: CaseBMPBean.java,v 1.65 2008/07/24 06:58:06 valdas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -41,10 +41,10 @@ import com.idega.util.IWTimestamp;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2008/07/03 16:19:31 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/24 06:58:06 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -62,7 +62,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String COLUMN_EXTERNAL_HANDLER_ID = "EXTERNAL_HANDLER_ID";
 	public static final String COLUMN_CASE_SUBJECT = "CASE_SUBJECT";
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
-	static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
+	public static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
 
 	static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
