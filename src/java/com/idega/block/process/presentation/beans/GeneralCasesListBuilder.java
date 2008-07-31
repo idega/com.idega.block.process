@@ -19,5 +19,5 @@ public interface GeneralCasesListBuilder {
 	@SuppressWarnings("unchecked")
 	public abstract UIComponent getUserCasesList(IWContext iwc, Collection<Case> cases, Map pages, String casesType, boolean addCredentialsToExernalUrls);
 
-	public abstract UIComponent getCaseManagerView(IWContext iwc, Integer caseId);
+	public abstract UIComponent getCaseManagerView(IWContext iwc, Integer caseId, String caseProcessorType);
 }

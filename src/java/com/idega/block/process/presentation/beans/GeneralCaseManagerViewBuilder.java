@@ -10,6 +10,5 @@ public interface GeneralCaseManagerViewBuilder {
 
 	public static final String SPRING_BEAN_IDENTIFIER = "GeneralCaseManagerViewBuilder";
 	
-	public UIComponent getCaseManagerView(IWContext iwc) throws RemoteException;
-	
+	public abstract UIComponent getCaseManagerView(IWContext iwc, String caseProcessorType) throws RemoteException;
 }

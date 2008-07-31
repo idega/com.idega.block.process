@@ -14,9 +14,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/06/06 14:22:16 $ by $Author: civilis $
+ * Last modified: $Date: 2008/07/31 13:16:14 $ by $Author: civilis $
  *
  */
 public interface CaseManager {
@@ -29,7 +29,7 @@ public interface CaseManager {
 	
 	public abstract List<Link> getCaseLinks(Case theCase, String componentType);
 	
-	public abstract UIComponent getView(IWContext iwc, Case theCase);
+	public abstract UIComponent getView(IWContext iwc, Case theCase, String caseProcessorType);
 	
 	public abstract Collection<? extends Case> getCases(User user, String casesComponentType);
 	

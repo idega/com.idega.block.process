@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.39 2008/06/18 13:02:39 laddi Exp $
+ * $Id: UserCases.java,v 1.40 2008/07/31 13:16:44 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -46,10 +46,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/06/18 13:02:39 $ by $Author: laddi $
+ * Last modified: $Date: 2008/07/31 13:16:44 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -543,7 +543,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		GeneralCaseManagerViewBuilder processorView = (GeneralCaseManagerViewBuilder) WFUtil.getBeanInstance(GeneralCaseManagerViewBuilder.SPRING_BEAN_IDENTIFIER);
 		UIComponent view = null;
 		try {
-			view = processorView.getCaseManagerView(iwc);
+			view = processorView.getCaseManagerView(iwc, TYPE);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
