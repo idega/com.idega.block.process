@@ -428,4 +428,14 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getIWResourceBundleForUser
 	 */
 	public IWResourceBundle getIWResourceBundleForUser(User user) throws RemoteException;
+	
+	public String[] getStatusesForOpenCases();
+	
+	public String[] getStatusesForClosedCases();
+	
+	public String[] getStatusesForMyCases();
+	
+	public String[] getStatusesForApprovedCases();
+	
+	public String[] getStatusesForRejectedCases();
 }

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.74 2007/04/02 09:43:05 civilis Exp $
+ * $Id: CaseBusinessBean.java,v 1.75 2008/08/07 13:39:30 valdas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -52,10 +52,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2007/04/02 09:43:05 $ by $Author: civilis $
+ *  Last modified: $Date: 2008/08/07 13:39:30 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.74 $
+ * @version $Revision: 1.75 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -946,5 +946,23 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return (UserBusiness) this.getServiceInstance(UserBusiness.class);
 	}
 	
+	public String[] getStatusesForOpenCases() {
+		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus()};
+	}
 	
+	public String[] getStatusesForClosedCases() {
+		return new String[] {getCaseStatusInactive().getStatus(), getCaseStatusReady().getStatus()};
+	}
+	
+	public String[] getStatusesForMyCases() {
+		return new String[] {getCaseStatusPending().getStatus(), getCaseStatusWaiting().getStatus()};
+	}
+	
+	public String[] getStatusesForApprovedCases() {
+		return new String[] { getCaseStatusGranted().getStatus(), getCaseStatusCancelled().getStatus() };	//	TODO:	Are these correct?
+	}
+	
+	public String[] getStatusesForRejectedCases() {
+		return new String[] { getCaseStatusDenied().getStatus() };
+	}
 }
