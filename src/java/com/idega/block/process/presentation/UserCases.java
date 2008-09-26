@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.40 2008/07/31 13:16:44 civilis Exp $
+ * $Id: UserCases.java,v 1.41 2008/09/26 15:00:58 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -46,10 +46,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/07/31 13:16:44 $ by $Author: civilis $
+ * Last modified: $Date: 2008/09/26 15:00:58 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -70,7 +70,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private int iMaxNumberOfLetters = -1;
 	private int iMaxNumberOfHandlerLetters = -1;
 	private int iNumberOfEntriesShown = -1;
+	
 	private boolean addCredentialsToExernalUrls=false;
+	private boolean allowPDFSigning = true;
 
 	@Override
 	protected void present(IWContext iwc) throws Exception {
@@ -84,7 +86,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 		
 		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) WFUtil.getBeanInstance(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
-		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls());
+		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls(), isAllowPDFSigning());
 		
 		/*
 		Table2 table = new Table2();
@@ -474,6 +476,15 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
 	}
 	
+	
+	public boolean isAllowPDFSigning() {
+		return allowPDFSigning;
+	}
+
+	public void setAllowPDFSigning(boolean allowPDFSigning) {
+		this.allowPDFSigning = allowPDFSigning;
+	}
+
 	public CaseManagersProvider getCaseHandlersProvider() {
 		
 		return (CaseManagersProvider)WFUtil.getBeanInstance(CaseManagersProvider.beanIdentifier);
