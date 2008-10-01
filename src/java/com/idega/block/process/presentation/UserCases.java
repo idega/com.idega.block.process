@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.41 2008/09/26 15:00:58 valdas Exp $
+ * $Id: UserCases.java,v 1.42 2008/10/01 14:48:47 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -46,10 +46,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/09/26 15:00:58 $ by $Author: valdas $
+ * Last modified: $Date: 2008/10/01 14:48:47 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -72,6 +72,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private int iNumberOfEntriesShown = -1;
 	
 	private boolean addCredentialsToExernalUrls=false;
+	
+	private boolean usePDFDownloadColumn = true;
 	private boolean allowPDFSigning = true;
 
 	@Override
@@ -82,11 +84,19 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return getResourceBundle().getLocalizedString("user_cases", "User cases");
 	}
 	
+	public boolean isUsePDFDownloadColumn() {
+		return usePDFDownloadColumn;
+	}
+
+	public void setUsePDFDownloadColumn(boolean usePDFDownloadColumn) {
+		this.usePDFDownloadColumn = usePDFDownloadColumn;
+	}
+
 	private UIComponent getCasesList(IWContext iwc, int startingEntry, int numberOfEntries) throws RemoteException {
 		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 		
 		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) WFUtil.getBeanInstance(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
-		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls(), isAllowPDFSigning());
+		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls(), isUsePDFDownloadColumn(), isAllowPDFSigning());
 		
 		/*
 		Table2 table = new Table2();
