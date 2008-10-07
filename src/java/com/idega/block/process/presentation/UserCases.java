@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.42 2008/10/01 14:48:47 valdas Exp $
+ * $Id: UserCases.java,v 1.43 2008/10/07 18:37:29 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,10 +47,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/10/01 14:48:47 $ by $Author: valdas $
+ * Last modified: $Date: 2008/10/07 18:37:29 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -64,7 +65,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	public static final String TYPE = "UserCases";
 	
-	private Collection iHiddenCaseCodes;
+	private Set<String> hiddenCaseCodes;
 	private Map pageMap;
 	private int iMaxNumberOfEntries = -1;
 	private int iMaxNumberOfLetters = -1;
@@ -360,35 +361,33 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	private CaseCode[] getUserHiddenCaseCodes(){
-		if (this.iHiddenCaseCodes == null){
-			this.iHiddenCaseCodes = new ArrayList();
-		}
 		
-		this.iHiddenCaseCodes.addAll(MessageTypeManager.getInstance().getMessageCodes());
+		Set<String> hiddenCaseCodes = getHiddenCaseCodes();
 		
-		if (this.iHiddenCaseCodes.isEmpty()) {
+		@SuppressWarnings("unchecked")
+		Collection<String> msgCodes = MessageTypeManager.getInstance().getMessageCodes();
+		
+		hiddenCaseCodes.addAll(msgCodes);
+		
+		if (hiddenCaseCodes.isEmpty()) {
 			return null;
 		}
 		
-		CaseCode[] codes = new CaseCode[this.iHiddenCaseCodes.size()];
+		ArrayList<CaseCode> codes = new ArrayList<CaseCode>(hiddenCaseCodes.size());
 		
-		int index = 0;
-		Iterator iter = this.iHiddenCaseCodes.iterator();
-		while (iter.hasNext()) {
-			String code = (String) iter.next();
+		for (String code : hiddenCaseCodes) {
+			
 			try {
-				codes[index++] = getBusiness().getCaseCode(code);
-			}
-			catch (FinderException fe) {
-				fe.printStackTrace();
-				return null;
-			}
-			catch (RemoteException re) {
-				throw new IBORuntimeException(re);
+				codes.add(getBusiness().getCaseCode(code));
+			} catch (FinderException e) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while resolving hidden case code by message code="+code, e);
+				continue;
+			} catch (RemoteException e) {
+				throw new IBORuntimeException(e);
 			}
 		}
 		
-		return codes;
+		return codes.toArray(new CaseCode[codes.size()]);
 	}
 	
 	protected ICPage getPage(String caseCode, String caseStatus) {
@@ -408,10 +407,15 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	public void setHideCaseCode(String caseCode) {
-		if (this.iHiddenCaseCodes == null) {
-			this.iHiddenCaseCodes = new ArrayList();
-		}
-		this.iHiddenCaseCodes.add(caseCode);
+		getHiddenCaseCodes().add(caseCode);
+	}
+	
+	private Set<String> getHiddenCaseCodes() {
+		
+		if(hiddenCaseCodes == null)
+			hiddenCaseCodes = new HashSet<String>();
+		
+		return hiddenCaseCodes;
 	}
 	
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
