@@ -14,9 +14,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/07/31 13:16:14 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/08 15:33:15 $ by $Author: valdas $
  *
  */
 public interface CaseManager {
@@ -38,4 +38,8 @@ public interface CaseManager {
 	 * @return returns all case bound processes
 	 */
 	public abstract List<AdvancedProperty> getAllCaseProcesses();
+	
+	public abstract boolean hasCaseHandlerRights(Long processInstanceId);
+	
+	public abstract boolean hasRightsToViewComments(Long processInstanceId);
 }
