@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.75 2008/08/07 13:39:30 valdas Exp $
+ * $Id: CaseBusinessBean.java,v 1.76 2008/10/11 08:29:19 valdas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -30,6 +32,7 @@ import com.idega.block.process.data.CaseLog;
 import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
+import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
@@ -52,10 +55,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2008/08/07 13:39:30 $ by $Author: valdas $
+ *  Last modified: $Date: 2008/10/11 08:29:19 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -964,5 +967,24 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	
 	public String[] getStatusesForRejectedCases() {
 		return new String[] { getCaseStatusDenied().getStatus() };
+	}
+
+	public CaseCode[] getCaseCodesForUserCasesList() {
+		@SuppressWarnings("unchecked")
+		Collection<String> msgCodes = MessageTypeManager.getInstance().getMessageCodes();
+		if (msgCodes.isEmpty()) {
+			return null;
+		}
+		
+		List<CaseCode> codes = new ArrayList<CaseCode>();
+		for (String code : msgCodes) {
+			try {
+				codes.add(getCaseCode(code));
+			} catch (FinderException e) {
+				Logger.getLogger(getClass().getName()).log(Level.WARNING, "Exception while resolving hidden case code by message cod = " + code);
+			}
+		}
+		
+		return codes.toArray(new CaseCode[codes.size()]);
 	}
 }

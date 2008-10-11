@@ -438,4 +438,6 @@ public interface CaseBusiness extends IBOService {
 	public String[] getStatusesForApprovedCases();
 	
 	public String[] getStatusesForRejectedCases();
+	
+	public CaseCode[] getCaseCodesForUserCasesList();
 }
