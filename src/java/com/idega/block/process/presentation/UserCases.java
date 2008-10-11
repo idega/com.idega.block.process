@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.43 2008/10/07 18:37:29 civilis Exp $
+ * $Id: UserCases.java,v 1.44 2008/10/11 08:29:35 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -11,7 +11,6 @@ package com.idega.block.process.presentation;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.business.CaseManagersProvider;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
-import com.idega.block.process.message.business.MessageTypeManager;
 import com.idega.block.process.presentation.beans.CaseManagerState;
 import com.idega.block.process.presentation.beans.GeneralCaseManagerViewBuilder;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
@@ -47,10 +45,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/10/07 18:37:29 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/11 08:29:35 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -360,34 +358,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 	}
 	
-	private CaseCode[] getUserHiddenCaseCodes(){
-		
-		Set<String> hiddenCaseCodes = getHiddenCaseCodes();
-		
-		@SuppressWarnings("unchecked")
-		Collection<String> msgCodes = MessageTypeManager.getInstance().getMessageCodes();
-		
-		hiddenCaseCodes.addAll(msgCodes);
-		
-		if (hiddenCaseCodes.isEmpty()) {
-			return null;
-		}
-		
-		ArrayList<CaseCode> codes = new ArrayList<CaseCode>(hiddenCaseCodes.size());
-		
-		for (String code : hiddenCaseCodes) {
-			
-			try {
-				codes.add(getBusiness().getCaseCode(code));
-			} catch (FinderException e) {
-				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while resolving hidden case code by message code="+code, e);
-				continue;
-			} catch (RemoteException e) {
-				throw new IBORuntimeException(e);
-			}
-		}
-		
-		return codes.toArray(new CaseCode[codes.size()]);
+	private CaseCode[] getUserHiddenCaseCodes() {
+		return getBusiness().getCaseCodesForUserCasesList();
 	}
 	
 	protected ICPage getPage(String caseCode, String caseStatus) {
