@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.65 2008/07/24 06:58:06 valdas Exp $
+ * $Id: CaseBMPBean.java,v 1.66 2008/10/11 11:23:34 valdas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -10,8 +10,10 @@
 package com.idega.block.process.data;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
@@ -25,26 +27,30 @@ import com.idega.data.IDOQuery;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.MetaDataCapable;
 import com.idega.data.UniqueIDCapable;
+import com.idega.data.query.BetweenCriteria;
+import com.idega.data.query.Column;
 import com.idega.data.query.CountColumn;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.MatchCriteria;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
+import com.idega.data.query.range.DateRange;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
+import com.idega.util.ListUtil;
 
 /**
  * <p>
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2008/07/24 06:58:06 $ by $Author: valdas $
+ * Last modified: $Date: 2008/10/11 11:23:34 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -955,6 +961,65 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	
 	public String getId(){
 		return getPrimaryKey().toString();
+	}
+	
+	public Collection ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
+		
+		Table casesTable = new Table(this);
+		String casesTableIdColumnName = casesTable.getColumn(getIDColumnName()).getName();
+		
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(casesTable.getColumn(getIDColumnName()));
+		
+		if (owner != null) {
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), MatchCriteria.EQUALS, owner.getId()));
+		}
+		if (!ListUtil.isEmpty(groups)) {
+			List<String> groupsIds = new ArrayList<String>(groups.size());
+			for (Group group: groups) {
+				groupsIds.add(group.getId());
+			}
+			
+			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_HANDLER), groupsIds));
+		}
+		if (caseNumber != null) {
+			Column column = new Column(casesTable, casesTableIdColumnName);
+			column.setPrefix("lower(");
+			column.setPostfix(")");
+			query.addCriteria(new MatchCriteria(column, MatchCriteria.LIKE, true, caseNumber));
+		}
+		if (description != null) {
+			Column column = casesTable.getColumn(CaseBMPBean.COLUMN_CASE_SUBJECT);
+			column.setPrefix("lower(");
+			column.setPostfix(")");
+			query.addCriteria(new MatchCriteria(column, MatchCriteria.LIKE, true, description));
+		}
+		if (!ListUtil.isEmpty(owners) && owner == null) {
+			query.addCriteria(new InCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), owners));
+		}
+		if (statuses != null && statuses.length > 0) {
+			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), statuses));
+		}
+		if (dateFrom != null && dateTo != null) {
+			query.addCriteria(new BetweenCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CREATED), new DateRange(dateFrom.getDate(), dateTo.getDate())));
+		}
+		else {
+			if (dateFrom != null) {
+				query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CREATED), MatchCriteria.GREATEREQUAL, dateFrom.getDate()));
+			}
+			if (dateTo != null) {
+				query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CREATED), MatchCriteria.LESSEQUAL, dateTo.getDate()));
+			}
+		}
+		if (simpleCases) {
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CASE_MANAGER_TYPE), MatchCriteria.IS, MatchCriteria.NULL));
+		}
+		
+		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
+	
+		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
+		return idoFindPKsByQuery(query);
 	}
 
 }

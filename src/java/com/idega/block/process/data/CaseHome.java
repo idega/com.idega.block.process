@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHome.java,v 1.23 2006/04/11 08:44:42 laddi Exp $
+ * $Id: CaseHome.java,v 1.24 2008/10/11 11:23:34 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -17,16 +17,17 @@ import com.idega.data.IDOException;
 import com.idega.data.IDOHome;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
 
 
 /**
  * <p>
  * TODO laddi Describe Type CaseHome
  * </p>
- *  Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
+ *  Last modified: $Date: 2008/10/11 11:23:34 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public interface CaseHome extends IDOHome {
 
@@ -228,5 +229,10 @@ public interface CaseHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindCaseByUniqueId
 	 */
 	public Case findCaseByUniqueId(String uniqueId) throws FinderException;
+	
+	public Collection<Case> findByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException;
+	
+	public abstract Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException;
 
 }

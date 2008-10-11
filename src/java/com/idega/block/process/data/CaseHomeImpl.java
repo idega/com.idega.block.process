@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.23 2006/04/11 08:44:42 laddi Exp $
+ * $Id: CaseHomeImpl.java,v 1.24 2008/10/11 11:23:34 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -13,20 +13,22 @@ import java.util.Collection;
 
 import javax.ejb.FinderException;
 
+import com.idega.data.IDOEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
 
 
 /**
  * <p>
  * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2006/04/11 08:44:42 $ by $Author: laddi $
+ *  Last modified: $Date: 2008/10/11 11:23:34 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -313,6 +315,20 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		Object pk = ((CaseBMPBean) entity).ejbFindCaseByUniqueId(uniqueId);
 		this.idoCheckInPooledEntity(entity);
 		return this.findByPrimaryKey(pk);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Case> findByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
+		
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+	
+	public Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException {
+		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 }
