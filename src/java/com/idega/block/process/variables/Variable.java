@@ -4,9 +4,9 @@ import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2008/09/17 13:08:30 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/14 18:21:25 $ by $Author: civilis $
  */
 public class Variable {
 
@@ -77,5 +77,20 @@ public class Variable {
 		}
 			
 		return new Variable(splitted[splitted.length-1], dataType);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(super.equals(obj)) {
+			return true;
+		}
+
+		if(obj instanceof Variable) {
+		
+			return getDataType() == ((Variable)obj).getDataType() && getName().equals(((Variable)obj).getName());
+		}
+		
+		return false;
 	}
 }
