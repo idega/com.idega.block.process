@@ -4,9 +4,9 @@ import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/10/14 18:21:25 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/22 08:34:05 $ by $Author: juozas $
  */
 public class Variable {
 
@@ -58,9 +58,8 @@ public class Variable {
 	
 	public static Variable parseDefaultStringRepresentation(String representation) {
 		
-		String[] splitted = representation.split(CoreConstants.UNDER);
-		
-		String dataTypeStr = splitted[0];
+		String dataTypeStr = representation.substring(0, representation.indexOf(CoreConstants.UNDER));
+			
 		VariableDataType dataType = VariableDataType.getByStringRepresentation(dataTypeStr);
 		
 		if(dataType == null) {
@@ -75,8 +74,11 @@ public class Variable {
 			
 			throw new UnsupportedOperationException("Data type not supported of: >"+dataTypeStr+"<. Supported data types: "+supportedDataTypes.toString());
 		}
+		
+		String variableName = representation.substring(representation.indexOf(CoreConstants.UNDER)+1);
+		
 			
-		return new Variable(splitted[splitted.length-1], dataType);
+		return new Variable(variableName, dataType);
 	}
 	
 	@Override
