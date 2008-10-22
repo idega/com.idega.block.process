@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.44 2008/10/11 08:29:35 valdas Exp $
+ * $Id: UserCases.java,v 1.45 2008/10/22 14:49:00 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -45,10 +45,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/10/11 08:29:35 $ by $Author: valdas $
+ * Last modified: $Date: 2008/10/22 14:49:00 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -61,6 +61,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	private static final String caseManagerFacet = "caseManager";
 	
+	public static final String pageType = "cases";
 	public static final String TYPE = "UserCases";
 	
 	private Set<String> hiddenCaseCodes;
