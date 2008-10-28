@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.45 2008/10/22 14:49:00 civilis Exp $
+ * $Id: UserCases.java,v 1.46 2008/10/28 08:51:20 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -45,10 +45,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/10/22 14:49:00 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/28 08:51:20 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -75,6 +75,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	private boolean usePDFDownloadColumn = true;
 	private boolean allowPDFSigning = true;
+	private boolean showStatistics;
 
 	@Override
 	protected void present(IWContext iwc) throws Exception {
@@ -96,7 +97,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		Collection<Case> cases = getCases(iwc, startingEntry, numberOfEntries);
 		
 		GeneralCasesListBuilder listBuilder = (GeneralCasesListBuilder) WFUtil.getBeanInstance(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
-		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls(), isUsePDFDownloadColumn(), isAllowPDFSigning());
+		return listBuilder.getUserCasesList(iwc, cases, this.pageMap, TYPE, isAddCredentialsToExernalUrls(), isUsePDFDownloadColumn(), isAllowPDFSigning(),
+				isShowStatistics());
 		
 		/*
 		Table2 table = new Table2();
@@ -470,6 +472,14 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	public void setAllowPDFSigning(boolean allowPDFSigning) {
 		this.allowPDFSigning = allowPDFSigning;
+	}
+
+	public boolean isShowStatistics() {
+		return showStatistics;
+	}
+
+	public void setShowStatistics(boolean showStatistics) {
+		this.showStatistics = showStatistics;
 	}
 
 	public CaseManagersProvider getCaseHandlersProvider() {
