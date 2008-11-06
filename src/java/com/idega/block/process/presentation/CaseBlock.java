@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBlock.java,v 1.5 2007/09/28 07:07:57 valdas Exp $
+ * $Id: CaseBlock.java,v 1.6 2008/11/06 19:27:31 laddi Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -20,13 +20,14 @@ import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.Block;
 import com.idega.presentation.IWContext;
 import com.idega.user.business.UserBusiness;
+import com.idega.util.PresentationUtil;
 
 
 /**
- * Last modified: $Date: 2007/09/28 07:07:57 $ by $Author: valdas $
+ * Last modified: $Date: 2008/11/06 19:27:31 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class CaseBlock extends Block {
 
@@ -36,6 +37,7 @@ public abstract class CaseBlock extends Block {
 	private IWBundle iwb;
 	private IWResourceBundle iwrb;
 	
+	@Override
 	public void main(IWContext iwc) throws Exception {
 		initialize(iwc);
 		present(iwc);
@@ -43,6 +45,7 @@ public abstract class CaseBlock extends Block {
 
 	protected abstract void present(IWContext iwc) throws Exception;
 
+	@Override
 	public String getBundleIdentifier() {
 		return ProcessConstants.IW_BUNDLE_IDENTIFIER;
 	}
@@ -52,6 +55,7 @@ public abstract class CaseBlock extends Block {
 		setBundle(getBundle(iwc));
 		this.business = getCaseBusiness(iwc);
 		this.userBusiness = getUserBusiness(iwc);
+		PresentationUtil.addStyleSheetToHeader(iwc, iwc.getIWMainApplication().getBundle(ProcessConstants.IW_BUNDLE_IDENTIFIER).getVirtualPathWithFileNameString("style/process.css"));
 	}
 	
 	protected IWBundle getBundle() {

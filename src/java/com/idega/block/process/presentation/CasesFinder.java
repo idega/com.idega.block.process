@@ -18,6 +18,7 @@ import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.GenericButton;
 import com.idega.presentation.ui.TextInput;
+import com.idega.util.PresentationUtil;
 
 public class CasesFinder extends IWBaseComponent {
 	
@@ -26,6 +27,7 @@ public class CasesFinder extends IWBaseComponent {
 	@Override
 	protected void initializeComponent(FacesContext context) {
 		IWContext iwc = IWContext.getIWContext(context);
+		PresentationUtil.addStyleSheetToHeader(iwc, iwc.getIWMainApplication().getBundle(ProcessConstants.IW_BUNDLE_IDENTIFIER).getVirtualPathWithFileNameString("style/process.css"));
 		
 		Layer container = new Layer();
 		
