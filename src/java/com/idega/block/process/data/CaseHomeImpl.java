@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.24 2008/10/11 11:23:34 valdas Exp $
+ * $Id: CaseHomeImpl.java,v 1.25 2008/11/13 15:14:11 juozas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -16,6 +16,7 @@ import javax.ejb.FinderException;
 import com.idega.data.IDOEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
+import com.idega.data.IDOLookup;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -25,10 +26,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2008/10/11 11:23:34 $ by $Author: valdas $
+ *  Last modified: $Date: 2008/11/13 15:14:11 $ by $Author: juozas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -329,6 +330,50 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	
 	public Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException {
 		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+	
+	public void createDefaultCaseStatuses() {
+		try {
+			CaseBMPBean caseBMPBean = ((CaseBMPBean) this.idoCheckOutPooledEntity());
+			
+			String[] statusKeys = {caseBMPBean.ejbHomeGetCaseStatusOpen() ,
+					caseBMPBean.ejbHomeGetCaseStatusInactive(), 
+					caseBMPBean.ejbHomeGetCaseStatusGranted(), 
+					caseBMPBean.ejbHomeGetCaseStatusDenied(), 
+					caseBMPBean.ejbHomeGetCaseStatusPreliminary(), 
+					caseBMPBean.ejbHomeGetCaseStatusReady(), 
+					caseBMPBean.ejbHomeGetCaseStatusMoved(), 
+					caseBMPBean.ejbHomeGetCaseStatusInProcess(), 
+					caseBMPBean.ejbHomeGetCaseStatusPlaced(), 
+					caseBMPBean.ejbHomeGetCaseStatusWaiting(),
+					caseBMPBean.ejbHomeGetCaseStatusPending()}; 
+			
+			// CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
+			CaseStatusHome cshome = (CaseStatusHome) IDOLookup.getHome(CaseStatus.class);
+//			CaseCode code = cchome.create();
+//			code.setCode(getCaseCodeKey());
+//			code.setDescription(getCaseCodeDescription());
+//			code.store();
+//			String[] statusKeys = this.getCaseStatusKeys();
+//			String[] statusDescs = this.getCaseStatusDescriptions();
+			
+			for (int i = 0; i < statusKeys.length; i++) {
+				try {					
+					CaseStatus status = cshome.create();
+					status.setStatus(statusKeys[i]);
+					status.store();
+//						code.addAssociatedCaseStatus(status);
+				}
+				catch (Exception e) {
+					// e.printStackTrace();
+					System.err.println("Error inserting CaseStatus for key: " + statusKeys[i]);
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

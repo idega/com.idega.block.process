@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.76 2008/10/11 08:29:19 valdas Exp $
+ * $Id: CaseBusinessBean.java,v 1.77 2008/11/13 15:14:11 juozas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -25,6 +25,7 @@ import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 
 import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseBMPBean;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.block.process.data.CaseHome;
@@ -55,10 +56,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2008/10/11 08:29:19 $ by $Author: valdas $
+ *  Last modified: $Date: 2008/11/13 15:14:11 $ by $Author: juozas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.76 $
+ * @version $Revision: 1.77 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -91,6 +92,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	protected final static String PARAMETER_SELECTED_CASE = "sel_case_nr";
 	
 	public CaseBusinessBean() {
+		
+		this.getCaseHome().createDefaultCaseStatuses();
+		
 		this.CASE_STATUS_OPEN_KEY = this.getCaseHome().getCaseStatusOpen();
 		this.CASE_STATUS_INACTIVE_KEY = this.getCaseHome().getCaseStatusInactive();
 		this.CASE_STATUS_GRANTED_KEY = this.getCaseHome().getCaseStatusGranted();
@@ -107,6 +111,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		this.CASE_STATUS_PLACED = this.getCaseHome().getCaseStatusPlaced();
 		this.CASE_STATUS_PENDING_KEY = this.getCaseHome().getCaseStatusPending();
 		this.CASE_STATUS_WAITING = this.getCaseHome().getCaseStatusWaiting();
+		
+
 	}
 	
 	private CaseStatus getCaseStatusFromMap(String caseStatus) {
@@ -406,7 +412,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return new ArrayList();
 		}
 	}
-
+	
+	
 	public CaseStatus getCaseStatus(String StatusCode) {
 		return getCaseStatusAndInstallIfNotExists(StatusCode);
 	}
