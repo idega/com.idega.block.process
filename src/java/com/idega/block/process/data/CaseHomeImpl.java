@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.25 2008/11/13 15:14:11 juozas Exp $
+ * $Id: CaseHomeImpl.java,v 1.26 2008/11/19 09:51:11 arunas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -11,12 +11,18 @@ package com.idega.block.process.data;
 
 import java.util.Collection;
 
+import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 
+import com.idega.block.process.business.CaseBusiness;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
 import com.idega.data.IDOEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.data.IDOLookup;
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -26,10 +32,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2008/11/13 15:14:11 $ by $Author: juozas $
+ *  Last modified: $Date: 2008/11/19 09:51:11 $ by $Author: arunas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -332,6 +338,16 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 	
+	private CaseBusiness getCaseBusiness(IWApplicationContext iwac) {
+		
+		try {
+			return (CaseBusiness) IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
+		}
+		catch (IBOLookupException ile) {
+			throw new IBORuntimeException(ile);
+		}
+	}
+	
 	public void createDefaultCaseStatuses() {
 		try {
 			CaseBMPBean caseBMPBean = ((CaseBMPBean) this.idoCheckOutPooledEntity());
@@ -348,28 +364,26 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 					caseBMPBean.ejbHomeGetCaseStatusWaiting(),
 					caseBMPBean.ejbHomeGetCaseStatusPending()}; 
 			
-			// CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
 			CaseStatusHome cshome = (CaseStatusHome) IDOLookup.getHome(CaseStatus.class);
-//			CaseCode code = cchome.create();
-//			code.setCode(getCaseCodeKey());
-//			code.setDescription(getCaseCodeDescription());
-//			code.store();
-//			String[] statusKeys = this.getCaseStatusKeys();
-//			String[] statusDescs = this.getCaseStatusDescriptions();
+			CaseStatus caseStatus;
 			
 			for (int i = 0; i < statusKeys.length; i++) {
-				try {					
-					CaseStatus status = cshome.create();
-					status.setStatus(statusKeys[i]);
-					status.store();
-//						code.addAssociatedCaseStatus(status);
+				try {
+					caseStatus = cshome.findByPrimaryKey(statusKeys[i]);
 				}
-				catch (Exception e) {
-					// e.printStackTrace();
-					System.err.println("Error inserting CaseStatus for key: " + statusKeys[i]);
+				catch (FinderException fe) {
+					try {
+						caseStatus = cshome.create();
+						caseStatus.setStatus(statusKeys[i]);
+						caseStatus.store();
+					}
+					catch (Exception e) {
+						throw new EJBException("Error creating CaseStatus " + statusKeys[i] + " is not installed or does not exist. Message: " + e.getMessage());
+					}
+				
 				}
-			}
-			
+			}	
+				
 		}
 		catch (Exception e) {
 			e.printStackTrace();
