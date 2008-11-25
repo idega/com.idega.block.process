@@ -15,9 +15,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2008/11/20 07:30:46 $ by $Author: valdas $
+ * Last modified: $Date: 2008/11/25 11:13:34 $ by $Author: valdas $
  *
  */
 public interface CaseManager {
@@ -25,6 +25,12 @@ public interface CaseManager {
 	public abstract String getBeanIdentifier();
 	
 	public abstract String getType();
+	
+	public abstract Long getProcessInstanceId(Case theCase);
+	
+	public abstract Long getProcessDefinitionId(Case theCase);
+	
+	public abstract String getProcessDefinitionName(Case theCase);
 	
 	public abstract String getProcessIdentifier(Case theCase);
 	
@@ -38,5 +44,7 @@ public interface CaseManager {
 	
 	public abstract List<Long> getAllCaseProcessDefinitions();
 	
-	public String getProcessName(Long processDefinitionId, Locale locale);
+	public abstract String getProcessName(String processName, Locale locale);
+	
+	public abstract String getProcessName(Long processDefinitionId, Locale locale);
 }
