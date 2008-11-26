@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.77 2008/11/13 15:14:11 juozas Exp $
+ * $Id: CaseBusinessBean.java,v 1.78 2008/11/26 12:12:16 valdas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -24,8 +24,8 @@ import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 
+import com.idega.block.process.IWBundleStarter;
 import com.idega.block.process.data.Case;
-import com.idega.block.process.data.CaseBMPBean;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.block.process.data.CaseHome;
@@ -56,10 +56,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2008/11/13 15:14:11 $ by $Author: juozas $
+ *  Last modified: $Date: 2008/11/26 12:12:16 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -530,6 +530,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @param defaultValue
 	 * @return
 	 */
+	@Deprecated
 	protected String getLocalizedString(String key, String defaultValue) {
 		//at least a little better although it should still be deprecated, try to get the current locale, user etc. fallback on server default value
 		try {
@@ -675,15 +676,15 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return getLocalizedString("case_status_key." + status.toString(), status.toString(),locale);
 	}
 
-	private static final String PROC_CASE_BUNDLE_IDENTIFIER = "com.idega.block.process";
-
 	/**
 	 * Can be overrided in subclasses
 	 */
+	@Override
 	protected String getBundleIdentifier() {
-		return PROC_CASE_BUNDLE_IDENTIFIER;
+		return IWBundleStarter.IW_BUNDLE_IDENTIFIER;
 	}
 
+	@Override
 	protected IWBundle getBundle() {
 		return getIWApplicationContext().getIWMainApplication().getBundle(getBundleIdentifier());
 	}

@@ -1,5 +1,5 @@
 /*
- * $Id: IWBundleStarter.java,v 1.5 2008/11/06 19:27:31 laddi Exp $
+ * $Id: IWBundleStarter.java,v 1.6 2008/11/26 12:12:16 valdas Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -14,12 +14,14 @@ import com.idega.idegaweb.IWBundleStartable;
 
 
 /**
- * Last modified: $Date: 2008/11/06 19:27:31 $ by $Author: laddi $
+ * Last modified: $Date: 2008/11/26 12:12:16 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class IWBundleStarter implements IWBundleStartable {
+
+	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.process";
 
 	/* (non-Javadoc)
 	 * @see com.idega.idegaweb.IWBundleStartable#start(com.idega.idegaweb.IWBundle)
