@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.26 2008/11/19 09:51:11 arunas Exp $
+ * $Id: CaseHomeImpl.java,v 1.27 2008/12/03 03:46:39 laddi Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -14,15 +14,10 @@ import java.util.Collection;
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 
-import com.idega.block.process.business.CaseBusiness;
-import com.idega.business.IBOLookup;
-import com.idega.business.IBOLookupException;
-import com.idega.business.IBORuntimeException;
 import com.idega.data.IDOEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.data.IDOLookup;
-import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -32,13 +27,14 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2008/11/19 09:51:11 $ by $Author: arunas $
+ *  Last modified: $Date: 2008/12/03 03:46:39 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
+	@Override
 	protected Class getEntityInterfaceClass() {
 		return Case.class;
 	}
@@ -336,16 +332,6 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	
 	public Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException {
 		return this.getEntityCollectionForPrimaryKeys(ids);
-	}
-	
-	private CaseBusiness getCaseBusiness(IWApplicationContext iwac) {
-		
-		try {
-			return (CaseBusiness) IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
-		}
-		catch (IBOLookupException ile) {
-			throw new IBORuntimeException(ile);
-		}
 	}
 	
 	public void createDefaultCaseStatuses() {

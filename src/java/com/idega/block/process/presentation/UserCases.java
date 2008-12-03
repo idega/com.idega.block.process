@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.46 2008/10/28 08:51:20 valdas Exp $
+ * $Id: UserCases.java,v 1.47 2008/12/03 03:47:06 laddi Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -45,10 +45,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2008/10/28 08:51:20 $ by $Author: valdas $
+ * Last modified: $Date: 2008/12/03 03:47:06 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -67,8 +67,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private Set<String> hiddenCaseCodes;
 	private Map pageMap;
 	private int iMaxNumberOfEntries = -1;
-	private int iMaxNumberOfLetters = -1;
-	private int iMaxNumberOfHandlerLetters = -1;
+	/*private int iMaxNumberOfLetters = -1;
+	private int iMaxNumberOfHandlerLetters = -1;*/
 	private int iNumberOfEntriesShown = -1;
 	
 	private boolean addCredentialsToExernalUrls=false;
@@ -438,11 +438,11 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	
 	public void setMaximumNumberOfLetters(int maxNumberOfLetters) {
-		this.iMaxNumberOfLetters = maxNumberOfLetters;
+		//this.iMaxNumberOfLetters = maxNumberOfLetters;
 	}
 	
 	public void setMaximumHandlerLength(int maxNumberOfHandlerLetters) {
-		this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
+		//this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
 	}
 	
 	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
