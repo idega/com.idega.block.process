@@ -15,9 +15,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2008/11/25 11:13:34 $ by $Author: valdas $
+ * Last modified: $Date: 2008/12/12 11:00:25 $ by $Author: valdas $
  *
  */
 public interface CaseManager {
@@ -47,4 +47,6 @@ public interface CaseManager {
 	public abstract String getProcessName(String processName, Locale locale);
 	
 	public abstract String getProcessName(Long processDefinitionId, Locale locale);
+	
+	public abstract Long getLatestProcessDefinitionIdByProcessName(String name);
 }
