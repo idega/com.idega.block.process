@@ -25,4 +25,10 @@ public interface GeneralCasesListBuilder {
 	public abstract UIComponent getCaseManagerView(IWContext iwc, Integer caseId, String caseProcessorType);
 	
 	public abstract UIComponent getCasesStatistics(IWContext iwc, Collection<Case> cases);
+	
+	public abstract String getEmailAddressMailtoFormattedWithSubject(String subject);
+	
+	public abstract String getSendEmailImage();
+	
+	public abstract String getTitleSendEmail();
 }
