@@ -16,11 +16,11 @@ public interface GeneralCasesListBuilder {
 	
 	@SuppressWarnings("unchecked")
 	public abstract UIComponent getCasesList(IWContext iwc, Collection cases, String casesType, boolean showCheckBoxes, boolean usePDFDownloadColumn,
-			boolean allowPDFSigning, boolean showStatistics);
+			boolean allowPDFSigning, boolean showStatistics, boolean hideEmptySection);
 	
 	@SuppressWarnings("unchecked")
 	public abstract UIComponent getUserCasesList(IWContext iwc, Collection<Case> cases, Map pages, String casesType, boolean addCredentialsToExernalUrls,
-			boolean usePDFDownloadColumn, boolean allowPDFSigning, boolean showStatistics);
+			boolean usePDFDownloadColumn, boolean allowPDFSigning, boolean showStatistics, boolean hideEmptySection);
 
 	public abstract UIComponent getCaseManagerView(IWContext iwc, Integer caseId, String caseProcessorType);
 	
