@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.66 2008/10/11 11:23:34 valdas Exp $
+ * $Id: CaseBMPBean.java,v 1.67 2009/01/09 16:10:07 donatas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -47,10 +47,10 @@ import com.idega.util.ListUtil;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2008/10/11 11:23:34 $ by $Author: valdas $
+ * Last modified: $Date: 2009/01/09 16:10:07 $ by $Author: donatas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -69,6 +69,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String COLUMN_CASE_SUBJECT = "CASE_SUBJECT";
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
 	public static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
+	public static final String COLUMN_CASE_IDENTIFIER = "CASE_IDENTIFIER";
 
 	static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
@@ -107,6 +108,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(COLUMN_CASE_SUBJECT, "Case subject", String.class);
 		addAttribute(COLUMN_CASE_BODY, "Case subject", String.class, 4000);
 		addAttribute(COLUMN_CASE_MANAGER_TYPE, "Case manager type", String.class);
+		addAttribute(COLUMN_CASE_IDENTIFIER, "Case identifier", String.class);
 		addMetaDataRelationship();
 
 		addIndex("IDX_PROC_CASE_2", new String[] { getIDColumnName(), COLUMN_USER });
@@ -304,6 +306,14 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	public void setBody(String body) {
 		setColumn(COLUMN_CASE_BODY, body);
+	}
+	
+	public String getCaseIdentifier() {
+		return getStringColumnValue(COLUMN_CASE_IDENTIFIER);
+	}
+	
+	public void setCaseIdentifier(String caseIdentifier) {
+		setColumn(COLUMN_CASE_IDENTIFIER, caseIdentifier);
 	}
 
 	public ICTreeNode getParentNode() {
