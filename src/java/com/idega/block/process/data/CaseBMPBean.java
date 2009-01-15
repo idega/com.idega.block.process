@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.67 2009/01/09 16:10:07 donatas Exp $
+ * $Id: CaseBMPBean.java,v 1.68 2009/01/15 08:24:43 donatas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -47,10 +47,10 @@ import com.idega.util.ListUtil;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2009/01/09 16:10:07 $ by $Author: donatas $
+ * Last modified: $Date: 2009/01/15 08:24:43 $ by $Author: donatas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -118,6 +118,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addIndex("IDX_PROC_CASE_6", new String[] { COLUMN_USER, COLUMN_CASE_CODE, COLUMN_CASE_STATUS });
 		addIndex("IDX_PROC_CASE_7", new String[] { COLUMN_HANDLER, COLUMN_USER });
 		addIndex("IDX_PROC_CASE_8", new String[] { COLUMN_CASE_STATUS, COLUMN_CASE_CODE, COLUMN_CREATED });
+		getEntityDefinition().setBeanCachingActiveByDefault(true, 1000);
 	}
 
 	public String getIDColumnName() {

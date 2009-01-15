@@ -32,6 +32,7 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     this.setAsPrimaryKey(CASE_STATUS,true);
     addAttribute(CASE_STATUS_DESC,"Description",String.class,1000);
     addAttribute(CASE_STATUS_DESC_LOC_KEY,"Localized Description Key",String.class);
+    getEntityDefinition().setAllRecordsCached(true);
   }
   public String getEntityName() {
     return TABLE_NAME;
