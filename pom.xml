@@ -3,12 +3,12 @@
   <parent>
     <groupId>com.idega.block.platform</groupId>
     <artifactId>com.idega.block.platform</artifactId>
-    <version>4.1.1-SNAPSHOT</version>
+    <version>4.1.0</version>
   </parent>
   <name>Process</name>
   <groupId>com.idega.block.platform</groupId>
   <artifactId>com.idega.block.process</artifactId>
-  <version>4.1.1-SNAPSHOT</version>
+  <version>4.1.0</version>
   <packaging>jar</packaging>
   <inceptionYear>2005</inceptionYear>
   <description>idegaWeb Process Block</description>
@@ -22,6 +22,7 @@
     <connection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.process/</connection>
     <developerConnection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.process/</developerConnection>
     -->
+    <tag>com_idega_block_platform-4_1_0</tag>
   </scm>
 
   <developers>
