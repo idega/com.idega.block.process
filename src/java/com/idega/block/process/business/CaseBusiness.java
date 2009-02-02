@@ -440,4 +440,6 @@ public interface CaseBusiness extends IBOService {
 	public String[] getStatusesForRejectedCases();
 	
 	public CaseCode[] getCaseCodesForUserCasesList();
+	
+	public Collection<Case> getCasesByIds(Collection<Integer> ids);
 }

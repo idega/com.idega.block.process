@@ -15,13 +15,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.idega.util.CoreConstants;
-
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/11/20 07:30:46 $ by $Author: valdas $
+ * Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
  */
 @Scope("singleton")
 @Service(CaseManagersProvider.beanIdentifier)
@@ -35,19 +33,7 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	public CaseManagersProvider() {
 		caseManagersTypesBeanIdentifiers = new HashMap<String, String>();
 	}
-	
-	public CaseManager getCaseManager(String managerType) {
 		
-		if(managerType == null || CoreConstants.EMPTY.equals(managerType))
-			throw new IllegalArgumentException("No or empty handlerType provided");
-		
-		if(!getCaseHandlersTypesBeanIdentifiers().containsKey(managerType))
-			throw new IllegalArgumentException("No case handler bound to handler type provided: "+managerType);
-		
-		String beanIdentifier = getCaseHandlersTypesBeanIdentifiers().get(managerType);
-		return (CaseManager)getApplicationContext().getBean(beanIdentifier);
-	}
-	
 	public List<CaseManager> getCaseManagers() {
 		
 		List<CaseManager> managers = new ArrayList<CaseManager>(caseManagersTypesBeanIdentifiers.size());
@@ -61,6 +47,22 @@ public class CaseManagersProvider implements ApplicationContextAware {
 		}
 		
 		return managers;
+	}
+	
+	/**
+	 * Returns case manager according to their priorities.
+	 * 
+	 * @return CaseManager implementation.
+	 */
+	public CaseManager getCaseManager() {
+		String beanIdentifier = caseManagersTypesBeanIdentifiers.get("CasesBPM");
+		if (beanIdentifier == null) {
+			beanIdentifier = caseManagersTypesBeanIdentifiers.get("CasesDefault");
+		}
+		if (beanIdentifier == null) {
+			return null;
+		}
+		return (CaseManager) getApplicationContext().getBean(beanIdentifier);
 	}
 	
 	@Autowired(required=false)
@@ -88,4 +90,7 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	protected Map<String, String> getCaseHandlersTypesBeanIdentifiers() {
 		return caseManagersTypesBeanIdentifiers;
 	}
+	
+	
+	
 }

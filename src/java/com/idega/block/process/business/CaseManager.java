@@ -8,25 +8,33 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 
 import com.idega.block.process.data.Case;
+import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.presentation.IWContext;
-import com.idega.presentation.text.Link;
+import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.user.data.User;
 
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2008/12/12 11:00:25 $ by $Author: valdas $
+ * Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
  *
  */
 public interface CaseManager {
 
+	public static final String CASE_LIST_TYPE_MY = "MyCases";
+	public static final String CASE_LIST_TYPE_USER = "UserCases";
+	public static final String CASE_LIST_TYPE_OPEN = "OpenCases";
+	public static final String CASE_LIST_TYPE_CLOSED = "ClosedCases";
+	
 	public abstract String getBeanIdentifier();
 	
 	public abstract String getType();
 	
 	public abstract Long getProcessInstanceId(Case theCase);
+	
+	public abstract Long getProcessInstanceIdByCaseId(Object id);
 	
 	public abstract Long getProcessDefinitionId(Case theCase);
 	
@@ -34,19 +42,23 @@ public interface CaseManager {
 	
 	public abstract String getProcessIdentifier(Case theCase);
 	
-	public abstract List<Link> getCaseLinks(Case theCase, String componentType);
+	public abstract UIComponent getView(IWContext iwc, Integer caseId, String type, String caseManagerType);
 	
-	public abstract UIComponent getView(IWContext iwc, Case theCase, String caseProcessorType);
+	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count);
 	
-	public abstract Collection<? extends Case> getCases(User user, String casesComponentType);
+	public abstract List<Integer> getCaseIds(User user, String type);
 	
+	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
+		
 	public abstract Map<Long, String> getAllCaseProcessDefinitionsWithName();
 	
 	public abstract List<Long> getAllCaseProcessDefinitions();
 	
 	public abstract String getProcessName(String processName, Locale locale);
-	
-	public abstract String getProcessName(Long processDefinitionId, Locale locale);
-	
+		
 	public abstract Long getLatestProcessDefinitionIdByProcessName(String name);
+
+	public abstract PagedDataCollection<CasePresentation> getClosedCases(Collection groups);
+
+	public abstract PagedDataCollection<CasePresentation> getMyCases(User user);
 }

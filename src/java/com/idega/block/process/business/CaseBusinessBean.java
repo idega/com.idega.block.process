@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.79 2008/12/30 09:06:56 valdas Exp $
+ * $Id: CaseBusinessBean.java,v 1.80 2009/02/02 13:42:29 donatas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -56,10 +56,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2008/12/30 09:06:56 $ by $Author: valdas $
+ *  Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.79 $
+ * @version $Revision: 1.80 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -995,4 +995,15 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		
 		return codes.toArray(new CaseCode[codes.size()]);
 	}
+
+	public Collection<Case> getCasesByIds(Collection<Integer> ids) {
+		try {
+			return getCaseHome().findAllByIds(ids);
+		} catch (FinderException e) {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Could not get cases by ids", e);
+		}
+		return new ArrayList<Case>();
+	}
+	
+	
 }
