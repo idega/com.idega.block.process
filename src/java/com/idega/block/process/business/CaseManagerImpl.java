@@ -150,7 +150,7 @@ public class CaseManagerImpl implements CaseManager {
 		bean.setCaseManagerType(theCase.getCaseManagerType());
 		bean.setOwner(theCase.getOwner());
 		bean.setExternalId(theCase.getExternalId());
-		
+		bean.setCaseIdentifier(theCase.getCaseIdentifier());
 		try {
 			 bean.setSubject(getCaseBusiness(iwc).getCaseSubject(theCase, locale));
 		} catch (RemoteException e) {
