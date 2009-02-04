@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.80 2009/02/02 13:42:29 donatas Exp $
+ * $Id: CaseBusinessBean.java,v 1.81 2009/02/04 16:37:39 civilis Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -56,10 +56,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
+ *  Last modified: $Date: 2009/02/04 16:37:39 $ by $Author: civilis $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.80 $
+ * @version $Revision: 1.81 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -958,7 +958,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public String[] getStatusesForOpenCases() {
-		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus()};
+		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusGranted().getStatus(), getCaseStatusPending().getStatus(), getCaseStatusDenied().getStatus()};
 	}
 	
 	public String[] getStatusesForClosedCases() {
