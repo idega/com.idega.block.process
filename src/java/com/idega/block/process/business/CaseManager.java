@@ -16,9 +16,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
+ * Last modified: $Date: 2009/02/05 09:44:32 $ by $Author: donatas $
  *
  */
 public interface CaseManager {
@@ -46,7 +46,7 @@ public interface CaseManager {
 	
 	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count);
 	
-	public abstract List<Integer> getCaseIds(User user, String type);
+	public abstract List<Integer> getCaseIds(User user, String type, List<String> statusesToHide, List<String> statusesToShow);
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 		

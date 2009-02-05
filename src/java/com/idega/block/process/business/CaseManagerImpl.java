@@ -76,7 +76,7 @@ public class CaseManagerImpl implements CaseManager {
 		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
 	}
 	
-	public List<Integer> getCaseIds(User user, String type) {
+	public List<Integer> getCaseIds(User user, String type, List<String> statusesToHide, List<String> statusesToShow) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
