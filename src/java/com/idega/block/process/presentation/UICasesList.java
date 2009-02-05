@@ -67,11 +67,11 @@ public class UICasesList extends IWBaseComponent {
 	protected void initializeComponent(FacesContext context) {
 		super.initializeComponent(context);
 		
-		IWContext iwc = IWContext.getCurrentInstance();
+		IWContext iwc = IWContext.getIWContext(context);
 		
 		GeneralCasesListBuilder listBuilder = ELUtil.getInstance().getBean(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
 		
-		PagedDataCollection<CasePresentation> cases = getCases(iwc);
+		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() ? getCases(iwc) : null;
 		
 		UIComponent casesListComponent = null;
 		if (CaseManager.CASE_LIST_TYPE_USER.equals(getType())) {
