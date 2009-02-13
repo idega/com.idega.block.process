@@ -55,7 +55,7 @@ public class UICasesList extends IWBaseComponent {
 	
 	private boolean showCaseNumberColumn = true;
 	
-	private boolean showCaseCreationDateColumn = true;
+	private boolean showCreationTimeInDateColumn = true;
 	
 	private List<String> caseStatusesToShow;
 	
@@ -90,7 +90,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setInstanceId(getInstanceId());
 		properties.setComponentId(getComponentId());
 		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
-		properties.setShowCaseCreationDateColumn(isShowCaseCreationDateColumn());
+		properties.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
 		if (CaseManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -257,12 +257,12 @@ public class UICasesList extends IWBaseComponent {
 		this.showCaseNumberColumn = showCaseNumberColumn;
 	}
 
-	public boolean isShowCaseCreationDateColumn() {
-		return showCaseCreationDateColumn;
+	public boolean isShowCreationTimeInDateColumn() {
+		return showCreationTimeInDateColumn;
 	}
 
-	public void setShowCaseCreationDateColumn(boolean showCaseCreationDateColumn) {
-		this.showCaseCreationDateColumn = showCaseCreationDateColumn;
+	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
+		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
 	}
 	
 }

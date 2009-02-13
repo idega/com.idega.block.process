@@ -12,7 +12,7 @@ public class CaseListPropertiesBean {
 	private boolean showStatistics;
 	private boolean hideEmptySection;
 	private boolean showCaseNumberColumn = true;
-	private boolean showCaseCreationDateColumn = true;
+	private boolean showCreationTimeInDateColumn = true;
 	private boolean addCredentialsToExernalUrls;
 	
 	private int pageSize;
@@ -84,17 +84,17 @@ public class CaseListPropertiesBean {
 	public void setShowCaseNumberColumn(boolean showCaseNumberColumn) {
 		this.showCaseNumberColumn = showCaseNumberColumn;
 	}
-	public boolean isShowCaseCreationDateColumn() {
-		return showCaseCreationDateColumn;
-	}
-	public void setShowCaseCreationDateColumn(boolean showCaseCreationDateColumn) {
-		this.showCaseCreationDateColumn = showCaseCreationDateColumn;
-	}
 	public boolean isAddCredentialsToExernalUrls() {
 		return addCredentialsToExernalUrls;
 	}
 	public void setAddCredentialsToExernalUrls(boolean addCredentialsToExernalUrls) {
 		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
+	}
+	public boolean isShowCreationTimeInDateColumn() {
+		return showCreationTimeInDateColumn;
+	}
+	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
+		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
 	}
 	
 }

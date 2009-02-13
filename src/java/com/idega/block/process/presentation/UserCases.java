@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.50 2009/02/13 13:52:42 valdas Exp $
+ * $Id: UserCases.java,v 1.51 2009/02/13 14:22:24 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2009/02/13 13:52:42 $ by $Author: valdas $
+ * Last modified: $Date: 2009/02/13 14:22:24 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -72,7 +72,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private boolean showStatistics;
 	private boolean hideEmptySection = true;
 	private boolean showCaseNumberColumn = true;
-	private boolean showCaseCreationDateColumn = true;
+	private boolean showCreationTimeInDateColumn = true;
 	
 	private int page = 1;
 	private int pageSize = 20;
@@ -316,7 +316,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		list.setComponentId(layer.getId());
 		list.setInstanceId(getBuilderService(iwc).getInstanceId(this));
 		list.setShowCaseNumberColumn(showCaseNumberColumn);
-		list.setShowCaseCreationDateColumn(showCaseCreationDateColumn);
+		list.setShowCreationTimeInDateColumn(showCreationTimeInDateColumn);
 		
 		layer.add(list);
 		
@@ -347,12 +347,12 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		this.showCaseNumberColumn = showCaseNumberColumn;
 	}
 
-	public boolean isShowCaseCreationDateColumn() {
-		return showCaseCreationDateColumn;
+	public boolean isShowCreationTimeInDateColumn() {
+		return showCreationTimeInDateColumn;
 	}
 
-	public void setShowCaseCreationDateColumn(boolean showCaseCreationDateColumn) {
-		this.showCaseCreationDateColumn = showCaseCreationDateColumn;
+	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
+		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
 	}
 	
 }
