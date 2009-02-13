@@ -14,12 +14,10 @@ public interface GeneralCasesListBuilder {
 	public static final String MAIN_CASES_LIST_CONTAINER_STYLE = "mainCasesListContainerStyleClass";
 	public static final String USER_CASES_SEARCH_QUERY_BEAN_ATTRIBUTE = "userCasesSearchQueryBeanAttribute";
 	
-	public abstract UIComponent getCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, String type, boolean showCheckBoxes, boolean usePDFDownloadColumn,
-			boolean allowPDFSigning, boolean showStatistics, boolean hideEmptySection, int pageSize, int page, String instanceId, String componentId);
+	public abstract UIComponent getCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, CaseListPropertiesBean properties);
 		
 	@SuppressWarnings("unchecked")
-	public abstract UIComponent getUserCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, Map pages, String type, boolean addCredentialsToExernalUrls,
-			boolean usePDFDownloadColumn, boolean allowPDFSigning, boolean showStatistics, boolean hideEmptySection, int pageSize, int page, String instanceId, String componentId);
+	public abstract UIComponent getUserCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, Map pages, CaseListPropertiesBean properties);
 
 	public abstract UIComponent getCaseManagerView(IWContext iwc, Integer caseId, String type);
 	
