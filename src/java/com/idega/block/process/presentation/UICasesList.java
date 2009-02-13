@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.idega.block.process.business.CaseManager;
 import com.idega.block.process.business.CaseManagersProvider;
+import com.idega.block.process.presentation.beans.CaseListPropertiesBean;
 import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
 import com.idega.core.builder.business.BuilderServiceFactory;
@@ -52,6 +53,10 @@ public class UICasesList extends IWBaseComponent {
 	
 	private boolean addCredentialsToExernalUrls;
 	
+	private boolean showCaseNumberColumn = true;
+	
+	private boolean showCaseCreationDateColumn = true;
+	
 	private List<String> caseStatusesToShow;
 	
 	private List<String> caseStatusesToHide;
@@ -74,10 +79,24 @@ public class UICasesList extends IWBaseComponent {
 		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() ? getCases(iwc) : null;
 		
 		UIComponent casesListComponent = null;
+		CaseListPropertiesBean properties = new CaseListPropertiesBean();
+		properties.setType(getType());
+		properties.setUsePDFDownloadColumn(isUsePDFDownloadColumn());
+		properties.setAllowPDFSigning(isAllowPDFSigning());
+		properties.setShowStatistics(isShowStatistics());
+		properties.setHideEmptySection(isHideEmptySection());
+		properties.setPageSize(getPageSize());
+		properties.setPage(getPage());
+		properties.setInstanceId(getInstanceId());
+		properties.setComponentId(getComponentId());
+		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
+		properties.setShowCaseCreationDateColumn(isShowCaseCreationDateColumn());
 		if (CaseManager.CASE_LIST_TYPE_USER.equals(getType())) {
-			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), getType(), isAddCredentialsToExernalUrls(), isUsePDFDownloadColumn(), isAllowPDFSigning(), isShowStatistics(), isHideEmptySection(), getPageSize(), getPage(), getInstanceId(), getComponentId());
+			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
+			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
 		} else {
-			casesListComponent = listBuilder.getCasesList(iwc, cases, getType(), isShowCheckBoxes(), isUsePDFDownloadColumn(), isAllowPDFSigning(), isShowStatistics(), isHideEmptySection(), getPageSize(), getPage(), getInstanceId(), getComponentId());
+			properties.setShowCheckBoxes(isShowCheckBoxes());
+			casesListComponent = listBuilder.getCasesList(iwc, cases, properties);
 		}
 		add(casesListComponent);
 	}
@@ -228,6 +247,22 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setComponentId(String componentId) {
 		this.componentId = componentId;
+	}
+
+	public boolean isShowCaseNumberColumn() {
+		return showCaseNumberColumn;
+	}
+
+	public void setShowCaseNumberColumn(boolean showCaseNumberColumn) {
+		this.showCaseNumberColumn = showCaseNumberColumn;
+	}
+
+	public boolean isShowCaseCreationDateColumn() {
+		return showCaseCreationDateColumn;
+	}
+
+	public void setShowCaseCreationDateColumn(boolean showCaseCreationDateColumn) {
+		this.showCaseCreationDateColumn = showCaseCreationDateColumn;
 	}
 	
 }

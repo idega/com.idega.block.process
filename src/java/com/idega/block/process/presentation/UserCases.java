@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.49 2009/02/02 13:42:29 donatas Exp $
+ * $Id: UserCases.java,v 1.50 2009/02/13 13:52:42 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
+ * Last modified: $Date: 2009/02/13 13:52:42 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -71,6 +71,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private boolean allowPDFSigning = true;
 	private boolean showStatistics;
 	private boolean hideEmptySection = true;
+	private boolean showCaseNumberColumn = true;
+	private boolean showCaseCreationDateColumn = true;
 	
 	private int page = 1;
 	private int pageSize = 20;
@@ -313,6 +315,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		list.setPage(getPage());
 		list.setComponentId(layer.getId());
 		list.setInstanceId(getBuilderService(iwc).getInstanceId(this));
+		list.setShowCaseNumberColumn(showCaseNumberColumn);
+		list.setShowCaseCreationDateColumn(showCaseCreationDateColumn);
 		
 		layer.add(list);
 		
@@ -333,6 +337,22 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public boolean isShowCaseNumberColumn() {
+		return showCaseNumberColumn;
+	}
+
+	public void setShowCaseNumberColumn(boolean showCaseNumberColumn) {
+		this.showCaseNumberColumn = showCaseNumberColumn;
+	}
+
+	public boolean isShowCaseCreationDateColumn() {
+		return showCaseCreationDateColumn;
+	}
+
+	public void setShowCaseCreationDateColumn(boolean showCaseCreationDateColumn) {
+		this.showCaseCreationDateColumn = showCaseCreationDateColumn;
 	}
 	
 }

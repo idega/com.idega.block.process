@@ -53,6 +53,8 @@ public class CasePresentation implements Serializable {
 	
 	private boolean bpm = false;
 	
+	private String processName;
+	
 	public Integer getPrimaryKey() {
 		return primaryKey;
 	}
@@ -187,6 +189,14 @@ public class CasePresentation implements Serializable {
 
 	public boolean isBpm() {
 		return bpm;
+	}
+
+	public String getProcessName() {
+		return processName;
+	}
+
+	public void setProcessName(String processName) {
+		this.processName = processName;
 	}
 	
 }

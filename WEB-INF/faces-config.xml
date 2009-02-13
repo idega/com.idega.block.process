@@ -86,6 +86,16 @@
       <property-name>caseStatusesToShow</property-name>
       <property-class>java.lang.String</property-class>
     </property>
+    <property>
+      <display-name>Show case number column</display-name>
+      <property-name>showCaseNumberColumn</property-name>
+      <property-class>boolean</property-class>
+    </property>
+    <property>
+      <display-name>Show case creation date column</display-name>
+      <property-name>showCaseCreationDateColumn</property-name>
+      <property-class>boolean</property-class>
+    </property>
     <component-extension>
       <idegaweb-info>
         <builder-visible>true</builder-visible>
