@@ -1,17 +1,29 @@
 package com.idega.block.process.variables;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.idega.util.CoreConstants;
+import com.idega.util.ListUtil;
+import com.idega.util.StringUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
- *          Last modified: $Date: 2009/01/14 04:45:06 $ by $Author: civilis $
+ *          Last modified: $Date: 2009/02/16 22:02:39 $ by $Author: donatas $
  */
 public class Variable {
 
+	public static final String ACCESS_REQUIRED = "required";
+	public static final String ACCESS_READ = "read";
+	public static final String ACCESS_WRITE = "write";
+	
 	private String name;
 	private VariableDataType dataType;
+	private Set<String> accesses = Collections.emptySet();
 
 	public Variable(String name, VariableDataType dataType) {
 
@@ -24,7 +36,7 @@ public class Variable {
 		this.name = name;
 		this.dataType = dataType;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -39,6 +51,20 @@ public class Variable {
 
 	public void setDataType(VariableDataType dataType) {
 		this.dataType = dataType;
+	}
+	
+	private void setAccesses(HashSet<String> accesses) {
+		if (!ListUtil.isEmpty(accesses)) {
+			this.accesses = accesses;
+		}
+	}
+	
+	public boolean hasAccess(String access) {
+		return accesses.contains(access);
+	}
+	
+	public Set<String> getAccesses() {
+		return accesses;
 	}
 
 	@Override
@@ -100,6 +126,18 @@ public class Variable {
 		}
 
 		return new Variable(variableName, dataType);
+	}
+	
+	public static Variable parseDefaultStringRepresentationWithAccess(String representation, String accesses) {
+
+		Variable variable = Variable.parseDefaultStringRepresentation(representation);
+		if (!StringUtil.isEmpty(accesses)) {
+			HashSet<String> accessesSet = new HashSet<String>();
+			List<String> accessesList = StringUtil.getValuesFromString(accesses, ",");
+			accessesSet.addAll(accessesList);
+			variable.setAccesses(accessesSet);
+		}
+		return variable;
 	}
 
 	@Override
