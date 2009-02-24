@@ -138,13 +138,14 @@ public class CaseManagerImpl implements CaseManager {
 	}
 
 	protected CasePresentation convertToPresentation(Case theCase, CasePresentation bean, Locale locale) {
-		
+
 		IWContext iwc = IWContext.getCurrentInstance();
-		
+
 		if (bean == null) {
 			bean = new CasePresentation();
 		}
-		bean.setPrimaryKey(theCase.getPrimaryKey() instanceof Integer ? (Integer) theCase.getPrimaryKey() : Integer.valueOf(theCase.getPrimaryKey().toString()));
+		bean.setPrimaryKey(theCase.getPrimaryKey() instanceof Integer ? (Integer) theCase.getPrimaryKey() : Integer
+				.valueOf(theCase.getPrimaryKey().toString()));
 		bean.setId(theCase.getId());
 		bean.setUrl(theCase.getUrl());
 		bean.setCaseManagerType(theCase.getCaseManagerType());
@@ -152,18 +153,22 @@ public class CaseManagerImpl implements CaseManager {
 		bean.setExternalId(theCase.getExternalId());
 		bean.setCaseIdentifier(theCase.getCaseIdentifier());
 		try {
-			 bean.setSubject(getCaseBusiness(iwc).getCaseSubject(theCase, locale));
+			bean.setSubject(getCaseBusiness(iwc).getCaseSubject(theCase, locale));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		if (Case.class.equals(theCase.getClass())) {
-			//this is only for Case instances.
-			try {
-				bean.setLocalizedStatus(getCaseBusiness(iwc).getLocalizedCaseStatusDescription(theCase,
-						theCase.getCaseStatus(), locale));
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}}
+		try {
+			bean.setCaseStatus(getCaseBusiness(iwc).getCaseStatus(
+							theCase.getStatus()));
+		} catch (RemoteException e) {
+			bean.setCaseStatus(theCase.getCaseStatus());
+		}
+		try {
+			bean.setLocalizedStatus(getCaseBusiness(iwc).getLocalizedCaseStatusDescription(theCase,
+					bean.getCaseStatus(), locale));
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		bean.setCreated(theCase.getCreated());
 		bean.setCode(theCase.getCode());
 		return bean;
