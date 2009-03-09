@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.idega.block.process.business.CaseManager;
 import com.idega.block.process.business.CaseManagersProvider;
+import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.presentation.beans.CaseListPropertiesBean;
 import com.idega.block.process.presentation.beans.CasePresentation;
+import com.idega.block.process.presentation.beans.CasesSearchResultsHolder;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
 import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.idegaweb.IWMainApplication;
@@ -108,6 +110,16 @@ public class UICasesList extends IWBaseComponent {
 	 * @return PagedDataCollection of cases.
 	 */
 	protected PagedDataCollection<CasePresentation> getCases(IWContext iwc) {
+		/*CasesSearchResultsHolder casesSearcher = null;
+		try {
+			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if (casesSearcher != null && casesSearcher.isSearchResultStored()) {
+			setType(ProcessConstants.CASE_LIST_TYPE_SEARCH_RESULTS);
+			return new PagedDataCollection<CasePresentation>(casesSearcher.getSearchResults());
+		}*/
 		
 		if (getCaseManagersProvider() == null) {
 			ELUtil.getInstance().autowire(this);

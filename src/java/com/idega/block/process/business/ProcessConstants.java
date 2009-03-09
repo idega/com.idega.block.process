@@ -1,5 +1,5 @@
 /*
- * $Id: ProcessConstants.java,v 1.1 2007/09/28 07:07:56 valdas Exp $
+ * $Id: ProcessConstants.java,v 1.2 2009/03/09 15:59:24 valdas Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -20,10 +20,10 @@ import com.idega.presentation.text.Text;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2007/09/28 07:07:56 $ by $Author: valdas $
+ * Last modified: $Date: 2009/03/09 15:59:24 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ProcessConstants {
 	
@@ -57,5 +57,7 @@ public class ProcessConstants {
 	}
 
 	public static final String METADATA_KEY_URL="CASE_URL";
+	
+	public static final String CASE_LIST_TYPE_SEARCH_RESULTS = "searchResults";
 
 }
