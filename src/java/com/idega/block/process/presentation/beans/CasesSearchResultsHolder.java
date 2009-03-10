@@ -8,20 +8,20 @@ public interface CasesSearchResultsHolder {
 
 	public static final String SPRING_BEAN_IDENTIFIER = "casesSearchResultsHolder";
 	
-	public void setSearchResults(Collection<CasePresentation> cases);
+	public void setSearchResults(String id, Collection<CasePresentation> cases);
 	
-	public Integer getNextCaseId(Integer currentId, String processDefinitionName);
+	public Integer getNextCaseId(String id, Integer currentId, String processDefinitionName);
 	
-	public Integer getNextCaseId(Integer currentId);
+	public Integer getNextCaseId(String id, Integer currentId);
 	
-	public boolean isSearchResultStored();
+	public boolean isSearchResultStored(String id);
 	
-	public boolean doExport();
+	public boolean doExport(String id);
 	
-	public MemoryFileBuffer getExportedSearchResults();
+	public MemoryFileBuffer getExportedSearchResults(String id);
 	
-	public boolean clearSearchResults();
+	public boolean clearSearchResults(String id);
 	
-	public Collection<CasePresentation> getSearchResults();
+	public Collection<CasePresentation> getSearchResults(String id);
 	
 }

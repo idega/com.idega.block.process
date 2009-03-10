@@ -110,16 +110,18 @@ public class UICasesList extends IWBaseComponent {
 	 * @return PagedDataCollection of cases.
 	 */
 	protected PagedDataCollection<CasePresentation> getCases(IWContext iwc) {
-		/*CasesSearchResultsHolder casesSearcher = null;
+		CasesSearchResultsHolder casesSearcher = null;
 		try {
 			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		if (casesSearcher != null && casesSearcher.isSearchResultStored()) {
+		String id = iwc.getRequestURI();
+		if (casesSearcher != null && casesSearcher.isSearchResultStored(id)) {
 			setType(ProcessConstants.CASE_LIST_TYPE_SEARCH_RESULTS);
-			return new PagedDataCollection<CasePresentation>(casesSearcher.getSearchResults());
-		}*/
+			setPageSize(0);
+			return new PagedDataCollection<CasePresentation>(casesSearcher.getSearchResults(id));
+		}
 		
 		if (getCaseManagersProvider() == null) {
 			ELUtil.getInstance().autowire(this);
