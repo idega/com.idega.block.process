@@ -113,9 +113,7 @@ public class UICasesList extends IWBaseComponent {
 		CasesSearchResultsHolder casesSearcher = null;
 		try {
 			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		} catch(Exception e) {}
 		String id = iwc.getRequestURI();
 		if (casesSearcher != null && casesSearcher.isSearchResultStored(id)) {
 			setType(ProcessConstants.CASE_LIST_TYPE_SEARCH_RESULTS);
