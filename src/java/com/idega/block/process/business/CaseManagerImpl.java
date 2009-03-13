@@ -192,4 +192,12 @@ public class CaseManagerImpl implements CaseManager {
 			throw new IBORuntimeException(ile);
 		}
 	}
+
+	public List<String> getCaseStringVariablesValuesByVariables(Case theCase, List<String> variablesNames) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	public Long getTaskInstanceIdForTask(Case theCase, String taskName) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
 }

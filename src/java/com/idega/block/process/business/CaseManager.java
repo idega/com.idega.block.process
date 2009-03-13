@@ -16,9 +16,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2009/02/05 09:44:32 $ by $Author: donatas $
+ * Last modified: $Date: 2009/03/13 09:55:37 $ by $Author: valdas $
  *
  */
 public interface CaseManager {
@@ -44,7 +44,8 @@ public interface CaseManager {
 	
 	public abstract UIComponent getView(IWContext iwc, Integer caseId, String type, String caseManagerType);
 	
-	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count);
+	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> statusesToHide, List<String> statusesToShow,
+			int startIndex, int count);
 	
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> statusesToHide, List<String> statusesToShow);
 	
@@ -58,7 +59,12 @@ public interface CaseManager {
 		
 	public abstract Long getLatestProcessDefinitionIdByProcessName(String name);
 
+	@SuppressWarnings("unchecked")
 	public abstract PagedDataCollection<CasePresentation> getClosedCases(Collection groups);
 
 	public abstract PagedDataCollection<CasePresentation> getMyCases(User user);
+	
+	public abstract List<String> getCaseStringVariablesValuesByVariables(Case theCase, List<String> variablesNames);
+	
+	public abstract Long getTaskInstanceIdForTask(Case theCase, String taskName);
 }
