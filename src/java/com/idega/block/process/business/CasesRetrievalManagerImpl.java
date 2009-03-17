@@ -33,8 +33,8 @@ import com.idega.util.ListUtil;
  *
  */
 @Scope("singleton")
-@Service(CaseManagerImpl.beanIdentifier)
-public class CaseManagerImpl implements CaseManager {
+@Service(CasesRetrievalManagerImpl.beanIdentifier)
+public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 
 	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
@@ -193,28 +193,28 @@ public class CaseManagerImpl implements CaseManager {
 		}
 	}
 
-	public List<String> getCaseStringVariablesValuesByVariables(Case theCase, List<String> variablesNames) {
-		throw new UnsupportedOperationException("Not implemented");
-	}
+//	public List<String> getCaseStringVariablesValuesByVariables(Case theCase, List<String> variablesNames) {
+//		throw new UnsupportedOperationException("Not implemented");
+//	}
 
 	public Long getTaskInstanceIdForTask(Case theCase, String taskName) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
-	public boolean setCaseVariable(Long taskInstanceId, String variableName, String variableValue) {
-		throw new UnsupportedOperationException("Not implemented");
-	}
+//	public boolean setCaseVariable(Long taskInstanceId, String variableName, String variableValue) {
+//		throw new UnsupportedOperationException("Not implemented");
+//	}
 
 	public List<Long> getCasesIdsByProcessDefinitionName(String processDefinitionName) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
-	public String submitCaseTaskInstance(Long taskInstanceId) {
-		throw new UnsupportedOperationException("Not implemented");
-	}
-	
-	public Long createNewTaskForCase(Long taskInstanceId, String tokenName) {
-		throw new UnsupportedOperationException("Not implemented");
-	}
+//	public String submitCaseTaskInstance(Long taskInstanceId) {
+//		throw new UnsupportedOperationException("Not implemented");
+//	}
+//	
+//	public Long createNewTaskForCase(Long taskInstanceId, String tokenName) {
+//		throw new UnsupportedOperationException("Not implemented");
+//	}
 	
 }

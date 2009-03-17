@@ -10,7 +10,7 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.idega.block.process.business.CaseManager;
+import com.idega.block.process.business.CasesRetrievalManager;
 import com.idega.block.process.business.CaseManagersProvider;
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.presentation.beans.CaseListPropertiesBean;
@@ -93,7 +93,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setComponentId(getComponentId());
 		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
 		properties.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
-		if (CaseManager.CASE_LIST_TYPE_USER.equals(getType())) {
+		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
 		} else {

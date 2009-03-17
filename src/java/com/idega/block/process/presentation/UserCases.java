@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.51 2009/02/13 14:22:24 valdas Exp $
+ * $Id: UserCases.java,v 1.52 2009/03/17 20:56:27 civilis Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
 
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
-import com.idega.block.process.business.CaseManager;
+import com.idega.block.process.business.CasesRetrievalManager;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.presentation.beans.CaseManagerState;
 import com.idega.block.process.presentation.beans.GeneralCaseManagerViewBuilder;
@@ -40,10 +40,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2009/02/13 14:22:24 $ by $Author: valdas $
+ * Last modified: $Date: 2009/03/17 20:56:27 $ by $Author: civilis $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -285,7 +285,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		GeneralCaseManagerViewBuilder processorView = (GeneralCaseManagerViewBuilder) WFUtil.getBeanInstance(GeneralCaseManagerViewBuilder.SPRING_BEAN_IDENTIFIER);
 		UIComponent view = null;
 		try {
-			view = processorView.getCaseManagerView(iwc, CaseManager.CASE_LIST_TYPE_USER);
+			view = processorView.getCaseManagerView(iwc, CasesRetrievalManager.CASE_LIST_TYPE_USER);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -304,7 +304,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		layer.setID("userCases");
 		
 		UICasesList list = (UICasesList)iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
-		list.setType(CaseManager.CASE_LIST_TYPE_USER);
+		list.setType(CasesRetrievalManager.CASE_LIST_TYPE_USER);
 		list.setUserCasesPageMap(pageMap);
 		list.setAddCredentialsToExernalUrls(addCredentialsToExernalUrls);
 		list.setUsePDFDownloadColumn(usePDFDownloadColumn);

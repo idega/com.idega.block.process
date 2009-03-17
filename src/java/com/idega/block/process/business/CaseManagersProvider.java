@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2009/02/02 13:42:29 $ by $Author: donatas $
+ * Last modified: $Date: 2009/03/17 20:56:27 $ by $Author: civilis $
  */
 @Scope("singleton")
 @Service(CaseManagersProvider.beanIdentifier)
@@ -34,13 +34,13 @@ public class CaseManagersProvider implements ApplicationContextAware {
 		caseManagersTypesBeanIdentifiers = new HashMap<String, String>();
 	}
 		
-	public List<CaseManager> getCaseManagers() {
+	public List<CasesRetrievalManager> getCaseManagers() {
 		
-		List<CaseManager> managers = new ArrayList<CaseManager>(caseManagersTypesBeanIdentifiers.size());
+		List<CasesRetrievalManager> managers = new ArrayList<CasesRetrievalManager>(caseManagersTypesBeanIdentifiers.size());
 		
 		for (String handlerIdentifier : caseManagersTypesBeanIdentifiers.values()) {
 			
-			CaseManager handler = (CaseManager)getApplicationContext().getBean(handlerIdentifier);
+			CasesRetrievalManager handler = (CasesRetrievalManager)getApplicationContext().getBean(handlerIdentifier);
 			
 			if(handler != null)
 				managers.add(handler);
@@ -54,7 +54,7 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	 * 
 	 * @return CaseManager implementation.
 	 */
-	public CaseManager getCaseManager() {
+	public CasesRetrievalManager getCaseManager() {
 		String beanIdentifier = caseManagersTypesBeanIdentifiers.get("CasesBPM");
 		if (beanIdentifier == null) {
 			beanIdentifier = caseManagersTypesBeanIdentifiers.get("CasesDefault");
@@ -62,13 +62,13 @@ public class CaseManagersProvider implements ApplicationContextAware {
 		if (beanIdentifier == null) {
 			return null;
 		}
-		return (CaseManager) getApplicationContext().getBean(beanIdentifier);
+		return (CasesRetrievalManager) getApplicationContext().getBean(beanIdentifier);
 	}
 	
 	@Autowired(required=false)
-	public void setCaseManagers(List<CaseManager> caseManagers) {
+	public void setCaseManagers(List<CasesRetrievalManager> caseManagers) {
 		
-		for (CaseManager caseManager : caseManagers) {
+		for (CasesRetrievalManager caseManager : caseManagers) {
 		
 			String beanIdentifier = caseManager.getBeanIdentifier();
 			

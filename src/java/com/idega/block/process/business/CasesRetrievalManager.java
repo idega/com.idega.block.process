@@ -14,15 +14,14 @@ import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.user.data.User;
 
 /**
+ * This class represents various cases retrieval implementation, depending on the modules present in
+ * the system. Don't use this for anything else
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.18 $
- *
- * Last modified: $Date: 2009/03/17 17:43:25 $ by $Author: valdas $
- *
+ * @version $Revision: 1.1 $ Last modified: $Date: 2009/03/17 20:56:27 $ by $Author: civilis $
  */
-public interface CaseManager {
-
+public interface CasesRetrievalManager {
+	
 	public static final String CASE_LIST_TYPE_MY = "MyCases";
 	public static final String CASE_LIST_TYPE_USER = "UserCases";
 	public static final String CASE_LIST_TYPE_OPEN = "OpenCases";
@@ -42,37 +41,45 @@ public interface CaseManager {
 	
 	public abstract String getProcessIdentifier(Case theCase);
 	
-	public abstract UIComponent getView(IWContext iwc, Integer caseId, String type, String caseManagerType);
+	public abstract UIComponent getView(IWContext iwc, Integer caseId,
+	        String type, String caseManagerType);
 	
-	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> statusesToHide, List<String> statusesToShow,
-			int startIndex, int count);
+	public abstract PagedDataCollection<CasePresentation> getCases(User user,
+	        String type, Locale locale, List<String> statusesToHide,
+	        List<String> statusesToShow, int startIndex, int count);
 	
-	public abstract List<Integer> getCaseIds(User user, String type, List<String> statusesToHide, List<String> statusesToShow);
+	public abstract List<Integer> getCaseIds(User user, String type,
+	        List<String> statusesToHide, List<String> statusesToShow);
 	
-	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
-		
+	public abstract PagedDataCollection<CasePresentation> getCasesByIds(
+	        List<Integer> ids, Locale locale);
+	
 	public abstract Map<Long, String> getAllCaseProcessDefinitionsWithName();
 	
 	public abstract List<Long> getAllCaseProcessDefinitions();
 	
 	public abstract String getProcessName(String processName, Locale locale);
-		
+	
 	public abstract Long getLatestProcessDefinitionIdByProcessName(String name);
-
+	
 	@SuppressWarnings("unchecked")
-	public abstract PagedDataCollection<CasePresentation> getClosedCases(Collection groups);
-
+	public abstract PagedDataCollection<CasePresentation> getClosedCases(
+	        Collection groups);
+	
 	public abstract PagedDataCollection<CasePresentation> getMyCases(User user);
 	
-	public abstract List<String> getCaseStringVariablesValuesByVariables(Case theCase, List<String> variablesNames);
+//	public abstract List<String> getCaseStringVariablesValuesByVariables(
+//	        Case theCase, List<String> variablesNames);
 	
 	public abstract Long getTaskInstanceIdForTask(Case theCase, String taskName);
 	
-	public abstract boolean setCaseVariable(Long taskInstanceId, String variableName, String variableValue);
+	// public abstract boolean setCaseVariable(Long taskInstanceId, String variableName, String
+	// variableValue);
 	
-	public abstract List<Long> getCasesIdsByProcessDefinitionName(String processDefinitionName);
+	public abstract List<Long> getCasesIdsByProcessDefinitionName(
+	        String processDefinitionName);
 	
-	public String submitCaseTaskInstance(Long taskInstanceId);
-	
-	public Long createNewTaskForCase(Long taskInstanceId, String tokenName);
+	// public String submitCaseTaskInstance(Long taskInstanceId);
+	//	
+	// public Long createNewTaskForCase(Long taskInstanceId, String tokenName);
 }
