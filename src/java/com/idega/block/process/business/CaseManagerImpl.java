@@ -208,4 +208,13 @@ public class CaseManagerImpl implements CaseManager {
 	public List<Long> getCasesIdsByProcessDefinitionName(String processDefinitionName) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
+
+	public String submitCaseTaskInstance(Long taskInstanceId) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+	
+	public Long createNewTaskForCase(Long taskInstanceId, String tokenName) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+	
 }
