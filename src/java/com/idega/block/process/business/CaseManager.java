@@ -16,9 +16,9 @@ import com.idega.user.data.User;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2009/03/17 14:22:48 $ by $Author: valdas $
+ * Last modified: $Date: 2009/03/17 17:43:25 $ by $Author: valdas $
  *
  */
 public interface CaseManager {
@@ -68,7 +68,7 @@ public interface CaseManager {
 	
 	public abstract Long getTaskInstanceIdForTask(Case theCase, String taskName);
 	
-	public abstract boolean setCaseVariable(Case thCase, String variableName, String variableValue);
+	public abstract boolean setCaseVariable(Long taskInstanceId, String variableName, String variableValue);
 	
 	public abstract List<Long> getCasesIdsByProcessDefinitionName(String processDefinitionName);
 	

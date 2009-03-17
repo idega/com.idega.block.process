@@ -201,7 +201,7 @@ public class CaseManagerImpl implements CaseManager {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
-	public boolean setCaseVariable(Case thCase, String variableName, String variableValue) {
+	public boolean setCaseVariable(Long taskInstanceId, String variableName, String variableValue) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
