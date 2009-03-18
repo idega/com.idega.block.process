@@ -43,7 +43,7 @@ public class CasePresentation implements Serializable {
 	
 	private String externalId;
 	
-	private String categoryId;
+	private Integer categoryId;
 	
 	private String caseTypeName;
 
@@ -151,14 +151,6 @@ public class CasePresentation implements Serializable {
 		this.externalId = externalId;
 	}
 
-	public String getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(String categoryId) {
-		this.categoryId = categoryId;
-	}
-
 	public String getCaseTypeName() {
 		return caseTypeName;
 	}
@@ -197,6 +189,14 @@ public class CasePresentation implements Serializable {
 
 	public void setProcessName(String processName) {
 		this.processName = processName;
+	}
+
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 }
