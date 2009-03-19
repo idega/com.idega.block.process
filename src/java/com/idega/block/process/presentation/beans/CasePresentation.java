@@ -199,4 +199,8 @@ public class CasePresentation implements Serializable {
 		this.categoryId = categoryId;
 	}
 	
+	@Override
+	public String toString() {
+		return getId();
+	}
 }
