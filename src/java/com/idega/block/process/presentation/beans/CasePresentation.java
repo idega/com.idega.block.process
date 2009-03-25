@@ -5,9 +5,17 @@ package com.idega.block.process.presentation.beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.data.CaseStatus;
+import com.idega.business.IBOLookup;
+import com.idega.idegaweb.IWMainApplication;
+import com.idega.presentation.IWContext;
 import com.idega.user.data.User;
+import com.idega.util.CoreUtil;
 
 /**
  * Case data needed in presentation layer.
@@ -197,6 +205,37 @@ public class CasePresentation implements Serializable {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
+	}
+	
+	public String getOwnerName() {
+		return owner == null ? null : owner.getName();
+	}
+	
+	public String getCaseStatusLocalized() {
+		if (caseStatus == null) {
+			return null;
+		}
+		
+		try {
+			Locale locale = null;
+			IWContext iwc = CoreUtil.getIWContext();
+			if (iwc == null) {
+				locale = IWMainApplication.getDefaultIWMainApplication().getSettings().getDefaultLocale();
+			} else {
+				locale = iwc.getCurrentLocale();
+			}
+			if (locale == null) {
+				locale = Locale.ENGLISH;
+			}
+			
+			CaseBusiness caseBusiness = (CaseBusiness) IBOLookup.getServiceInstance(iwc == null ?
+					IWMainApplication.getDefaultIWApplicationContext() : iwc, CaseBusiness.class);
+			return caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+		} catch(Exception e) {
+			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Error getting localized status for: " + caseStatus, e);
+		}
+		
+		return caseStatus.getStatus();
 	}
 
 	@Override
