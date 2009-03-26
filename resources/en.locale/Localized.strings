@@ -23,6 +23,7 @@ school_choice.group_mesg_subj=Class assignment
 case_code_key.MBANSKO=Citizen account
 case_status_key.ASWD=Reply sent
 case_status_key.UBEH=Under consideration
+case_status_key.PEND=Pending processing
 viewpoint.answer=Reply
 case_status_key.FLYT=Transfered student
 case_status_key.KOUT=Contract sent
