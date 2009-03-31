@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.52 2009/03/17 20:56:27 civilis Exp $
+ * $Id: UserCases.java,v 1.53 2009/03/31 14:56:50 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2009/03/17 20:56:27 $ by $Author: civilis $
+ * Last modified: $Date: 2009/03/31 14:56:50 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -76,6 +76,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	private int page = 1;
 	private int pageSize = 20;
+
+	private String caseStatusesToHide;
+	private String caseStatusesToShow;
 
 	@Override
 	protected void present(IWContext iwc) throws Exception {
@@ -317,6 +320,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		list.setInstanceId(getBuilderService(iwc).getInstanceId(this));
 		list.setShowCaseNumberColumn(showCaseNumberColumn);
 		list.setShowCreationTimeInDateColumn(showCreationTimeInDateColumn);
+		list.setCaseStatusesToHide(caseStatusesToHide);
+		list.setCaseStatusesToShow(caseStatusesToShow);
 		
 		layer.add(list);
 		
@@ -355,4 +360,19 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
 	}
 	
+	public String getCaseStatusesToHide() {
+		return caseStatusesToHide;
+	}
+
+	public void setCaseStatusesToHide(String caseStatusesToHide) {
+		this.caseStatusesToHide = caseStatusesToHide;
+	}
+
+	public String getCaseStatusesToShow() {
+		return caseStatusesToShow;
+	}
+
+	public void setCaseStatusesToShow(String caseStatusesToShow) {
+		this.caseStatusesToShow = caseStatusesToShow;
+	}
 }

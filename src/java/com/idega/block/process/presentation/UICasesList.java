@@ -22,6 +22,7 @@ import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
+import com.idega.util.CoreConstants;
 import com.idega.util.StringUtil;
 import com.idega.util.expression.ELUtil;
 
@@ -230,7 +231,7 @@ public class UICasesList extends IWBaseComponent {
 	}
 
 	public void setCaseStatusesToHide(String caseStatusesToHide) {
-		this.caseStatusesToHide = StringUtil.getValuesFromString(caseStatusesToHide, ",");
+		this.caseStatusesToHide = StringUtil.getValuesFromString(caseStatusesToHide, CoreConstants.COMMA);
 	}
 
 	public List<String> getCaseStatusesToShow() {
@@ -238,7 +239,7 @@ public class UICasesList extends IWBaseComponent {
 	}
 
 	public void setCaseStatusesToShow(String caseStatusesToShow) {
-		this.caseStatusesToShow = StringUtil.getValuesFromString(caseStatusesToShow, ",");
+		this.caseStatusesToShow = StringUtil.getValuesFromString(caseStatusesToShow, CoreConstants.COMMA);
 	}
 
 	public String getInstanceId() {
