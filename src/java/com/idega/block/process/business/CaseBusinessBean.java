@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.82 2009/02/05 12:36:17 donatas Exp $
+ * $Id: CaseBusinessBean.java,v 1.83 2009/04/01 12:28:23 valdas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -51,15 +51,16 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
 import com.idega.util.IWTimestamp;
+import com.idega.util.StringUtil;
 
 /**
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2009/02/05 12:36:17 $ by $Author: donatas $
+ *  Last modified: $Date: 2009/04/01 12:28:23 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.82 $
+ * @version $Revision: 1.83 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -413,9 +414,13 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 	}
 	
-	
 	public CaseStatus getCaseStatus(String StatusCode) {
-		return getCaseStatusAndInstallIfNotExists(StatusCode);
+		try {
+			return getCaseStatusAndInstallIfNotExists(StatusCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public CaseStatus getCaseStatusOpen() {
@@ -471,7 +476,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	public CaseStatus getCaseStatusReady() {
-		return getCaseStatusAndInstallIfNotExists(this.CASE_STATUS_READY_KEY);
+		try {
+			return getCaseStatusAndInstallIfNotExists(this.CASE_STATUS_READY_KEY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public CaseStatus getCaseStatusRedeem() {
@@ -482,7 +492,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return getCaseStatus(this.CASE_STATUS_ERROR);
 	}
 
-	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString) {
+	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString) throws Exception {
+		if (StringUtil.isEmpty(caseStatusString)) {
+			Logger.getLogger(getClass().getName()).warning("Status code is unknown! Can not create status.");
+			return null;
+		}
 		
 		if(caseStatusString.length()>4){
 			caseStatusString=caseStatusString.substring(0,4);

@@ -158,9 +158,8 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 			e.printStackTrace();
 		}
 		try {
-			bean.setCaseStatus(getCaseBusiness(iwc).getCaseStatus(
-							theCase.getStatus()));
-		} catch (RemoteException e) {
+			bean.setCaseStatus(getCaseBusiness(iwc).getCaseStatus(theCase.getStatus()));
+		} catch (Exception e) {
 			bean.setCaseStatus(theCase.getCaseStatus());
 		}
 		try {
