@@ -162,12 +162,15 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		} catch (Exception e) {
 			bean.setCaseStatus(theCase.getCaseStatus());
 		}
-		try {
-			bean.setLocalizedStatus(getCaseBusiness(iwc).getLocalizedCaseStatusDescription(theCase,
-					bean.getCaseStatus(), locale));
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		
+		if (bean.getCaseStatus() != null) {
+			try {
+				bean.setLocalizedStatus(getCaseBusiness(iwc).getLocalizedCaseStatusDescription(theCase, bean.getCaseStatus(), locale));
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
+		
 		bean.setCreated(theCase.getCreated());
 		bean.setCode(theCase.getCode());
 		return bean;
