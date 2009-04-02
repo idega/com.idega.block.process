@@ -97,6 +97,8 @@ public class UICasesList extends IWBaseComponent {
 		properties.setComponentId(getComponentId());
 		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
 		properties.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
+		properties.setStatusesToShow(getCaseStatusesToShow());
+		properties.setStatusesToHide(getCaseStatusesToHide());
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);

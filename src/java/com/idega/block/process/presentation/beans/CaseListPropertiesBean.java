@@ -1,5 +1,7 @@
 package com.idega.block.process.presentation.beans;
 
+import java.util.List;
+
 public class CaseListPropertiesBean {
 
 	private String type;
@@ -17,6 +19,9 @@ public class CaseListPropertiesBean {
 	
 	private int pageSize;
 	private int page;
+	
+	private List<String> statusesToShow;
+	private List<String> statusesToHide;
 	
 	public String getType() {
 		return type;
@@ -95,6 +100,18 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
 		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
+	}
+	public List<String> getStatusesToShow() {
+		return statusesToShow;
+	}
+	public void setStatusesToShow(List<String> statusesToShow) {
+		this.statusesToShow = statusesToShow;
+	}
+	public List<String> getStatusesToHide() {
+		return statusesToHide;
+	}
+	public void setStatusesToHide(List<String> statusesToHide) {
+		this.statusesToHide = statusesToHide;
 	}
 	
 }
