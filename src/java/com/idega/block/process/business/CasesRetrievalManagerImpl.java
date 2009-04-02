@@ -24,6 +24,7 @@ import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.presentation.text.Link;
 import com.idega.user.data.User;
+import com.idega.util.CoreUtil;
 import com.idega.util.ListUtil;
 
 /**
@@ -59,9 +60,9 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
-	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseStatusesToHide, List<String> caseStatusesToShow, int startIndex,
-			int count) {
-		IWContext iwc = IWContext.getCurrentInstance();
+	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
+			int startIndex, int count) {
+		IWContext iwc = CoreUtil.getIWContext();
 		CaseBusiness caseBusiness = getCaseBusiness(iwc);
 		try {
 			CaseCode[] caseCodes = caseBusiness.getCaseCodesForUserCasesList();
