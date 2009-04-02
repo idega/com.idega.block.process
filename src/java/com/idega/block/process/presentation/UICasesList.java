@@ -4,8 +4,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -81,8 +79,6 @@ public class UICasesList extends IWBaseComponent {
 		GeneralCasesListBuilder listBuilder = ELUtil.getInstance().getBean(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
 		
 		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() ? getCases(iwc) : null;
-		
-		Logger.getLogger(getClass().getName()).info("Cases to render (UICasesList): " + cases);
 		
 		UIComponent casesListComponent = null;
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
