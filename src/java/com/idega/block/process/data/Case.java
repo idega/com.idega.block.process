@@ -1,5 +1,5 @@
 /*
- * $Id: Case.java,v 1.22 2009/01/09 16:10:07 donatas Exp $
+ * $Id: Case.java,v 1.23 2009/05/25 13:36:31 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -16,7 +16,9 @@ import java.util.Locale;
 
 
 import com.idega.core.data.ICTreeNode;
+import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOEntity;
+import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.MetaDataCapable;
 import com.idega.data.UniqueIDCapable;
 import com.idega.idegaweb.IWApplicationContext;
@@ -28,10 +30,10 @@ import com.idega.user.data.User;
  * <p>
  * TODO laddi Describe Type Case
  * </p>
- *  Last modified: $Date: 2009/01/09 16:10:07 $ by $Author: donatas $
+ *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -262,4 +264,10 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	public String getCaseIdentifier();
 	
 	public void setCaseIdentifier(String caseIdentifier);
+	
+	public void addSubscriber(User subscriber) throws IDOAddRelationshipException;
+
+	public Collection<User> getSubscribers();
+
+	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException;
 }

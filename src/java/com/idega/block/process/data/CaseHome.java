@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHome.java,v 1.25 2008/11/13 15:14:11 juozas Exp $
+ * $Id: CaseHome.java,v 1.26 2009/05/25 13:36:31 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -24,10 +24,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHome
  * </p>
- *  Last modified: $Date: 2008/11/13 15:14:11 $ by $Author: juozas $
+ *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public interface CaseHome extends IDOHome {
 
@@ -237,5 +237,5 @@ public interface CaseHome extends IDOHome {
 
 	public void createDefaultCaseStatuses();
 
-	
+	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException;
 }

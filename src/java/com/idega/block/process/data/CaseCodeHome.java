@@ -1,10 +1,17 @@
 package com.idega.block.process.data;
 
+import java.util.Collection;
 
-public interface CaseCodeHome extends com.idega.data.IDOHome
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
+
+import com.idega.data.IDOHome;
+
+
+public interface CaseCodeHome extends IDOHome
 {
- public CaseCode create() throws javax.ejb.CreateException;
- public CaseCode findByPrimaryKey(Object pk) throws javax.ejb.FinderException;
- public java.util.Collection findAllCaseCodes()throws javax.ejb.FinderException;
+ public CaseCode create() throws CreateException;
+ public CaseCode findByPrimaryKey(Object pk) throws FinderException;
+ public Collection<CaseCode> findAllCaseCodes() throws FinderException;
 
 }

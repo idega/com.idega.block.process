@@ -442,4 +442,10 @@ public interface CaseBusiness extends IBOService {
 	public CaseCode[] getCaseCodesForUserCasesList();
 	
 	public Collection<Case> getCasesByIds(Collection<Integer> ids);
+	
+	public boolean addSubscriber(Object casePK, User subscriber);
+	
+	public boolean removeSubscriber(Object casePK, User subscriber);
+	
+	public boolean isSubscribed(Object casePK, User user);
 }

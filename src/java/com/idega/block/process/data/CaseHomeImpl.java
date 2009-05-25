@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.27 2008/12/03 03:46:39 laddi Exp $
+ * $Id: CaseHomeImpl.java,v 1.28 2009/05/25 13:36:31 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2008/12/03 03:46:39 $ by $Author: laddi $
+ *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -374,6 +374,13 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection ids = ((CaseBMPBean) entity).ejbFindAllByCaseCode(code);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 }

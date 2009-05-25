@@ -18,7 +18,7 @@ import com.idega.user.data.User;
  * the system. Don't use this for anything else
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $ Last modified: $Date: 2009/03/17 20:56:27 $ by $Author: civilis $
+ * @version $Revision: 1.2 $ Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
  */
 public interface CasesRetrievalManager {
 	
@@ -53,6 +53,8 @@ public interface CasesRetrievalManager {
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(
 	        List<Integer> ids, Locale locale);
+	
+	public abstract PagedDataCollection<CasePresentation> getCasesByEntities(Collection<Case> cases, Locale locale);
 	
 	public abstract Map<Long, String> getAllCaseProcessDefinitionsWithName();
 	

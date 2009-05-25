@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.83 2009/04/01 12:28:23 valdas Exp $
+ * $Id: CaseBusinessBean.java,v 1.84 2009/05/25 13:36:31 valdas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -38,9 +38,11 @@ import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
 import com.idega.core.accesscontrol.business.NotLoggedOnException;
+import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
+import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDOStoreException;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
@@ -51,16 +53,17 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
 import com.idega.util.IWTimestamp;
+import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
 
 /**
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2009/04/01 12:28:23 $ by $Author: valdas $
+ *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.83 $
+ * @version $Revision: 1.84 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -1017,6 +1020,77 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Could not get cases by ids", e);
 		}
 		return new ArrayList<Case>();
+	}
+
+	public boolean addSubscriber(Object casePK, User subscriber) {
+		if (subscriber == null) {
+			return false;
+		}
+		
+		Case theCase = null;
+		try {
+			theCase = getCase(casePK);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if (theCase == null) {
+			return false;
+		}
+		
+		try {
+			theCase.addSubscriber(subscriber);
+		} catch (IDOAddRelationshipException e) {
+			e.printStackTrace();
+			return false;
+		}
+		theCase.store();
+		
+		return true;
+	}
+
+	public boolean isSubscribed(Object casePK, User user) {
+		if (user == null) {
+			return false;
+		}
+		
+		Case theCase = null;
+		try {
+			theCase = getCase(casePK);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if (theCase == null) {
+			return false;
+		}
+		
+		Collection<User> subscribers = theCase.getSubscribers();
+		return ListUtil.isEmpty(subscribers) ? false : subscribers.contains(user);
+	}
+
+	public boolean removeSubscriber(Object casePK, User subscriber) {
+		if (subscriber == null) {
+			return false;
+		}
+		
+		Case theCase = null;
+		try {
+			theCase = getCase(casePK);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if (theCase == null) {
+			return false;
+		}
+		
+		try {
+			theCase.removeSubscriber(subscriber);
+		} catch (IDORemoveRelationshipException e) {
+			e.printStackTrace();
+			return false;
+		}
+		theCase.store();
+		
+		return true;
 	}
 	
 	

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.68 2009/01/15 08:24:43 donatas Exp $
+ * $Id: CaseBMPBean.java,v 1.69 2009/05/25 13:36:31 valdas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -22,8 +22,11 @@ import javax.ejb.FinderException;
 
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.core.data.ICTreeNode;
+import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
+import com.idega.data.IDORelationshipException;
+import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.MetaDataCapable;
 import com.idega.data.UniqueIDCapable;
@@ -47,10 +50,10 @@ import com.idega.util.ListUtil;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2009/01/15 08:24:43 $ by $Author: donatas $
+ * Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -70,6 +73,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
 	public static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
 	public static final String COLUMN_CASE_IDENTIFIER = "CASE_IDENTIFIER";
+	
+	public static final String COLUMN_CASE_SUBSCRIBERS = TABLE_NAME + "_SUBSCRIBERS";
 
 	static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
@@ -92,6 +97,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String CASE_STATUS_ARCHIVED = "ARCH";
 	static final String CASE_STATUS_LOCKED = "LOCK";
 
+	@Override
 	public void initializeAttributes() {
 		addAttribute(getIDColumnName());
 		addAttribute(COLUMN_CASE_CODE, "Case Code", true, true, String.class, 7, MANY_TO_ONE, CaseCode.class);
@@ -111,6 +117,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(COLUMN_CASE_IDENTIFIER, "Case identifier", String.class);
 		addMetaDataRelationship();
 
+		addManyToManyRelationShip(User.class, COLUMN_CASE_SUBSCRIBERS);
+		
 		addIndex("IDX_PROC_CASE_2", new String[] { getIDColumnName(), COLUMN_USER });
 		addIndex("IDX_PROC_CASE_3", new String[] { getIDColumnName(), COLUMN_CASE_CODE });
 		addIndex("IDX_PROC_CASE_4", new String[] { getIDColumnName(), COLUMN_CASE_STATUS });
@@ -121,14 +129,17 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		getEntityDefinition().setBeanCachingActiveByDefault(true, 1000);
 	}
 
+	@Override
 	public String getIDColumnName() {
 		return PK_COLUMN;
 	}
 
+	@Override
 	public String getEntityName() {
 		return (TABLE_NAME);
 	}
 
+	@Override
 	protected boolean doInsertInCreate() {
 		return true;
 	}
@@ -169,6 +180,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 * catch (Exception e) { System.err.println("Error inserting start data for
 	 * com.idega.block.process.Case"); e.printStackTrace(); } }
 	 */
+	@Override
 	public void setDefaultValues() {
 		// System.out.println("Case : Calling setDefaultValues()");
 		setCreated(IWTimestamp.getTimestampRightNow());
@@ -1031,6 +1043,31 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	
 		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
 		return idoFindPKsByQuery(query);
+	}
+	
+	public void addSubscriber(User subscriber) throws IDOAddRelationshipException {
+		this.idoAddTo(subscriber);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<User> getSubscribers() {
+		try {
+			return super.idoGetRelatedEntities(User.class);
+		} catch (IDORelationshipException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
+		super.idoRemoveFrom(subscriber);
+	}
+	
+	public Collection<Case> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
+		IDOQuery query = this.idoQueryGetSelect();
+		query.appendWhereEquals(COLUMN_CASE_CODE, code);
+		query.appendGroupBy(getIDColumnName());
+		return super.idoFindPKsByQuery(query);
 	}
 
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.ejb.FinderException;
 import javax.faces.component.UIComponent;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,11 @@ import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.presentation.text.Link;
 import com.idega.user.data.User;
-import com.idega.util.CoreUtil;
 import com.idega.util.ListUtil;
 
 /**
@@ -33,7 +34,7 @@ import com.idega.util.ListUtil;
  * @author donatas
  *
  */
-@Scope("singleton")
+@Scope(BeanDefinition.SCOPE_SINGLETON)
 @Service(CasesRetrievalManagerImpl.beanIdentifier)
 public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 
@@ -60,10 +61,11 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
+	@SuppressWarnings("unchecked")
 	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
 			int startIndex, int count) {
-		IWContext iwc = CoreUtil.getIWContext();
-		CaseBusiness caseBusiness = getCaseBusiness(iwc);
+		
+		CaseBusiness caseBusiness = getCaseBusiness();
 		try {
 			CaseCode[] caseCodes = caseBusiness.getCaseCodesForUserCasesList();
 			Collection<Case> cases = caseBusiness.getAllCasesForUserExceptCodes(user, caseCodes, startIndex, count);
@@ -110,7 +112,11 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 	}
 
 	public PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale) {
-		Collection<Case> cases = getCaseBusiness(IWContext.getCurrentInstance()).getCasesByIds(ids);
+		Collection<Case> cases = getCaseBusiness().getCasesByIds(ids);
+		return getCasesByEntities(cases, locale);
+	}
+	
+	public PagedDataCollection<CasePresentation> getCasesByEntities(Collection<Case> cases, Locale locale) {
 		return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(cases, locale), cases.size());
 	}
 
@@ -129,24 +135,23 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		if (ListUtil.isEmpty(cases)) {
 			return new ArrayList<CasePresentation>(0);
 		}
+		
 		List<CasePresentation> beans = new ArrayList<CasePresentation>(cases.size());
 		for (Iterator<? extends Case> iterator = cases.iterator(); iterator.hasNext();) {
 			Case caze = iterator.next();
 			CasePresentation bean = convertToPresentation(caze, null, locale);
 			beans.add(bean);
 		}
+		
 		return beans;
 	}
 
 	protected CasePresentation convertToPresentation(Case theCase, CasePresentation bean, Locale locale) {
-
-		IWContext iwc = IWContext.getCurrentInstance();
-
 		if (bean == null) {
 			bean = new CasePresentation();
 		}
-		bean.setPrimaryKey(theCase.getPrimaryKey() instanceof Integer ? (Integer) theCase.getPrimaryKey() : Integer
-				.valueOf(theCase.getPrimaryKey().toString()));
+		
+		bean.setPrimaryKey(theCase.getPrimaryKey() instanceof Integer ? (Integer) theCase.getPrimaryKey() : Integer.valueOf(theCase.getPrimaryKey().toString()));
 		bean.setId(theCase.getId());
 		bean.setUrl(theCase.getUrl());
 		bean.setCaseManagerType(theCase.getCaseManagerType());
@@ -154,19 +159,19 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		bean.setExternalId(theCase.getExternalId());
 		bean.setCaseIdentifier(theCase.getCaseIdentifier());
 		try {
-			bean.setSubject(getCaseBusiness(iwc).getCaseSubject(theCase, locale));
+			bean.setSubject(getCaseBusiness().getCaseSubject(theCase, locale));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		try {
-			bean.setCaseStatus(getCaseBusiness(iwc).getCaseStatus(theCase.getStatus()));
+			bean.setCaseStatus(getCaseBusiness().getCaseStatus(theCase.getStatus()));
 		} catch (Exception e) {
 			bean.setCaseStatus(theCase.getCaseStatus());
 		}
 		
 		if (bean.getCaseStatus() != null) {
 			try {
-				bean.setLocalizedStatus(getCaseBusiness(iwc).getLocalizedCaseStatusDescription(theCase, bean.getCaseStatus(), locale));
+				bean.setLocalizedStatus(getCaseBusiness().getLocalizedCaseStatusDescription(theCase, bean.getCaseStatus(), locale));
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
@@ -186,10 +191,9 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
 	}
 
-	protected CaseBusiness getCaseBusiness(IWContext iwc) {
-		
+	protected CaseBusiness getCaseBusiness() {
 		try {
-			return (CaseBusiness)IBOLookup.getServiceInstance(iwc, CaseBusiness.class);
+			return IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), CaseBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
