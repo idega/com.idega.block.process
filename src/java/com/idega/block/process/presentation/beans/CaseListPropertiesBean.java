@@ -7,6 +7,7 @@ public class CaseListPropertiesBean {
 	private String type;
 	private String instanceId;
 	private String componentId;
+	private String commentsManagerIdentifier;
 	
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
@@ -112,6 +113,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setStatusesToHide(List<String> statusesToHide) {
 		this.statusesToHide = statusesToHide;
+	}
+	public String getCommentsManagerIdentifier() {
+		return commentsManagerIdentifier;
+	}
+	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
+		this.commentsManagerIdentifier = commentsManagerIdentifier;
 	}
 	
 }

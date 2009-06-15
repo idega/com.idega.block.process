@@ -35,37 +35,29 @@ public class UICasesList extends IWBaseComponent {
 
 	public static final String COMPONENT_TYPE = "com.idega.UICasesList";
 	
-	@Autowired private CaseManagersProvider caseManagersProvider;
+	@Autowired
+	private CaseManagersProvider caseManagersProvider;
 	
 	private String type;
 	
 	private int pageSize = 20;
-	
 	private int page = 1;
 	
 	private boolean showCheckBoxes;
-	
 	private boolean usePDFDownloadColumn;
-	
 	private boolean allowPDFSigning;
-	
 	private boolean showStatistics;
-	
 	private boolean hideEmptySection;
-	
 	private boolean addCredentialsToExernalUrls;
-	
 	private boolean showCaseNumberColumn = true;
-	
 	private boolean showCreationTimeInDateColumn = true;
 	
 	private List<String> caseStatusesToShow;
-	
 	private List<String> caseStatusesToHide;
 	
 	private String instanceId;
-	
 	private String componentId;
+	private String commentsManagerIdentifier;
 	
 	@SuppressWarnings({"unchecked"})
 	private Map userCasesPageMap;
@@ -95,6 +87,8 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
 		properties.setStatusesToShow(getCaseStatusesToShow());
 		properties.setStatusesToHide(getCaseStatusesToHide());
+		properties.setCommentsManagerIdentifier(getCommentsManagerIdentifier());
+		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -102,6 +96,7 @@ public class UICasesList extends IWBaseComponent {
 			properties.setShowCheckBoxes(isShowCheckBoxes());
 			casesListComponent = listBuilder.getCasesList(iwc, cases, properties);
 		}
+		
 		add(casesListComponent);
 	}
 
@@ -277,6 +272,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
 		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
+	}
+
+	public String getCommentsManagerIdentifier() {
+		return commentsManagerIdentifier;
+	}
+
+	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
+		this.commentsManagerIdentifier = commentsManagerIdentifier;
 	}
 	
 }

@@ -18,7 +18,7 @@ import com.idega.user.data.User;
  * the system. Don't use this for anything else
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $ Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
+ * @version $Revision: 1.3 $ Last modified: $Date: 2009/06/15 10:00:12 $ by $Author: valdas $
  */
 public interface CasesRetrievalManager {
 	
@@ -26,6 +26,8 @@ public interface CasesRetrievalManager {
 	public static final String CASE_LIST_TYPE_USER = "UserCases";
 	public static final String CASE_LIST_TYPE_OPEN = "OpenCases";
 	public static final String CASE_LIST_TYPE_CLOSED = "ClosedCases";
+	
+	public static final String COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier";
 	
 	public abstract String getBeanIdentifier();
 	

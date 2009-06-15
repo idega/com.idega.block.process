@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.53 2009/03/31 14:56:50 valdas Exp $
+ * $Id: UserCases.java,v 1.54 2009/06/15 10:00:12 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2009/03/31 14:56:50 $ by $Author: valdas $
+ * Last modified: $Date: 2009/06/15 10:00:12 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -59,10 +59,13 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public static final String pageType = "cases";
 	
 	private Set<String> hiddenCaseCodes;
+	
+	@SuppressWarnings("unchecked")
 	private Map pageMap;
+	
+	@SuppressWarnings("unused")
 	private int iMaxNumberOfEntries = -1;
-	/*private int iMaxNumberOfLetters = -1;
-	private int iMaxNumberOfHandlerLetters = -1;*/
+	@SuppressWarnings("unused")
 	private int iNumberOfEntriesShown = 20;
 	
 	private boolean addCredentialsToExernalUrls=false;
@@ -79,7 +82,8 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
-
+	private String commentsManagerIdentifier;
+	
 	@Override
 	protected void present(IWContext iwc) throws Exception {
 	}
@@ -322,6 +326,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		list.setShowCreationTimeInDateColumn(showCreationTimeInDateColumn);
 		list.setCaseStatusesToHide(caseStatusesToHide);
 		list.setCaseStatusesToShow(caseStatusesToShow);
+		list.setCommentsManagerIdentifier(commentsManagerIdentifier);
 		
 		layer.add(list);
 		
@@ -375,4 +380,13 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public void setCaseStatusesToShow(String caseStatusesToShow) {
 		this.caseStatusesToShow = caseStatusesToShow;
 	}
+
+	public String getCommentsManagerIdentifier() {
+		return commentsManagerIdentifier;
+	}
+
+	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
+		this.commentsManagerIdentifier = commentsManagerIdentifier;
+	}
+	
 }
