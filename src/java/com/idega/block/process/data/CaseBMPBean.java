@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBMPBean.java,v 1.69 2009/05/25 13:36:31 valdas Exp $
+ * $Id: CaseBMPBean.java,v 1.70 2009/06/23 09:33:27 valdas Exp $
  * 
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
  * 
@@ -50,10 +50,10 @@ import com.idega.util.ListUtil;
  * Main implementation data entity bean for "Case".<br/> Backing SQL table is
  * PROC_CASE.
  * <p>
- * Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
+ * Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
@@ -76,27 +76,30 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	
 	public static final String COLUMN_CASE_SUBSCRIBERS = TABLE_NAME + "_SUBSCRIBERS";
 
-	static final String CASE_STATUS_OPEN_KEY = "UBEH";
-	static final String CASE_STATUS_INACTIVE_KEY = "TYST";
-	static final String CASE_STATUS_GRANTED_KEY = "BVJD";
-	static final String CASE_STATUS_DENIED_KEY = "AVSL";
-	static final String CASE_STATUS_REVIEW_KEY = "OMPR";
-	static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
-	static final String CASE_STATUS_PRELIMINARY_KEY = "PREL";
-	static final String CASE_STATUS_CONTRACT_KEY = "KOUT";
-	static final String CASE_STATUS_READY_KEY = "KLAR";
-	static final String CASE_STATUS_REDEEM_KEY = "CHIN";
-	static final String CASE_STATUS_ERROR_KEY = "ERRR";
-	static final String CASE_STATUS_MOVED_KEY = "FLYT";
-	static final String CASE_STATUS_PLACED_KEY = "PLAC";
-	static final String CASE_STATUS_DELETED_KEY = "DELE";
-	static final String CASE_STATUS_PENDING_KEY = "PEND";
-	static final String CASE_STATUS_WAITING = "WAIT";
-	static final String CASE_STATUS_IN_PROCESS = "INPR";
-	static final String CASE_STATUS_CLOSED = "SHUT";
-	static final String CASE_STATUS_ARCHIVED = "ARCH";
-	static final String CASE_STATUS_LOCKED = "LOCK";
-
+	public static final String CASE_STATUS_OPEN_KEY = "UBEH";
+	public static final String CASE_STATUS_INACTIVE_KEY = "TYST";
+	public static final String CASE_STATUS_GRANTED_KEY = "BVJD";
+	public static final String CASE_STATUS_DENIED_KEY = "AVSL";
+	public static final String CASE_STATUS_REVIEW_KEY = "OMPR";
+	public static final String CASE_STATUS_CANCELLED_KEY = "UPPS";
+	public static final String CASE_STATUS_PRELIMINARY_KEY = "PREL";
+	public static final String CASE_STATUS_CONTRACT_KEY = "KOUT";
+	public static final String CASE_STATUS_READY_KEY = "KLAR";
+	public static final String CASE_STATUS_REDEEM_KEY = "CHIN";
+	public static final String CASE_STATUS_ERROR_KEY = "ERRR";
+	public static final String CASE_STATUS_MOVED_KEY = "FLYT";
+	public static final String CASE_STATUS_PLACED_KEY = "PLAC";
+	public static final String CASE_STATUS_DELETED_KEY = "DELE";
+	public static final String CASE_STATUS_PENDING_KEY = "PEND";
+	public static final String CASE_STATUS_WAITING_KEY = "WAIT";
+	public static final String CASE_STATUS_IN_PROCESS_KEY = "INPR";
+	public static final String CASE_STATUS_CLOSED = "SHUT";
+	public static final String CASE_STATUS_ARCHIVED = "ARCH";
+	public static final String CASE_STATUS_LOCKED = "LOCK";
+	public static final String CASE_STATUS_GROUPED_KEY = "GROU";
+	public static final String CASE_STATUS_CREATED_KEY = "CREA";
+	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
+	
 	@Override
 	public void initializeAttributes() {
 		addAttribute(getIDColumnName());
@@ -639,7 +642,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusWaiting() {
-		return CASE_STATUS_WAITING;
+		return CASE_STATUS_WAITING_KEY;
 	}
 
 	/**
@@ -720,7 +723,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusInProcess() {
-		return CASE_STATUS_IN_PROCESS;
+		return CASE_STATUS_IN_PROCESS_KEY;
 	}
 
 	/**
@@ -748,6 +751,18 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 */
 	public String ejbHomeGetCaseStatusLocked() {
 		return CASE_STATUS_LOCKED;
+	}
+	
+	public String ejbHomeGetCaseStatusGrouped() {
+		return CASE_STATUS_GROUPED_KEY;
+	}
+	
+	public String ejbHomeGetCaseStatusCreated() {
+		return CASE_STATUS_CREATED_KEY;
+	}
+	
+	public String ejbHomeGetCaseStatusFinished() {
+		return CASE_STATUS_FINISHED_KEY;
 	}
 
 	protected IDOQuery idoQueryGetAllCasesForUserExceptCodes(User user, CaseCode[] codes) {

@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBusinessBean.java,v 1.84 2009/05/25 13:36:31 valdas Exp $
+ * $Id: CaseBusinessBean.java,v 1.85 2009/06/23 09:33:27 valdas Exp $
  * Created in 2002 by Tryggvi Larusson
  *
  * Copyright (C) 2002-2006 Idega Software hf. All Rights Reserved.
@@ -60,10 +60,10 @@ import com.idega.util.StringUtil;
  * <p>
  * This is the main logic class for the case/process module.
  * </p>
- *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
+ *  Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
  * 
  * @author <a href="mailto:tryggvil@idega.com">Tryggvi Larusson</a>
- * @version $Revision: 1.84 $
+ * @version $Revision: 1.85 $
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
@@ -71,6 +71,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Comment for <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 5676084152460108081L;
+	
 	private String CASE_STATUS_OPEN_KEY;
 	private String CASE_STATUS_INACTIVE_KEY;
 	private String CASE_STATUS_GRANTED_KEY;
@@ -82,11 +83,13 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_CONTRACT_KEY;
 	private String CASE_STATUS_READY_KEY;
 	private String CASE_STATUS_REDEEM_KEY;
-	private String CASE_STATUS_ERROR;
-	private String CASE_STATUS_MOVED;
-	private String CASE_STATUS_PLACED;
+	private String CASE_STATUS_ERROR_KEY;
+	private String CASE_STATUS_MOVED_KEY;
+	private String CASE_STATUS_PLACED_KEY;
 	private String CASE_STATUS_PENDING_KEY;
-	private String CASE_STATUS_WAITING;
+	private String CASE_STATUS_WAITING_KEY;
+	private String CASE_STATUS_CREATED_KEY;
+	private String CASE_STATUS_FINISHED_KEY;
 	
 	private Map _statusMap;
 
@@ -110,13 +113,13 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		this.CASE_STATUS_CONTRACT_KEY = this.getCaseHome().getCaseStatusContract();
 		this.CASE_STATUS_READY_KEY = this.getCaseHome().getCaseStatusReady();
 		this.CASE_STATUS_REDEEM_KEY = this.getCaseHome().getCaseStatusRedeem();
-		this.CASE_STATUS_ERROR = this.getCaseHome().getCaseStatusError();
-		this.CASE_STATUS_MOVED = this.getCaseHome().getCaseStatusMoved();
-		this.CASE_STATUS_PLACED = this.getCaseHome().getCaseStatusPlaced();
+		this.CASE_STATUS_ERROR_KEY = this.getCaseHome().getCaseStatusError();
+		this.CASE_STATUS_MOVED_KEY = this.getCaseHome().getCaseStatusMoved();
+		this.CASE_STATUS_PLACED_KEY = this.getCaseHome().getCaseStatusPlaced();
 		this.CASE_STATUS_PENDING_KEY = this.getCaseHome().getCaseStatusPending();
-		this.CASE_STATUS_WAITING = this.getCaseHome().getCaseStatusWaiting();
-		
-
+		this.CASE_STATUS_WAITING_KEY = this.getCaseHome().getCaseStatusWaiting();
+		this.CASE_STATUS_CREATED_KEY = this.getCaseHome().getCaseStatusCreated();
+		this.CASE_STATUS_FINISHED_KEY = this.getCaseHome().getCaseStatusFinished();
 	}
 	
 	private CaseStatus getCaseStatusFromMap(String caseStatus) {
@@ -447,15 +450,15 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	public CaseStatus getCaseStatusWaiting() {
-		return getCaseStatus(this.CASE_STATUS_WAITING);
+		return getCaseStatus(this.CASE_STATUS_WAITING_KEY);
 	}
 
 	public CaseStatus getCaseStatusMoved() {
-		return getCaseStatus(this.CASE_STATUS_MOVED);
+		return getCaseStatus(this.CASE_STATUS_MOVED_KEY);
 	}
 
 	public CaseStatus getCaseStatusPlaced() {
-		return getCaseStatus(this.CASE_STATUS_PLACED);
+		return getCaseStatus(this.CASE_STATUS_PLACED_KEY);
 	}
 
 	public CaseStatus getCaseStatusPending() {
@@ -486,13 +489,31 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 		return null;
 	}
+	
+	public CaseStatus getCaseStatusCreated() {
+		try {
+			return getCaseStatusAndInstallIfNotExists(this.CASE_STATUS_CREATED_KEY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public CaseStatus getCaseStatusFinished() {
+		try {
+			return getCaseStatusAndInstallIfNotExists(this.CASE_STATUS_FINISHED_KEY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public CaseStatus getCaseStatusRedeem() {
 		return getCaseStatus(this.CASE_STATUS_REDEEM_KEY);
 	}
 
 	public CaseStatus getCaseStatusError() {
-		return getCaseStatus(this.CASE_STATUS_ERROR);
+		return getCaseStatus(this.CASE_STATUS_ERROR_KEY);
 	}
 
 	protected CaseStatus getCaseStatusAndInstallIfNotExists(String caseStatusString) throws Exception {
@@ -975,11 +996,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public String[] getStatusesForOpenCases() {
-		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus()};
+		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus()};
 	}
 	
 	public String[] getStatusesForClosedCases() {
-		return new String[] {getCaseStatusInactive().getStatus(), getCaseStatusReady().getStatus()};
+		return new String[] {getCaseStatusInactive().getStatus(), getCaseStatusReady().getStatus(), getCaseStatusFinished().getStatus()};
 	}
 	
 	public String[] getStatusesForMyCases() {

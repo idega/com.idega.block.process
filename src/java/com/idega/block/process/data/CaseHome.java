@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHome.java,v 1.26 2009/05/25 13:36:31 valdas Exp $
+ * $Id: CaseHome.java,v 1.27 2009/06/23 09:33:27 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -24,10 +24,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHome
  * </p>
- *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
+ *  Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public interface CaseHome extends IDOHome {
 
@@ -114,6 +114,10 @@ public interface CaseHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCaseStatusWaiting
 	 */
 	public String getCaseStatusWaiting();
+	
+	public String getCaseStatusCreated();
+	
+	public String getCaseStatusFinished();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCaseStatusPreliminary

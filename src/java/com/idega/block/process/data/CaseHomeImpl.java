@@ -1,5 +1,5 @@
 /*
- * $Id: CaseHomeImpl.java,v 1.28 2009/05/25 13:36:31 valdas Exp $
+ * $Id: CaseHomeImpl.java,v 1.29 2009/06/23 09:33:27 valdas Exp $
  * Created on Apr 11, 2006
  *
  * Copyright (C) 2006 Idega Software hf. All Rights Reserved.
@@ -27,10 +27,10 @@ import com.idega.util.IWTimestamp;
  * <p>
  * TODO laddi Describe Type CaseHomeImpl
  * </p>
- *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
+ *  Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
@@ -155,6 +155,20 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	public String getCaseStatusWaiting() {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusWaiting();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+	
+	public String getCaseStatusCreated() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusCreated();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+	
+	public String getCaseStatusFinished() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusFinished();
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
@@ -338,7 +352,8 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		try {
 			CaseBMPBean caseBMPBean = ((CaseBMPBean) this.idoCheckOutPooledEntity());
 			
-			String[] statusKeys = {caseBMPBean.ejbHomeGetCaseStatusOpen() ,
+			String[] statusKeys = {
+					caseBMPBean.ejbHomeGetCaseStatusOpen() ,
 					caseBMPBean.ejbHomeGetCaseStatusInactive(), 
 					caseBMPBean.ejbHomeGetCaseStatusGranted(), 
 					caseBMPBean.ejbHomeGetCaseStatusDenied(), 
@@ -348,7 +363,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 					caseBMPBean.ejbHomeGetCaseStatusInProcess(), 
 					caseBMPBean.ejbHomeGetCaseStatusPlaced(), 
 					caseBMPBean.ejbHomeGetCaseStatusWaiting(),
-					caseBMPBean.ejbHomeGetCaseStatusPending()}; 
+					caseBMPBean.ejbHomeGetCaseStatusPending(),
+					caseBMPBean.ejbHomeGetCaseStatusGrouped(),
+					caseBMPBean.ejbHomeGetCaseStatusCreated(),
+					caseBMPBean.ejbHomeGetCaseStatusFinished()
+			}; 
 			
 			CaseStatusHome cshome = (CaseStatusHome) IDOLookup.getHome(CaseStatus.class);
 			CaseStatus caseStatus;

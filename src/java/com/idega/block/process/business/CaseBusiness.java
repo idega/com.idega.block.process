@@ -448,4 +448,8 @@ public interface CaseBusiness extends IBOService {
 	public boolean removeSubscriber(Object casePK, User subscriber);
 	
 	public boolean isSubscribed(Object casePK, User user);
+	
+	public CaseStatus getCaseStatusCreated();
+	
+	public CaseStatus getCaseStatusFinished();
 }
