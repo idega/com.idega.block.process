@@ -1,5 +1,5 @@
 /*
- * $Id: CaseBlock.java,v 1.6 2008/11/06 19:27:31 laddi Exp $
+ * $Id: CaseBlock.java,v 1.7 2009/06/30 09:35:57 valdas Exp $
  * Created on Sep 24, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -8,6 +8,9 @@
  * Use is subject to license terms.
  */
 package com.idega.block.process.presentation;
+
+import java.rmi.RemoteException;
+import java.util.Map;
 
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.ProcessConstants;
@@ -24,10 +27,10 @@ import com.idega.util.PresentationUtil;
 
 
 /**
- * Last modified: $Date: 2008/11/06 19:27:31 $ by $Author: laddi $
+ * Last modified: $Date: 2009/06/30 09:35:57 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class CaseBlock extends Block {
 
@@ -36,6 +39,26 @@ public abstract class CaseBlock extends Block {
 	
 	private IWBundle iwb;
 	private IWResourceBundle iwrb;
+	
+	/* Cases list parameters */
+	private int pageSize = 20;
+	private int page = 1;
+	
+	private boolean addCredentialsToExernalUrls;
+	private boolean showCaseNumberColumn = true;
+	private boolean showCreationTimeInDateColumn = true;
+	private boolean showCreatorColumn = true;
+	private boolean usePDFDownloadColumn = true;
+	private boolean allowPDFSigning = true;
+	private boolean showStatistics;
+	private boolean hideEmptySection;
+	
+	private String caseStatusesToHide;
+	private String caseStatusesToShow;
+	private String commentsManagerIdentifier;
+	private String dateCustomValueVariable;
+	private String dateCustomLabelLocalizationKey;
+	/* Cases list parameters */
 	
 	@Override
 	public void main(IWContext iwc) throws Exception {
@@ -98,4 +121,159 @@ public abstract class CaseBlock extends Block {
 	private void setResourceBundle(IWResourceBundle iwrb) {
 		this.iwrb = iwrb;
 	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public boolean isShowCaseNumberColumn() {
+		return showCaseNumberColumn;
+	}
+
+	public void setShowCaseNumberColumn(boolean showCaseNumberColumn) {
+		this.showCaseNumberColumn = showCaseNumberColumn;
+	}
+
+	public boolean isShowCreationTimeInDateColumn() {
+		return showCreationTimeInDateColumn;
+	}
+
+	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
+		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
+	}
+
+	public boolean isShowCreatorColumn() {
+		return showCreatorColumn;
+	}
+
+	public void setShowCreatorColumn(boolean showCreatorColumn) {
+		this.showCreatorColumn = showCreatorColumn;
+	}
+
+	public String getCaseStatusesToHide() {
+		return caseStatusesToHide;
+	}
+
+	public void setCaseStatusesToHide(String caseStatusesToHide) {
+		this.caseStatusesToHide = caseStatusesToHide;
+	}
+
+	public String getCaseStatusesToShow() {
+		return caseStatusesToShow;
+	}
+
+	public void setCaseStatusesToShow(String caseStatusesToShow) {
+		this.caseStatusesToShow = caseStatusesToShow;
+	}
+
+	public String getDateCustomValueVariable() {
+		return dateCustomValueVariable;
+	}
+
+	public void setDateCustomValueVariable(String dateCustomValueVariable) {
+		this.dateCustomValueVariable = dateCustomValueVariable;
+	}
+
+	public String getDateCustomLabelLocalizationKey() {
+		return dateCustomLabelLocalizationKey;
+	}
+
+	public void setDateCustomLabelLocalizationKey(
+			String dateCustomLabelLocalizationKey) {
+		this.dateCustomLabelLocalizationKey = dateCustomLabelLocalizationKey;
+	}
+
+	public boolean isUsePDFDownloadColumn() {
+		return usePDFDownloadColumn;
+	}
+
+	public void setUsePDFDownloadColumn(boolean usePDFDownloadColumn) {
+		this.usePDFDownloadColumn = usePDFDownloadColumn;
+	}
+
+	public boolean isAllowPDFSigning() {
+		return allowPDFSigning;
+	}
+
+	public void setAllowPDFSigning(boolean allowPDFSigning) {
+		this.allowPDFSigning = allowPDFSigning;
+	}
+
+	public boolean isShowStatistics() {
+		return showStatistics;
+	}
+
+	public void setShowStatistics(boolean showStatistics) {
+		this.showStatistics = showStatistics;
+	}
+
+	public boolean isHideEmptySection() {
+		return hideEmptySection;
+	}
+
+	public void setHideEmptySection(boolean hideEmptySection) {
+		this.hideEmptySection = hideEmptySection;
+	}
+
+	public String getCommentsManagerIdentifier() {
+		return commentsManagerIdentifier;
+	}
+
+	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
+		this.commentsManagerIdentifier = commentsManagerIdentifier;
+	}
+	
+	public boolean isAddCredentialsToExernalUrls() {
+		return addCredentialsToExernalUrls;
+	}
+
+	public void setAddCredentialsToExernalUrls(boolean addCredentialsToExernalUrls) {
+		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
+	}
+
+	public abstract boolean showCheckBox();
+	public abstract boolean showCheckBoxes();
+
+	public UICasesList getCasesList(IWContext iwc, String id) throws RemoteException {
+		UICasesList list = (UICasesList)iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
+		
+		list.setType(getCasesProcessorType());
+		list.setUserCasesPageMap(getUserCasesPageMap());
+		list.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
+		list.setShowCheckBoxes(showCheckBoxes());
+		list.setUsePDFDownloadColumn(isUsePDFDownloadColumn());
+		list.setAllowPDFSigning(isAllowPDFSigning());
+		list.setShowStatistics(isShowStatistics());
+		list.setHideEmptySection(isHideEmptySection());
+		list.setPageSize(getPageSize());
+		list.setPage(getPage());
+		list.setComponentId(id);
+		list.setInstanceId(getBuilderService(iwc).getInstanceId(this));
+		list.setShowCaseNumberColumn(isShowCaseNumberColumn());
+		list.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
+		list.setCaseStatusesToHide(getCaseStatusesToHide());
+		list.setCaseStatusesToShow(getCaseStatusesToShow());
+		list.setCommentsManagerIdentifier(getCommentsManagerIdentifier());
+		list.setShowCreatorColumn(isShowCreatorColumn());
+		list.setDateCustomValueVariable(getDateCustomValueVariable());
+		list.setDateCustomLabelLocalizationKey(getDateCustomLabelLocalizationKey());
+		
+		return list;
+	}
+	
+	public abstract String getCasesProcessorType();
+	
+	public abstract Map<Object, Object> getUserCasesPageMap();
 }

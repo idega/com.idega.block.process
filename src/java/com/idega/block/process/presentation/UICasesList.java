@@ -51,6 +51,7 @@ public class UICasesList extends IWBaseComponent {
 	private boolean addCredentialsToExernalUrls;
 	private boolean showCaseNumberColumn = true;
 	private boolean showCreationTimeInDateColumn = true;
+	private boolean showCreatorColumn = true;
 	
 	private List<String> caseStatusesToShow;
 	private List<String> caseStatusesToHide;
@@ -58,6 +59,9 @@ public class UICasesList extends IWBaseComponent {
 	private String instanceId;
 	private String componentId;
 	private String commentsManagerIdentifier;
+	
+	private String dateCustomValueVariable;
+	private String dateCustomLabelLocalizationKey;
 	
 	@SuppressWarnings({"unchecked"})
 	private Map userCasesPageMap;
@@ -88,6 +92,9 @@ public class UICasesList extends IWBaseComponent {
 		properties.setStatusesToShow(getCaseStatusesToShow());
 		properties.setStatusesToHide(getCaseStatusesToHide());
 		properties.setCommentsManagerIdentifier(getCommentsManagerIdentifier());
+		properties.setShowCreatorColumn(isShowCreatorColumn());
+		properties.setDateCustomValueVariable(getDateCustomValueVariable());
+		properties.setDateCustomLabelLocalizationKey(getDateCustomLabelLocalizationKey());
 		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -280,6 +287,30 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
 		this.commentsManagerIdentifier = commentsManagerIdentifier;
+	}
+
+	public boolean isShowCreatorColumn() {
+		return showCreatorColumn;
+	}
+
+	public void setShowCreatorColumn(boolean showCreatorColumn) {
+		this.showCreatorColumn = showCreatorColumn;
+	}
+
+	public String getDateCustomValueVariable() {
+		return dateCustomValueVariable;
+	}
+
+	public void setDateCustomValueVariable(String dateCustomValueVariable) {
+		this.dateCustomValueVariable = dateCustomValueVariable;
+	}
+
+	public String getDateCustomLabelLocalizationKey() {
+		return dateCustomLabelLocalizationKey;
+	}
+
+	public void setDateCustomLabelLocalizationKey(String dateCustomLabelLocalizationKey) {
+		this.dateCustomLabelLocalizationKey = dateCustomLabelLocalizationKey;
 	}
 	
 }

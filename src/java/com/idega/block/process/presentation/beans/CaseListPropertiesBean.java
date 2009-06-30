@@ -8,6 +8,8 @@ public class CaseListPropertiesBean {
 	private String instanceId;
 	private String componentId;
 	private String commentsManagerIdentifier;
+	private String dateCustomValueVariable;
+	private String dateCustomLabelLocalizationKey;
 	
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
@@ -17,6 +19,7 @@ public class CaseListPropertiesBean {
 	private boolean showCaseNumberColumn = true;
 	private boolean showCreationTimeInDateColumn = true;
 	private boolean addCredentialsToExernalUrls;
+	private boolean showCreatorColumn = true;
 	
 	private int pageSize;
 	private int page;
@@ -119,6 +122,25 @@ public class CaseListPropertiesBean {
 	}
 	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
 		this.commentsManagerIdentifier = commentsManagerIdentifier;
+	}
+	public String getDateCustomValueVariable() {
+		return dateCustomValueVariable;
+	}
+	public void setDateCustomValueVariable(String dateCustomValueVariable) {
+		this.dateCustomValueVariable = dateCustomValueVariable;
+	}
+	public String getDateCustomLabelLocalizationKey() {
+		return dateCustomLabelLocalizationKey;
+	}
+	public void setDateCustomLabelLocalizationKey(
+			String dateCustomLabelLocalizationKey) {
+		this.dateCustomLabelLocalizationKey = dateCustomLabelLocalizationKey;
+	}
+	public boolean isShowCreatorColumn() {
+		return showCreatorColumn;
+	}
+	public void setShowCreatorColumn(boolean showCreatorColumn) {
+		this.showCreatorColumn = showCreatorColumn;
 	}
 	
 }

@@ -9,6 +9,8 @@
  */
 package com.idega.block.process.message.presentation;
 
+import java.util.Map;
+
 import com.idega.block.process.message.business.MessageBusiness;
 import com.idega.block.process.presentation.CaseBlock;
 import com.idega.business.IBOLookup;
@@ -24,6 +26,7 @@ public abstract class MessageBlock extends CaseBlock {
 
 	private MessageBusiness messageBusiness;
 	
+	@Override
 	public void main(IWContext iwc) throws Exception {
 		this.messageBusiness = getMessageBusiness(iwc);
 		super.main(iwc);
@@ -41,4 +44,25 @@ public abstract class MessageBlock extends CaseBlock {
 			throw new IBORuntimeException(ile);
 		}
 	}
+
+	@Override
+	public String getCasesProcessorType() {
+		return null;
+	}
+
+	@Override
+	public Map<Object, Object> getUserCasesPageMap() {
+		return null;
+	}
+
+	@Override
+	public boolean showCheckBox() {
+		return false;
+	}
+
+	@Override
+	public boolean showCheckBoxes() {
+		return false;
+	}
+
 }

@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.54 2009/06/15 10:00:12 valdas Exp $
+ * $Id: UserCases.java,v 1.55 2009/06/30 09:35:57 valdas Exp $
  * Created on Sep 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -40,10 +40,10 @@ import com.idega.webface.WFUtil;
 
 
 /**
- * Last modified: $Date: 2009/06/15 10:00:12 $ by $Author: valdas $
+ * Last modified: $Date: 2009/06/30 09:35:57 $ by $Author: valdas $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
 	
@@ -68,21 +68,21 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	@SuppressWarnings("unused")
 	private int iNumberOfEntriesShown = 20;
 	
-	private boolean addCredentialsToExernalUrls=false;
-	
-	private boolean usePDFDownloadColumn = true;
-	private boolean allowPDFSigning = true;
-	private boolean showStatistics;
-	private boolean hideEmptySection = true;
-	private boolean showCaseNumberColumn = true;
-	private boolean showCreationTimeInDateColumn = true;
-	
-	private int page = 1;
-	private int pageSize = 20;
-
-	private String caseStatusesToHide;
-	private String caseStatusesToShow;
-	private String commentsManagerIdentifier;
+//	private boolean addCredentialsToExernalUrls=false;
+//	
+//	private boolean usePDFDownloadColumn = true;
+//	private boolean allowPDFSigning = true;
+//	private boolean showStatistics;
+//	private boolean hideEmptySection = true;
+//	private boolean showCaseNumberColumn = true;
+//	private boolean showCreationTimeInDateColumn = true;
+//	
+//	private int page = 1;
+//	private int pageSize = 20;
+//
+//	private String caseStatusesToHide;
+//	private String caseStatusesToShow;
+//	private String commentsManagerIdentifier;
 	
 	@Override
 	protected void present(IWContext iwc) throws Exception {
@@ -90,22 +90,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	protected String getHeading() {
 		return getResourceBundle().getLocalizedString("user_cases", "User cases");
-	}
-	
-	public boolean isUsePDFDownloadColumn() {
-		return usePDFDownloadColumn;
-	}
-
-	public void setUsePDFDownloadColumn(boolean usePDFDownloadColumn) {
-		this.usePDFDownloadColumn = usePDFDownloadColumn;
-	}
-
-	public boolean isHideEmptySection() {
-		return hideEmptySection;
-	}
-
-	public void setHideEmptySection(boolean hideEmptySection) {
-		this.hideEmptySection = hideEmptySection;
 	}
 		
 	@SuppressWarnings("unchecked")
@@ -195,39 +179,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		this.iNumberOfEntriesShown = numberOfEntriesShown;
 	}
 
-	
-	/**
-	 * @return the addCredentialsToExernalUrls
-	 */
-	public boolean isAddCredentialsToExernalUrls() {
-		return addCredentialsToExernalUrls;
-	}
-
-	
-	/**
-	 * @param addCredentialsToExernalUrls the addCredentialsToExernalUrls to set
-	 */
-	public void setAddCredentialsToExernalUrls(boolean addCredentialsToExernalUrls) {
-		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
-	}
-	
-	
-	public boolean isAllowPDFSigning() {
-		return allowPDFSigning;
-	}
-
-	public void setAllowPDFSigning(boolean allowPDFSigning) {
-		this.allowPDFSigning = allowPDFSigning;
-	}
-
-	public boolean isShowStatistics() {
-		return showStatistics;
-	}
-
-	public void setShowStatistics(boolean showStatistics) {
-		this.showStatistics = showStatistics;
-	}
-
 	@Override
 	public void encodeBegin(FacesContext fc) throws IOException {
 		super.encodeBegin(fc);
@@ -305,88 +256,35 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	private void showList(IWContext iwc) throws RemoteException {
-
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
 		layer.setID("userCases");
 		
-		UICasesList list = (UICasesList)iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
-		list.setType(CasesRetrievalManager.CASE_LIST_TYPE_USER);
-		list.setUserCasesPageMap(pageMap);
-		list.setAddCredentialsToExernalUrls(addCredentialsToExernalUrls);
-		list.setUsePDFDownloadColumn(usePDFDownloadColumn);
-		list.setAllowPDFSigning(allowPDFSigning);
-		list.setShowStatistics(showStatistics);
-		list.setHideEmptySection(hideEmptySection);
-		list.setPageSize(getPageSize());
-		list.setPage(getPage());
-		list.setComponentId(layer.getId());
-		list.setInstanceId(getBuilderService(iwc).getInstanceId(this));
-		list.setShowCaseNumberColumn(showCaseNumberColumn);
-		list.setShowCreationTimeInDateColumn(showCreationTimeInDateColumn);
-		list.setCaseStatusesToHide(caseStatusesToHide);
-		list.setCaseStatusesToShow(caseStatusesToShow);
-		list.setCommentsManagerIdentifier(commentsManagerIdentifier);
-		
+		UICasesList list = getCasesList(iwc, layer.getId());
 		layer.add(list);
 		
 		add(layer);
 	}
 
-	public int getPage() {
-		return page;
+	@Override
+	public boolean showCheckBox() {
+		return false;
 	}
 
-	public void setPage(int page) {
-		this.page = page;
+	@Override
+	public String getCasesProcessorType() {
+		return CasesRetrievalManager.CASE_LIST_TYPE_USER;
 	}
 
-	public int getPageSize() {
-		return pageSize;
+	@Override
+	public boolean showCheckBoxes() {
+		return showCheckBox();
 	}
 
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public boolean isShowCaseNumberColumn() {
-		return showCaseNumberColumn;
-	}
-
-	public void setShowCaseNumberColumn(boolean showCaseNumberColumn) {
-		this.showCaseNumberColumn = showCaseNumberColumn;
-	}
-
-	public boolean isShowCreationTimeInDateColumn() {
-		return showCreationTimeInDateColumn;
-	}
-
-	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
-		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
-	}
-	
-	public String getCaseStatusesToHide() {
-		return caseStatusesToHide;
-	}
-
-	public void setCaseStatusesToHide(String caseStatusesToHide) {
-		this.caseStatusesToHide = caseStatusesToHide;
-	}
-
-	public String getCaseStatusesToShow() {
-		return caseStatusesToShow;
-	}
-
-	public void setCaseStatusesToShow(String caseStatusesToShow) {
-		this.caseStatusesToShow = caseStatusesToShow;
-	}
-
-	public String getCommentsManagerIdentifier() {
-		return commentsManagerIdentifier;
-	}
-
-	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
-		this.commentsManagerIdentifier = commentsManagerIdentifier;
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<Object, Object> getUserCasesPageMap() {
+		return pageMap;
 	}
 	
 }
