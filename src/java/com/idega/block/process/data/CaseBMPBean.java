@@ -566,7 +566,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	}
 
 	public int getIndex(ICTreeNode node) {
-		return node.getNodeID();
+		return Integer.parseInt(getId());
 	}
 
 	public boolean getAllowsChildren() {
