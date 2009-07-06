@@ -47,10 +47,10 @@ public interface CasesRetrievalManager {
 	        String type, String caseManagerType);
 	
 	public abstract PagedDataCollection<CasePresentation> getCases(User user,
-	        String type, Locale locale, List<String> statusesToHide,
+	        String type, Locale locale, List<String> caseCodes, List<String> statusesToHide,
 	        List<String> statusesToShow, int startIndex, int count);
 	
-	public abstract List<Integer> getCaseIds(User user, String type,
+	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes,
 	        List<String> statusesToHide, List<String> statusesToShow);
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(

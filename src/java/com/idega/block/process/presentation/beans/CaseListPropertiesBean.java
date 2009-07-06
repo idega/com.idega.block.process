@@ -24,6 +24,7 @@ public class CaseListPropertiesBean {
 	private int pageSize;
 	private int page;
 	
+	private List<String> caseCodes;
 	private List<String> statusesToShow;
 	private List<String> statusesToHide;
 	
@@ -104,6 +105,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowCreationTimeInDateColumn(boolean showCreationTimeInDateColumn) {
 		this.showCreationTimeInDateColumn = showCreationTimeInDateColumn;
+	}
+	public List<String> getCaseCodes() {
+		return caseCodes;
+	}
+	public void setCaseCodes(List<String> caseCodes) {
+		this.caseCodes = caseCodes;
 	}
 	public List<String> getStatusesToShow() {
 		return statusesToShow;

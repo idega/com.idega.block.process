@@ -62,14 +62,14 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
+	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
 			int startIndex, int count) {
 		
 		CaseBusiness caseBusiness = getCaseBusiness();
 		try {
-			CaseCode[] caseCodes = caseBusiness.getCaseCodesForUserCasesList();
-			Collection<Case> cases = caseBusiness.getAllCasesForUserExceptCodes(user, caseCodes, startIndex, count);
-			int caseCount = caseBusiness.getNumberOfCasesForUserExceptCodes(user, caseCodes);
+			CaseCode[] codes = caseBusiness.getCaseCodesForUserCasesList();
+			Collection<Case> cases = caseBusiness.getAllCasesForUserExceptCodes(user, codes, startIndex, count);
+			int caseCount = caseBusiness.getNumberOfCasesForUserExceptCodes(user, codes);
 			return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(cases, locale), caseCount);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -79,7 +79,7 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
 	}
 	
-	public List<Integer> getCaseIds(User user, String type, List<String> statusesToHide, List<String> statusesToShow) {
+	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 

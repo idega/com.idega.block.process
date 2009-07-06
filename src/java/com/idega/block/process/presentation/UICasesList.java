@@ -55,6 +55,7 @@ public class UICasesList extends IWBaseComponent {
 	
 	private List<String> caseStatusesToShow;
 	private List<String> caseStatusesToHide;
+	private List<String> caseCodes;
 	
 	private String instanceId;
 	private String componentId;
@@ -89,6 +90,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setComponentId(getComponentId());
 		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
 		properties.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
+		properties.setCaseCodes(getCaseCodes());
 		properties.setStatusesToShow(getCaseStatusesToShow());
 		properties.setStatusesToHide(getCaseStatusesToHide());
 		properties.setCommentsManagerIdentifier(getCommentsManagerIdentifier());
@@ -128,7 +130,7 @@ public class UICasesList extends IWBaseComponent {
 		if (getCaseManagersProvider() == null) {
 			ELUtil.getInstance().autowire(this);
 		}
-		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize());
+		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(), getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize());
 	}
 	
 	public String getType() {
@@ -243,6 +245,18 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setCaseStatusesToShow(String caseStatusesToShow) {
 		this.caseStatusesToShow = StringUtil.getValuesFromString(caseStatusesToShow, CoreConstants.COMMA);
+	}
+
+	public void setCaseCodes(List<String> caseCodes) {
+		this.caseCodes = caseCodes;
+	}
+
+	public List<String> getCaseCodes() {
+		return caseCodes != null ? caseCodes : (caseCodes = new ArrayList<String>());
+	}
+
+	public void setCaseCodes(String caseCodes) {
+		this.caseCodes = StringUtil.getValuesFromString(caseCodes, CoreConstants.COMMA);
 	}
 
 	public String getInstanceId() {

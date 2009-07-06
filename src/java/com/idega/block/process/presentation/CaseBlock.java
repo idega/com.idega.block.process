@@ -55,6 +55,7 @@ public abstract class CaseBlock extends Block {
 	
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
+	private String caseCodes;
 	private String commentsManagerIdentifier;
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
@@ -178,6 +179,14 @@ public abstract class CaseBlock extends Block {
 		this.caseStatusesToShow = caseStatusesToShow;
 	}
 
+	public String getCaseCodes() {
+		return caseCodes;
+	}
+
+	public void setCaseCodes(String caseCodes) {
+		this.caseCodes = caseCodes;
+	}
+
 	public String getDateCustomValueVariable() {
 		return dateCustomValueVariable;
 	}
@@ -263,6 +272,7 @@ public abstract class CaseBlock extends Block {
 		list.setInstanceId(getBuilderService(iwc).getInstanceId(this));
 		list.setShowCaseNumberColumn(isShowCaseNumberColumn());
 		list.setShowCreationTimeInDateColumn(isShowCreationTimeInDateColumn());
+		list.setCaseCodes(getCaseCodes());
 		list.setCaseStatusesToHide(getCaseStatusesToHide());
 		list.setCaseStatusesToShow(getCaseStatusesToShow());
 		list.setCommentsManagerIdentifier(getCommentsManagerIdentifier());
