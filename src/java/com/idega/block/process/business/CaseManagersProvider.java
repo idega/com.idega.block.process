@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
  *
  * Last modified: $Date: 2009/03/17 20:56:27 $ by $Author: civilis $
  */
-@Scope("singleton")
+@Scope(BeanDefinition.SCOPE_SINGLETON)
 @Service(CaseManagersProvider.beanIdentifier)
 public class CaseManagersProvider implements ApplicationContextAware {
 	

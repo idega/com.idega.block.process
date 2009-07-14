@@ -72,18 +72,10 @@ public interface CasesRetrievalManager {
 	
 	public abstract PagedDataCollection<CasePresentation> getMyCases(User user);
 	
-//	public abstract List<String> getCaseStringVariablesValuesByVariables(
-//	        Case theCase, List<String> variablesNames);
-	
 	public abstract Long getTaskInstanceIdForTask(Case theCase, String taskName);
-	
-	// public abstract boolean setCaseVariable(Long taskInstanceId, String variableName, String
-	// variableValue);
 	
 	public abstract List<Long> getCasesIdsByProcessDefinitionName(
 	        String processDefinitionName);
 	
-	// public String submitCaseTaskInstance(Long taskInstanceId);
-	//	
-	// public Long createNewTaskForCase(Long taskInstanceId, String tokenName);
+	public abstract String resolveCaseId(IWContext iwc);
 }

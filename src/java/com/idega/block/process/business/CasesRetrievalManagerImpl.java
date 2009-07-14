@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.presentation.UserCases;
 import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
@@ -200,28 +201,19 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		}
 	}
 
-//	public List<String> getCaseStringVariablesValuesByVariables(Case theCase, List<String> variablesNames) {
-//		throw new UnsupportedOperationException("Not implemented");
-//	}
-
 	public Long getTaskInstanceIdForTask(Case theCase, String taskName) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
-
-//	public boolean setCaseVariable(Long taskInstanceId, String variableName, String variableValue) {
-//		throw new UnsupportedOperationException("Not implemented");
-//	}
 
 	public List<Long> getCasesIdsByProcessDefinitionName(String processDefinitionName) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
-//	public String submitCaseTaskInstance(Long taskInstanceId) {
-//		throw new UnsupportedOperationException("Not implemented");
-//	}
-//	
-//	public Long createNewTaskForCase(Long taskInstanceId, String tokenName) {
-//		throw new UnsupportedOperationException("Not implemented");
-//	}
-	
+	public String resolveCaseId(IWContext iwc) {
+		if (iwc == null) {
+			return null;
+		}
+		
+		return iwc.getParameter(UserCases.PARAMETER_CASE_PK);
+	}
 }
