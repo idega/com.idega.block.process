@@ -52,6 +52,7 @@ public abstract class CaseBlock extends Block {
 	private boolean allowPDFSigning = true;
 	private boolean showStatistics;
 	private boolean hideEmptySection;
+	private boolean showAttachmentStatistics;
 	
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
@@ -279,6 +280,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowCreatorColumn(isShowCreatorColumn());
 		list.setDateCustomValueVariable(getDateCustomValueVariable());
 		list.setDateCustomLabelLocalizationKey(getDateCustomLabelLocalizationKey());
+		list.setShowAttachmentStatistics(isShowAttachmentStatistics());
 		
 		return list;
 	}
@@ -286,4 +288,13 @@ public abstract class CaseBlock extends Block {
 	public abstract String getCasesProcessorType();
 	
 	public abstract Map<Object, Object> getUserCasesPageMap();
+
+	public boolean isShowAttachmentStatistics() {
+		return showAttachmentStatistics;
+	}
+
+	public void setShowAttachmentStatistics(boolean showAttachmentStatistics) {
+		this.showAttachmentStatistics = showAttachmentStatistics;
+	}
+
 }

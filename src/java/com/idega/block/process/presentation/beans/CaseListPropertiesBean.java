@@ -20,6 +20,7 @@ public class CaseListPropertiesBean {
 	private boolean showCreationTimeInDateColumn = true;
 	private boolean addCredentialsToExernalUrls;
 	private boolean showCreatorColumn = true;
+	private boolean showAttachmentStatistics;
 	
 	private int pageSize;
 	private int page;
@@ -148,6 +149,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowCreatorColumn(boolean showCreatorColumn) {
 		this.showCreatorColumn = showCreatorColumn;
+	}
+	public boolean isShowAttachmentStatistics() {
+		return showAttachmentStatistics;
+	}
+	public void setShowAttachmentStatistics(boolean showAttachmentStatistics) {
+		this.showAttachmentStatistics = showAttachmentStatistics;
 	}
 	
 }

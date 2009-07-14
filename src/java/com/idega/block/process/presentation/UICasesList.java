@@ -52,6 +52,7 @@ public class UICasesList extends IWBaseComponent {
 	private boolean showCaseNumberColumn = true;
 	private boolean showCreationTimeInDateColumn = true;
 	private boolean showCreatorColumn = true;
+	private boolean showAttachmentStatistics;
 	
 	private List<String> caseStatusesToShow;
 	private List<String> caseStatusesToHide;
@@ -97,6 +98,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowCreatorColumn(isShowCreatorColumn());
 		properties.setDateCustomValueVariable(getDateCustomValueVariable());
 		properties.setDateCustomLabelLocalizationKey(getDateCustomLabelLocalizationKey());
+		properties.setShowAttachmentStatistics(isShowAttachmentStatistics());
 		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -325,6 +327,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setDateCustomLabelLocalizationKey(String dateCustomLabelLocalizationKey) {
 		this.dateCustomLabelLocalizationKey = dateCustomLabelLocalizationKey;
+	}
+
+	public boolean isShowAttachmentStatistics() {
+		return showAttachmentStatistics;
+	}
+
+	public void setShowAttachmentStatistics(boolean showAttachmentStatistics) {
+		this.showAttachmentStatistics = showAttachmentStatistics;
 	}
 	
 }
