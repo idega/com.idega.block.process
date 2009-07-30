@@ -91,7 +91,4 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	protected Map<String, String> getCaseHandlersTypesBeanIdentifiers() {
 		return caseManagersTypesBeanIdentifiers;
 	}
-	
-	
-	
 }
