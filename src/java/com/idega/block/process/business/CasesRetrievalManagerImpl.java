@@ -17,11 +17,13 @@ import org.springframework.stereotype.Service;
 
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.data.CaseHome;
 import com.idega.block.process.presentation.UserCases;
 import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.data.IDOLookup;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
@@ -215,5 +217,22 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		}
 		
 		return iwc.getParameter(UserCases.PARAMETER_CASE_PK);
+	}
+
+	public User getCaseOwner(Object entityId) {
+		if (entityId == null || entityId instanceof Long) {
+			return null;
+		}
+		
+		try {
+			CaseHome caseHome = (CaseHome) IDOLookup.getHome(Case.class);
+			Case theCase = caseHome.findByPrimaryKey(entityId);
+			return theCase == null ? null : theCase.getOwner();
+		} catch(FinderException e) {
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

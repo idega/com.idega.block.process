@@ -78,4 +78,11 @@ public interface CasesRetrievalManager {
 	        String processDefinitionName);
 	
 	public abstract String resolveCaseId(IWContext iwc);
+	
+	/**
+	 * Returns owner of a case
+	 * @param entityId - case's or process instance's id
+	 * @return {@link User}
+	 */
+	public abstract User getCaseOwner(Object entityId);
 }
