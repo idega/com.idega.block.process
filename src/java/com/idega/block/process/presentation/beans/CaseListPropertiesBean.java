@@ -21,6 +21,7 @@ public class CaseListPropertiesBean {
 	private boolean addCredentialsToExernalUrls;
 	private boolean showCreatorColumn = true;
 	private boolean showAttachmentStatistics;
+	private boolean showOnlyCreatorInContacts;
 	
 	private int pageSize;
 	private int page;
@@ -155,6 +156,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowAttachmentStatistics(boolean showAttachmentStatistics) {
 		this.showAttachmentStatistics = showAttachmentStatistics;
+	}
+	public boolean isShowOnlyCreatorInContacts() {
+		return showOnlyCreatorInContacts;
+	}
+	public void setShowOnlyCreatorInContacts(boolean showOnlyCreatorInContacts) {
+		this.showOnlyCreatorInContacts = showOnlyCreatorInContacts;
 	}
 	
 }
