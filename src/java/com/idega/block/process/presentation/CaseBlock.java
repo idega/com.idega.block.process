@@ -54,6 +54,7 @@ public abstract class CaseBlock extends Block {
 	private boolean hideEmptySection;
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
+	private boolean onlySubscribedCases;
 	
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
@@ -283,6 +284,7 @@ public abstract class CaseBlock extends Block {
 		list.setDateCustomLabelLocalizationKey(getDateCustomLabelLocalizationKey());
 		list.setShowAttachmentStatistics(isShowAttachmentStatistics());
 		list.setShowOnlyCreatorInContacts(isShowOnlyCreatorInContacts());
+		list.setOnlySubscribedCases(isOnlySubscribedCases());
 		
 		return list;
 	}
@@ -305,6 +307,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setShowOnlyCreatorInContacts(boolean showOnlyCreatorInContacts) {
 		this.showOnlyCreatorInContacts = showOnlyCreatorInContacts;
+	}
+
+	public boolean isOnlySubscribedCases() {
+		return onlySubscribedCases;
+	}
+
+	public void setOnlySubscribedCases(boolean onlySubscribedCases) {
+		this.onlySubscribedCases = onlySubscribedCases;
 	}
 
 }

@@ -65,15 +65,27 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
-			int startIndex, int count) {
+	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
+			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases) {
 		
 		CaseBusiness caseBusiness = getCaseBusiness();
 		try {
 			CaseCode[] codes = caseBusiness.getCaseCodesForUserCasesList();
 			Collection<Case> cases = caseBusiness.getAllCasesForUserExceptCodes(user, codes, startIndex, count);
+			Collection<Case> casesToShow = null;
+			if (onlySubscribedCases) {
+				casesToShow = new ArrayList<Case>();
+				for (Case theCase : cases) {
+					Collection<User> subscribers = theCase.getSubscribers();
+					if (!ListUtil.isEmpty(subscribers) && subscribers.contains(user)) {
+						casesToShow.add(theCase);
+					}
+				}
+			} else {
+				casesToShow = cases;
+			}
 			int caseCount = caseBusiness.getNumberOfCasesForUserExceptCodes(user, codes);
-			return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(cases, locale), caseCount);
+			return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(casesToShow, locale), caseCount);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (FinderException e) {
@@ -82,7 +94,8 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
 	}
 	
-	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow) {
+	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
+			boolean onlySubscribedCases) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 

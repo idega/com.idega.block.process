@@ -54,6 +54,7 @@ public class UICasesList extends IWBaseComponent {
 	private boolean showCreatorColumn = true;
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
+	private boolean onlySubscribedCases;
 	
 	private List<String> caseStatusesToShow;
 	private List<String> caseStatusesToHide;
@@ -134,7 +135,8 @@ public class UICasesList extends IWBaseComponent {
 		if (getCaseManagersProvider() == null) {
 			ELUtil.getInstance().autowire(this);
 		}
-		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(), getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize());
+		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(),
+				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases());
 	}
 	
 	public String getType() {
@@ -345,6 +347,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setShowOnlyCreatorInContacts(boolean showOnlyCreatorInContacts) {
 		this.showOnlyCreatorInContacts = showOnlyCreatorInContacts;
+	}
+
+	public boolean isOnlySubscribedCases() {
+		return onlySubscribedCases;
+	}
+
+	public void setOnlySubscribedCases(boolean onlySubscribedCases) {
+		this.onlySubscribedCases = onlySubscribedCases;
 	}
 	
 }

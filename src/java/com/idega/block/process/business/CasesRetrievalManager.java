@@ -48,13 +48,12 @@ public interface CasesRetrievalManager {
 	
 	public abstract PagedDataCollection<CasePresentation> getCases(User user,
 	        String type, Locale locale, List<String> caseCodes, List<String> statusesToHide,
-	        List<String> statusesToShow, int startIndex, int count);
+	        List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases);
 	
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes,
-	        List<String> statusesToHide, List<String> statusesToShow);
+	        List<String> statusesToHide, List<String> statusesToShow, boolean onlySubscribedCases);
 	
-	public abstract PagedDataCollection<CasePresentation> getCasesByIds(
-	        List<Integer> ids, Locale locale);
+	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByEntities(Collection<Case> cases, Locale locale);
 	
