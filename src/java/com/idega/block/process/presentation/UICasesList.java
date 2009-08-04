@@ -102,6 +102,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setDateCustomLabelLocalizationKey(getDateCustomLabelLocalizationKey());
 		properties.setShowAttachmentStatistics(isShowAttachmentStatistics());
 		properties.setShowOnlyCreatorInContacts(isShowOnlyCreatorInContacts());
+		properties.setOnlySubscribedCases(isOnlySubscribedCases());
 		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());

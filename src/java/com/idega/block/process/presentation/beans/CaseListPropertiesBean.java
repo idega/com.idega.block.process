@@ -22,6 +22,7 @@ public class CaseListPropertiesBean {
 	private boolean showCreatorColumn = true;
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
+	private boolean onlySubscribedCases;
 	
 	private int pageSize;
 	private int page;
@@ -162,6 +163,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowOnlyCreatorInContacts(boolean showOnlyCreatorInContacts) {
 		this.showOnlyCreatorInContacts = showOnlyCreatorInContacts;
+	}
+	public boolean isOnlySubscribedCases() {
+		return onlySubscribedCases;
+	}
+	public void setOnlySubscribedCases(boolean onlySubscribedCases) {
+		this.onlySubscribedCases = onlySubscribedCases;
 	}
 	
 }
