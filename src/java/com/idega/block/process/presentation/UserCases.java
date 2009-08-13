@@ -60,6 +60,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	
 	private Set<String> hiddenCaseCodes;
 	
+	public UserCases() {
+		setHideEmptySection(Boolean.TRUE);
+	}
+	
 	@SuppressWarnings("unchecked")
 	private Map pageMap;
 	
@@ -67,22 +71,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private int iMaxNumberOfEntries = -1;
 	@SuppressWarnings("unused")
 	private int iNumberOfEntriesShown = 20;
-	
-//	private boolean addCredentialsToExernalUrls=false;
-//	
-//	private boolean usePDFDownloadColumn = true;
-//	private boolean allowPDFSigning = true;
-//	private boolean showStatistics;
-//	private boolean hideEmptySection = true;
-//	private boolean showCaseNumberColumn = true;
-//	private boolean showCreationTimeInDateColumn = true;
-//	
-//	private int page = 1;
-//	private int pageSize = 20;
-//
-//	private String caseStatusesToHide;
-//	private String caseStatusesToShow;
-//	private String commentsManagerIdentifier;
 	
 	@Override
 	protected void present(IWContext iwc) throws Exception {
