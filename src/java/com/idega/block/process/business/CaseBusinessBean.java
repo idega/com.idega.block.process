@@ -42,7 +42,6 @@ import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
-import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDOStoreException;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
@@ -1087,32 +1086,4 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		Collection<User> subscribers = theCase.getSubscribers();
 		return ListUtil.isEmpty(subscribers) ? false : subscribers.contains(user);
 	}
-
-	public boolean removeSubscriber(Object casePK, User subscriber) {
-		if (subscriber == null) {
-			return false;
-		}
-		
-		Case theCase = null;
-		try {
-			theCase = getCase(casePK);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		if (theCase == null) {
-			return false;
-		}
-		
-		try {
-			theCase.removeSubscriber(subscriber);
-		} catch (IDORemoveRelationshipException e) {
-			e.printStackTrace();
-			return false;
-		}
-		theCase.store();
-		
-		return true;
-	}
-	
-	
 }
