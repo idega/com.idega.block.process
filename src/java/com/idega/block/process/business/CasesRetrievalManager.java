@@ -11,6 +11,7 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
@@ -65,9 +66,7 @@ public interface CasesRetrievalManager {
 	
 	public abstract Long getLatestProcessDefinitionIdByProcessName(String name);
 	
-	@SuppressWarnings("unchecked")
-	public abstract PagedDataCollection<CasePresentation> getClosedCases(
-	        Collection groups);
+	public abstract PagedDataCollection<CasePresentation> getClosedCases(Collection<Group> groups);
 	
 	public abstract PagedDataCollection<CasePresentation> getMyCases(User user);
 	

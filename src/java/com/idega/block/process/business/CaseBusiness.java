@@ -333,6 +333,8 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseStatusDescription
 	 */
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) throws RemoteException;
+	
+	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) throws RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLastModifier

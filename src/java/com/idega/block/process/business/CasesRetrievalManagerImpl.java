@@ -15,9 +15,11 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.idega.block.process.IWBundleStarter;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseHome;
+import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.presentation.UserCases;
 import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.business.IBOLookup;
@@ -28,8 +30,10 @@ import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.presentation.text.Link;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.ListUtil;
+import com.idega.util.StringUtil;
 
 /**
  * Default implementation of CaseManager. 
@@ -186,11 +190,7 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		}
 		
 		if (bean.getCaseStatus() != null) {
-			try {
-				bean.setLocalizedStatus(getCaseBusiness().getLocalizedCaseStatusDescription(theCase, bean.getCaseStatus(), locale));
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+			bean.setLocalizedStatus(getLocalizedStatus(theCase, bean.getCaseStatus(), locale));
 		}
 		
 		bean.setCreated(theCase.getCreated());
@@ -198,8 +198,29 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		return bean;
 	}
 	
+	protected String getLocalizedStatus(Case theCase, CaseStatus status, Locale locale) {
+		String statusKey = status.getStatus();
+		
+		String localization = null;
+		
+		try {
+			localization = getCaseBusiness().getLocalizedCaseStatusDescription(theCase, status, locale, "is.idega.idegaweb.egov.cases");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+		if (StringUtil.isEmpty(localization) || localization.equals(statusKey)) {
+			try {
+				localization = getCaseBusiness().getLocalizedCaseStatusDescription(theCase, status, locale, IWBundleStarter.IW_BUNDLE_IDENTIFIER);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return StringUtil.isEmpty(localization) ? statusKey : localization;
+	}
 	
-	public PagedDataCollection<CasePresentation> getClosedCases(Collection groups) {
+	public PagedDataCollection<CasePresentation> getClosedCases(Collection<Group> groups) {
 		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
 	}
 	
