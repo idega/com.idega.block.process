@@ -99,7 +99,7 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 	}
 	
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases) {
+			boolean onlySubscribedCases) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 

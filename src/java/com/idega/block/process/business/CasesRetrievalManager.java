@@ -52,7 +52,7 @@ public interface CasesRetrievalManager {
 	        List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases);
 	
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes,
-	        List<String> statusesToHide, List<String> statusesToShow, boolean onlySubscribedCases);
+	        List<String> statusesToHide, List<String> statusesToShow, boolean onlySubscribedCases) throws Exception;
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 	
