@@ -402,4 +402,9 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
+	public Collection<Case> getCasesByIds(Collection<Integer> ids) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 }

@@ -242,4 +242,6 @@ public interface CaseHome extends IDOHome {
 	public void createDefaultCaseStatuses();
 
 	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException;
+	
+	public Collection<Case> getCasesByIds(Collection<Integer> ids) throws FinderException;
 }
