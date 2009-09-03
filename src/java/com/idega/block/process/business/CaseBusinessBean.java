@@ -818,7 +818,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public String getCaseSubject(Case userCase, Locale currentLocale) {
 		String subject = userCase.getSubject();
 		if (!StringUtil.isEmpty(subject) && !subject.equals(userCase.getCode())) {
-			log(Level.INFO, "Using defined subject: " + subject);
 			return subject;
 		}
 		return getLocalizedCaseDescription(userCase, currentLocale);
