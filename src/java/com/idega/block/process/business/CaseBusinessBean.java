@@ -589,7 +589,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 	}
 
-	private String getLocalizedString(String key, String defaultValue, Locale locale, String bundleIdentifier) {
+	protected String getLocalizedString(String key, String defaultValue, Locale locale, String bundleIdentifier) {
+		Logger.getLogger(CaseBusinessBean.class.getName()).log(Level.WARNING, "Getting localized string: " + key + ", default value: " + defaultValue +
+				", locale: " + locale + ", bundle identifier: " + bundleIdentifier);
 		return getIWMainApplication().getBundle(bundleIdentifier).getResourceBundle(locale).getLocalizedString(locale, key, defaultValue);
 	}
 	
@@ -817,10 +819,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 */
 	public String getCaseSubject(Case userCase, Locale currentLocale) {
 		String subject = userCase.getSubject();
-		if(subject!=null){
+		if (!StringUtil.isEmpty(subject) && !subject.equals(userCase.getCode())) {
+			log(Level.INFO, "Using defined subject: " + subject);
 			return subject;
 		}
-		return getLocalizedCaseDescription(userCase,currentLocale);
+		return getLocalizedCaseDescription(userCase, currentLocale);
 	}
 
 	/**
