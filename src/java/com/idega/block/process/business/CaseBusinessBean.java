@@ -590,8 +590,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	protected String getLocalizedString(String key, String defaultValue, Locale locale, String bundleIdentifier) {
-		Logger.getLogger(CaseBusinessBean.class.getName()).log(Level.WARNING, "Getting localized string: " + key + ", default value: " + defaultValue +
-				", locale: " + locale + ", bundle identifier: " + bundleIdentifier);
 		return getIWMainApplication().getBundle(bundleIdentifier).getResourceBundle(locale).getLocalizedString(locale, key, defaultValue);
 	}
 	
