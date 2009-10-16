@@ -8,7 +8,7 @@ public interface CasesSearchResultsHolder {
 
 	public static final String SPRING_BEAN_IDENTIFIER = "casesSearchResultsHolder";
 	
-	public void setSearchResults(String id, Collection<CasePresentation> cases);
+	public void setSearchResults(String id, Collection<CasePresentation> cases, CasesSearchCriteriaBean criteria);
 	
 	public Integer getNextCaseId(String id, Integer currentId, String processDefinitionName);
 	
@@ -24,4 +24,5 @@ public interface CasesSearchResultsHolder {
 	
 	public Collection<CasePresentation> getSearchResults(String id);
 	
+	public CasesSearchCriteriaBean getSearchCriteria(String id);
 }
