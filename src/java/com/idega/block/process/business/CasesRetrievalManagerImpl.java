@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.FinderException;
 import javax.faces.component.UIComponent;
@@ -45,6 +47,8 @@ import com.idega.util.StringUtil;
 @Service(CasesRetrievalManagerImpl.beanIdentifier)
 public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 
+	private static final Logger LOGGER = Logger.getLogger(CasesRetrievalManagerImpl.class.getName());
+	
 	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
 
@@ -159,8 +163,17 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		List<CasePresentation> beans = new ArrayList<CasePresentation>(cases.size());
 		for (Iterator<? extends Case> iterator = cases.iterator(); iterator.hasNext();) {
 			Case caze = iterator.next();
-			CasePresentation bean = convertToPresentation(caze, null, locale);
-			beans.add(bean);
+			
+			CasePresentation bean = null;
+			try {
+				bean = convertToPresentation(caze, null, locale);
+			} catch (Exception e) {
+				LOGGER.log(Level.WARNING, "Error while converting case " + caze + " to " + CasePresentation.class, e);
+			}
+			
+			if (bean != null) {
+				beans.add(bean);
+			}
 		}
 		
 		return beans;
