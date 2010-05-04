@@ -15,54 +15,69 @@ import com.idega.util.CoreConstants;
 public enum VariableDataType {
 
 	DATE {
+		@Override
 		public String toString() {
 			return date;
 		}
 	},
 	STRING {
+		@Override
 		public String toString() {
 			return string;
 		}
 	},
 	LIST {
+		@Override
 		public String toString() {
 			return list;
 		}
 	},
 	FILE {
+		@Override
 		public String toString() {
 			return file;
 		}
 	},
 	FILES {
+		@Override
 		public String toString() {
 			return files;
 		}
 	},
 	OBJLIST {
+		@Override
 		public String toString() {
 			return objectList;
 		}
 	},
 	UNSPECIFIED {
+		@Override
 		public String toString() {
 			return unspecified;
 		}
 	},
 	SYSTEM {
+		@Override
 		public String toString() {
 			return system;
 		}
+	},
+	LONG {
+		@Override
+		public String toString() {
+			return longType;
+		}
 	};
 
-	private static final String date = "date";
-	private static final String string = "string";
-	private static final String list = "list";
-	private static final String file = "file";
-	private static final String files = "files";
-	private static final String unspecified = CoreConstants.EMPTY;
-	private static final String objectList = "objlist";
-	private static final String system = "system";
+	private static final String date = "date",
+								string = "string",
+								list = "list",
+								file = "file",
+								files = "files",
+								unspecified = CoreConstants.EMPTY,
+								objectList = "objlist",
+								system = "system",
+								longType = "long";
 
 	public static Set<String> getAllTypesInStrings() {
 
@@ -87,5 +102,6 @@ public enum VariableDataType {
 		return getAllDataTypesEnumsMappings().get(type);
 	}
 
+	@Override
 	public abstract String toString();
 }
