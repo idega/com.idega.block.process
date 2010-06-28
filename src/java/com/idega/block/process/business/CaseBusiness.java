@@ -4,6 +4,8 @@ package com.idega.block.process.business;
 import com.idega.presentation.IWContext;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseLog;
+
 import javax.ejb.CreateException;
 import com.idega.block.process.data.CaseStatus;
 import java.util.Map;
@@ -159,6 +161,11 @@ public interface CaseBusiness extends IBOService {
 	 */
 	public Collection getCaseLogsByCase(Case theCase) throws FinderException, RemoteException;
 
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#getLatestLogForCase
+	 */
+	public CaseLog getLatestLogForCase(Case theCase) throws FinderException;
+	
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
 	 */
