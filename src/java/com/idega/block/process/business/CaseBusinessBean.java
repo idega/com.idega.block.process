@@ -337,6 +337,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public Collection getCaseLogsByCase(Case theCase) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByCaseOrderedByDate(theCase);
 	}
+	
+	public CaseLog getLatestLogForCase(Case theCase) throws FinderException {
+		return getCaseLogHome().findLastCaseLogForCase(theCase);
+	}
 
 	public Case getCase(int caseID) throws FinderException {
 		return getCaseHome().findByPrimaryKey(new Integer(caseID));
