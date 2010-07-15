@@ -57,6 +57,8 @@ import com.idega.util.ListUtil;
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
+	private static final long serialVersionUID = -9118580756828123883L;
+	
 	public static final String TABLE_NAME = "PROC_CASE";
 	public static final String COLUMN_CASE_CODE = "CASE_CODE";
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
@@ -129,6 +131,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addIndex("IDX_PROC_CASE_6", new String[] { COLUMN_USER, COLUMN_CASE_CODE, COLUMN_CASE_STATUS });
 		addIndex("IDX_PROC_CASE_7", new String[] { COLUMN_HANDLER, COLUMN_USER });
 		addIndex("IDX_PROC_CASE_8", new String[] { COLUMN_CASE_STATUS, COLUMN_CASE_CODE, COLUMN_CREATED });
+		addIndex("IDX_PROC_CASE_9", new String[] { getIDColumnName(), COLUMN_CASE_IDENTIFIER });
 		getEntityDefinition().setBeanCachingActiveByDefault(true, 1000);
 	}
 
