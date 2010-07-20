@@ -21,6 +21,7 @@ import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 
 import com.idega.block.process.business.ProcessConstants;
+import com.idega.block.process.event.CaseModifiedEvent;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
@@ -28,6 +29,7 @@ import com.idega.data.IDOQuery;
 import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
+import com.idega.data.IDOStoreException;
 import com.idega.data.MetaDataCapable;
 import com.idega.data.UniqueIDCapable;
 import com.idega.data.query.BetweenCriteria;
@@ -44,6 +46,7 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
+import com.idega.util.expression.ELUtil;
 
 /**
  * <p>
@@ -1088,4 +1091,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return super.idoFindPKsByQuery(query);
 	}
 
+	@Override
+	public void store() throws IDOStoreException {
+		super.store();
+		
+		ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(this));
+	}
 }
