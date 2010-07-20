@@ -36,14 +36,11 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	}
 		
 	public List<CasesRetrievalManager> getCaseManagers() {
-		
 		List<CasesRetrievalManager> managers = new ArrayList<CasesRetrievalManager>(caseManagersTypesBeanIdentifiers.size());
 		
 		for (String handlerIdentifier : caseManagersTypesBeanIdentifiers.values()) {
-			
 			CasesRetrievalManager handler = (CasesRetrievalManager)getApplicationContext().getBean(handlerIdentifier);
-			
-			if(handler != null)
+			if (handler != null)
 				managers.add(handler);
 		}
 		
@@ -68,15 +65,14 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	
 	@Autowired(required=false)
 	public void setCaseManagers(List<CasesRetrievalManager> caseManagers) {
-		
-		for (CasesRetrievalManager caseManager : caseManagers) {
-		
+		for (CasesRetrievalManager caseManager: caseManagers) {
 			String beanIdentifier = caseManager.getBeanIdentifier();
 			
-			if(beanIdentifier != null)
-				getCaseHandlersTypesBeanIdentifiers().put(caseManager.getType(), beanIdentifier);
+			if (beanIdentifier == null)
+				Logger.getLogger(getClass().getName()).log(Level.WARNING, "No bean identifier provided for case handler. Skipping. Class name: " +
+						caseManager.getClass().getName());
 			else
-				Logger.getLogger(getClass().getName()).log(Level.WARNING, "No bean identifier provided for case handler. Skipping. Class name: "+caseManager.getClass().getName());
+				getCaseHandlersTypesBeanIdentifiers().put(caseManager.getType(), beanIdentifier);
 		}
 	}
 

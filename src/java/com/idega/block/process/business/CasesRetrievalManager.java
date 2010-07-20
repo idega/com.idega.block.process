@@ -44,8 +44,7 @@ public interface CasesRetrievalManager {
 	
 	public abstract String getProcessIdentifier(Case theCase);
 	
-	public abstract UIComponent getView(IWContext iwc, Integer caseId,
-	        String type, String caseManagerType);
+	public abstract UIComponent getView(IWContext iwc, Integer caseId, String type, String caseManagerType);
 	
 	public abstract PagedDataCollection<CasePresentation> getCases(User user,
 	        String type, Locale locale, List<String> caseCodes, List<String> statusesToHide,
@@ -72,8 +71,7 @@ public interface CasesRetrievalManager {
 	
 	public abstract Long getTaskInstanceIdForTask(Case theCase, String taskName);
 	
-	public abstract List<Long> getCasesIdsByProcessDefinitionName(
-	        String processDefinitionName);
+	public abstract List<Long> getCasesIdsByProcessDefinitionName(String processDefinitionName);
 	
 	public abstract String resolveCaseId(IWContext iwc);
 	
