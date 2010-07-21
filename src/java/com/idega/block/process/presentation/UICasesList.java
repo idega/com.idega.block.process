@@ -67,7 +67,7 @@ public class UICasesList extends IWBaseComponent {
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
 	
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings("rawtypes")
 	private Map userCasesPageMap;
 
 	@Override
@@ -130,6 +130,7 @@ public class UICasesList extends IWBaseComponent {
 		if (casesSearcher != null && casesSearcher.isSearchResultStored(id)) {
 			setType(ProcessConstants.CASE_LIST_TYPE_SEARCH_RESULTS);
 			setPageSize(0);
+			setPage(1);
 			return new PagedDataCollection<CasePresentation>(casesSearcher.getSearchResults(id));
 		}
 		
@@ -220,13 +221,12 @@ public class UICasesList extends IWBaseComponent {
 		this.addCredentialsToExernalUrls = addCredentialsToExernalUrls;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Map getUserCasesPageMap() {
 		return userCasesPageMap;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setUserCasesPageMap(Map userCasesPageMap) {
+	public void setUserCasesPageMap(@SuppressWarnings("rawtypes") Map userCasesPageMap) {
 		this.userCasesPageMap = userCasesPageMap;
 	}
 	
