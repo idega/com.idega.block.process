@@ -10,6 +10,7 @@ public class CaseListPropertiesBean {
 	private String commentsManagerIdentifier;
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
+	private String criteriasId;
 	
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
@@ -26,6 +27,7 @@ public class CaseListPropertiesBean {
 	
 	private int pageSize;
 	private int page;
+	private int foundResults;
 	
 	private List<String> caseCodes;
 	private List<String> statusesToShow;
@@ -170,5 +172,16 @@ public class CaseListPropertiesBean {
 	public void setOnlySubscribedCases(boolean onlySubscribedCases) {
 		this.onlySubscribedCases = onlySubscribedCases;
 	}
-	
+	public String getCriteriasId() {
+		return criteriasId;
+	}
+	public void setCriteriasId(String criteriasId) {
+		this.criteriasId = criteriasId;
+	}
+	public int getFoundResults() {
+		return foundResults;
+	}
+	public void setFoundResults(int foundResults) {
+		this.foundResults = foundResults;
+	}
 }
