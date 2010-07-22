@@ -2,15 +2,17 @@ package com.idega.block.process.presentation;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.idega.block.process.business.CasesRetrievalManager;
 import com.idega.block.process.business.CaseManagersProvider;
+import com.idega.block.process.business.CasesRetrievalManager;
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.presentation.beans.CaseListPropertiesBean;
 import com.idega.block.process.presentation.beans.CasePresentation;
@@ -22,6 +24,7 @@ import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.util.CoreConstants;
+import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
 import com.idega.util.expression.ELUtil;
 
@@ -63,6 +66,7 @@ public class UICasesList extends IWBaseComponent {
 	private String instanceId;
 	private String componentId;
 	private String commentsManagerIdentifier;
+	private String searchResultsId;
 	
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
@@ -127,11 +131,30 @@ public class UICasesList extends IWBaseComponent {
 			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
 		} catch(Exception e) {}
 		String id = iwc.getRequestURI();
-		if (casesSearcher != null && casesSearcher.isSearchResultStored(id)) {
+		if (casesSearcher != null && (casesSearcher.isSearchResultStored(id) || casesSearcher.isSearchResultStored(getSearchResultsId()))) {
 			setType(ProcessConstants.CASE_LIST_TYPE_SEARCH_RESULTS);
-			setPageSize(0);
-			setPage(1);
-			return new PagedDataCollection<CasePresentation>(casesSearcher.getSearchResults(id));
+			if (getPageSize() <= 0) {
+				setPageSize(20);
+			}
+			if (getPage() <= 0) {
+				setPage(1);
+			}
+			Collection<CasePresentation> cases = casesSearcher.getSearchResults(id);
+			if (ListUtil.isEmpty(cases) && !StringUtil.isEmpty(getSearchResultsId())) {
+				cases = casesSearcher.getSearchResults(getSearchResultsId());
+			}
+			if (cases == null) {
+				return null;
+			}
+			
+			PagedDataCollection<CasePresentation> casesList = new PagedDataCollection<CasePresentation>(cases);
+			int startIndex = (getPage() - 1) * getPageSize();
+			if (startIndex + getPageSize() < casesList.getTotalCount()) {
+				casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, (startIndex + getPageSize())));
+			} else if (startIndex > 0) {
+				casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, casesList.getCollection().size()));
+			}
+			return casesList;
 		}
 		
 		if (getCaseManagersProvider() == null) {
@@ -356,6 +379,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setOnlySubscribedCases(boolean onlySubscribedCases) {
 		this.onlySubscribedCases = onlySubscribedCases;
+	}
+
+	public String getSearchResultsId() {
+		return searchResultsId;
+	}
+
+	public void setSearchResultsId(String searchResultsId) {
+		this.searchResultsId = searchResultsId;
 	}
 	
 }

@@ -62,6 +62,7 @@ public abstract class CaseBlock extends Block {
 	private String commentsManagerIdentifier;
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
+	private String searchResultsId;
 	/* Cases list parameters */
 	
 	@Override
@@ -285,6 +286,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowAttachmentStatistics(isShowAttachmentStatistics());
 		list.setShowOnlyCreatorInContacts(isShowOnlyCreatorInContacts());
 		list.setOnlySubscribedCases(isOnlySubscribedCases());
+		list.setSearchResultsId(getSearchResultsId());
 		
 		return list;
 	}
@@ -317,4 +319,11 @@ public abstract class CaseBlock extends Block {
 		this.onlySubscribedCases = onlySubscribedCases;
 	}
 
+	public String getSearchResultsId() {
+		return searchResultsId;
+	}
+
+	public void setSearchResultsId(String searchResultsId) {
+		this.searchResultsId = searchResultsId;
+	}
 }
