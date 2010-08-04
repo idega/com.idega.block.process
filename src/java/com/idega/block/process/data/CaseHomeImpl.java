@@ -333,17 +333,25 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return this.findByPrimaryKey(pk);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases);
+		this.idoCheckInPooledEntity(entity);
+		return ids;
+	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<Case> findByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 		
-		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases);
-		this.idoCheckInPooledEntity(entity);
+		Collection<Integer> ids = findIDsByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException {
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
