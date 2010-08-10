@@ -220,6 +220,10 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		bean.setCode(theCase.getCode());
 		return bean;
 	}
+
+	protected String getLocalizedStatus(Case theCase, CaseStatus status, Locale locale) {
+		return getLocalizedStatus(theCase, status, getCaseBusiness(), locale);
+	}
 	
 	protected String getLocalizedStatus(Case theCase, CaseStatus status, CaseBusiness business, Locale locale) {
 		String statusKey = status.getStatus();
