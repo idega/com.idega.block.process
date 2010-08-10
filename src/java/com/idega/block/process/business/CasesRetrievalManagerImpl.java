@@ -184,6 +184,16 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 			bean = new CasePresentation();
 		}
 		
+		CaseCode code = theCase.getCaseCode();
+		
+		CaseBusiness business;
+		try {
+			business = CaseCodeManager.getInstance().getCaseBusinessOrDefault(code, IWMainApplication.getDefaultIWApplicationContext());
+		}
+		catch (IBOLookupException ile) {
+			business = getCaseBusiness();
+		}
+		
 		bean.setPrimaryKey(theCase.getPrimaryKey() instanceof Integer ? (Integer) theCase.getPrimaryKey() : Integer.valueOf(theCase.getPrimaryKey().toString()));
 		bean.setId(theCase.getId());
 		bean.setUrl(theCase.getUrl());
@@ -192,7 +202,7 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		bean.setExternalId(theCase.getExternalId());
 		bean.setCaseIdentifier(theCase.getCaseIdentifier());
 		try {
-			bean.setSubject(getCaseBusiness().getCaseSubject(theCase, locale));
+			bean.setSubject(business.getCaseSubject(theCase, locale));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -203,7 +213,7 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		}
 		
 		if (bean.getCaseStatus() != null) {
-			bean.setLocalizedStatus(getLocalizedStatus(theCase, bean.getCaseStatus(), locale));
+			bean.setLocalizedStatus(getLocalizedStatus(theCase, bean.getCaseStatus(), business, locale));
 		}
 		
 		bean.setCreated(theCase.getCreated());
@@ -211,20 +221,28 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		return bean;
 	}
 	
-	protected String getLocalizedStatus(Case theCase, CaseStatus status, Locale locale) {
+	protected String getLocalizedStatus(Case theCase, CaseStatus status, CaseBusiness business, Locale locale) {
 		String statusKey = status.getStatus();
 		
 		String localization = null;
-		
+
 		try {
-			localization = getCaseBusiness().getLocalizedCaseStatusDescription(theCase, status, locale, "is.idega.idegaweb.egov.cases");
+			localization = business.getLocalizedCaseStatusDescription(theCase, status, locale);
 		} catch (RemoteException e) {
 			e.printStackTrace();
+		}
+
+		if (StringUtil.isEmpty(localization) || localization.equals(statusKey)) {
+			try {
+				localization = business.getLocalizedCaseStatusDescription(theCase, status, locale, "is.idega.idegaweb.egov.cases");
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if (StringUtil.isEmpty(localization) || localization.equals(statusKey)) {
 			try {
-				localization = getCaseBusiness().getLocalizedCaseStatusDescription(theCase, status, locale, IWBundleStarter.IW_BUNDLE_IDENTIFIER);
+				localization = business.getLocalizedCaseStatusDescription(theCase, status, locale, IWBundleStarter.IW_BUNDLE_IDENTIFIER);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
