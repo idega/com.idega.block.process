@@ -16,6 +16,7 @@ import com.idega.block.process.business.CasesRetrievalManager;
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.presentation.beans.CaseListPropertiesBean;
 import com.idega.block.process.presentation.beans.CasePresentation;
+import com.idega.block.process.presentation.beans.CasesSearchCriteriaBean;
 import com.idega.block.process.presentation.beans.CasesSearchResultsHolder;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
 import com.idega.core.builder.business.BuilderServiceFactory;
@@ -139,11 +140,17 @@ public class UICasesList extends IWBaseComponent {
 			if (getPage() <= 0) {
 				setPage(1);
 			}
+			
 			Collection<CasePresentation> cases = casesSearcher.getSearchResults(id);
 			if (ListUtil.isEmpty(cases) && !StringUtil.isEmpty(getSearchResultsId())) {
 				cases = casesSearcher.getSearchResults(getSearchResultsId());
 			}
-			if (cases == null) {
+			CasesSearchCriteriaBean criterias = casesSearcher.getSearchCriteria(id);
+			criterias = criterias == null ? casesSearcher.getSearchCriteria(getSearchResultsId()) : criterias;
+			if (ListUtil.isEmpty(cases) || (criterias != null && !criterias.isAllDataLoaded())) {
+				cases = getReLoadedCases(criterias);
+			}
+			if (ListUtil.isEmpty(cases)) {
 				return null;
 			}
 			
@@ -157,11 +164,17 @@ public class UICasesList extends IWBaseComponent {
 			return casesList;
 		}
 		
-		if (getCaseManagersProvider() == null) {
-			ELUtil.getInstance().autowire(this);
-		}
 		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(),
 				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases());
+	}
+	
+	private Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
+		try {
+			return getCaseManagersProvider().getCaseManager().getReLoadedCases(criterias);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public String getType() {
@@ -193,6 +206,9 @@ public class UICasesList extends IWBaseComponent {
 	}
 
 	public CaseManagersProvider getCaseManagersProvider() {
+		if (caseManagersProvider == null) {
+			ELUtil.getInstance().autowire(this);
+		}
 		return caseManagersProvider;
 	}
 

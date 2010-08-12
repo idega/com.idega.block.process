@@ -16,8 +16,7 @@ public interface GeneralCasesListBuilder {
 	
 	public abstract UIComponent getCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, CaseListPropertiesBean properties);
 		
-	@SuppressWarnings("unchecked")
-	public abstract UIComponent getUserCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, Map pages, CaseListPropertiesBean properties);
+	public abstract UIComponent getUserCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, @SuppressWarnings("rawtypes") Map pages, CaseListPropertiesBean properties);
 
 	public abstract UIComponent getCaseManagerView(IWContext iwc, Integer caseId, String type);
 	

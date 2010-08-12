@@ -9,6 +9,7 @@ import javax.faces.component.UIComponent;
 
 import com.idega.block.process.data.Case;
 import com.idega.block.process.presentation.beans.CasePresentation;
+import com.idega.block.process.presentation.beans.CasesSearchCriteriaBean;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.user.data.Group;
@@ -81,4 +82,6 @@ public interface CasesRetrievalManager {
 	 * @return {@link User}
 	 */
 	public abstract User getCaseOwner(Object entityId);
+	
+	public abstract Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) throws Exception;
 }

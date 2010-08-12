@@ -29,6 +29,8 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private IWTimestamp dateFrom;
 	private IWTimestamp dateTo;
 	
+	private boolean allDataLoaded = Boolean.TRUE;
+	
 	private List<AdvancedProperty> sortingOptions;
 	
 	public void setCaseNumber(String caseNumber) {
@@ -153,5 +155,13 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	public void setSortingOptions(List<AdvancedProperty> sortingOptions) {
 		this.sortingOptions = sortingOptions;
+	}
+	
+	public boolean isAllDataLoaded() {
+		return allDataLoaded;
+	}
+	
+	public void setAllDataLoaded(boolean allDataLoaded) {
+		this.allDataLoaded = allDataLoaded;
 	}
 }

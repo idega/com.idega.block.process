@@ -24,6 +24,7 @@ import com.idega.block.process.data.CaseHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.presentation.UserCases;
 import com.idega.block.process.presentation.beans.CasePresentation;
+import com.idega.block.process.presentation.beans.CasesSearchCriteriaBean;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -303,5 +304,9 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 		}
 		
 		return null;
+	}
+
+	public Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
+		throw new UnsupportedOperationException("Not implemented");
 	}
 }
