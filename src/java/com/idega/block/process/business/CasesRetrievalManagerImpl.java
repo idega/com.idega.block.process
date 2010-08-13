@@ -7,13 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.ejb.FinderException;
 import javax.faces.component.UIComponent;
 
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,14 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseHome;
 import com.idega.block.process.data.CaseStatus;
+import com.idega.block.process.event.CaseModifiedEvent;
 import com.idega.block.process.presentation.UserCases;
 import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.block.process.presentation.beans.CasesSearchCriteriaBean;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.core.business.DefaultSpringBean;
 import com.idega.data.IDOLookup;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
@@ -46,13 +49,13 @@ import com.idega.util.StringUtil;
  */
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 @Service(CasesRetrievalManagerImpl.beanIdentifier)
-public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
+public class CasesRetrievalManagerImpl extends DefaultSpringBean implements CasesRetrievalManager, ApplicationListener {
 
-	private static final Logger LOGGER = Logger.getLogger(CasesRetrievalManagerImpl.class.getName());
-	
 	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
 
+	protected static final String CASES_LIST_IDS_CACHE = "casesListIdsCache";
+	
 	public String getBeanIdentifier() {
 		return beanIdentifier;
 	}
@@ -169,7 +172,7 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 			try {
 				bean = convertToPresentation(caze, null, locale);
 			} catch (Exception e) {
-				LOGGER.log(Level.WARNING, "Error while converting case " + caze + " to " + CasePresentation.class, e);
+				getLogger().log(Level.WARNING, "Error while converting case " + caze + " to " + CasePresentation.class, e);
 			}
 			
 			if (bean != null) {
@@ -308,5 +311,54 @@ public class CasesRetrievalManagerImpl implements CasesRetrievalManager {
 
 	public Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
 		throw new UnsupportedOperationException("Not implemented");
+	}
+	
+	private Map<String, List<Integer>> getCache() {
+		return getCache(CASES_LIST_IDS_CACHE, 60 * 30);
+	}
+	
+	private String getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
+			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes) {
+		
+		return new StringBuffer().append(user == null ? "-1" : user.getId()).append(type == null ? "-" : type).append(caseCodes).append(statusesToHide)
+				.append(statusesToShow).append(onlySubscribedCases).append(roles).append(groups).append(codes).toString();
+	}
+	
+	protected List<Integer> getCachedIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
+			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes) {
+		
+		Map<String, List<Integer>> cache = getCache();
+		if (cache == null) {
+			return null;
+		}
+		
+		String key = getCacheKey(user, type, caseCodes, caseStatusesToHide, caseStatusesToShow, onlySubscribedCases, roles,	groups, codes);
+		return cache.get(key);
+	}
+	
+	protected void putIdsToCache(List<Integer> ids, User user, String type, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
+			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes) {
+		
+		Map<String, List<Integer>> cache = getCache();
+		if (cache == null) {
+			return;
+		}
+		
+		String key = getCacheKey(user, type, caseCodes, caseStatusesToHide, caseStatusesToShow, onlySubscribedCases, roles,	groups, codes);
+		cache.put(key, ids);
+	}
+
+	public void onApplicationEvent(ApplicationEvent event) {
+		if (event instanceof CaseModifiedEvent) {
+			Thread cacheClearer = new Thread(new Runnable() {
+				public void run() {
+					Map<String, List<Integer>> cache = getCache();
+					if (cache != null && !cache.isEmpty()) {
+						cache.clear();
+					}
+				}
+			});
+			cacheClearer.start();
+		}
 	}
 }
