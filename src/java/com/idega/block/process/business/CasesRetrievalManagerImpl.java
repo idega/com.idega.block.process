@@ -353,7 +353,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Thread cacheClearer = new Thread(new Runnable() {
 				public void run() {
 					Map<String, List<Integer>> cache = getCache();
-					if (cache != null && !cache.isEmpty()) {
+					if (cache != null) {
 						cache.clear();
 					}
 				}
