@@ -1095,6 +1095,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public void store() throws IDOStoreException {
 		super.store();
 		
-		ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(this));
+		try {
+			ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(this));
+		} catch (Exception e) {}
 	}
 }
