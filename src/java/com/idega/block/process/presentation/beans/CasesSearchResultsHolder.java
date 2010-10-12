@@ -1,6 +1,7 @@
 package com.idega.block.process.presentation.beans;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.idega.io.MemoryFileBuffer;
 
@@ -27,4 +28,6 @@ public interface CasesSearchResultsHolder {
 	public Collection<CasePresentation> getSearchResults(String id);
 	
 	public CasesSearchCriteriaBean getSearchCriteria(String id);
+	
+	public void concatExternalData(String id, List<CasePresentation> externalData);
 }

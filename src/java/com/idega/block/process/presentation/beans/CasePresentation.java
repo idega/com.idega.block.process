@@ -5,12 +5,14 @@ package com.idega.block.process.presentation.beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.data.CaseStatus;
+import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOLookup;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
@@ -62,6 +64,8 @@ public class CasePresentation implements Serializable {
 	private boolean bpm = false;
 	
 	private String processName;
+	
+	private List<AdvancedProperty> externalData;
 	
 	public Integer getPrimaryKey() {
 		return primaryKey;
@@ -236,6 +240,14 @@ public class CasePresentation implements Serializable {
 		}
 		
 		return caseStatus.getStatus();
+	}
+
+	public List<AdvancedProperty> getExternalData() {
+		return externalData;
+	}
+
+	public void setExternalData(List<AdvancedProperty> externalData) {
+		this.externalData = externalData;
 	}
 
 	@Override
