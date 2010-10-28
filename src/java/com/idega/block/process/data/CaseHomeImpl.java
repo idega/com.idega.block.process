@@ -374,7 +374,8 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 					caseBMPBean.ejbHomeGetCaseStatusPending(),
 					caseBMPBean.ejbHomeGetCaseStatusGrouped(),
 					caseBMPBean.ejbHomeGetCaseStatusCreated(),
-					caseBMPBean.ejbHomeGetCaseStatusFinished()
+					caseBMPBean.ejbHomeGetCaseStatusFinished(),
+					caseBMPBean.ejbHomeGetCaseStatusClosed()
 			}; 
 			
 			CaseStatusHome cshome = (CaseStatusHome) IDOLookup.getHome(CaseStatus.class);

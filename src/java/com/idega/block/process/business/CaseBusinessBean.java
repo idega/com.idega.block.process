@@ -89,6 +89,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_WAITING_KEY;
 	private String CASE_STATUS_CREATED_KEY;
 	private String CASE_STATUS_FINISHED_KEY;
+	private String CASE_STATUS_CLOSED_KEY;
 	
 	private Map _statusMap;
 
@@ -119,6 +120,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		this.CASE_STATUS_WAITING_KEY = this.getCaseHome().getCaseStatusWaiting();
 		this.CASE_STATUS_CREATED_KEY = this.getCaseHome().getCaseStatusCreated();
 		this.CASE_STATUS_FINISHED_KEY = this.getCaseHome().getCaseStatusFinished();
+		this.CASE_STATUS_CLOSED_KEY = this.getCaseHome().getCaseStatusClosed();
 	}
 	
 	private CaseStatus getCaseStatusFromMap(String caseStatus) {
