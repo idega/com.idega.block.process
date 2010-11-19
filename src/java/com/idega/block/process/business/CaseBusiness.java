@@ -1,24 +1,24 @@
 package com.idega.block.process.business;
 
-
-import com.idega.presentation.IWContext;
-import com.idega.idegaweb.IWResourceBundle;
-import com.idega.block.process.data.Case;
-import com.idega.block.process.data.CaseLog;
-
-import javax.ejb.CreateException;
-import com.idega.block.process.data.CaseStatus;
-import java.util.Map;
-import com.idega.block.process.data.CaseCode;
-import com.idega.user.data.User;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import com.idega.idegaweb.IWBundle;
-import com.idega.user.data.Group;
-import java.util.Locale;
 import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+
+import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.data.CaseLog;
+import com.idega.block.process.data.CaseStatus;
 import com.idega.business.IBOService;
+import com.idega.idegaweb.IWBundle;
+import com.idega.idegaweb.IWResourceBundle;
+import com.idega.presentation.IWContext;
+import com.idega.user.data.Group;
+import com.idega.user.data.User;
 
 public interface CaseBusiness extends IBOService {
 	/**
@@ -44,42 +44,42 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user) throws FinderException, RemoteException;
+	public Collection<Case> getAllActiveCasesForUser(User user) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException, RemoteException;
+	public Collection<Case> getAllActiveCasesForUser(User user, CaseCode code) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, String caseCode) throws FinderException, RemoteException;
+	public Collection<Case> getAllActiveCasesForUser(User user, String caseCode) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException, RemoteException;
+	public Collection<Case> getAllActiveCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllActiveCasesForUser
 	 */
-	public Collection getAllActiveCasesForUser(User user, String caseCode, String caseStatus) throws FinderException, RemoteException;
+	public Collection<Case> getAllActiveCasesForUser(User user, String caseCode, String caseStatus) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUser(User user) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForGroup
 	 */
-	public Collection getAllCasesForGroup(Group group) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForGroup(Group group) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUserExceptCodes
 	 */
-	public Collection getAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getNumberOfCasesForUserExceptCodes
@@ -89,83 +89,83 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForGroupExceptCodes
 	 */
-	public Collection getAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUserAndGroupsExceptCodes
 	 */
-	public Collection getAllCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUserAndGroupsExceptCodes(User user, Collection<Group> groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getNumberOfCasesForUserAndGroupsExceptCodes
 	 */
-	public int getNumberOfCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes) throws RemoteException;
+	public int getNumberOfCasesForUserAndGroupsExceptCodes(User user, Collection<Group> groups, CaseCode[] codes) throws RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, CaseCode code) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUser(User user, CaseCode code) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, String caseCode) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUser(User user, String caseCode) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, String caseCode, String caseStatus) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUser(User user, String caseCode, String caseStatus) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getAllCasesForUser
 	 */
-	public Collection getAllCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException, RemoteException;
+	public Collection<Case> getAllCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDates
 	 */
-	public Collection getCaseLogsByDates(Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByDates(Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseCodeAndDates
 	 */
-	public Collection getCaseLogsByCaseCodeAndDates(CaseCode caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByCaseCodeAndDates(CaseCode caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseCodeAndDates
 	 */
-	public Collection getCaseLogsByCaseCodeAndDates(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByCaseCodeAndDates(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, CaseStatus statusBefore, CaseStatus statusAfter) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, CaseStatus statusBefore, CaseStatus statusAfter) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseAndDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByCaseAndDatesAndStatusChange(CaseCode caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByCaseAndDatesAndStatusChange(CaseCode caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCaseAndDatesAndStatusChange
 	 */
-	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseLogsByCase
 	 */
-	public Collection getCaseLogsByCase(Case theCase) throws FinderException, RemoteException;
+	public Collection<CaseLog> getCaseLogsByCase(Case theCase) throws FinderException, RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLatestLogForCase
 	 */
 	public CaseLog getLatestLogForCase(Case theCase) throws FinderException;
-	
+
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
 	 */
@@ -184,12 +184,12 @@ public interface CaseBusiness extends IBOService {
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseCodes
 	 */
-	public Collection getCaseCodes() throws RemoteException;
+	public Collection<CaseCode> getCaseCodes() throws RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatuses
 	 */
-	public Collection getCaseStatuses() throws RemoteException;
+	public Collection<CaseStatus> getCaseStatuses() throws RemoteException;
 
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatus
@@ -340,7 +340,7 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseStatusDescription
 	 */
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) throws RemoteException;
-	
+
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) throws RemoteException;
 
 	/**
@@ -437,26 +437,26 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getIWResourceBundleForUser
 	 */
 	public IWResourceBundle getIWResourceBundleForUser(User user) throws RemoteException;
-	
+
 	public String[] getStatusesForOpenCases();
-	
+
 	public String[] getStatusesForClosedCases();
-	
+
 	public String[] getStatusesForMyCases();
-	
+
 	public String[] getStatusesForApprovedCases();
-	
+
 	public String[] getStatusesForRejectedCases();
-	
+
 	public CaseCode[] getCaseCodesForUserCasesList();
-	
+
 	public Collection<Case> getCasesByIds(Collection<Integer> ids);
-	
+
 	public boolean addSubscriber(Object casePK, User subscriber);
-		
+
 	public boolean isSubscribed(Object casePK, User user);
-	
+
 	public CaseStatus getCaseStatusCreated();
-	
+
 	public CaseStatus getCaseStatusFinished();
 }
