@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+
 import javax.ejb.FinderException;
 import javax.faces.component.UIComponent;
 
@@ -360,5 +361,27 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			});
 			cacheClearer.start();
 		}
+	}
+
+	@Override
+	public CasePresentation getCaseByIdLazily(Integer caseId) {
+		if (caseId == null) {
+			return null;
+		}
+		
+		Case theCase = null;
+		try {
+			theCase = getCaseBusiness().getCase(caseId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (FinderException e) {
+		}
+		if (theCase == null) {
+			return null;
+		}
+		
+		CasePresentation casePresentation = new CasePresentation(theCase);
+		casePresentation.setLocalizedStatus(getLocalizedStatus(theCase, theCase.getCaseStatus(), getCurrentLocale()));
+		return casePresentation;
 	}
 }

@@ -56,6 +56,8 @@ public interface CasesRetrievalManager {
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 	
+	public CasePresentation getCaseByIdLazily(Integer caseId);
+	
 	public abstract PagedDataCollection<CasePresentation> getCasesByEntities(Collection<Case> cases, Locale locale);
 	
 	public abstract Map<Long, String> getAllCaseProcessDefinitionsWithName();

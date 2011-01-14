@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.idega.block.process.business.CaseBusiness;
+import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOLookup;
@@ -27,45 +28,35 @@ import com.idega.util.CoreUtil;
  */
 public class CasePresentation implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 2381335679460968723L;
+
 	private Integer primaryKey;
 	
-	private User owner;
+	private User owner, handledBy;
 	
-	private String caseIdentifier;
-	
-	private String subject;
+	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName;
 	
 	private CaseStatus caseStatus;
 	
 	private Timestamp created;
 	
-	private String localizedStatus;
-	
-	private String caseManagerType;
-
-	private String code;
-	
-	private String url;
-	
-	private String id;
-	
-	private String externalId;
-	
-	private String categoryId;
-	
-	private String caseTypeName;
-
-	private boolean isPrivate = false;
-	
-	private User handledBy;
-	
-	private boolean bpm = false;
-	
-	private String processName;
+	private boolean isPrivate, bpm = false;
 	
 	private List<AdvancedProperty> externalData;
+	
+	public CasePresentation() {
+		super();
+	}
+	
+	public CasePresentation(Case theCase) {
+		this();
+		
+		primaryKey = Integer.valueOf(theCase.getId());
+		owner = theCase.getOwner();
+		caseIdentifier = theCase.getCaseIdentifier();
+		subject = theCase.getSubject();
+		caseStatus = theCase.getCaseStatus();
+	}
 	
 	public Integer getPrimaryKey() {
 		return primaryKey;
