@@ -1008,7 +1008,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public String[] getStatusesForOpenCases() {
-		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus()};
+		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus(), getCaseStatusPending().getStatus()};
 	}
 	
 	public String[] getStatusesForClosedCases() {
