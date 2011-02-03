@@ -26,6 +26,7 @@ import javax.ejb.FinderException;
 
 import com.idega.block.process.IWBundleStarter;
 import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseBMPBean;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.block.process.data.CaseHome;
@@ -1008,7 +1009,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public String[] getStatusesForOpenCases() {
-		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus(), getCaseStatusPending().getStatus()};
+		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus(), getCaseStatusPending().getStatus(),
+				CaseBMPBean.CASE_STATUS_IN_PROCESS_KEY};
 	}
 	
 	public String[] getStatusesForClosedCases() {
