@@ -33,6 +33,8 @@ public class CasesSearchCriteriaBean implements Serializable {
 	
 	private List<AdvancedProperty> sortingOptions;
 	
+	private List<Long> procInstIds;
+	
 	public void setCaseNumber(String caseNumber) {
 		this.caseNumber = caseNumber;
 	}
@@ -164,4 +166,13 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setAllDataLoaded(boolean allDataLoaded) {
 		this.allDataLoaded = allDataLoaded;
 	}
+	
+	public List<Long> getProcInstIds() {
+		return procInstIds;
+	}
+	
+	public void setProcInstIds(List<Long> procInstIds) {
+		this.procInstIds = procInstIds;
+	}
+	
 }
