@@ -63,6 +63,7 @@ public abstract class CaseBlock extends Block {
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
 	private String searchResultsId;
+	private boolean useJavascriptForPageSwitching = true;
 	/* Cases list parameters */
 	
 	@Override
@@ -287,6 +288,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowOnlyCreatorInContacts(isShowOnlyCreatorInContacts());
 		list.setOnlySubscribedCases(isOnlySubscribedCases());
 		list.setSearchResultsId(getSearchResultsId());
+		list.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
 		
 		return list;
 	}
@@ -325,5 +327,13 @@ public abstract class CaseBlock extends Block {
 
 	public void setSearchResultsId(String searchResultsId) {
 		this.searchResultsId = searchResultsId;
+	}
+	
+	public boolean getUseJavascriptForPageSwitching() {
+		return this.useJavascriptForPageSwitching;
+	}
+	
+	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
+		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
 }

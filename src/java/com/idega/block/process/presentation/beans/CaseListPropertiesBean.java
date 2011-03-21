@@ -24,6 +24,7 @@ public class CaseListPropertiesBean {
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
+	private boolean useJavascriptForPageSwitching = true;
 	
 	private int pageSize;
 	private int page;
@@ -183,5 +184,13 @@ public class CaseListPropertiesBean {
 	}
 	public void setFoundResults(int foundResults) {
 		this.foundResults = foundResults;
+	}
+	
+	public boolean getUseJavascriptForPageSwitching() {
+		return this.useJavascriptForPageSwitching;
+	}
+	
+	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
+		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
 }
