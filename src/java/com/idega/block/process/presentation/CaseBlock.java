@@ -55,6 +55,7 @@ public abstract class CaseBlock extends Block {
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
+	private boolean showLegend;
 	
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
@@ -289,6 +290,7 @@ public abstract class CaseBlock extends Block {
 		list.setOnlySubscribedCases(isOnlySubscribedCases());
 		list.setSearchResultsId(getSearchResultsId());
 		list.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
+		list.setShowLegend(isShowLegend());
 		
 		return list;
 	}
@@ -336,4 +338,13 @@ public abstract class CaseBlock extends Block {
 	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
 		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
+
+	public boolean isShowLegend() {
+		return showLegend;
+	}
+
+	public void setShowLegend(boolean showLegend) {
+		this.showLegend = showLegend;
+	}
+
 }

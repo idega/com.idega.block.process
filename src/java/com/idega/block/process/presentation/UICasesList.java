@@ -61,6 +61,7 @@ public class UICasesList extends IWBaseComponent {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
+	private boolean showLegend;
 
 	
 	private List<String> caseStatusesToShow;
@@ -434,4 +435,13 @@ public class UICasesList extends IWBaseComponent {
 	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
 		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
+
+	public boolean isShowLegend() {
+		return showLegend;
+	}
+
+	public void setShowLegend(boolean showLegend) {
+		this.showLegend = showLegend;
+	}
+	
 }
