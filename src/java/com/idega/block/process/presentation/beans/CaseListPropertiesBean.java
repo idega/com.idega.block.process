@@ -25,6 +25,7 @@ public class CaseListPropertiesBean {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
+	private boolean showLogExportButton;
 	
 	private int pageSize;
 	private int page;
@@ -192,5 +193,12 @@ public class CaseListPropertiesBean {
 	
 	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
 		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
+	}
+	
+	public boolean isShowLogExportButton() {
+		return showLogExportButton;
+	}
+	public void setShowLogExportButton(boolean showLogExportButton) {
+		this.showLogExportButton = showLogExportButton;
 	}
 }
