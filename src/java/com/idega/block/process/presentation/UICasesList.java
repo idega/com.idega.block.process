@@ -62,8 +62,17 @@ public class UICasesList extends IWBaseComponent {
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLegend;
+	private boolean ShowLogExportButton;
 
 	
+	public boolean isShowLogExportButton() {
+		return ShowLogExportButton;
+	}
+
+	public void setShowLogExportButton(boolean showLogExportButton) {
+		ShowLogExportButton = showLogExportButton;
+	}
+
 	private List<String> caseStatusesToShow;
 	private List<String> caseStatusesToHide;
 	private List<String> caseCodes;
@@ -113,6 +122,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowOnlyCreatorInContacts(isShowOnlyCreatorInContacts());
 		properties.setOnlySubscribedCases(isOnlySubscribedCases());
 		properties.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
+		properties.setShowLogExportButton(isShowLogExportButton());
 		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());

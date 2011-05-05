@@ -56,6 +56,7 @@ public abstract class CaseBlock extends Block {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean showLegend;
+	private boolean showLogExportButton;
 	
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
@@ -291,6 +292,7 @@ public abstract class CaseBlock extends Block {
 		list.setSearchResultsId(getSearchResultsId());
 		list.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
 		list.setShowLegend(isShowLegend());
+		list.setShowLogExportButton(isShowLogExportButton());
 		
 		return list;
 	}
@@ -347,4 +349,13 @@ public abstract class CaseBlock extends Block {
 		this.showLegend = showLegend;
 	}
 
+	public boolean isShowLogExportButton() {
+		return showLogExportButton;
+	}
+
+	public void setShowLogExportButton(boolean showLogExportButton) {
+		this.showLogExportButton = showLogExportButton;
+	}
+
+	
 }
