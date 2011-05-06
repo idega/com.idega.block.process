@@ -199,7 +199,7 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 
 
 	@Override
-	public Collection findMessages(User user, String messageType, String caseId)
+	public Collection <Message> findMessages(User user, String messageType, String caseId)
 			throws FinderException, RemoteException {
 		return getMessageHome(messageType).findMessages(user, caseId);
 	}

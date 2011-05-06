@@ -99,7 +99,7 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#findMessages
 	 */
-	public Collection findMessages(User user, String messageType, String CaseId)
+	public Collection <Message> findMessages(User user, String messageType, String CaseId)
 	throws FinderException, java.rmi.RemoteException;
 
 	/**
