@@ -79,7 +79,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@SuppressWarnings("unchecked")
 	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
-			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases) {
+			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases) {
 		
 		CaseBusiness caseBusiness = getCaseBusiness();
 		try {
@@ -108,7 +108,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 	
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases) throws Exception {
+			boolean onlySubscribedCases, boolean showAllCases) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -384,4 +384,5 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		casePresentation.setLocalizedStatus(getLocalizedStatus(theCase, theCase.getCaseStatus(), getCurrentLocale()));
 		return casePresentation;
 	}
+
 }

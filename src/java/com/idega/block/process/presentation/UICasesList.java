@@ -61,7 +61,7 @@ public class UICasesList extends IWBaseComponent {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
-	private boolean showLegend;
+	private boolean showLegend, showAllCases;
 	private boolean ShowLogExportButton;
 
 	
@@ -198,7 +198,7 @@ public class UICasesList extends IWBaseComponent {
 		}
 		
 		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(),
-				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases());
+				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases(), isShowAllCases());
 	}
 	
 	private Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
@@ -452,6 +452,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setShowLegend(boolean showLegend) {
 		this.showLegend = showLegend;
+	}
+
+	public boolean isShowAllCases() {
+		return showAllCases;
+	}
+
+	public void setShowAllCases(boolean showAllCases) {
+		this.showAllCases = showAllCases;
 	}
 	
 }

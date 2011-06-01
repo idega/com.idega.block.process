@@ -55,7 +55,7 @@ public abstract class CaseBlock extends Block {
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
-	private boolean showLegend;
+	private boolean showLegend, showAllCases;
 	private boolean showLogExportButton;
 	
 	private String caseStatusesToHide;
@@ -293,6 +293,7 @@ public abstract class CaseBlock extends Block {
 		list.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
 		list.setShowLegend(isShowLegend());
 		list.setShowLogExportButton(isShowLogExportButton());
+		list.setShowAllCases(isShowAllCases());
 		
 		return list;
 	}
@@ -357,5 +358,11 @@ public abstract class CaseBlock extends Block {
 		this.showLogExportButton = showLogExportButton;
 	}
 
-	
+	public boolean isShowAllCases() {
+		return showAllCases;
+	}
+
+	public void setShowAllCases(boolean showAllCases) {
+		this.showAllCases = showAllCases;
+	}
 }

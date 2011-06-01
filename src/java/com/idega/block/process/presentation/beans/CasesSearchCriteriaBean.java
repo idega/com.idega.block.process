@@ -29,7 +29,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private IWTimestamp dateFrom;
 	private IWTimestamp dateTo;
 	
-	private boolean allDataLoaded = Boolean.TRUE;
+	private boolean allDataLoaded = Boolean.TRUE, showAllCases;
 	
 	private List<AdvancedProperty> sortingOptions;
 	
@@ -173,6 +173,13 @@ public class CasesSearchCriteriaBean implements Serializable {
 	
 	public void setProcInstIds(List<Long> procInstIds) {
 		this.procInstIds = procInstIds;
+	}
+	
+	public boolean isShowAllCases() {
+		return showAllCases;
+	}
+	public void setShowAllCases(boolean showAllCases) {
+		this.showAllCases = showAllCases;
 	}
 	
 }

@@ -49,10 +49,10 @@ public interface CasesRetrievalManager {
 	
 	public abstract PagedDataCollection<CasePresentation> getCases(User user,
 	        String type, Locale locale, List<String> caseCodes, List<String> statusesToHide,
-	        List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases);
+	        List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases);
 	
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes,
-	        List<String> statusesToHide, List<String> statusesToShow, boolean onlySubscribedCases) throws Exception;
+	        List<String> statusesToHide, List<String> statusesToShow, boolean onlySubscribedCases, boolean showAllCases) throws Exception;
 	
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 	
