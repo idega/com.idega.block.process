@@ -90,6 +90,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_WAITING_KEY;
 	private String CASE_STATUS_CREATED_KEY;
 	private String CASE_STATUS_FINISHED_KEY;
+	
+	@SuppressWarnings("unused")
 	private String CASE_STATUS_CLOSED_KEY;
 	
 	private Map _statusMap;
@@ -627,6 +629,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	
 	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer) {
 		changeCaseStatus(theCase, newCaseStatus, null, performer, null, false, null, false);
+	}
+	
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment) {
+		changeCaseStatus(theCase, newCaseStatus, comment, performer, null, false, null, false);
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer,Map attributes) {
