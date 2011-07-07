@@ -1,20 +1,38 @@
 package com.idega.block.process.message.data;
 
+import java.util.Collection;
+
+import javax.ejb.CreateException;
+import javax.ejb.FinderException;
+
 import com.idega.data.IDOException;
+import com.idega.data.IDOHome;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
+public interface MessageHome extends IDOHome {
 
-public interface MessageHome extends com.idega.data.IDOHome
-{
- public Message create() throws javax.ejb.CreateException;
- public Message findByPrimaryKey(Object pk) throws javax.ejb.FinderException;
- public java.util.Collection findMessages(com.idega.user.data.User p0)throws javax.ejb.FinderException;
- public java.util.Collection findMessages(com.idega.user.data.User p0, String[] status)throws javax.ejb.FinderException;
- public java.util.Collection findMessages(com.idega.user.data.Group p0, String[] status)throws javax.ejb.FinderException;
- public java.util.Collection findMessages(com.idega.user.data.User p0, String[] status, int numberOfEntries, int startingEntry)throws javax.ejb.FinderException;
- public java.util.Collection findMessages(com.idega.user.data.Group p0, String[] status, int numberOfEntries, int startingEntry)throws javax.ejb.FinderException;
- public java.util.Collection findMessages(com.idega.user.data.User p0, java.util.Collection groups, String[] status, int numberOfEntries, int startingEntry)throws javax.ejb.FinderException;
- public int getNumberOfMessages(com.idega.user.data.User p0, String[] status) throws IDOException;
- public int getNumberOfMessages(com.idega.user.data.User p0, java.util.Collection groups, String[] status) throws IDOException;
- public java.util.Collection <Message>findMessages(User user, String caseId)throws javax.ejb.FinderException;
+	public Message create() throws CreateException;
+
+	public Message findByPrimaryKey(Object pk) throws FinderException;
+
+	public Collection<? extends Message> findMessages(User user) throws FinderException;
+
+	public Collection<? extends Message> findMessages(User user, String[] status) throws FinderException;
+
+	public Collection<? extends Message> findMessages(Group group, String[] status) throws FinderException;
+
+	public Collection<? extends Message> findMessages(User user, String[] status, int numberOfEntries, int startingEntry) throws FinderException;
+
+	public Collection<? extends Message> findMessages(Group group, String[] status, int numberOfEntries, int startingEntry) throws FinderException;
+
+	public Collection<? extends Message> findMessages(User user, Collection<Group> groups, String[] status, int numberOfEntries, int startingEntry)
+		throws FinderException;
+
+	public int getNumberOfMessages(User user, String[] status) throws IDOException;
+
+	public int getNumberOfMessages(User user, Collection<Group> groups, String[] status) throws IDOException;
+
+	public Collection<Message> findMessages(User user, String caseId) throws FinderException;
+
 }
