@@ -204,12 +204,12 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildrenIterator
 	 */
-	public Iterator<? extends Case> getChildrenIterator();
+	public <T extends Case> Iterator<T> getChildrenIterator();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildren
 	 */
-	public Collection<? extends Case> getChildren();
+	public <T extends Case> Collection<T> getChildren();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getSiblingCount

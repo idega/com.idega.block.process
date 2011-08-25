@@ -284,12 +284,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
-	public Collection<? extends Case> getChildren() {
+	public Collection getChildren() {
 		return this.getGeneralCase().getChildren();
 	}
 
 	@Override
-	public Iterator<? extends Case> getChildrenIterator() {
+	public Iterator getChildrenIterator() {
 		return this.getGeneralCase().getChildrenIterator();
 	}
 
