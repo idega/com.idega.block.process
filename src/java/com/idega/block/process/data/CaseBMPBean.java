@@ -360,16 +360,15 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
-	public Iterator getChildrenIterator() {
-		Iterator it = null;
-		Collection children = getChildren();
-		if (children != null) {
-			it = children.iterator();
-		}
-		return it;
+	public Iterator<? extends Case> getChildrenIterator() {
+		Collection<? extends Case> children = getChildren();
+		if (children != null)
+			return children.iterator();
+
+		return null;
 	}
 
-	public Collection getChildren() {
+	public Collection<? extends Case> getChildren() {
 		try {
 			return this.getCaseHome().findSubCasesUnder(this);
 		}

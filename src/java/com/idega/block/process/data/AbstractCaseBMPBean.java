@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -57,6 +58,8 @@ import com.idega.util.IWTimestamp;
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
 
+	private static final long serialVersionUID = -5220291917851850708L;
+	
 	private Case _case;
 	private Table caseTable;
 	private Table genCaseTable;
@@ -281,12 +284,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
-	public Collection getChildren() {
+	public Collection<? extends Case> getChildren() {
 		return this.getGeneralCase().getChildren();
 	}
 
 	@Override
-	public Iterator getChildrenIterator() {
+	public Iterator<? extends Case> getChildrenIterator() {
 		return this.getGeneralCase().getChildrenIterator();
 	}
 
@@ -1183,7 +1186,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * Sets all the metadata key/values for this instance with the given map where the is keys and values of String type.
 	 */
 	@Override
-	public void setMetaDataAttributes(java.util.Map map) {
+	public void setMetaDataAttributes(Map<String, String> map) {
 		getGeneralCase().setMetaDataAttributes(map);
 	}
 
@@ -1191,7 +1194,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * Gets all the metadata key/values for this instance with the given map where the keys and values of String type.
 	 */
 	@Override
-	public java.util.Map getMetaDataAttributes() {
+	public Map<String, String> getMetaDataAttributes() {
 		return getGeneralCase().getMetaDataAttributes();
 	}
 
@@ -1199,7 +1202,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * Sets all the metadata types this instance with the given map which is keys and values of String type.
 	 */
 	@Override
-	public java.util.Map getMetaDataTypes() {
+	public Map<String, String> getMetaDataTypes() {
 		return getGeneralCase().getMetaDataTypes();
 	}
 

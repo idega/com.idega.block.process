@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOEntity;
@@ -205,12 +204,12 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildrenIterator
 	 */
-	public Iterator getChildrenIterator();
+	public Iterator<? extends Case> getChildrenIterator();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildren
 	 */
-	public Collection getChildren();
+	public Collection<? extends Case> getChildren();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getSiblingCount
