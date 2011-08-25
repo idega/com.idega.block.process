@@ -1007,7 +1007,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return getPrimaryKey().toString();
 	}
 	
-	public Collection ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 		
 		Table casesTable = new Table(this);
