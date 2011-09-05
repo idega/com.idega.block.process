@@ -632,7 +632,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 	
 	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment) {
-		changeCaseStatus(theCase, newCaseStatus, comment, performer, null, false, null, false);
+		changeCaseStatusDoNotSendUpdates(theCase, newCaseStatus, performer, comment, false);
+	}
+	
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment, boolean canBeSameStatus) {
+		changeCaseStatus(theCase, newCaseStatus, comment, performer, null, canBeSameStatus, null, false);
 	}
 	
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer,Map attributes) {

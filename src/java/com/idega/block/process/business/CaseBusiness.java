@@ -297,6 +297,11 @@ public interface CaseBusiness extends IBOService {
 	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment) throws RemoteException;
 	
 	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatusDoNotSendUpdates
+	 */
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment, boolean canBeSameStatus) throws RemoteException;
+
+	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Map attributes) throws RemoteException;
