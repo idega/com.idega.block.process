@@ -29,7 +29,15 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private IWTimestamp dateFrom;
 	private IWTimestamp dateTo;
 	
-	private boolean allDataLoaded = Boolean.TRUE, showAllCases;
+	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics;
+
+	public boolean isShowStatistics() {
+		return showStatistics;
+	}
+
+	public void setShowStatistics(boolean showStatistics) {
+		this.showStatistics = showStatistics;
+	}
 	
 	private List<AdvancedProperty> sortingOptions;
 	

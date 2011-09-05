@@ -100,10 +100,18 @@ public class UICasesList extends IWBaseComponent {
 		
 		UIComponent casesListComponent = null;
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
+		
+		Object settings = iwc.getSessionAttribute(GeneralCasesListBuilder.USER_CASES_SEARCH_SETTINGS_ATTRIBUTE);
+		boolean showStatistics = isShowStatistics();
+		if (settings instanceof CasesSearchCriteriaBean) {
+			CasesSearchCriteriaBean searchSettings = (CasesSearchCriteriaBean) settings;
+			showStatistics = searchSettings.isShowStatistics();
+		}
+		
 		properties.setType(getType());
 		properties.setUsePDFDownloadColumn(isUsePDFDownloadColumn());
 		properties.setAllowPDFSigning(isAllowPDFSigning());
-		properties.setShowStatistics(isShowStatistics());
+		properties.setShowStatistics(showStatistics);
 		properties.setHideEmptySection(isHideEmptySection());
 		properties.setPageSize(getPageSize());
 		properties.setPage(getPage());

@@ -12,7 +12,8 @@ public interface GeneralCasesListBuilder {
 
 	public static final String SPRING_BEAN_IDENTIFIER = "GeneralCasesListBuilder";
 	public static final String MAIN_CASES_LIST_CONTAINER_STYLE = "mainCasesListContainerStyleClass";
-	public static final String USER_CASES_SEARCH_QUERY_BEAN_ATTRIBUTE = "userCasesSearchQueryBeanAttribute";
+	public static final String USER_CASES_SEARCH_QUERY_BEAN_ATTRIBUTE = "userCasesSearchQueryBeanAttribute",
+							   USER_CASES_SEARCH_SETTINGS_ATTRIBUTE = "USER_CASES_SEARCH_SETTINGS_ATTRIBUTE";
 	
 	public abstract UIComponent getCasesList(IWContext iwc, PagedDataCollection<CasePresentation> cases, CaseListPropertiesBean properties);
 		
