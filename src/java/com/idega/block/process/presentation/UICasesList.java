@@ -38,7 +38,8 @@ import com.idega.util.expression.ELUtil;
  */
 public class UICasesList extends IWBaseComponent {
 
-	public static final String COMPONENT_TYPE = "com.idega.UICasesList";
+	public static final String COMPONENT_TYPE = "com.idega.UICasesList",
+								DYNAMIC_CASES_NAVIGATOR = "dynamic_pager_cases_search";
 	
 	@Autowired
 	private CaseManagersProvider caseManagersProvider;
@@ -178,6 +179,8 @@ public class UICasesList extends IWBaseComponent {
 			if (getPageSize() <= 0) {
 				setPageSize(20);
 			}
+			if (!iwc.getApplicationSettings().getBoolean(DYNAMIC_CASES_NAVIGATOR, Boolean.TRUE))
+				setPageSize(-1);
 			if (getPage() <= 0) {
 				setPage(1);
 			}
@@ -196,11 +199,13 @@ public class UICasesList extends IWBaseComponent {
 			}
 			
 			PagedDataCollection<CasePresentation> casesList = new PagedDataCollection<CasePresentation>(cases);
-			int startIndex = (getPage() - 1) * getPageSize();
-			if (startIndex + getPageSize() < casesList.getTotalCount()) {
-				casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, (startIndex + getPageSize())));
-			} else if (startIndex > 0) {
-				casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, casesList.getCollection().size()));
+			if (getPageSize() > 0) {
+				int startIndex = (getPage() - 1) * getPageSize();
+				if (startIndex + getPageSize() < casesList.getTotalCount()) {
+					casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, (startIndex + getPageSize())));
+				} else if (startIndex > 0) {
+					casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, casesList.getCollection().size()));
+				}
 			}
 			return casesList;
 		}
