@@ -103,10 +103,16 @@ public class UICasesList extends IWBaseComponent {
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
 		
 		Object settings = iwc.getSessionAttribute(GeneralCasesListBuilder.USER_CASES_SEARCH_SETTINGS_ATTRIBUTE);
+		int pageSize = getPageSize();
+		int page = getPage();
+		int foundResults = -1;
 		boolean showStatistics = isShowStatistics();
 		if (settings instanceof CasesSearchCriteriaBean) {
 			CasesSearchCriteriaBean searchSettings = (CasesSearchCriteriaBean) settings;
 			showStatistics = searchSettings.isShowStatistics();
+			pageSize = searchSettings.getPageSize();
+			page = searchSettings.getPage();
+			foundResults = searchSettings.getFoundResults();
 		}
 		
 		properties.setType(getType());
@@ -114,8 +120,10 @@ public class UICasesList extends IWBaseComponent {
 		properties.setAllowPDFSigning(isAllowPDFSigning());
 		properties.setShowStatistics(showStatistics);
 		properties.setHideEmptySection(isHideEmptySection());
-		properties.setPageSize(getPageSize());
-		properties.setPage(getPage());
+		properties.setPageSize(pageSize);
+		properties.setPage(page);
+		if (foundResults > 0)
+			properties.setFoundResults(foundResults);
 		properties.setInstanceId(getInstanceId());
 		properties.setComponentId(getComponentId());
 		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
@@ -194,20 +202,18 @@ public class UICasesList extends IWBaseComponent {
 			if (ListUtil.isEmpty(cases) || (criterias != null && !criterias.isAllDataLoaded())) {
 				cases = getReLoadedCases(criterias);
 			}
-			if (ListUtil.isEmpty(cases)) {
+			if (ListUtil.isEmpty(cases))
 				return null;
-			}
 			
-			PagedDataCollection<CasePresentation> casesList = new PagedDataCollection<CasePresentation>(cases);
 			if (getPageSize() > 0) {
-				int startIndex = (getPage() - 1) * getPageSize();
-				if (startIndex + getPageSize() < casesList.getTotalCount()) {
-					casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, (startIndex + getPageSize())));
-				} else if (startIndex > 0) {
-					casesList.setData(new ArrayList<CasePresentation>(casesList.getCollection()).subList(startIndex, casesList.getCollection().size()));
+				if (getPage() != criterias.getPage() || getPageSize() != criterias.getPageSize()) {
+					criterias.setPage(getPage());
+					criterias.setPageSize(getPageSize());
+					cases = getReLoadedCases(criterias);
 				}
+				criterias.setPageSize(getPageSize());
 			}
-			return casesList;
+			return new PagedDataCollection<CasePresentation>(cases);
 		}
 		
 		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(),

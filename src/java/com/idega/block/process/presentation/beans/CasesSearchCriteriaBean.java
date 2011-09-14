@@ -29,6 +29,10 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private IWTimestamp dateFrom;
 	private IWTimestamp dateTo;
 	
+	private int page = 0;
+	private int pageSize = 0;
+	private int foundResults = 0;
+	
 	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics;
 
 	public boolean isShowStatistics() {
@@ -190,4 +194,27 @@ public class CasesSearchCriteriaBean implements Serializable {
 		this.showAllCases = showAllCases;
 	}
 	
+	public int getFoundResults() {
+		return foundResults;
+	}
+
+	public void setFoundResults(int foundResults) {
+		this.foundResults = foundResults;
+	}
+	
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 }
