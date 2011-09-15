@@ -62,15 +62,15 @@ public class UICasesList extends IWBaseComponent {
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLegend, showAllCases;
-	private boolean ShowLogExportButton;
+	private boolean showLogExportButton;
 
 	
 	public boolean isShowLogExportButton() {
-		return ShowLogExportButton;
+		return showLogExportButton;
 	}
 
 	public void setShowLogExportButton(boolean showLogExportButton) {
-		ShowLogExportButton = showLogExportButton;
+		this.showLogExportButton = showLogExportButton;
 	}
 
 	private List<String> caseStatusesToShow;
