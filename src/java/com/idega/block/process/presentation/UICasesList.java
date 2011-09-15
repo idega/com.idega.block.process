@@ -23,7 +23,6 @@ import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
-import com.idega.presentation.ListNavigator;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.util.CoreConstants;
 import com.idega.util.ListUtil;
@@ -164,23 +163,6 @@ public class UICasesList extends IWBaseComponent {
 			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
 		} catch(Exception e) {}
 		String id = iwc.getRequestURI();
-
-		//Ugly hack, fix later
-		if (!getUseJavascriptForPageSwitching()) {
-			if (iwc.isParameterSet(ListNavigator.PARAMETER_CURRENT_PAGE + "_userCases")) {
-				int nextPage = iwc.getIntegerParameter(ListNavigator.PARAMETER_CURRENT_PAGE + "_userCases");
-				if (nextPage > 0) {
-					setPage(nextPage);
-				}
-			}
-			
-			if (iwc.isParameterSet(ListNavigator.PARAMETER_NUMBER_OF_ENTRIES + "_userCases")) {
-				int numberOfEntries = iwc.getIntegerParameter(ListNavigator.PARAMETER_NUMBER_OF_ENTRIES + "_userCases");
-				if (numberOfEntries > 0) {
-					setPageSize(numberOfEntries);
-				}
-			}
-		}
 
 		if (casesSearcher != null && (casesSearcher.isSearchResultStored(id) || casesSearcher.isSearchResultStored(getSearchResultsId()))) {
 			setType(ProcessConstants.CASE_LIST_TYPE_SEARCH_RESULTS);
