@@ -23,7 +23,9 @@ import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
+import com.idega.presentation.ListNavigator;
 import com.idega.presentation.paging.PagedDataCollection;
+import com.idega.user.data.User;
 import com.idega.util.CoreConstants;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
@@ -88,6 +90,24 @@ public class UICasesList extends IWBaseComponent {
 	@SuppressWarnings("rawtypes")
 	private Map userCasesPageMap;
 
+	private Integer getPageSizeFromSession(IWContext iwc) {
+		String key = "userCases";
+		Object pageSizeOb = iwc.getSessionAttribute(ListNavigator.PARAMETER_NUMBER_OF_ENTRIES + "_" + key);
+		if (pageSizeOb instanceof Integer) {
+			return (Integer) pageSizeOb;
+		}
+		return null;
+	}
+	
+	private Integer getPageFromSession(IWContext iwc) {
+		String key = "userCases";
+		Object pageOb = iwc.getSessionAttribute(ListNavigator.PARAMETER_CURRENT_PAGE + "_" + key);
+		if (pageOb instanceof Integer) {
+			return (Integer) pageOb;
+		}
+		return null;
+	}
+	
 	@Override
 	protected void initializeComponent(FacesContext context) {
 		super.initializeComponent(context);
@@ -96,7 +116,7 @@ public class UICasesList extends IWBaseComponent {
 		
 		GeneralCasesListBuilder listBuilder = ELUtil.getInstance().getBean(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
 		
-		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() ? getCases(iwc) : null;
+		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() || CasesRetrievalManager.CASE_LIST_TYPE_PUBLIC.equals(getType()) ? getCases(iwc) : null;
 		
 		UIComponent casesListComponent = null;
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
@@ -112,6 +132,17 @@ public class UICasesList extends IWBaseComponent {
 			pageSize = searchSettings.getPageSize();
 			page = searchSettings.getPage();
 			foundResults = searchSettings.getFoundResults();
+		}
+		
+		Integer pageSizeFromSesion = getPageSizeFromSession(iwc);
+		if (pageSizeFromSesion != null && pageSizeFromSesion > 0) {
+			pageSize = pageSizeFromSesion;
+			setPageSize(pageSize);
+		}
+		Integer pageFromSession = getPageFromSession(iwc);
+		if (pageFromSession != null && pageFromSession > 0) {
+			page = pageFromSession;
+			setPage(page);
 		}
 		
 		properties.setType(getType());
@@ -187,6 +218,13 @@ public class UICasesList extends IWBaseComponent {
 			if (ListUtil.isEmpty(cases))
 				return null;
 			
+			Integer pageSizeFromSession = getPageSizeFromSession(iwc);
+			if (pageSizeFromSession != null && pageSizeFromSession > 0)
+				setPageSize(pageSizeFromSession);
+			Integer pageFromSession = getPageFromSession(iwc);
+			if (pageFromSession != null && pageFromSession > 0) 
+				setPage(pageFromSession);
+			
 			if (getPageSize() > 0) {
 				if (getPage() != criterias.getPage() || getPageSize() != criterias.getPageSize()) {
 					criterias.setPage(getPage());
@@ -198,7 +236,8 @@ public class UICasesList extends IWBaseComponent {
 			return new PagedDataCollection<CasePresentation>(cases);
 		}
 		
-		return getCaseManagersProvider().getCaseManager().getCases(iwc.getCurrentUser(), getType(), iwc.getCurrentLocale(), getCaseCodes(),
+		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
+		return getCaseManagersProvider().getCaseManager().getCases(user, getType(), iwc.getCurrentLocale(), getCaseCodes(),
 				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases(), isShowAllCases());
 	}
 	
