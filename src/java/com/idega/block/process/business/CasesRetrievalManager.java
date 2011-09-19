@@ -24,10 +24,11 @@ import com.idega.user.data.User;
  */
 public interface CasesRetrievalManager {
 	
-	public static final String CASE_LIST_TYPE_MY = "MyCases";
-	public static final String CASE_LIST_TYPE_USER = "UserCases";
-	public static final String CASE_LIST_TYPE_OPEN = "OpenCases";
-	public static final String CASE_LIST_TYPE_CLOSED = "ClosedCases";
+	public static final String CASE_LIST_TYPE_MY = "MyCases",
+								CASE_LIST_TYPE_USER = "UserCases",
+								CASE_LIST_TYPE_OPEN = "OpenCases",
+								CASE_LIST_TYPE_CLOSED = "ClosedCases",
+								CASE_LIST_TYPE_PUBLIC = "PublicCases";
 	
 	public static final String COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier";
 	
