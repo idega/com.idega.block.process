@@ -189,6 +189,13 @@ public class UICasesList extends IWBaseComponent {
 	 * @return PagedDataCollection of cases.
 	 */
 	protected PagedDataCollection<CasePresentation> getCases(IWContext iwc) {
+		Integer pageSizeFromSession = getPageSizeFromSession(iwc);
+		if (pageSizeFromSession != null && pageSizeFromSession > 0)
+			setPageSize(pageSizeFromSession);
+		Integer pageFromSession = getPageFromSession(iwc);
+		if (pageFromSession != null && pageFromSession > 0) 
+			setPage(pageFromSession);
+		
 		CasesSearchResultsHolder casesSearcher = null;
 		try {
 			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
@@ -217,13 +224,6 @@ public class UICasesList extends IWBaseComponent {
 			}
 			if (ListUtil.isEmpty(cases))
 				return null;
-			
-			Integer pageSizeFromSession = getPageSizeFromSession(iwc);
-			if (pageSizeFromSession != null && pageSizeFromSession > 0)
-				setPageSize(pageSizeFromSession);
-			Integer pageFromSession = getPageFromSession(iwc);
-			if (pageFromSession != null && pageFromSession > 0) 
-				setPage(pageFromSession);
 			
 			if (getPageSize() > 0) {
 				if (getPage() != criterias.getPage() || getPageSize() != criterias.getPageSize()) {
