@@ -11,6 +11,7 @@ public class CaseListPropertiesBean {
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
 	private String criteriasId;
+	private String specialBackPage;
 	
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
@@ -200,5 +201,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowLogExportButton(boolean showLogExportButton) {
 		this.showLogExportButton = showLogExportButton;
+	}
+	
+	public String getSpecialBackPage() {
+		return specialBackPage;
+	}
+	public void setSpecialBackPage(String specialBackPage) {
+		this.specialBackPage = specialBackPage;
 	}
 }

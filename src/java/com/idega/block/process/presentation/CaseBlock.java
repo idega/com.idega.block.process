@@ -65,6 +65,8 @@ public abstract class CaseBlock extends Block {
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
 	private String searchResultsId;
+	private String specialBackPage;
+	
 	private boolean useJavascriptForPageSwitching = true;
 	/* Cases list parameters */
 	
@@ -294,6 +296,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowLegend(isShowLegend());
 		list.setShowLogExportButton(isShowLogExportButton());
 		list.setShowAllCases(isShowAllCases());
+		list.setSpecialBackPage(getSpecialBackPage());
 		
 		return list;
 	}
@@ -365,4 +368,13 @@ public abstract class CaseBlock extends Block {
 	public void setShowAllCases(boolean showAllCases) {
 		this.showAllCases = showAllCases;
 	}
+
+	public String getSpecialBackPage() {
+		return specialBackPage;
+	}
+
+	public void setSpecialBackPage(String specialBackPage) {
+		this.specialBackPage = specialBackPage;
+	}
+	
 }
