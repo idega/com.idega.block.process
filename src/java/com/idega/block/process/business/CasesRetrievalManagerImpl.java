@@ -315,7 +315,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 	
 	private Map<String, List<Integer>> getCache() {
-		return getCache(CASES_LIST_IDS_CACHE, 60 * 30);
+		return getCache(CASES_LIST_IDS_CACHE, 60 * 30, 1000000);
 	}
 	
 	private String getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
