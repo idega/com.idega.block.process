@@ -48,7 +48,6 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 
 
 
-	@Override
 	public void deleteMessage(Object messagePK) throws FinderException {
 		Message message = getMessage(messagePK);
 		User owner = message.getOwner();
@@ -56,14 +55,12 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + owner.getPrimaryKey().toString());
 	}
 
-	@Override
 	public void markMessageAsRead(Message message) {
 		User owner = message.getOwner();
 		changeCaseStatus(message, getCaseStatusGranted().getPrimaryKey().toString(), owner);
 		IWCacheManager.getInstance(getIWMainApplication()).invalidateCacheWithPartialKey(MessageConstants.CACHE_KEY, "_" + owner.getPrimaryKey().toString());
 	}
 
-	@Override
 	public boolean isMessageRead(Message message) {
 		if ((message.getCaseStatus()).equals(getCaseStatusGranted())) {
 			return true;
@@ -71,13 +68,11 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		return false;
 	}
 
-	@Override
 	public void flagMessageAsInactive(User performer, Message message) {
 		String newCaseStatus = getCaseStatusInactive().getStatus();
 		changeCaseStatus(message, newCaseStatus, performer);
 	}
 
-	@Override
 	public void flagMessagesAsInactive(User performer, String[] msgKeys) throws FinderException {
 		String newCaseStatus = getCaseStatusInactive().getStatus();
 		flagMessagesWithStatus(performer, msgKeys, newCaseStatus);
@@ -89,71 +84,59 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		}
 	}
 
-	@Override
 	public Message getMessage(Object messagePK) throws FinderException {
 		Case theCase = getCase(new Integer(messagePK.toString()).intValue());
 		return getMessage(theCase.getCode(), messagePK);
 	}
 
-	@Override
 	public Message getMessage(String messageType, Object messagePK) throws FinderException {
 		return getMessageHome(messageType).findByPrimaryKey(messagePK);
 	}
 
-	@Override
 	public int getNumberOfMessages(String messageType, User user) throws IDOException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).getNumberOfMessages(user, validStatuses);
 	}
 
-	@Override
 	public int getNumberOfNewMessages(String messageType, User user) throws IDOException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus() };
 		return getMessageHome(messageType).getNumberOfMessages(user, validStatuses);
 	}
 
-	@Override
 	public int getNumberOfMessages(String messageType, User user, Collection groups) throws IDOException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).getNumberOfMessages(user, groups, validStatuses);
 	}
 
-	@Override
 	public Collection findMessages(String messageType, User user) throws FinderException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).findMessages(user, validStatuses);
 	}
 
-	@Override
 	public Collection findMessages(String messageType, User user, int numberOfEntries, int startingEntry) throws FinderException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).findMessages(user, validStatuses, numberOfEntries, startingEntry);
 	}
 
-	@Override
 	public Collection findMessages(String messageType, User user, Collection groups, int numberOfEntries, int startingEntry) throws FinderException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).findMessages(user, groups, validStatuses, numberOfEntries, startingEntry);
 	}
 
-	@Override
 	public Collection findMessages(String messageType, Group group) throws FinderException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).findMessages(group, validStatuses);
 	}
 
-	@Override
 	public Collection findMessages(String messageType, Group group, int numberOfEntries, int startingEntry) throws FinderException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		return getMessageHome(messageType).findMessages(group, validStatuses, numberOfEntries, startingEntry);
 	}
 
-	@Override
 	public Message createMessage(String messageType) throws CreateException {
 		return getMessageHome(messageType).create();
 	}
 
-	@Override
 	public Message createMessage(MessageValue msgValue) throws CreateException {
 		Message message = createMessage(msgValue.getMessageType());
 		message.setOwner(msgValue.getReceiver());
@@ -182,7 +165,6 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 	/**
 	 * This method is overwritten in CommuneMessageBusiness
 	 */
-	@Override
 	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException {
 		MessageValue messageValue = new MessageValue();
 		setSimpleMessage(messageValue, parentCase, receiver, subject, body);
@@ -198,7 +180,6 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 
 
 
-	@Override
 	public Collection <Message> findMessages(User user, String messageType, String caseId)
 			throws FinderException, RemoteException {
 		return getMessageHome(messageType).findMessages(user, caseId);

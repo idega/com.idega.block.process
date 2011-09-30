@@ -363,7 +363,6 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		}
 	}
 
-	@Override
 	public CasePresentation getCaseByIdLazily(Integer caseId) {
 		if (caseId == null) {
 			return null;
