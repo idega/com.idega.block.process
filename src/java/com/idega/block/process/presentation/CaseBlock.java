@@ -68,6 +68,7 @@ public abstract class CaseBlock extends Block {
 	private String specialBackPage;
 	
 	private boolean useJavascriptForPageSwitching = true;
+	private String externalStyleSheet;
 	/* Cases list parameters */
 	
 	@Override
@@ -89,6 +90,9 @@ public abstract class CaseBlock extends Block {
 		this.business = getCaseBusiness(iwc);
 		this.userBusiness = getUserBusiness(iwc);
 		PresentationUtil.addStyleSheetToHeader(iwc, iwc.getIWMainApplication().getBundle(ProcessConstants.IW_BUNDLE_IDENTIFIER).getVirtualPathWithFileNameString("style/process.css"));
+		if (externalStyleSheet != null) {
+			PresentationUtil.addStyleSheetToHeader(iwc, externalStyleSheet);
+		}
 	}
 	
 	protected IWBundle getBundle() {
@@ -375,6 +379,10 @@ public abstract class CaseBlock extends Block {
 
 	public void setSpecialBackPage(String specialBackPage) {
 		this.specialBackPage = specialBackPage;
+	}
+
+	public void setExternalStyleSheet(String externalStyleSheet) {
+		this.externalStyleSheet = externalStyleSheet;
 	}
 	
 }
