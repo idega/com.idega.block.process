@@ -22,7 +22,6 @@ import javax.ejb.FinderException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.business.CasesRetrievalManager;
@@ -64,8 +63,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		setHideEmptySection(Boolean.TRUE);
 	}
 	
-	@SuppressWarnings("unchecked")
-	private Map pageMap;
+	private Map<Object, Object> pageMap;
 	
 	@SuppressWarnings("unused")
 	private int iMaxNumberOfEntries = -1;
@@ -80,18 +78,14 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return getResourceBundle().getLocalizedString("user_cases", "User cases");
 	}
 		
-	@SuppressWarnings("unchecked")
 	protected ICPage getPage(String caseCode, String caseStatus) {
 		if (this.pageMap != null) {
 			Object object = this.pageMap.get(caseCode);
-			if (object != null) {
-				if (object instanceof ICPage) {
-					return (ICPage) object;
-				}
-				else if (object instanceof Map) {
-					Map statusMap = (Map) object;
-					return (ICPage) statusMap.get(caseStatus);
-				}
+			if (object instanceof ICPage)
+				return (ICPage) object;
+			if (object instanceof Map) {
+				Map<?, ?> statusMap = (Map<?, ?>) object;
+				return (ICPage) statusMap.get(caseStatus);
 			}
 		}
 		return null;
@@ -102,31 +96,29 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	}
 	
 	private Set<String> getHiddenCaseCodes() {
-		
-		if(hiddenCaseCodes == null)
+		if (hiddenCaseCodes == null)
 			hiddenCaseCodes = new HashSet<String>();
 		
 		return hiddenCaseCodes;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
 		if (this.pageMap == null) {
-			this.pageMap = new HashMap();
+			this.pageMap = new HashMap<Object, Object>();
 		}
 		
-		Map statusMap = (Map) this.pageMap.get(caseCode);
+		@SuppressWarnings("unchecked")
+		Map<Object, Object> statusMap = (Map<Object, Object>) this.pageMap.get(caseCode);
 		if (statusMap == null) {
-			statusMap = new HashMap();
+			statusMap = new HashMap<Object, Object>();
 		}
 		statusMap.put(caseStatus, page);
 		this.pageMap.put(caseCode, statusMap);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setPage(String caseCode, ICPage page) {
 		if (this.pageMap == null) {
-			this.pageMap = new HashMap();
+			this.pageMap = new HashMap<Object, Object>();
 		}
 		
 		this.pageMap.put(caseCode, page);
@@ -269,7 +261,6 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		return showCheckBox();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<Object, Object> getUserCasesPageMap() {
 		return pageMap;
