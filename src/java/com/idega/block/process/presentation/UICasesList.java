@@ -64,7 +64,8 @@ public class UICasesList extends IWBaseComponent {
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLegend, showAllCases;
-	private boolean showLogExportButton;
+	private boolean showLogExportButton,
+					showCaseStatus = true;
 	
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -170,6 +171,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
 		properties.setShowLogExportButton(isShowLogExportButton());
 		properties.setSpecialBackPage(getSpecialBackPage());
+		properties.setShowCaseStatus(isShowCaseStatus());
 		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -508,6 +510,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setSpecialBackPage(String specialBackPage) {
 		this.specialBackPage = specialBackPage;
+	}
+
+	public boolean isShowCaseStatus() {
+		return showCaseStatus;
+	}
+
+	public void setShowCaseStatus(boolean showCaseStatus) {
+		this.showCaseStatus = showCaseStatus;
 	}
 	
 }

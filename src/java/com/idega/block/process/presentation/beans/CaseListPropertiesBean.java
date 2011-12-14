@@ -26,7 +26,8 @@ public class CaseListPropertiesBean {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
-	private boolean showLogExportButton;
+	private boolean showLogExportButton,
+					showCaseStatus = true;
 	
 	private int pageSize;
 	private int page;
@@ -208,5 +209,12 @@ public class CaseListPropertiesBean {
 	}
 	public void setSpecialBackPage(String specialBackPage) {
 		this.specialBackPage = specialBackPage;
+	}
+	
+	public boolean isShowCaseStatus() {
+		return showCaseStatus;
+	}
+	public void setShowCaseStatus(boolean showCaseStatus) {
+		this.showCaseStatus = showCaseStatus;
 	}
 }

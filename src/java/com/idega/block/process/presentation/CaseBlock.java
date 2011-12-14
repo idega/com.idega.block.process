@@ -56,7 +56,8 @@ public abstract class CaseBlock extends Block {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean showLegend, showAllCases;
-	private boolean showLogExportButton;
+	private boolean showLogExportButton,
+					showCaseStatus = true;
 	
 	private String caseStatusesToHide;
 	private String caseStatusesToShow;
@@ -301,6 +302,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowLogExportButton(isShowLogExportButton());
 		list.setShowAllCases(isShowAllCases());
 		list.setSpecialBackPage(getSpecialBackPage());
+		list.setShowCaseStatus(isShowCaseStatus());
 		
 		return list;
 	}
@@ -383,6 +385,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setExternalStyleSheet(String externalStyleSheet) {
 		this.externalStyleSheet = externalStyleSheet;
+	}
+
+	public boolean isShowCaseStatus() {
+		return showCaseStatus;
+	}
+
+	public void setShowCaseStatus(boolean showCaseStatus) {
+		this.showCaseStatus = showCaseStatus;
 	}
 	
 }
