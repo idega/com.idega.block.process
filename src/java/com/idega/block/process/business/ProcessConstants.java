@@ -17,6 +17,7 @@ import java.util.Random;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.text.Text;
+import com.idega.repository.data.Singleton;
 import com.idega.user.data.User;
 
 /**
@@ -25,11 +26,16 @@ import com.idega.user.data.User;
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.2 $
  */
-public class ProcessConstants {
+public final class ProcessConstants implements Singleton {
 	
-	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.process";
-	public static final String EGOV_NEST_CASES_CACHE_KEY = "egovNestCasesCacheKey";
-	public static final String ACTIVE_PROCESS_DEFINITION = "active_process_definition_id";
+	private ProcessConstants() {}
+	
+	public static final String	IW_BUNDLE_IDENTIFIER = "com.idega.block.process",
+								EGOV_NEST_CASES_CACHE_KEY = "egovNestCasesCacheKey",
+								ACTIVE_PROCESS_DEFINITION = "active_process_definition_id",
+								METADATA_KEY_URL="CASE_URL",
+								CASE_LIST_TYPE_SEARCH_RESULTS = "searchResults",
+								HANDLER_IDENTIFIER = "handlerUserId";
 	
 	public static final List<CasesListColumn> getCasesListMainColumns(IWResourceBundle iwrb) {
 		CasesListColumn[] columns = new CasesListColumn[6];
@@ -55,9 +61,5 @@ public class ProcessConstants {
 		}
 		return new StringBuilder(iwc.getSession().getId()).append(user.getId()).toString();
 	}
-
-	public static final String METADATA_KEY_URL="CASE_URL";
-	
-	public static final String CASE_LIST_TYPE_SEARCH_RESULTS = "searchResults";
 
 }
