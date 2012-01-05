@@ -10,6 +10,7 @@
 package com.idega.block.process.presentation;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.Map;
 
 import com.idega.block.process.business.CaseBusiness;
@@ -23,7 +24,9 @@ import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.Block;
 import com.idega.presentation.IWContext;
 import com.idega.user.business.UserBusiness;
+import com.idega.util.CoreConstants;
 import com.idega.util.PresentationUtil;
+import com.idega.util.StringUtil;
 
 
 /**
@@ -59,14 +62,17 @@ public abstract class CaseBlock extends Block {
 	private boolean showLogExportButton,
 					showCaseStatus = true;
 	
-	private String caseStatusesToHide;
-	private String caseStatusesToShow;
-	private String caseCodes;
-	private String commentsManagerIdentifier;
-	private String dateCustomValueVariable;
-	private String dateCustomLabelLocalizationKey;
-	private String searchResultsId;
-	private String specialBackPage;
+	private String	caseStatusesToHide,
+					caseStatusesToShow,
+					caseCodes,
+					commentsManagerIdentifier,
+					dateCustomValueVariable,
+					dateCustomLabelLocalizationKey,
+					searchResultsId,
+					specialBackPage,
+					
+					customColumns,
+					casesListCustomizer;
 	
 	private boolean useJavascriptForPageSwitching = true;
 	private String externalStyleSheet;
@@ -303,6 +309,8 @@ public abstract class CaseBlock extends Block {
 		list.setShowAllCases(isShowAllCases());
 		list.setSpecialBackPage(getSpecialBackPage());
 		list.setShowCaseStatus(isShowCaseStatus());
+		list.setCasesListCustomizer(getCasesListCustomizer());
+		list.setCustomColumns(StringUtil.isEmpty(getCustomColumns()) ? null : Arrays.asList(getCustomColumns().split(CoreConstants.COMMA)));
 		
 		return list;
 	}
@@ -393,6 +401,22 @@ public abstract class CaseBlock extends Block {
 
 	public void setShowCaseStatus(boolean showCaseStatus) {
 		this.showCaseStatus = showCaseStatus;
+	}
+
+	public String getCustomColumns() {
+		return customColumns;
+	}
+
+	public void setCustomColumns(String customColumns) {
+		this.customColumns = customColumns;
+	}
+
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
 	}
 	
 }

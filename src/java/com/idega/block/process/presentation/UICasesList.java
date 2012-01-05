@@ -39,7 +39,7 @@ import com.idega.util.expression.ELUtil;
  */
 public class UICasesList extends IWBaseComponent {
 
-	public static final String COMPONENT_TYPE = "com.idega.UICasesList",
+	public static final String	COMPONENT_TYPE = "com.idega.UICasesList",
 								DYNAMIC_CASES_NAVIGATOR = "dynamic_pager_cases_search";
 	
 	@Autowired
@@ -75,17 +75,18 @@ public class UICasesList extends IWBaseComponent {
 		this.showLogExportButton = showLogExportButton;
 	}
 
-	private List<String> caseStatusesToShow;
-	private List<String> caseStatusesToHide;
-	private List<String> caseCodes;
+	private List<String>	caseStatusesToShow,
+							caseStatusesToHide,
+							caseCodes,
+							customColumns;
 	
-	private String instanceId;
-	private String componentId;
-	private String commentsManagerIdentifier;
-	private String searchResultsId;
-	
-	private String dateCustomValueVariable;
-	private String dateCustomLabelLocalizationKey;
+	private String	instanceId,
+					componentId,
+					commentsManagerIdentifier,
+					searchResultsId,
+					dateCustomValueVariable,
+					dateCustomLabelLocalizationKey,
+					casesListCustomizer;
 	
 	@SuppressWarnings("rawtypes")
 	private Map userCasesPageMap;
@@ -172,6 +173,8 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowLogExportButton(isShowLogExportButton());
 		properties.setSpecialBackPage(getSpecialBackPage());
 		properties.setShowCaseStatus(isShowCaseStatus());
+		properties.setCustomColumns(getCustomColumns());
+		properties.setCasesListCustomizer(getCasesListCustomizer());
 		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -519,5 +522,20 @@ public class UICasesList extends IWBaseComponent {
 	public void setShowCaseStatus(boolean showCaseStatus) {
 		this.showCaseStatus = showCaseStatus;
 	}
-	
+
+	public List<String> getCustomColumns() {
+		return customColumns;
+	}
+
+	public void setCustomColumns(List<String> customColumns) {
+		this.customColumns = customColumns;
+	}
+
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
+	}
 }

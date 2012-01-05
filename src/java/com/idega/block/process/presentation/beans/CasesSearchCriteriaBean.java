@@ -14,27 +14,30 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private static final long serialVersionUID = -4214566172500799450L;
 
-	private String caseNumber;
-	private String description;
-	private String name;
-	private String personalId;
-	private String contact;
-	private String statusId;
-	private String dateRange;
-	private String id;
-	private String instanceId;
+	private String	caseNumber,
+					description,
+					name,
+					personalId,
+					contact,
+					statusId,
+					dateRange,
+					id,
+					instanceId,
+					casesListCustomizer;
 	
 	private String[] statuses;
 	
-	private IWTimestamp dateFrom;
-	private IWTimestamp dateTo;
+	private IWTimestamp	dateFrom,
+						dateTo;
 	
-	private int page = 0;
-	private int pageSize = 0;
-	private int foundResults = 0;
+	private int page = 0,
+				pageSize = 0,
+				foundResults = 0;
 	
 	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics;
 
+	private List<String> customColumns;
+	
 	public boolean isShowStatistics() {
 		return showStatistics;
 	}
@@ -217,4 +220,21 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
+	}
+
+	public List<String> getCustomColumns() {
+		return customColumns;
+	}
+
+	public void setCustomColumns(List<String> customColumns) {
+		this.customColumns = customColumns;
+	}
+	
 }

@@ -11,7 +11,8 @@ public class CaseListPropertiesBean {
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
 	private String criteriasId;
-	private String specialBackPage;
+	private String	specialBackPage,
+					casesListCustomizer;
 	
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
@@ -33,9 +34,10 @@ public class CaseListPropertiesBean {
 	private int page;
 	private int foundResults;
 	
-	private List<String> caseCodes;
-	private List<String> statusesToShow;
-	private List<String> statusesToHide;
+	private List<String>	caseCodes,
+							statusesToShow,
+							statusesToHide,
+							customColumns;
 	
 	public String getType() {
 		return type;
@@ -217,4 +219,19 @@ public class CaseListPropertiesBean {
 	public void setShowCaseStatus(boolean showCaseStatus) {
 		this.showCaseStatus = showCaseStatus;
 	}
+	
+	public List<String> getCustomColumns() {
+		return customColumns;
+	}
+	public void setCustomColumns(List<String> customColumns) {
+		this.customColumns = customColumns;
+	}
+	
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
+	}
+	
 }
