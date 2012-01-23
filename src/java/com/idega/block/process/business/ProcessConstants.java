@@ -28,6 +28,9 @@ import com.idega.user.data.User;
  */
 public final class ProcessConstants implements Singleton {
 	
+	public static final String	CASE_IDENTIFIER = "string_caseIdentifier",
+								CASE_DESCRIPTION = "string_caseDescription";
+
 	private ProcessConstants() {}
 	
 	public static final String	IW_BUNDLE_IDENTIFIER = "com.idega.block.process",
