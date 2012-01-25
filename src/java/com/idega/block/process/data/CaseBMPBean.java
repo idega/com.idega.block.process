@@ -70,7 +70,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String COLUMN_USER = "USER_ID";
 	static final String COLUMN_CREATOR = "CREATOR_ID";
 	static final String COLUMN_HANDLER = "HANDLER_GROUP_ID";
-	static final String PK_COLUMN = TABLE_NAME + "_ID";
+	public static final String PK_COLUMN = TABLE_NAME + "_ID";
 	static final String COLUMN_EXTERNAL_ID = "EXTERNAL_ID";
 	static final String COLUMN_CASE_NUMBER = "CASE_NUMBER";
 	static final String COLUMN_EXTERNAL_HANDLER_ID = "EXTERNAL_HANDLER_ID";
