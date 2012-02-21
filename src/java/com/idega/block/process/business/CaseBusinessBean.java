@@ -904,7 +904,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				locale = getUserBusiness().getUsersPreferredLocale(user);
 			}
 
-		} catch (IBOLookupException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
