@@ -1,11 +1,11 @@
 /*
  * $Id: CaseBMPBean.java,v 1.70 2009/06/23 09:33:27 valdas Exp $
- * 
+ *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of Idega hf. Use is subject to
  * license terms.
- * 
+ *
  */
 package com.idega.block.process.data;
 
@@ -54,14 +54,14 @@ import com.idega.util.expression.ELUtil;
  * PROC_CASE.
  * <p>
  * Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
  * @version $Revision: 1.70 $
  */
 public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = -9118580756828123883L;
-	
+
 	public static final String TABLE_NAME = "PROC_CASE";
 	public static final String COLUMN_CASE_CODE = "CASE_CODE";
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
@@ -78,7 +78,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
 	public static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
 	public static final String COLUMN_CASE_IDENTIFIER = "CASE_IDENTIFIER";
-	
+
 	public static final String COLUMN_CASE_SUBSCRIBERS = TABLE_NAME + "_SUBSCRIBERS";
 
 	public static final String CASE_STATUS_OPEN_KEY = "UBEH";
@@ -104,7 +104,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String CASE_STATUS_GROUPED_KEY = "GROU";
 	public static final String CASE_STATUS_CREATED_KEY = "CREA";
 	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
-	
+
 	@Override
 	public void initializeAttributes() {
 		addAttribute(getIDColumnName());
@@ -126,7 +126,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addMetaDataRelationship();
 
 		addManyToManyRelationShip(User.class, COLUMN_CASE_SUBSCRIBERS);
-		
+
 		addIndex("IDX_PROC_CASE_2", new String[] { getIDColumnName(), COLUMN_USER });
 		addIndex("IDX_PROC_CASE_3", new String[] { getIDColumnName(), COLUMN_CASE_CODE });
 		addIndex("IDX_PROC_CASE_4", new String[] { getIDColumnName(), COLUMN_CASE_STATUS });
@@ -199,149 +199,185 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return (CaseHome) this.getEJBLocalHome();
 	}
 
+	@Override
 	public void setCode(String caseCode) {
 		setColumn(CaseBMPBean.COLUMN_CASE_CODE, caseCode);
 	}
 
+	@Override
 	public String getCode() {
 		return (this.getStringColumnValue(COLUMN_CASE_CODE));
 	}
 
+	@Override
 	public void setCaseCode(CaseCode caseCode) {
 		setColumn(CaseBMPBean.COLUMN_CASE_CODE, caseCode);
 	}
 
+	@Override
 	public CaseCode getCaseCode() {
 		return (CaseCode) (this.getColumnValue(COLUMN_CASE_CODE));
 	}
 
+	@Override
 	public void setCaseStatus(CaseStatus status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
 	}
-	
+
+	@Override
 	public String getCaseManagerType() {
 		return getStringColumnValue(COLUMN_CASE_MANAGER_TYPE);
 	}
-	
+
+	@Override
 	public void setCaseManagerType(String type) {
 		setColumn(COLUMN_CASE_MANAGER_TYPE, type);
 	}
 
+	@Override
 	public CaseStatus getCaseStatus() {
 		return (CaseStatus) (this.getColumnValue(COLUMN_CASE_STATUS));
 	}
 
+	@Override
 	public void setStatus(String status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
 	}
 
+	@Override
 	public String getStatus() {
 		return (this.getStringColumnValue(COLUMN_CASE_STATUS));
 	}
 
+	@Override
 	public void setCreated(Timestamp statusChanged) {
 		setColumn(CaseBMPBean.COLUMN_CREATED, statusChanged);
 	}
 
+	@Override
 	public Timestamp getCreated() {
 		return ((Timestamp) getColumnValue(COLUMN_CREATED));
 	}
 
+	@Override
 	public void setParentCase(Case theCase) {
 		// throw new java.lang.UnsupportedOperationException("setParentCase() not
 		// implemented yet");
 		this.setColumn(CaseBMPBean.COLUMN_PARENT_CASE, theCase);
 	}
 
+	@Override
 	public Case getParentCase() {
 		// return (Case)super.getParentNode();
 		return (Case) getColumnValue(CaseBMPBean.COLUMN_PARENT_CASE);
 	}
 
+	@Override
 	public void setOwner(User owner) {
 		super.setColumn(COLUMN_USER, owner);
 	}
 
+	@Override
 	public void setCreator(User creator) {
 		super.setColumn(COLUMN_CREATOR, creator);
 	}
 
+	@Override
 	public Group getHandler() {
 		return (Group) this.getColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}
 
+	@Override
 	public int getHandlerId() {
 		return this.getIntColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}
 
+	@Override
 	public void setHandler(Group handler) {
 		super.setColumn(COLUMN_HANDLER, handler);
 	}
 
+	@Override
 	public void setHandler(int handlerGroupID) {
 		super.setColumn(COLUMN_HANDLER, handlerGroupID);
 	}
 
+	@Override
 	public User getOwner() {
 		return (User) this.getColumnValue(CaseBMPBean.COLUMN_USER);
 	}
 
+	@Override
 	public User getCreator() {
 		return (User) this.getColumnValue(CaseBMPBean.COLUMN_CREATOR);
 	}
 
+	@Override
 	public void setExternalId(String externalId) {
 		setColumn(COLUMN_EXTERNAL_ID, externalId);
 	}
 
+	@Override
 	public String getExternalId() {
 		return getStringColumnValue(COLUMN_EXTERNAL_ID);
 	}
 
+	@Override
 	public void setCaseNumber(String caseNumber) {
 		setColumn(COLUMN_CASE_NUMBER, caseNumber);
 	}
 
+	@Override
 	public String getCaseNumber() {
 		return getStringColumnValue(COLUMN_CASE_NUMBER);
 	}
 
+	@Override
 	public void setExternalHandler(User user) {
 		setColumn(COLUMN_EXTERNAL_HANDLER_ID, user.getPrimaryKey());
 	}
 
+	@Override
 	public User getExternalHandler() {
 		return (User) getColumnValue(COLUMN_EXTERNAL_HANDLER_ID);
 	}
 
+	@Override
 	public String getSubject() {
 		return getStringColumnValue(COLUMN_CASE_SUBJECT);
 	}
 
+	@Override
 	public void setSubject(String subject) {
 		setColumn(COLUMN_CASE_SUBJECT, subject);
 	}
 
+	@Override
 	public String getBody() {
 		return getStringColumnValue(COLUMN_CASE_BODY);
 	}
 
+	@Override
 	public void setBody(String body) {
 		setColumn(COLUMN_CASE_BODY, body);
 	}
-	
+
+	@Override
 	public String getCaseIdentifier() {
 		return getStringColumnValue(COLUMN_CASE_IDENTIFIER);
 	}
-	
+
+	@Override
 	public void setCaseIdentifier(String caseIdentifier) {
 		setColumn(COLUMN_CASE_IDENTIFIER, caseIdentifier);
 	}
 
+	@Override
 	public ICTreeNode getParentNode() {
 		return this.getParentCase();
 	}
 
+	@Override
 	public ICTreeNode getChildAtIndex(int childIndex) {
 		try {
 			return this.getCaseHome().findByPrimaryKey(new Integer(childIndex));
@@ -351,6 +387,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public int getChildCount() {
 		try {
 			return this.getCaseHome().countSubCasesUnder(this);
@@ -360,6 +397,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public Iterator<? extends Case> getChildrenIterator() {
 		Collection<? extends Case> children = getChildren();
 		if (children != null)
@@ -368,6 +406,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return null;
 	}
 
+	@Override
 	public Collection<? extends Case> getChildren() {
 		try {
 			return this.getCaseHome().findSubCasesUnder(this);
@@ -377,6 +416,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public int getSiblingCount() {
 		try {
 			return this.getParentCase().getChildCount();
@@ -550,37 +590,44 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public int getNodeID() {
 		return this.getID();
 	}
 
+	@Override
 	public String getNodeName() {
 		return getName();
 	}
 
+	@Override
 	public String getNodeName(Locale locale) {
 		return getNodeName();
 	}
 
+	@Override
 	public String getNodeName(Locale locale, IWApplicationContext iwac) {
 		return getNodeName(locale);
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return (this.getChildCount() == 0);
 	}
 
+	@Override
 	public int getIndex(ICTreeNode node) {
 		return Integer.parseInt(getId());
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
 
 	/**
 	 * Returns the cASE_STATUS_CANCELLED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusCancelled() {
@@ -589,7 +636,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_DELETED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusDeleted() {
@@ -598,7 +645,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_DENIED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusDenied() {
@@ -607,7 +654,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_GRANTED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusGranted() {
@@ -616,7 +663,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_INACTIVE_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusInactive() {
@@ -625,7 +672,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_OPEN_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusOpen() {
@@ -634,7 +681,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_REVIEW_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusReview() {
@@ -643,7 +690,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_WAITING.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusWaiting() {
@@ -652,7 +699,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_PRELIMINARY_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusPreliminary() {
@@ -661,7 +708,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_PENDING_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusPending() {
@@ -670,7 +717,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusContract() {
@@ -679,7 +726,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_READY_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusReady() {
@@ -688,7 +735,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_REDEEM_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusRedeem() {
@@ -697,7 +744,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_ERROR.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusError() {
@@ -706,7 +753,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_MOVED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusMoved() {
@@ -715,7 +762,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_PLACED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusPlaced() {
@@ -724,7 +771,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_IN_PROCESS.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusInProcess() {
@@ -733,7 +780,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_CLOSED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusClosed() {
@@ -742,7 +789,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_ARCHIVED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusArchived() {
@@ -751,21 +798,21 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_LOCKED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusLocked() {
 		return CASE_STATUS_LOCKED;
 	}
-	
+
 	public String ejbHomeGetCaseStatusGrouped() {
 		return CASE_STATUS_GROUPED_KEY;
 	}
-	
+
 	public String ejbHomeGetCaseStatusCreated() {
 		return CASE_STATUS_CREATED_KEY;
 	}
-	
+
 	public String ejbHomeGetCaseStatusFinished() {
 		return CASE_STATUS_FINISHED_KEY;
 	}
@@ -889,7 +936,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Gets the query for selecting all cases by user.
-	 * 
+	 *
 	 * @param user
 	 *          the cases has to be owned by
 	 * @return IDOQuery the resulting query.
@@ -907,7 +954,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Gets the query for selecting all cases by group.
-	 * 
+	 *
 	 * @param group
 	 *          the cases will be handled by
 	 * @return IDOQuery the resulting query.
@@ -995,26 +1042,28 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.idega.block.process.data.Case#getUrl()
 	 */
+	@Override
 	public String getUrl() {
 		return getMetaData(ProcessConstants.METADATA_KEY_URL);
 	}
-	
+
+	@Override
 	public String getId(){
 		return getPrimaryKey().toString();
 	}
-	
+
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
-		
+
 		Table casesTable = new Table(this);
 		String casesTableIdColumnName = casesTable.getColumn(getIDColumnName()).getName();
-		
+
 		SelectQuery query = new SelectQuery(casesTable);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
-		
+
 		if (owner != null) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), MatchCriteria.EQUALS, owner.getId()));
 		}
@@ -1023,7 +1072,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			for (Group group: groups) {
 				groupsIds.add(group.getId());
 			}
-			
+
 			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_HANDLER), groupsIds));
 		}
 		if (caseNumber != null) {
@@ -1058,17 +1107,26 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		if (simpleCases) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CASE_MANAGER_TYPE), MatchCriteria.IS, MatchCriteria.NULL));
 		}
-		
+
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
-	
+
 		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
 		return idoFindPKsByQuery(query);
 	}
-	
+
+	@Override
 	public void addSubscriber(User subscriber) throws IDOAddRelationshipException {
+		if (subscriber == null)
+			return;
+
+		Collection<User> currentSubscribers = getSubscribers();
+		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber))
+			return;
+
 		this.idoAddTo(subscriber);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
 		try {
@@ -1079,10 +1137,11 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return null;
 	}
 
+	@Override
 	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
 		super.idoRemoveFrom(subscriber);
 	}
-	
+
 	public Collection<Case> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhereEquals(COLUMN_CASE_CODE, code);
@@ -1095,10 +1154,11 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		super.store();
 		publishEvent();
 	}
-	
+
 	private void publishEvent() {
 		final Case source = this;
 		Thread publisher = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(source));
