@@ -199,185 +199,149 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return (CaseHome) this.getEJBLocalHome();
 	}
 
-	@Override
 	public void setCode(String caseCode) {
 		setColumn(CaseBMPBean.COLUMN_CASE_CODE, caseCode);
 	}
 
-	@Override
 	public String getCode() {
 		return (this.getStringColumnValue(COLUMN_CASE_CODE));
 	}
 
-	@Override
 	public void setCaseCode(CaseCode caseCode) {
 		setColumn(CaseBMPBean.COLUMN_CASE_CODE, caseCode);
 	}
 
-	@Override
 	public CaseCode getCaseCode() {
 		return (CaseCode) (this.getColumnValue(COLUMN_CASE_CODE));
 	}
 
-	@Override
 	public void setCaseStatus(CaseStatus status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
 	}
 
-	@Override
 	public String getCaseManagerType() {
 		return getStringColumnValue(COLUMN_CASE_MANAGER_TYPE);
 	}
 
-	@Override
 	public void setCaseManagerType(String type) {
 		setColumn(COLUMN_CASE_MANAGER_TYPE, type);
 	}
 
-	@Override
 	public CaseStatus getCaseStatus() {
 		return (CaseStatus) (this.getColumnValue(COLUMN_CASE_STATUS));
 	}
 
-	@Override
 	public void setStatus(String status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
 	}
 
-	@Override
 	public String getStatus() {
 		return (this.getStringColumnValue(COLUMN_CASE_STATUS));
 	}
 
-	@Override
 	public void setCreated(Timestamp statusChanged) {
 		setColumn(CaseBMPBean.COLUMN_CREATED, statusChanged);
 	}
 
-	@Override
 	public Timestamp getCreated() {
 		return ((Timestamp) getColumnValue(COLUMN_CREATED));
 	}
 
-	@Override
 	public void setParentCase(Case theCase) {
 		// throw new java.lang.UnsupportedOperationException("setParentCase() not
 		// implemented yet");
 		this.setColumn(CaseBMPBean.COLUMN_PARENT_CASE, theCase);
 	}
 
-	@Override
 	public Case getParentCase() {
 		// return (Case)super.getParentNode();
 		return (Case) getColumnValue(CaseBMPBean.COLUMN_PARENT_CASE);
 	}
 
-	@Override
 	public void setOwner(User owner) {
 		super.setColumn(COLUMN_USER, owner);
 	}
 
-	@Override
 	public void setCreator(User creator) {
 		super.setColumn(COLUMN_CREATOR, creator);
 	}
 
-	@Override
 	public Group getHandler() {
 		return (Group) this.getColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}
 
-	@Override
 	public int getHandlerId() {
 		return this.getIntColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}
 
-	@Override
 	public void setHandler(Group handler) {
 		super.setColumn(COLUMN_HANDLER, handler);
 	}
 
-	@Override
 	public void setHandler(int handlerGroupID) {
 		super.setColumn(COLUMN_HANDLER, handlerGroupID);
 	}
 
-	@Override
 	public User getOwner() {
 		return (User) this.getColumnValue(CaseBMPBean.COLUMN_USER);
 	}
 
-	@Override
 	public User getCreator() {
 		return (User) this.getColumnValue(CaseBMPBean.COLUMN_CREATOR);
 	}
 
-	@Override
 	public void setExternalId(String externalId) {
 		setColumn(COLUMN_EXTERNAL_ID, externalId);
 	}
 
-	@Override
 	public String getExternalId() {
 		return getStringColumnValue(COLUMN_EXTERNAL_ID);
 	}
 
-	@Override
 	public void setCaseNumber(String caseNumber) {
 		setColumn(COLUMN_CASE_NUMBER, caseNumber);
 	}
 
-	@Override
 	public String getCaseNumber() {
 		return getStringColumnValue(COLUMN_CASE_NUMBER);
 	}
 
-	@Override
 	public void setExternalHandler(User user) {
 		setColumn(COLUMN_EXTERNAL_HANDLER_ID, user.getPrimaryKey());
 	}
 
-	@Override
 	public User getExternalHandler() {
 		return (User) getColumnValue(COLUMN_EXTERNAL_HANDLER_ID);
 	}
 
-	@Override
 	public String getSubject() {
 		return getStringColumnValue(COLUMN_CASE_SUBJECT);
 	}
 
-	@Override
 	public void setSubject(String subject) {
 		setColumn(COLUMN_CASE_SUBJECT, subject);
 	}
 
-	@Override
 	public String getBody() {
 		return getStringColumnValue(COLUMN_CASE_BODY);
 	}
 
-	@Override
 	public void setBody(String body) {
 		setColumn(COLUMN_CASE_BODY, body);
 	}
 
-	@Override
 	public String getCaseIdentifier() {
 		return getStringColumnValue(COLUMN_CASE_IDENTIFIER);
 	}
 
-	@Override
 	public void setCaseIdentifier(String caseIdentifier) {
 		setColumn(COLUMN_CASE_IDENTIFIER, caseIdentifier);
 	}
 
-	@Override
 	public ICTreeNode getParentNode() {
 		return this.getParentCase();
 	}
 
-	@Override
 	public ICTreeNode getChildAtIndex(int childIndex) {
 		try {
 			return this.getCaseHome().findByPrimaryKey(new Integer(childIndex));
@@ -387,7 +351,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
-	@Override
 	public int getChildCount() {
 		try {
 			return this.getCaseHome().countSubCasesUnder(this);
@@ -397,7 +360,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
-	@Override
 	public Iterator<? extends Case> getChildrenIterator() {
 		Collection<? extends Case> children = getChildren();
 		if (children != null)
@@ -406,7 +368,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return null;
 	}
 
-	@Override
 	public Collection<? extends Case> getChildren() {
 		try {
 			return this.getCaseHome().findSubCasesUnder(this);
@@ -416,7 +377,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
-	@Override
 	public int getSiblingCount() {
 		try {
 			return this.getParentCase().getChildCount();
@@ -590,37 +550,30 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
-	@Override
 	public int getNodeID() {
 		return this.getID();
 	}
 
-	@Override
 	public String getNodeName() {
 		return getName();
 	}
 
-	@Override
 	public String getNodeName(Locale locale) {
 		return getNodeName();
 	}
 
-	@Override
 	public String getNodeName(Locale locale, IWApplicationContext iwac) {
 		return getNodeName(locale);
 	}
 
-	@Override
 	public boolean isLeaf() {
 		return (this.getChildCount() == 0);
 	}
 
-	@Override
 	public int getIndex(ICTreeNode node) {
 		return Integer.parseInt(getId());
 	}
 
-	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
@@ -1045,12 +998,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	 *
 	 * @see com.idega.block.process.data.Case#getUrl()
 	 */
-	@Override
 	public String getUrl() {
 		return getMetaData(ProcessConstants.METADATA_KEY_URL);
 	}
 
-	@Override
 	public String getId(){
 		return getPrimaryKey().toString();
 	}
@@ -1114,7 +1065,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return idoFindPKsByQuery(query);
 	}
 
-	@Override
 	public void addSubscriber(User subscriber) throws IDOAddRelationshipException {
 		if (subscriber == null)
 			return;
@@ -1126,7 +1076,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		this.idoAddTo(subscriber);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
 		try {
@@ -1137,7 +1086,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return null;
 	}
 
-	@Override
 	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
 		super.idoRemoveFrom(subscriber);
 	}
@@ -1158,7 +1106,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	private void publishEvent() {
 		final Case source = this;
 		Thread publisher = new Thread(new Runnable() {
-			@Override
 			public void run() {
 				try {
 					ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(source));
