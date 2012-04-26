@@ -33,7 +33,7 @@ import com.idega.util.expression.ELUtil;
 
 /**
  * Case list component.
- * 
+ *
  * @author donatas
  *
  */
@@ -41,15 +41,15 @@ public class UICasesList extends IWBaseComponent {
 
 	public static final String	COMPONENT_TYPE = "com.idega.UICasesList",
 								DYNAMIC_CASES_NAVIGATOR = "dynamic_pager_cases_search";
-	
+
 	@Autowired
 	private CaseManagersProvider caseManagersProvider;
-	
+
 	private String type, specialBackPage;
-	
+
 	private int pageSize = 20;
 	private int page = 1;
-	
+
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
 	private boolean allowPDFSigning;
@@ -66,7 +66,7 @@ public class UICasesList extends IWBaseComponent {
 	private boolean showLegend, showAllCases;
 	private boolean showLogExportButton,
 					showCaseStatus = true;
-	
+
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
 	}
@@ -79,7 +79,7 @@ public class UICasesList extends IWBaseComponent {
 							caseStatusesToHide,
 							caseCodes,
 							customColumns;
-	
+
 	private String	instanceId,
 					componentId,
 					commentsManagerIdentifier,
@@ -87,7 +87,7 @@ public class UICasesList extends IWBaseComponent {
 					dateCustomValueVariable,
 					dateCustomLabelLocalizationKey,
 					casesListCustomizer;
-	
+
 	@SuppressWarnings("rawtypes")
 	private Map userCasesPageMap;
 
@@ -99,7 +99,7 @@ public class UICasesList extends IWBaseComponent {
 		}
 		return null;
 	}
-	
+
 	private Integer getPageFromSession(IWContext iwc) {
 		String key = "userCases";
 		Object pageOb = iwc.getSessionAttribute(ListNavigator.PARAMETER_CURRENT_PAGE + "_" + key);
@@ -108,20 +108,20 @@ public class UICasesList extends IWBaseComponent {
 		}
 		return null;
 	}
-	
+
 	@Override
 	protected void initializeComponent(FacesContext context) {
 		super.initializeComponent(context);
-		
+
 		IWContext iwc = IWContext.getIWContext(context);
-		
+
 		GeneralCasesListBuilder listBuilder = ELUtil.getInstance().getBean(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
-		
+
 		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() || CasesRetrievalManager.CASE_LIST_TYPE_PUBLIC.equals(getType()) ? getCases(iwc) : null;
-		
+
 		UIComponent casesListComponent = null;
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
-		
+
 		Object settings = iwc.getSessionAttribute(GeneralCasesListBuilder.USER_CASES_SEARCH_SETTINGS_ATTRIBUTE);
 		int pageSize = getPageSize();
 		int page = getPage();
@@ -134,7 +134,7 @@ public class UICasesList extends IWBaseComponent {
 			page = searchSettings.getPage();
 			foundResults = searchSettings.getFoundResults();
 		}
-		
+
 		Integer pageSizeFromSesion = getPageSizeFromSession(iwc);
 		if (pageSizeFromSesion != null && pageSizeFromSesion > 0) {
 			pageSize = pageSizeFromSesion;
@@ -145,7 +145,7 @@ public class UICasesList extends IWBaseComponent {
 			page = pageFromSession;
 			setPage(page);
 		}
-		
+
 		properties.setType(getType());
 		properties.setUsePDFDownloadColumn(isUsePDFDownloadColumn());
 		properties.setAllowPDFSigning(isAllowPDFSigning());
@@ -175,7 +175,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowCaseStatus(isShowCaseStatus());
 		properties.setCustomColumns(getCustomColumns());
 		properties.setCasesListCustomizer(getCasesListCustomizer());
-		
+
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -183,13 +183,13 @@ public class UICasesList extends IWBaseComponent {
 			properties.setShowCheckBoxes(isShowCheckBoxes());
 			casesListComponent = listBuilder.getCasesList(iwc, cases, properties);
 		}
-		
+
 		add(casesListComponent);
 	}
 
 	/**
 	 * Gets paged cases data.
-	 * 
+	 *
 	 * @param user User to get cases for.
 	 * @return PagedDataCollection of cases.
 	 */
@@ -198,9 +198,9 @@ public class UICasesList extends IWBaseComponent {
 		if (pageSizeFromSession != null && pageSizeFromSession > 0)
 			setPageSize(pageSizeFromSession);
 		Integer pageFromSession = getPageFromSession(iwc);
-		if (pageFromSession != null && pageFromSession > 0) 
+		if (pageFromSession != null && pageFromSession > 0)
 			setPage(pageFromSession);
-		
+
 		CasesSearchResultsHolder casesSearcher = null;
 		try {
 			casesSearcher = ELUtil.getInstance().getBean(CasesSearchResultsHolder.SPRING_BEAN_IDENTIFIER);
@@ -217,7 +217,7 @@ public class UICasesList extends IWBaseComponent {
 			if (getPage() <= 0) {
 				setPage(1);
 			}
-			
+
 			Collection<CasePresentation> cases = casesSearcher.getSearchResults(id);
 			if (ListUtil.isEmpty(cases) && !StringUtil.isEmpty(getSearchResultsId())) {
 				cases = casesSearcher.getSearchResults(getSearchResultsId());
@@ -229,7 +229,7 @@ public class UICasesList extends IWBaseComponent {
 			}
 			if (ListUtil.isEmpty(cases))
 				return null;
-			
+
 			if (getPageSize() > 0) {
 				if (getPage() != criterias.getPage() || getPageSize() != criterias.getPageSize()) {
 					criterias.setPage(getPage());
@@ -240,12 +240,12 @@ public class UICasesList extends IWBaseComponent {
 			}
 			return new PagedDataCollection<CasePresentation>(cases);
 		}
-		
+
 		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
 		return getCaseManagersProvider().getCaseManager().getCases(user, getType(), iwc.getCurrentLocale(), getCaseCodes(),
 				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases(), isShowAllCases());
 	}
-	
+
 	private Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
 		try {
 			return getCaseManagersProvider().getCaseManager().getReLoadedCases(criterias);
@@ -254,7 +254,7 @@ public class UICasesList extends IWBaseComponent {
 		}
 		return null;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
@@ -346,7 +346,7 @@ public class UICasesList extends IWBaseComponent {
 	public void setUserCasesPageMap(@SuppressWarnings("rawtypes") Map userCasesPageMap) {
 		this.userCasesPageMap = userCasesPageMap;
 	}
-	
+
 	public void setCaseStatusesToShow(List<String> caseStatusesToShow) {
 		this.caseStatusesToShow = caseStatusesToShow;
 	}
@@ -354,7 +354,7 @@ public class UICasesList extends IWBaseComponent {
 	public void setCaseStatusesToHide(List<String> caseStatusesToHide) {
 		this.caseStatusesToHide = caseStatusesToHide;
 	}
-	
+
 	public List<String> getCaseStatusesToHide() {
 		return caseStatusesToHide != null ? caseStatusesToHide : (caseStatusesToHide = new ArrayList<String>());
 	}
@@ -482,11 +482,11 @@ public class UICasesList extends IWBaseComponent {
 	public void setSearchResultsId(String searchResultsId) {
 		this.searchResultsId = searchResultsId;
 	}
-	
+
 	public boolean getUseJavascriptForPageSwitching() {
 		return this.useJavascriptForPageSwitching;
 	}
-	
+
 	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
 		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
