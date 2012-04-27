@@ -31,7 +31,7 @@ import com.idega.util.StringUtil;
 
 /**
  * Last modified: $Date: 2009/06/30 09:35:57 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.7 $
  */
@@ -39,14 +39,14 @@ public abstract class CaseBlock extends Block {
 
 	private CaseBusiness business;
 	private UserBusiness userBusiness;
-	
+
 	private IWBundle iwb;
 	private IWResourceBundle iwrb;
-	
+
 	/* Cases list parameters */
 	private int pageSize = 20;
 	private int page = 1;
-	
+
 	private boolean addCredentialsToExernalUrls;
 	private boolean showCaseNumberColumn = true;
 	private boolean showCreationTimeInDateColumn = true;
@@ -60,8 +60,9 @@ public abstract class CaseBlock extends Block {
 	private boolean onlySubscribedCases;
 	private boolean showLegend, showAllCases;
 	private boolean showLogExportButton,
-					showCaseStatus = true;
-	
+					showCaseStatus = true,
+					showExportAllCasesButton;
+
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
 					caseCodes,
@@ -70,14 +71,14 @@ public abstract class CaseBlock extends Block {
 					dateCustomLabelLocalizationKey,
 					searchResultsId,
 					specialBackPage,
-					
+
 					customColumns,
 					casesListCustomizer;
-	
+
 	private boolean useJavascriptForPageSwitching = true;
 	private String externalStyleSheet;
 	/* Cases list parameters */
-	
+
 	@Override
 	public void main(IWContext iwc) throws Exception {
 		initialize(iwc);
@@ -101,15 +102,15 @@ public abstract class CaseBlock extends Block {
 			PresentationUtil.addStyleSheetToHeader(iwc, externalStyleSheet);
 		}
 	}
-	
+
 	protected IWBundle getBundle() {
 		return this.iwb;
 	}
-	
+
 	protected IWResourceBundle getResourceBundle() {
 		return this.iwrb;
 	}
-	
+
 	protected CaseBusiness getBusiness() {
 		return this.business;
 	}
@@ -122,11 +123,11 @@ public abstract class CaseBlock extends Block {
 			throw new IBORuntimeException(ile);
 		}
 	}
-	
+
 	protected UserBusiness getUserBusiness() {
 		return this.userBusiness;
 	}
-	
+
 	private UserBusiness getUserBusiness(IWApplicationContext iwac) {
 		try {
 			return (UserBusiness) IBOLookup.getServiceInstance(iwac, UserBusiness.class);
@@ -138,7 +139,7 @@ public abstract class CaseBlock extends Block {
 	private void setBundle(IWBundle iwb) {
 		this.iwb = iwb;
 	}
-	
+
 	private void setResourceBundle(IWResourceBundle iwrb) {
 		this.iwrb = iwrb;
 	}
@@ -263,7 +264,7 @@ public abstract class CaseBlock extends Block {
 	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
 		this.commentsManagerIdentifier = commentsManagerIdentifier;
 	}
-	
+
 	public boolean isAddCredentialsToExernalUrls() {
 		return addCredentialsToExernalUrls;
 	}
@@ -277,7 +278,7 @@ public abstract class CaseBlock extends Block {
 
 	public UICasesList getCasesList(IWContext iwc, String id) throws RemoteException {
 		UICasesList list = (UICasesList)iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
-		
+
 		list.setType(getCasesProcessorType());
 		list.setUserCasesPageMap(getUserCasesPageMap());
 		list.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -311,12 +312,13 @@ public abstract class CaseBlock extends Block {
 		list.setShowCaseStatus(isShowCaseStatus());
 		list.setCasesListCustomizer(getCasesListCustomizer());
 		list.setCustomColumns(StringUtil.isEmpty(getCustomColumns()) ? null : Arrays.asList(getCustomColumns().split(CoreConstants.COMMA)));
-		
+		list.setShowExportAllCasesButton(isShowExportAllCasesButton());
+
 		return list;
 	}
-	
+
 	public abstract String getCasesProcessorType();
-	
+
 	public abstract Map<Object, Object> getUserCasesPageMap();
 
 	public boolean isShowAttachmentStatistics() {
@@ -350,11 +352,11 @@ public abstract class CaseBlock extends Block {
 	public void setSearchResultsId(String searchResultsId) {
 		this.searchResultsId = searchResultsId;
 	}
-	
+
 	public boolean getUseJavascriptForPageSwitching() {
 		return this.useJavascriptForPageSwitching;
 	}
-	
+
 	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
 		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
@@ -418,5 +420,13 @@ public abstract class CaseBlock extends Block {
 	public void setCasesListCustomizer(String casesListCustomizer) {
 		this.casesListCustomizer = casesListCustomizer;
 	}
-	
+
+	public boolean isShowExportAllCasesButton() {
+		return showExportAllCasesButton;
+	}
+
+	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
+		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+
 }

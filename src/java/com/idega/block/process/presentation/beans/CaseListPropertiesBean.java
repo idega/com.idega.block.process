@@ -13,7 +13,7 @@ public class CaseListPropertiesBean {
 	private String criteriasId;
 	private String	specialBackPage,
 					casesListCustomizer;
-	
+
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
 	private boolean allowPDFSigning;
@@ -28,17 +28,18 @@ public class CaseListPropertiesBean {
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLogExportButton,
-					showCaseStatus = true;
-	
+					showCaseStatus = true,
+					showExportAllCasesButton;
+
 	private int pageSize;
 	private int page;
 	private int foundResults;
-	
+
 	private List<String>	caseCodes,
 							statusesToShow,
 							statusesToHide,
 							customColumns;
-	
+
 	public String getType() {
 		return type;
 	}
@@ -190,48 +191,54 @@ public class CaseListPropertiesBean {
 	public void setFoundResults(int foundResults) {
 		this.foundResults = foundResults;
 	}
-	
+
 	public boolean getUseJavascriptForPageSwitching() {
 		return this.useJavascriptForPageSwitching;
 	}
-	
+
 	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
 		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
 	}
-	
+
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
 	}
 	public void setShowLogExportButton(boolean showLogExportButton) {
 		this.showLogExportButton = showLogExportButton;
 	}
-	
+
 	public String getSpecialBackPage() {
 		return specialBackPage;
 	}
 	public void setSpecialBackPage(String specialBackPage) {
 		this.specialBackPage = specialBackPage;
 	}
-	
+
 	public boolean isShowCaseStatus() {
 		return showCaseStatus;
 	}
 	public void setShowCaseStatus(boolean showCaseStatus) {
 		this.showCaseStatus = showCaseStatus;
 	}
-	
+
 	public List<String> getCustomColumns() {
 		return customColumns;
 	}
 	public void setCustomColumns(List<String> customColumns) {
 		this.customColumns = customColumns;
 	}
-	
+
 	public String getCasesListCustomizer() {
 		return casesListCustomizer;
 	}
 	public void setCasesListCustomizer(String casesListCustomizer) {
 		this.casesListCustomizer = casesListCustomizer;
 	}
-	
+	public boolean isShowExportAllCasesButton() {
+		return showExportAllCasesButton;
+	}
+	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
+		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+
 }
