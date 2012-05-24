@@ -128,7 +128,6 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(COLUMN_CASE_MANAGER_TYPE, "Case manager type", String.class);
 		addAttribute(COLUMN_CASE_IDENTIFIER, "Case identifier", String.class);
 		addAttribute(COLUMN_READ,"Is case read",Boolean.class);
-//		addManyToManyRelationShip(User.class, COLUMN_READ);
 		addMetaDataRelationship();
 
 		addManyToManyRelationShip(User.class, COLUMN_CASE_SUBSCRIBERS);
