@@ -416,4 +416,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
+	
+	public Collection<Case> getCases(User user, String status, String caseCode, Boolean read) throws FinderException{
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection ids = ((CaseBMPBean) entity).ejbFindCases(user, status,caseCode, read);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 }

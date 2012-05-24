@@ -37,6 +37,7 @@ import com.idega.data.query.Criteria;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.JoinCriteria;
 import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.OR;
 import com.idega.data.query.Order;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
@@ -442,6 +443,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	protected String getSQLGeneralCaseCaseCodeColumnName() {
 		return CaseBMPBean.COLUMN_CASE_CODE;
 	}
+	
+	protected String getSQLGeneralCaseReadColumnName() {
+		return CaseBMPBean.COLUMN_READ;
+	}
 
 	protected String getSQLGeneralCaseCaseStatusColumnName() {
 		return CaseBMPBean.COLUMN_CASE_STATUS;
@@ -554,6 +559,20 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	public Criteria idoCriteriaForStatus(String caseStatus) {
 		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseStatusColumnName(), MatchCriteria.EQUALS, caseStatus, true);
+	}
+	public Criteria idoCriteriaForCaseCode(String code) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseCodeColumnName(), MatchCriteria.EQUALS, code, true);
+	}
+	
+	public Criteria idoCriteriaForCaseRead(boolean read) {
+		if(read){
+			return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.EQUALS, "Y", true);
+		}
+		Criteria notRead = new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.NOTEQUALS, "Y", true);
+		Criteria isNull = new MatchCriteria(idoTableGeneralCase().getColumn(getSQLGeneralCaseReadColumnName()), false);
+		OR orCriteria = new OR(notRead, isNull);
+		return orCriteria;
+		
 	}
 
 	public Criteria idoCriteriaForStatus(String[] caseStatus) {
@@ -1277,5 +1296,51 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		query.addCriteria(idoJoinCriteraWithBaseCaseTable());
 		query.addCriteria(idoCriteriaForExternalId(externalId));
 		return idoFindOnePKByQuery(query);
+	}
+	
+	@Override
+	public Boolean isRead() {
+		return getGeneralCase().isRead();
+	}
+
+	@Override
+	public void setRead(Boolean read) {
+		getGeneralCase().setRead(read);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Integer> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
+		try {
+			SelectQuery query = idoQueryGetAllCasesByUser(user, status, caseCode, read);
+			Order order = new Order(idoTableGeneralCase().getColumn(getSQLGeneralCaseCreatedColumnName()), false);
+			query.addOrder(order);
+			return idoFindPKsByQuery(query);
+		}
+		catch(FinderException e){
+			throw e;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
+	
+	protected SelectQuery idoQueryGetAllCasesByUser(User user, String status, String caseCode,Boolean read) {
+		try {
+			SelectQuery query = idoSelectQueryGetAllCasesByUser(user);
+
+			if(status != null){
+				query.addCriteria(idoCriteriaForStatus(status));
+			}
+			if(caseCode != null){
+				query.addCriteria(idoCriteriaForCaseCode(caseCode));
+			}
+			if(read != null){
+					query.addCriteria(idoCriteriaForCaseRead(read));
+			}
+			return query;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
 	}
 }

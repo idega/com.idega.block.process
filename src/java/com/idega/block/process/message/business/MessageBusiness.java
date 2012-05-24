@@ -133,5 +133,7 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#createUserMessage
 	 */
 	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException, java.rmi.RemoteException;
+	
+	public Collection<Message> findMessagesForUser(String messageType,User user, String status,Boolean read) throws FinderException;
 
 }

@@ -247,4 +247,15 @@ public interface CaseHome extends IDOHome {
 	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException;
 	
 	public Collection<Case> getCasesByIds(Collection<Integer> ids) throws FinderException;
+	
+	/**
+	 * 
+	 * @param user	owner of the case
+	 * @param status if null than omitted
+	 * @param caseCode if null than omitted
+	 * @param read is case read by any user, if null than omitted
+	 * @return
+	 * @throws FinderException
+	 */
+	public Collection<Case> getCases(User user, String status, String caseCode, Boolean read) throws FinderException;
 }

@@ -35,8 +35,11 @@ import com.idega.data.UniqueIDCapable;
 import com.idega.data.query.BetweenCriteria;
 import com.idega.data.query.Column;
 import com.idega.data.query.CountColumn;
+import com.idega.data.query.Criteria;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.OR;
+import com.idega.data.query.Order;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
@@ -80,6 +83,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String COLUMN_CASE_IDENTIFIER = "CASE_IDENTIFIER";
 
 	public static final String COLUMN_CASE_SUBSCRIBERS = TABLE_NAME + "_SUBSCRIBERS";
+	public static final String COLUMN_READ = TABLE_NAME + "READ";
 
 	public static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	public static final String CASE_STATUS_INACTIVE_KEY = "TYST";
@@ -104,7 +108,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String CASE_STATUS_GROUPED_KEY = "GROU";
 	public static final String CASE_STATUS_CREATED_KEY = "CREA";
 	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
-
+	
 	@Override
 	public void initializeAttributes() {
 		addAttribute(getIDColumnName());
@@ -123,6 +127,8 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(COLUMN_CASE_BODY, "Case subject", String.class, 4000);
 		addAttribute(COLUMN_CASE_MANAGER_TYPE, "Case manager type", String.class);
 		addAttribute(COLUMN_CASE_IDENTIFIER, "Case identifier", String.class);
+		addAttribute(COLUMN_READ,"Is case read",Boolean.class);
+//		addManyToManyRelationShip(User.class, COLUMN_READ);
 		addMetaDataRelationship();
 
 		addManyToManyRelationShip(User.class, COLUMN_CASE_SUBSCRIBERS);
@@ -1116,4 +1122,86 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		});
 		publisher.start();
 	}
+
+	@Override
+	public Boolean isRead() {
+		return getBooleanColumnValue(COLUMN_READ);
+	}
+
+	@Override
+	public void setRead(Boolean read) {
+		setColumn(COLUMN_READ, read);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Case> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
+		return ejbFindCases(user.getId(), status, caseCode, read);
+	}
+	
+	public Collection<Case> ejbFindCases(String userId, String status,String caseCode, Boolean read)  throws FinderException{
+		try {
+			
+			SelectQuery query = idoQueryGetAllCasesByUser(userId, status, caseCode, read);
+			Order order = new Order(idoQueryTable().getColumn(COLUMN_CREATED), false);
+			query.addOrder(order);
+			return idoFindPKsByQuery(query);
+		}
+		catch(FinderException e){
+			throw e;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
+	
+	protected SelectQuery idoSelectQueryGetAllCasesByUser(String userId) {
+		SelectQuery query = idoSelectQuery();
+		query.addCriteria(idoCriteriaForUser(userId));
+		return query;
+	}
+	
+	protected Criteria idoCriteriaForUser(String userId) {
+		return new MatchCriteria(idoQueryTable(), COLUMN_USER, MatchCriteria.EQUALS, userId);
+	}
+	
+	public Criteria idoCriteriaForStatus(String caseStatus) {
+		return new MatchCriteria(idoQueryTable(), COLUMN_CASE_STATUS, MatchCriteria.EQUALS, caseStatus, true);
+	}
+	
+	public Criteria idoCriteriaForCaseCode(String code) {
+		return new MatchCriteria(idoQueryTable(), COLUMN_CASE_CODE, MatchCriteria.EQUALS, code, true);
+	}
+	
+	public Criteria idoCriteriaForCaseRead(boolean read) {
+		if(read){
+			return new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.EQUALS, "Y", true);
+		}
+		Criteria notRead = new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.NOTEQUALS, "Y", true);
+		Criteria isNull = new MatchCriteria(idoQueryTable().getColumn(COLUMN_READ), false);
+		OR orCriteria = new OR(notRead, isNull);
+		return orCriteria;
+		
+	}
+	
+	protected SelectQuery idoQueryGetAllCasesByUser(String userId, String status, String caseCode,Boolean read) {
+		try {
+			SelectQuery query = idoSelectQueryGetAllCasesByUser(userId);
+
+			if(status != null){
+				query.addCriteria(idoCriteriaForStatus(status));
+			}
+			if(caseCode != null){
+				query.addCriteria(idoCriteriaForCaseCode(caseCode));
+			}
+			if(read != null){
+					query.addCriteria(idoCriteriaForCaseRead(read));
+			}
+			return query;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
+	
+
 }

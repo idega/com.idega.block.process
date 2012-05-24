@@ -34,5 +34,7 @@ public interface MessageHome extends IDOHome {
 	public int getNumberOfMessages(User user, Collection<Group> groups, String[] status) throws IDOException;
 
 	public Collection<Message> findMessages(User user, String caseId) throws FinderException;
+	
+	public Collection<Message> findMessagesForUser(User user, String status,Boolean read) throws FinderException;
 
 }

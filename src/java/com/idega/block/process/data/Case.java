@@ -269,4 +269,8 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	public Collection<User> getSubscribers();
 
 	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException;
+	
+	public Boolean isRead();
+	
+	public void setRead(Boolean read);
 }

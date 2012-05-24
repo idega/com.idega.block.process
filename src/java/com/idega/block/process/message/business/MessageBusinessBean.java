@@ -185,4 +185,12 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		return getMessageHome(messageType).findMessages(user, caseId);
 	}
 
+
+
+	@Override
+	public Collection<Message> findMessagesForUser(String messageType,User user, String status,
+			Boolean read) throws FinderException {
+		return getMessageHome(messageType).findMessagesForUser(user, status, read);
+	}
+
 }
