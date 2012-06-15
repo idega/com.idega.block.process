@@ -29,7 +29,9 @@ public class CaseListPropertiesBean {
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLogExportButton,
 					showCaseStatus = true,
-					showExportAllCasesButton;
+					showExportAllCasesButton,
+					showComments = true,
+					showContacts = true;
 
 	private int pageSize;
 	private int page;
@@ -239,6 +241,18 @@ public class CaseListPropertiesBean {
 	}
 	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
 		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+	public boolean isShowComments() {
+		return showComments;
+	}
+	public void setShowComments(boolean showComments) {
+		this.showComments = showComments;
+	}
+	public boolean isShowContacts() {
+		return showContacts;
+	}
+	public void setShowContacts(boolean showContacts) {
+		this.showContacts = showContacts;
 	}
 
 }

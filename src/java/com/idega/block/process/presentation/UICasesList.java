@@ -50,23 +50,25 @@ public class UICasesList extends IWBaseComponent {
 	private int pageSize = 20;
 	private int page = 1;
 
-	private boolean showCheckBoxes;
-	private boolean usePDFDownloadColumn;
-	private boolean allowPDFSigning;
-	private boolean showStatistics;
-	private boolean hideEmptySection;
-	private boolean addCredentialsToExernalUrls;
-	private boolean showCaseNumberColumn = true;
-	private boolean showCreationTimeInDateColumn = true;
-	private boolean showCreatorColumn = true;
-	private boolean showAttachmentStatistics;
-	private boolean showOnlyCreatorInContacts;
-	private boolean onlySubscribedCases;
-	private boolean useJavascriptForPageSwitching = true;
-	private boolean showLegend, showAllCases;
-	private boolean showLogExportButton,
+	private boolean showCheckBoxes,
+					usePDFDownloadColumn,
+					allowPDFSigning,
+					showStatistics,
+					hideEmptySection,
+					addCredentialsToExernalUrls,
+					showCaseNumberColumn = true,
+					showCreationTimeInDateColumn = true,
+					showCreatorColumn = true,
+					showAttachmentStatistics,
+					showOnlyCreatorInContacts,
+					onlySubscribedCases,
+					useJavascriptForPageSwitching = true,
+					showLegend, showAllCases,
+					showLogExportButton,
 					showCaseStatus = true,
-					showExportAllCasesButton;
+					showExportAllCasesButton,
+					showComments = true,
+					showContacts = true;
 
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -172,6 +174,8 @@ public class UICasesList extends IWBaseComponent {
 		properties.setOnlySubscribedCases(isOnlySubscribedCases());
 		properties.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
 		properties.setShowLogExportButton(isShowLogExportButton());
+		properties.setShowComments(isShowComments());
+		properties.setShowContacts(isShowContacts());
 		properties.setSpecialBackPage(getSpecialBackPage());
 		properties.setShowCaseStatus(isShowCaseStatus());
 		properties.setCustomColumns(getCustomColumns());
@@ -547,6 +551,22 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
 		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+
+	public boolean isShowComments() {
+		return showComments;
+	}
+
+	public void setShowComments(boolean showComments) {
+		this.showComments = showComments;
+	}
+
+	public boolean isShowContacts() {
+		return showContacts;
+	}
+
+	public void setShowContacts(boolean showContacts) {
+		this.showContacts = showContacts;
 	}
 
 }

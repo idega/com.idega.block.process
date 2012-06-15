@@ -61,7 +61,9 @@ public abstract class CaseBlock extends Block {
 	private boolean showLegend, showAllCases;
 	private boolean showLogExportButton,
 					showCaseStatus = true,
-					showExportAllCasesButton;
+					showExportAllCasesButton,
+					showComments = true,
+					showContacts = true;
 
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
@@ -307,6 +309,8 @@ public abstract class CaseBlock extends Block {
 		list.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
 		list.setShowLegend(isShowLegend());
 		list.setShowLogExportButton(isShowLogExportButton());
+		list.setShowComments(isShowComments());
+		list.setShowContacts(isShowContacts());
 		list.setShowAllCases(isShowAllCases());
 		list.setSpecialBackPage(getSpecialBackPage());
 		list.setShowCaseStatus(isShowCaseStatus());
@@ -427,6 +431,22 @@ public abstract class CaseBlock extends Block {
 
 	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
 		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+
+	public boolean isShowComments() {
+		return showComments;
+	}
+
+	public void setShowComments(boolean showComments) {
+		this.showComments = showComments;
+	}
+
+	public boolean isShowContacts() {
+		return showContacts;
+	}
+
+	public void setShowContacts(boolean showContacts) {
+		this.showContacts = showContacts;
 	}
 
 }
