@@ -25,7 +25,7 @@ import com.idega.util.IWTimestamp;
  * TODO laddi Describe Type CaseHome
  * </p>
  *  Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.27 $
  */
@@ -114,9 +114,9 @@ public interface CaseHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCaseStatusWaiting
 	 */
 	public String getCaseStatusWaiting();
-	
+
 	public String getCaseStatusCreated();
-	
+
 	public String getCaseStatusFinished();
 
 	/**
@@ -233,23 +233,23 @@ public interface CaseHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindCaseByUniqueId
 	 */
 	public Case findCaseByUniqueId(String uniqueId) throws FinderException;
-	
+
 	public Collection<Case> findByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException;
-	
+
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException;
-	
+
 	public abstract Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException;
 
 	public void createDefaultCaseStatuses();
 
 	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException;
-	
+
 	public Collection<Case> getCasesByIds(Collection<Integer> ids) throws FinderException;
-	
+
 	/**
-	 * 
+	 *
 	 * @param user	owner of the case
 	 * @param status if null than omitted
 	 * @param caseCode if null than omitted
@@ -258,4 +258,6 @@ public interface CaseHome extends IDOHome {
 	 * @throws FinderException
 	 */
 	public Collection<Case> getCases(User user, String status, String caseCode, Boolean read) throws FinderException;
+
+	public Collection<Case> findCasesForSubscriber(User subscriber) throws FinderException;
 }

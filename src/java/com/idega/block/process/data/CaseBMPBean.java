@@ -1290,5 +1290,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	public Collection<Integer> ejbFindAllCasesBySubscriber(User subscriber) throws FinderException {
+		String query = "select " + PK_COLUMN + " from " + COLUMN_CASE_SUBSCRIBERS + " where " + UserBMPBean.getColumnNameUserID() +
+				" = " + subscriber.getId();
+		return idoFindPKsBySQL(query);
+	}
 
 }
