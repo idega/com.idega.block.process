@@ -59,6 +59,8 @@ public abstract class CaseBlock extends Block {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean showLegend, showAllCases;
+	private boolean showLoadingMessage = Boolean.TRUE;
+
 	private boolean showLogExportButton,
 					showCaseStatus = true,
 					showExportAllCasesButton,
@@ -146,6 +148,20 @@ public abstract class CaseBlock extends Block {
 		this.iwrb = iwrb;
 	}
 
+	/**
+	 * @return the showLoadingMessage
+	 */
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+
+	/**
+	 * @param showLoadingMessage the showLoadingMessage to set
+	 */
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+	
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -317,6 +333,7 @@ public abstract class CaseBlock extends Block {
 		list.setCasesListCustomizer(getCasesListCustomizer());
 		list.setCustomColumns(StringUtil.isEmpty(getCustomColumns()) ? null : Arrays.asList(getCustomColumns().split(CoreConstants.COMMA)));
 		list.setShowExportAllCasesButton(isShowExportAllCasesButton());
+		list.setShowLoadingMessage(isShowLoadingMessage());
 
 		return list;
 	}

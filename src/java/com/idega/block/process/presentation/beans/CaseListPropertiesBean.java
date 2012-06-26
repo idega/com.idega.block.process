@@ -27,6 +27,7 @@ public class CaseListPropertiesBean {
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
+	private boolean showLoadingMessage = true;
 	private boolean showLogExportButton,
 					showCaseStatus = true,
 					showExportAllCasesButton,
@@ -42,6 +43,19 @@ public class CaseListPropertiesBean {
 							statusesToHide,
 							customColumns;
 
+	/**
+	 * @return the showLoadingMessage
+	 */
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+	/**
+	 * @param showLoadingMessage the showLoadingMessage to set
+	 */
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+	
 	public String getType() {
 		return type;
 	}

@@ -68,7 +68,8 @@ public class UICasesList extends IWBaseComponent {
 					showCaseStatus = true,
 					showExportAllCasesButton,
 					showComments = true,
-					showContacts = true;
+					showContacts = true,
+					showLoadingMessage = true;
 
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -181,6 +182,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setCustomColumns(getCustomColumns());
 		properties.setCasesListCustomizer(getCasesListCustomizer());
 		properties.setShowExportAllCasesButton(isShowExportAllCasesButton());
+		properties.setShowLoadingMessage(isShowLoadingMessage());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -261,6 +263,20 @@ public class UICasesList extends IWBaseComponent {
 		return null;
 	}
 
+	/**
+	 * @return the showLoadingMessage
+	 */
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+
+	/**
+	 * @param showLoadingMessage the showLoadingMessage to set
+	 */
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+	
 	public String getType() {
 		return type;
 	}
