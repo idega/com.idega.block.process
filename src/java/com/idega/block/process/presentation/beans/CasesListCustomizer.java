@@ -9,4 +9,10 @@ public interface CasesListCustomizer {
 	
 	public Map<String, Map<String, String>> getLabelsForHeaders(List<String> casesIds, List<String> headersKeys);
 	
+	/**
+	 * @param headersKeys not <code>null</code>
+	 * @return {@link Map} of (headerKey, header) or <code>null</code>.
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 */
+	public java.util.Map<String, String> getHeadersAndVariables(List<String> headersKeys);
 }
