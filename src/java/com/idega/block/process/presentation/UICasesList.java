@@ -69,7 +69,8 @@ public class UICasesList extends IWBaseComponent {
 					showExportAllCasesButton,
 					showComments = true,
 					showContacts = true,
-					showLoadingMessage = true;
+					showLoadingMessage = true,
+					waitForAllCasePartsLoaded= true;
 
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -275,6 +276,20 @@ public class UICasesList extends IWBaseComponent {
 	 */
 	public void setShowLoadingMessage(boolean showLoadingMessage) {
 		this.showLoadingMessage = showLoadingMessage;
+	}
+	
+	/**
+	 * @return the waitForAllCasePartsLoaded
+	 */
+	public boolean isWaitForAllCasePartsLoaded() {
+		return waitForAllCasePartsLoaded;
+	}
+
+	/**
+	 * @param waitForAllCasePartsLoaded the waitForAllCasePartsLoaded to set
+	 */
+	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
+		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
 	}
 	
 	public String getType() {

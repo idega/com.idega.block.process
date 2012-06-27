@@ -28,6 +28,8 @@ public class CaseListPropertiesBean {
 	private boolean onlySubscribedCases;
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLoadingMessage = true;
+	private boolean waitForAllCasePartsLoaded = true;
+	
 	private boolean showLogExportButton,
 					showCaseStatus = true,
 					showExportAllCasesButton,
@@ -54,6 +56,19 @@ public class CaseListPropertiesBean {
 	 */
 	public void setShowLoadingMessage(boolean showLoadingMessage) {
 		this.showLoadingMessage = showLoadingMessage;
+	}
+	
+	/**
+	 * @return the waitForAllCasePartsLoaded
+	 */
+	public boolean isWaitForAllCasePartsLoaded() {
+		return waitForAllCasePartsLoaded;
+	}
+	/**
+	 * @param waitForAllCasePartsLoaded the waitForAllCasePartsLoaded to set
+	 */
+	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
+		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
 	}
 	
 	public String getType() {

@@ -60,6 +60,7 @@ public abstract class CaseBlock extends Block {
 	private boolean onlySubscribedCases;
 	private boolean showLegend, showAllCases;
 	private boolean showLoadingMessage = Boolean.TRUE;
+	private boolean waitForAllCasePartsLoaded = Boolean.TRUE;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -160,6 +161,20 @@ public abstract class CaseBlock extends Block {
 	 */
 	public void setShowLoadingMessage(boolean showLoadingMessage) {
 		this.showLoadingMessage = showLoadingMessage;
+	}
+	
+	/**
+	 * @return the waitForAllCasePartsLoaded
+	 */
+	public boolean isWaitForAllCasePartsLoaded() {
+		return waitForAllCasePartsLoaded;
+	}
+
+	/**
+	 * @param waitForAllCasePartsLoaded the waitForAllCasePartsLoaded to set
+	 */
+	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
+		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
 	}
 	
 	public int getPageSize() {
@@ -334,6 +349,7 @@ public abstract class CaseBlock extends Block {
 		list.setCustomColumns(StringUtil.isEmpty(getCustomColumns()) ? null : Arrays.asList(getCustomColumns().split(CoreConstants.COMMA)));
 		list.setShowExportAllCasesButton(isShowExportAllCasesButton());
 		list.setShowLoadingMessage(isShowLoadingMessage());
+		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
 
 		return list;
 	}
