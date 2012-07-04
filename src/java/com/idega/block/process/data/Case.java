@@ -30,7 +30,7 @@ import com.idega.user.data.User;
  * TODO laddi Describe Type Case
  * </p>
  *  Last modified: $Date: 2009/05/25 13:36:31 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.23 $
  */
@@ -189,66 +189,79 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getParentNode
 	 */
+	@Override
 	public ICTreeNode getParentNode();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildAtIndex
 	 */
+	@Override
 	public ICTreeNode getChildAtIndex(int childIndex);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildCount
 	 */
+	@Override
 	public int getChildCount();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildrenIterator
 	 */
+	@Override
 	public Iterator getChildrenIterator();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildren
 	 */
+	@Override
 	public Collection getChildren();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getSiblingCount
 	 */
+	@Override
 	public int getSiblingCount();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getNodeID
 	 */
+	@Override
 	public int getNodeID();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getNodeName
 	 */
+	@Override
 	public String getNodeName();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getNodeName
 	 */
+	@Override
 	public String getNodeName(Locale locale);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getNodeName
 	 */
+	@Override
 	public String getNodeName(Locale locale, IWApplicationContext iwac);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#isLeaf
 	 */
+	@Override
 	public boolean isLeaf();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getIndex
 	 */
+	@Override
 	public int getIndex(ICTreeNode node);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getAllowsChildren
 	 */
+	@Override
 	public boolean getAllowsChildren();
 
 	/**
@@ -257,20 +270,24 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	public String getUrl();
 
 	public String getCaseManagerType();
-	
+
 	public void setCaseManagerType(String type);
-	
+
 	public String getCaseIdentifier();
-	
+
 	public void setCaseIdentifier(String caseIdentifier);
-	
+
 	public void addSubscriber(User subscriber) throws IDOAddRelationshipException;
 
 	public Collection<User> getSubscribers();
 
 	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException;
-	
+
 	public Boolean isRead();
-	
+
 	public void setRead(Boolean read);
+
+	public void addVote(User voter) throws IDOAddRelationshipException;
+	public void removeVote(User voter) throws IDORemoveRelationshipException;
+	public Collection<User> getVoters();
 }
