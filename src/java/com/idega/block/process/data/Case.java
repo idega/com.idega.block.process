@@ -277,17 +277,15 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 
 	public void setCaseIdentifier(String caseIdentifier);
 
-	public void addSubscriber(User subscriber) throws IDOAddRelationshipException;
-
+	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException;
 	public Collection<User> getSubscribers();
-
-	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException;
+	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException;
 
 	public Boolean isRead();
 
 	public void setRead(Boolean read);
 
-	public void addVote(User voter) throws IDOAddRelationshipException;
-	public void removeVote(User voter) throws IDORemoveRelationshipException;
+	public boolean addVote(User voter) throws IDOAddRelationshipException;
+	public boolean removeVote(User voter) throws IDORemoveRelationshipException;
 	public Collection<User> getVoters();
 }

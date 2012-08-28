@@ -50,6 +50,7 @@ import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
+import com.idega.util.StringUtil;
 
 /**
  * <p>
@@ -100,10 +101,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		 */
 	}
 
-	private static final String VOTERS = "_VOTERS";
+	private static final String SUBSCRIBERS = "_SUBSCRIBERS",
+								VOTERS = "_VOTERS";
 
 	@Override
 	public void initializeAttributes() {
+		addManyToManyRelationShip(User.class, getTableName() + SUBSCRIBERS);
 		addManyToManyRelationShip(User.class, getTableName() + VOTERS);
 	}
 
@@ -1405,34 +1408,69 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
-	public void addVote(User voter) throws IDOAddRelationshipException {
-		if (voter == null)
-			return;
-
-		Collection<User> voters = getVoters();
-		if (!ListUtil.isEmpty(voters) && voters.contains(voter))
-			return;
-
-		this.idoAddTo(voter, getTableName() + VOTERS);
+	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException {
+		return addUserRelation(subscriber, SUBSCRIBERS, getSubscribers());
 	}
 
 	@Override
-	public void removeVote(User voter) throws IDORemoveRelationshipException {
-		if (voter == null)
-			return;
+	public boolean addVote(User voter) throws IDOAddRelationshipException {
+		return addUserRelation(voter, VOTERS, getVoters());
+	}
 
-		super.idoRemoveFrom(voter, getTableName() + VOTERS);
+	private boolean addUserRelation(User user, String relation, Collection<User> currentRelations) throws IDOAddRelationshipException {
+		if (user == null || StringUtil.isEmpty(relation)) {
+			getLogger().warning("Either user (" + user + ") and/or relation (" + relation + ") are not provided");
+			return false;
+		}
+
+		if (!ListUtil.isEmpty(currentRelations) && currentRelations.contains(user)) {
+			getLogger().warning("User " + user + " already exists in relation " + relation + " with case " + getId() + " from " +
+					getTableName());
+			return false;
+		}
+
+		this.idoAddTo(user, getTableName() + relation);
+		return true;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
+		return removeUserRelation(subscriber, SUBSCRIBERS);
+	}
+
+	@Override
+	public boolean removeVote(User voter) throws IDORemoveRelationshipException {
+		return removeUserRelation(voter, VOTERS);
+	}
+
+	private boolean removeUserRelation(User user, String relation) throws IDORemoveRelationshipException {
+		if (user == null) {
+			getLogger().warning("User is not provided");
+			return false;
+		}
+
+		super.idoRemoveFrom(user, getTableName() + relation);
+		return true;
+	}
+
+	@Override
+	public Collection<User> getSubscribers() {
+		return getUserRelations(SUBSCRIBERS);
+	}
+
+	@Override
 	public Collection<User> getVoters() {
+		return getUserRelations(VOTERS);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Collection<User> getUserRelations(String relation) {
 		try {
 			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
 			String caseId = getTableName() + "_ID";
-			String query = "select u." + userId + " from " + UserBMPBean.SQL_TABLE_NAME + " u, " + getTableName() + VOTERS + " voters, " +
-					getTableName() + " c where c." + caseId + " = " + getId() + " and u." + userId + " = voters." + userId + " and c." + caseId +
-					" = voters." + caseId;
+			String query = "select u." + userId + " from " + UserBMPBean.SQL_TABLE_NAME + " u, " + getTableName() + relation + " r, " +
+					getTableName() + " c where c." + caseId + " = " + getId() + " and u." + userId + " = r." + userId + " and c." + caseId +
+					" = r." + caseId;
 			return super.idoGetRelatedEntitiesBySQL(User.class, query);
 		} catch (Exception e) {
 			e.printStackTrace();

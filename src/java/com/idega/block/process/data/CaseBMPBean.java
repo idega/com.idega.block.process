@@ -23,10 +23,10 @@ import javax.ejb.FinderException;
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.event.CaseModifiedEvent;
 import com.idega.core.data.ICTreeNode;
+import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
-import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
@@ -62,7 +62,7 @@ import com.idega.util.expression.ELUtil;
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
  * @version $Revision: 1.70 $
  */
-public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
+public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = -9118580756828123883L;
 
@@ -1122,24 +1122,29 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return idoFindPKsByQuery(query);
 	}
 
-	public void addVote(User voter) throws IDOAddRelationshipException {
+	@Override
+	public boolean addVote(User voter) throws IDOAddRelationshipException {
 		if (voter == null)
-			return;
+			return false;
 
 		Collection<User> voters = getVoters();
 		if (!ListUtil.isEmpty(voters) && voters.contains(voter))
-			return;
+			return false;
 
 		this.idoAddTo(voter, COLUMN_CASE_VOTERS);
+		return true;
 	}
 
-	public void removeVote(User voter) throws IDORemoveRelationshipException {
+	@Override
+	public boolean removeVote(User voter) throws IDORemoveRelationshipException {
 		if (voter == null)
-			return;
+			return false;
 
 		super.idoRemoveFrom(voter, COLUMN_CASE_VOTERS);
+		return true;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getVoters() {
 		try {
@@ -1155,31 +1160,46 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	}
 
 	@Override
-	public void addSubscriber(User subscriber) throws IDOAddRelationshipException {
-		if (subscriber == null)
-			return;
+	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException {
+		if (subscriber == null) {
+			getLogger().warning("Subscriber is not provided");
+			return false;
+		}
 
 		Collection<User> currentSubscribers = getSubscribers();
-		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber))
-			return;
+		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber)) {
+			getLogger().warning("User " + subscriber + " is already subscribed to case " + getId());
+			return false;
+		}
 
-		this.idoAddTo(subscriber);
+		this.idoAddTo(subscriber, COLUMN_CASE_SUBSCRIBERS);
+		return true;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
 		try {
-			return super.idoGetRelatedEntities(User.class);
-		} catch (IDORelationshipException e) {
+			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
+			String caseId = TABLE_NAME + "_ID";
+			String query = "select u." + userId + " from " + UserBMPBean.SQL_TABLE_NAME + " u, " + COLUMN_CASE_SUBSCRIBERS + " s, " + TABLE_NAME +
+					" c where c." + caseId + " = " + getId() + " and u." + userId + " = s." + userId + " and c." + caseId + " = s." + caseId;
+			return super.idoGetRelatedEntitiesBySQL(User.class, query);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
-		super.idoRemoveFrom(subscriber);
+	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
+		if (subscriber == null) {
+			getLogger().warning("User is not provided");
+			return false;
+		}
+
+		super.idoRemoveFrom(subscriber, COLUMN_CASE_SUBSCRIBERS);
+		return true;
 	}
 
 	public Collection<Case> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
