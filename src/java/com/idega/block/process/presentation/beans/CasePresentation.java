@@ -234,7 +234,9 @@ public class CasePresentation implements Serializable {
 				caseBusiness = IBOLookup.getServiceInstance(iwc == null ? IWMainApplication.getDefaultIWApplicationContext() : iwc,
 						caseBusinessClass);
 				localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (!StringUtil.isEmpty(localization) && !localization.equals(statusKey))
 				return localization;
 
