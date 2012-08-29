@@ -15,6 +15,7 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOLookup;
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 import com.idega.user.data.User;
@@ -208,10 +209,10 @@ public class CasePresentation implements Serializable {
 	}
 
 	public String getCaseStatusLocalized() {
-		if (caseStatus == null) {
+		if (caseStatus == null)
 			return null;
-		}
 
+		String statusKey = caseStatus.getStatus();
 		try {
 			Locale locale = null;
 			IWContext iwc = CoreUtil.getIWContext();
@@ -220,22 +221,35 @@ public class CasePresentation implements Serializable {
 			} else {
 				locale = iwc.getCurrentLocale();
 			}
-			if (locale == null) {
+			if (locale == null)
 				locale = Locale.ENGLISH;
-			}
 
-			CaseBusiness caseBusiness = (CaseBusiness) IBOLookup.getServiceInstance(iwc == null ?
-					IWMainApplication.getDefaultIWApplicationContext() : iwc, CaseBusiness.class);
-			String localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			String localization = null;
+			CaseBusiness caseBusiness = null;
+			IWApplicationContext iwac = iwc == null ? IWMainApplication.getDefaultIWApplicationContext() : iwc;
+			try {
+				@SuppressWarnings("unchecked")
+				Class<? extends CaseBusiness> caseBusinessClass =
+						(Class<? extends CaseBusiness>) Class.forName("is.idega.idegaweb.egov.cases.business.CasesBusiness");
+				caseBusiness = IBOLookup.getServiceInstance(iwc == null ? IWMainApplication.getDefaultIWApplicationContext() : iwc,
+						caseBusinessClass);
+				localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			} catch (Exception e) {}
+			if (!StringUtil.isEmpty(localization) && !localization.equals(statusKey))
+				return localization;
+
+			caseBusiness = IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
+			localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			if (StringUtil.isEmpty(localization) || localization.equals(statusKey))
+				localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale, "is.idega.idegaweb.egov.cases");
 			if (StringUtil.isEmpty(localization))
-				return caseStatus.getStatus();
-			if (localization.equals(caseStatus.getStatus()))
-				return caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale, "is.idega.idegaweb.egov.cases");
+				return statusKey;
+			return localization;
 		} catch(Exception e) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Error getting localized status for: " + caseStatus, e);
 		}
 
-		return caseStatus.getStatus();
+		return statusKey;
 	}
 
 	public List<AdvancedProperty> getExternalData() {
