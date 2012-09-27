@@ -40,44 +40,44 @@ import com.idega.webface.WFUtil;
 
 /**
  * Last modified: $Date: 2009/06/30 09:35:57 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.55 $
  */
 public class UserCases extends CaseBlock implements IWPageEventListener {
-	
+
 	private static final String PARAMETER_UC_CASE_PK = "uc_case_pk";
 	public static final String PARAMETER_CASE_PK = "prm_case_pk";
 	public static final String PARAMETER_ACTION = "cp_prm_action";
-	
+
 	public static final int ACTION_VIEW = 1;
 	public static final int ACTION_CASE_MANAGER_VIEW = 8;
-	
+
 	private static final String caseManagerFacet = "caseManager";
-	
+
 	public static final String pageType = "cases";
-	
+
 	private Set<String> hiddenCaseCodes;
-	
+
 	public UserCases() {
 		setHideEmptySection(Boolean.TRUE);
 	}
-	
+
 	private Map<Object, Object> pageMap;
-	
+
 	@SuppressWarnings("unused")
 	private int iMaxNumberOfEntries = -1;
 	@SuppressWarnings("unused")
 	private int iNumberOfEntriesShown = 20;
-	
+
 	@Override
 	protected void present(IWContext iwc) throws Exception {
 	}
-	
+
 	protected String getHeading() {
 		return getResourceBundle().getLocalizedString("user_cases", "User cases");
 	}
-		
+
 	protected ICPage getPage(String caseCode, String caseStatus) {
 		if (this.pageMap != null) {
 			Object object = this.pageMap.get(caseCode);
@@ -90,23 +90,23 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 		return null;
 	}
-	
+
 	public void setHideCaseCode(String caseCode) {
 		getHiddenCaseCodes().add(caseCode);
 	}
-	
+
 	private Set<String> getHiddenCaseCodes() {
 		if (hiddenCaseCodes == null)
 			hiddenCaseCodes = new HashSet<String>();
-		
+
 		return hiddenCaseCodes;
 	}
-	
+
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
 		if (this.pageMap == null) {
 			this.pageMap = new HashMap<Object, Object>();
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		Map<Object, Object> statusMap = (Map<Object, Object>) this.pageMap.get(caseCode);
 		if (statusMap == null) {
@@ -115,15 +115,16 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		statusMap.put(caseStatus, page);
 		this.pageMap.put(caseCode, statusMap);
 	}
-	
+
 	public void setPage(String caseCode, ICPage page) {
 		if (this.pageMap == null) {
 			this.pageMap = new HashMap<Object, Object>();
 		}
-		
+
 		this.pageMap.put(caseCode, page);
 	}
 
+	@Override
 	public boolean actionPerformed(IWContext iwc) throws IWException {
 		if (iwc.isParameterSet(PARAMETER_UC_CASE_PK)) {
 			try {
@@ -141,20 +142,20 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 		}
 		return false;
 	}
-	
+
 	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
 		this.iMaxNumberOfEntries = maxNumberOfEntries;
 	}
 
-	
+
 	public void setMaximumNumberOfLetters(int maxNumberOfLetters) {
 		//this.iMaxNumberOfLetters = maxNumberOfLetters;
 	}
-	
+
 	public void setMaximumHandlerLength(int maxNumberOfHandlerLetters) {
 		//this.iMaxNumberOfHandlerLetters = maxNumberOfHandlerLetters;
 	}
-	
+
 	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
 		this.iNumberOfEntriesShown = numberOfEntriesShown;
 	}
@@ -162,37 +163,37 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	@Override
 	public void encodeBegin(FacesContext fc) throws IOException {
 		super.encodeBegin(fc);
-		
+
 		IWContext iwc = IWContext.getIWContext(fc);
-		
+
 		if (!iwc.isLoggedOn()) {
 			add(new Text("No user logged on..."));
 			return;
 		}
-		
+
 		try {
 			display(iwc);
-		
+
 		} catch (IOException e) {
 			throw e;
 		} catch (Exception e) {
 			Logger.getLogger(getClassName()).log(Level.SEVERE, "Exception while displaying CasesProcessor", e);
 		}
 	}
-	
+
 	@Override
 	public void encodeChildren(FacesContext context) throws IOException {
 		super.encodeChildren(context);
-		
-		CaseManagerState caseHandlerState = (CaseManagerState)WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
-		
+
+		CaseManagerState caseHandlerState = WFUtil.getBeanInstance(CaseManagerState.beanIdentifier);
+
 		if(caseHandlerState.getShowCaseHandler()) {
-			
+
 			UIComponent facet = getFacet(caseManagerFacet);
 			renderChild(context, facet);
 		}
 	}
-	
+
 	protected void display(IWContext iwc) throws Exception {
 		Integer action = null;
 		if (iwc.isParameterSet(UserCases.PARAMETER_ACTION)) {
@@ -202,47 +203,47 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (action == null) {
 			showList(iwc);
 			return;
 		}
-		
+
 		switch (action) {
 			case ACTION_CASE_MANAGER_VIEW:
 				showProcessorForBpm(iwc);
 				break;
-	
+
 			default:
 				showList(iwc);
 				break;
 		}
 	}
-	
+
 	private void showProcessorForBpm(IWContext iwc) throws NullPointerException {
-		GeneralCaseManagerViewBuilder processorView = (GeneralCaseManagerViewBuilder) WFUtil.getBeanInstance(GeneralCaseManagerViewBuilder.SPRING_BEAN_IDENTIFIER);
+		GeneralCaseManagerViewBuilder processorView = WFUtil.getBeanInstance(GeneralCaseManagerViewBuilder.SPRING_BEAN_IDENTIFIER);
 		UIComponent view = null;
 		try {
 			view = processorView.getCaseManagerView(iwc, CasesRetrievalManager.CASE_LIST_TYPE_USER);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (view == null) {
 			return;
 		}
-		
+
 		add(view);
 	}
-	
+
 	private void showList(IWContext iwc) throws RemoteException {
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
 		layer.setID("userCases");
-		
+
 		UICasesList list = getCasesList(iwc, layer.getId());
 		layer.add(list);
-		
+
 		add(layer);
 	}
 
@@ -265,5 +266,5 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	public Map<Object, Object> getUserCasesPageMap() {
 		return pageMap;
 	}
-	
+
 }
