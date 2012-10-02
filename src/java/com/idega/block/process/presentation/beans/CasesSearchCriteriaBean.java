@@ -24,20 +24,20 @@ public class CasesSearchCriteriaBean implements Serializable {
 					id,
 					instanceId,
 					casesListCustomizer;
-	
+
 	private String[] statuses;
-	
+
 	private IWTimestamp	dateFrom,
 						dateTo;
-	
+
 	private int page = 0,
 				pageSize = 0,
 				foundResults = 0;
-	
-	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics;
+
+	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE;
 
 	private List<String> customColumns;
-	
+
 	public boolean isShowStatistics() {
 		return showStatistics;
 	}
@@ -45,11 +45,11 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setShowStatistics(boolean showStatistics) {
 		this.showStatistics = showStatistics;
 	}
-	
+
 	private List<AdvancedProperty> sortingOptions;
-	
+
 	private List<Long> procInstIds;
-	
+
 	public void setCaseNumber(String caseNumber) {
 		this.caseNumber = caseNumber;
 	}
@@ -86,7 +86,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public String getCaseNumber() {
 		return caseNumber;
 	}
-	
+
 	public String getDateRange() {
 		return dateRange;
 	}
@@ -96,7 +96,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public IWTimestamp getDateFrom() {
 		if (dateFrom == null)
 			parseDateString();
-		
+
 		return dateFrom;
 	}
 
@@ -107,17 +107,17 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public IWTimestamp getDateTo() {
 		if (dateTo == null)
 			parseDateString();
-		
+
 		return dateTo;
 	}
 
 	public void setDateTo(IWTimestamp dateTo) {
 		this.dateTo = dateTo;
 	}
-	
+
 	private void parseDateString() {
 		Locale locale = IWContext.getCurrentInstance().getCurrentLocale();
-		
+
 		String dateRange = getDateRange();
 		if (dateRange != null) {
 			String splitter = " - ";
@@ -127,7 +127,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 			}
 			else {
 				String[] dateRangeParts = dateRange.split(splitter);
-				
+
 				Date date = IWDatePickerHandler.getParsedDate(dateRangeParts[0], locale);
 				dateFrom = date == null ? null : new IWTimestamp(date);
 				date = IWDatePickerHandler.getParsedDate(dateRangeParts[1], locale);
@@ -141,7 +141,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 			}
 		}
 	}
-	
+
 	public String[] getStatuses() {
 		return statuses;
 	}
@@ -149,7 +149,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setStatuses(String[] statuses) {
 		this.statuses = statuses;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -157,7 +157,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getInstanceId() {
 		return instanceId;
 	}
@@ -173,30 +173,30 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setSortingOptions(List<AdvancedProperty> sortingOptions) {
 		this.sortingOptions = sortingOptions;
 	}
-	
+
 	public boolean isAllDataLoaded() {
 		return allDataLoaded;
 	}
-	
+
 	public void setAllDataLoaded(boolean allDataLoaded) {
 		this.allDataLoaded = allDataLoaded;
 	}
-	
+
 	public List<Long> getProcInstIds() {
 		return procInstIds;
 	}
-	
+
 	public void setProcInstIds(List<Long> procInstIds) {
 		this.procInstIds = procInstIds;
 	}
-	
+
 	public boolean isShowAllCases() {
 		return showAllCases;
 	}
 	public void setShowAllCases(boolean showAllCases) {
 		this.showAllCases = showAllCases;
 	}
-	
+
 	public int getFoundResults() {
 		return foundResults;
 	}
@@ -204,7 +204,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setFoundResults(int foundResults) {
 		this.foundResults = foundResults;
 	}
-	
+
 	public int getPage() {
 		return page;
 	}
@@ -236,5 +236,13 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setCustomColumns(List<String> customColumns) {
 		this.customColumns = customColumns;
 	}
-	
+
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+
 }
