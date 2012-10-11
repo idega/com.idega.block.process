@@ -70,7 +70,8 @@ public class UICasesList extends IWBaseComponent {
 					showComments = true,
 					showContacts = true,
 					showLoadingMessage = true,
-					waitForAllCasePartsLoaded= true;
+					waitForAllCasePartsLoaded= true,
+					descriptionEditable = true;
 
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -184,6 +185,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setCasesListCustomizer(getCasesListCustomizer());
 		properties.setShowExportAllCasesButton(isShowExportAllCasesButton());
 		properties.setShowLoadingMessage(isShowLoadingMessage());
+		properties.setDescriptionEditable(isDescriptionEditable());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -252,7 +254,8 @@ public class UICasesList extends IWBaseComponent {
 
 		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
 		return getCaseManagersProvider().getCaseManager().getCases(user, getType(), iwc.getCurrentLocale(), getCaseCodes(),
-				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases(), isShowAllCases());
+				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases(),
+				isShowAllCases());
 	}
 
 	private Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
@@ -264,34 +267,22 @@ public class UICasesList extends IWBaseComponent {
 		return null;
 	}
 
-	/**
-	 * @return the showLoadingMessage
-	 */
 	public boolean isShowLoadingMessage() {
 		return showLoadingMessage;
 	}
 
-	/**
-	 * @param showLoadingMessage the showLoadingMessage to set
-	 */
 	public void setShowLoadingMessage(boolean showLoadingMessage) {
 		this.showLoadingMessage = showLoadingMessage;
 	}
-	
-	/**
-	 * @return the waitForAllCasePartsLoaded
-	 */
+
 	public boolean isWaitForAllCasePartsLoaded() {
 		return waitForAllCasePartsLoaded;
 	}
 
-	/**
-	 * @param waitForAllCasePartsLoaded the waitForAllCasePartsLoaded to set
-	 */
 	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
 		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
@@ -598,6 +589,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setShowContacts(boolean showContacts) {
 		this.showContacts = showContacts;
+	}
+
+	public boolean isDescriptionEditable() {
+		return descriptionEditable;
+	}
+
+	public void setDescriptionEditable(boolean descriptionEditable) {
+		this.descriptionEditable = descriptionEditable;
 	}
 
 }

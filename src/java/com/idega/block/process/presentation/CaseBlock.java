@@ -66,7 +66,8 @@ public abstract class CaseBlock extends Block {
 					showCaseStatus = true,
 					showExportAllCasesButton,
 					showComments = true,
-					showContacts = true;
+					showContacts = true,
+					descriptionEditable = true;
 
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
@@ -162,7 +163,7 @@ public abstract class CaseBlock extends Block {
 	public void setShowLoadingMessage(boolean showLoadingMessage) {
 		this.showLoadingMessage = showLoadingMessage;
 	}
-	
+
 	/**
 	 * @return the waitForAllCasePartsLoaded
 	 */
@@ -176,7 +177,7 @@ public abstract class CaseBlock extends Block {
 	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
 		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
 	}
-	
+
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -350,6 +351,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowExportAllCasesButton(isShowExportAllCasesButton());
 		list.setShowLoadingMessage(isShowLoadingMessage());
 		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
+		list.setDescriptionEditable(isDescriptionEditable());
 
 		return list;
 	}
@@ -482,4 +484,11 @@ public abstract class CaseBlock extends Block {
 		this.showContacts = showContacts;
 	}
 
+	public boolean isDescriptionEditable() {
+		return descriptionEditable;
+	}
+
+	public void setDescriptionEditable(boolean descriptionEditable) {
+		this.descriptionEditable = descriptionEditable;
+	}
 }
