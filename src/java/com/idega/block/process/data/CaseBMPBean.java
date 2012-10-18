@@ -19,8 +19,12 @@ import java.util.logging.Level;
 
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
+
+import org.springframework.context.ApplicationEvent;
 
 import com.idega.block.process.business.ProcessConstants;
+import com.idega.block.process.event.CaseDeletedEvent;
 import com.idega.block.process.event.CaseModifiedEvent;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
@@ -1212,22 +1216,27 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	@Override
 	public void store() throws IDOStoreException {
 		super.store();
-		publishEvent();
+		publishEvent(new CaseModifiedEvent(this));
 	}
 
-	private void publishEvent() {
-		final Case source = this;
+	private void publishEvent(final ApplicationEvent event) {
 		Thread publisher = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(source));
+					ELUtil.getInstance().getApplicationContext().publishEvent(event);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 		publisher.start();
+	}
+
+	@Override
+	public void remove() throws RemoveException {
+		super.remove();
+		publishEvent(new CaseDeletedEvent(this));
 	}
 
 	@Override

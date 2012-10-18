@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -123,7 +124,8 @@ public class UICasesList extends IWBaseComponent {
 
 		GeneralCasesListBuilder listBuilder = ELUtil.getInstance().getBean(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
 
-		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() || CasesRetrievalManager.CASE_LIST_TYPE_PUBLIC.equals(getType()) ? getCases(iwc) : null;
+		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() || CasesRetrievalManager.CASE_LIST_TYPE_PUBLIC.equals(getType()) ?
+				getCases(iwc) : null;
 
 		UIComponent casesListComponent = null;
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
@@ -205,6 +207,8 @@ public class UICasesList extends IWBaseComponent {
 	 * @return PagedDataCollection of cases.
 	 */
 	protected PagedDataCollection<CasePresentation> getCases(IWContext iwc) {
+		long start = System.currentTimeMillis();	//	TODO
+
 		Integer pageSizeFromSession = getPageSizeFromSession(iwc);
 		if (pageSizeFromSession != null && pageSizeFromSession > 0)
 			setPageSize(pageSizeFromSession);
@@ -229,15 +233,21 @@ public class UICasesList extends IWBaseComponent {
 				setPage(1);
 			}
 
+			Logger.getLogger(getClass().getName()).info("**************** Getting cases by search criterias");
 			Collection<CasePresentation> cases = casesSearcher.getSearchResults(id);
 			if (ListUtil.isEmpty(cases) && !StringUtil.isEmpty(getSearchResultsId())) {
 				cases = casesSearcher.getSearchResults(getSearchResultsId());
+				Logger.getLogger(getClass().getName()).info("**************** Got cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
 			}
+
 			CasesSearchCriteriaBean criterias = casesSearcher.getSearchCriteria(id);
 			criterias = criterias == null ? casesSearcher.getSearchCriteria(getSearchResultsId()) : criterias;
 			if (ListUtil.isEmpty(cases) || (criterias != null && !criterias.isAllDataLoaded())) {
+				start = System.currentTimeMillis();
 				cases = getReLoadedCases(criterias);
+				Logger.getLogger(getClass().getName()).info("**************** Reloaded cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
 			}
+
 			if (ListUtil.isEmpty(cases))
 				return null;
 
@@ -253,9 +263,12 @@ public class UICasesList extends IWBaseComponent {
 		}
 
 		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
-		return getCaseManagersProvider().getCaseManager().getCases(user, getType(), iwc.getCurrentLocale(), getCaseCodes(),
-				getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(), isOnlySubscribedCases(),
-				isShowAllCases());
+		CasesRetrievalManager manager = getCaseManagersProvider().getCaseManager();
+		PagedDataCollection<CasePresentation> cases = manager.getCases(user, getType(), iwc.getCurrentLocale(),
+				getCaseCodes(),	getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(),
+				isOnlySubscribedCases(), isShowAllCases());
+		Logger.getLogger(getClass().getName()).info("**************** Got cases in " + (System.currentTimeMillis() - start) + " ms");
+		return cases;
 	}
 
 	private Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) {
