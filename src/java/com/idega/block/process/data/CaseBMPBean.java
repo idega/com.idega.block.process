@@ -1220,17 +1220,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	private void publishEvent(final ApplicationEvent event) {
-		Thread publisher = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					ELUtil.getInstance().getApplicationContext().publishEvent(event);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		publisher.start();
+		ELUtil.getInstance().getApplicationContext().publishEvent(event);
 	}
 
 	@Override
