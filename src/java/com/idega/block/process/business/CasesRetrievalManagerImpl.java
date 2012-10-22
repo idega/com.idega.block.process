@@ -3,6 +3,8 @@ package com.idega.block.process.business;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -357,7 +359,15 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		if (MapUtil.isEmpty(ids))
 			return null;
 
-		return new ArrayList<Integer>(ids.keySet());
+		List<Integer> cachedIds = new ArrayList<Integer>(ids.keySet());
+		Collections.sort(cachedIds, new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer id1, Integer id2) {
+				return -1 * (id1.compareTo(id2));
+			}
+		});
+		return cachedIds;
 	}
 
 	protected void putIdsToCache(List<Integer> ids, User user, String type, List<String> caseCodes, List<String> caseStatusesToHide,
