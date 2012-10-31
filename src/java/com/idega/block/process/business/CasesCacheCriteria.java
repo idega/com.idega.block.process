@@ -14,9 +14,10 @@ public class CasesCacheCriteria implements Serializable {
 	private boolean onlySubscribedCases, showAllCases;
 	private Set<String> roles;
 	private List<Integer> groups;
+	private List<Long> procInstIds;
 
 	public CasesCacheCriteria(Integer userId, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases) {
+			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases, List<Long> procInstIds) {
 
 		super();
 
@@ -30,11 +31,12 @@ public class CasesCacheCriteria implements Serializable {
 		this.groups = groups;
 		this.codes = codes;
 		this.showAllCases = showAllCases;
+		this.procInstIds = procInstIds;
 	}
 
 	public String getKey() {
 		return new StringBuffer().append(userId).append(type == null ? "-" : type).append(caseCodes).append(statusesToHide)
-		.append(statusesToShow).append(onlySubscribedCases).append(roles).append(groups).append(codes).toString();
+		.append(statusesToShow).append(onlySubscribedCases).append(roles).append(groups).append(codes).append(procInstIds).toString();
 	}
 
 	@Override
@@ -80,6 +82,10 @@ public class CasesCacheCriteria implements Serializable {
 
 	public boolean isShowAllCases() {
 		return showAllCases;
+	}
+
+	public List<Long> getProcInstIds() {
+		return procInstIds;
 	}
 
 	@Override

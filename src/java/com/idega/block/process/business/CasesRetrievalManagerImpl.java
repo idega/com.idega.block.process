@@ -118,6 +118,11 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			boolean onlySubscribedCases, boolean showAllCases) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
+	@Override
+	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds) throws Exception {
+		throw new UnsupportedOperationException("Not implemented");
+	}
 
 	@Override
 	public Long getLatestProcessDefinitionIdByProcessName(String name) {
@@ -339,22 +344,22 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	protected CasesCacheCriteria getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases) {
+			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases, List<Long> procInstIds) {
 
 		return new CasesCacheCriteria(user == null ? -1 : Integer.valueOf(user.getId()), type, caseCodes, statusesToHide, statusesToShow,
-				onlySubscribedCases, roles, groups, codes, showAllCases);
+				onlySubscribedCases, roles, groups, codes, showAllCases, procInstIds);
 	}
 
 	protected List<Integer> getCachedIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide,
 			List<String> caseStatusesToShow, boolean onlySubscribedCases, Set<String> roles, List<Integer> groups, List<String> codes,
-			boolean showAllCases) {
+			boolean showAllCases, List<Long> procInstIds) {
 
 		Map<CasesCacheCriteria,Map<Integer, Boolean>> cache = getCache();
 		if (cache == null)
 			return null;
 
 		CasesCacheCriteria key = getCacheKey(user, type, caseCodes, caseStatusesToHide, caseStatusesToShow, onlySubscribedCases, roles,	groups, codes,
-				showAllCases);
+				showAllCases, procInstIds);
 		Map<Integer, Boolean> ids = cache.get(key);
 		if (MapUtil.isEmpty(ids))
 			return null;
@@ -372,7 +377,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	protected void putIdsToCache(List<Integer> ids, User user, String type, List<String> caseCodes, List<String> caseStatusesToHide,
 			List<String> caseStatusesToShow, boolean onlySubscribedCases, Set<String> roles, List<Integer> groups, List<String> codes,
-			boolean showAllCases) {
+			boolean showAllCases, List<Long> procInstIds) {
 
 		if (ListUtil.isEmpty(ids))
 			return;
@@ -382,7 +387,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			return;
 
 		CasesCacheCriteria key = getCacheKey(user, type, caseCodes, caseStatusesToHide, caseStatusesToShow, onlySubscribedCases, roles,	groups, codes,
-				showAllCases);
+				showAllCases, procInstIds);
 		Map<Integer, Boolean> cachedIds = cache.get(key);
 		if (cachedIds == null) {
 			cachedIds = new LinkedHashMap<Integer, Boolean>();
@@ -393,7 +398,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	protected List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, Integer caseId) throws Exception {
+			boolean onlySubscribedCases, boolean showAllCases, Integer caseId, List<Long> procInstIds) throws Exception {
 		throw new UnsupportedOperationException("This method is not implemented");
 	}
 
