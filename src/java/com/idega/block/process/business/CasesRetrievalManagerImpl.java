@@ -338,7 +338,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		return getCache(CASES_LIST_IDS_CACHE, 86400, 1000000);
 	}
 
-	private CasesCacheCriteria getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
+	protected CasesCacheCriteria getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases) {
 
 		return new CasesCacheCriteria(user == null ? -1 : Integer.valueOf(user.getId()), type, caseCodes, statusesToHide, statusesToShow,
