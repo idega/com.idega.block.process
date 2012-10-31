@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+import com.idega.util.CoreConstants;
+import com.idega.util.ListUtil;
+
 public class CasesCacheCriteria implements Serializable {
 
 	private static final long serialVersionUID = 5256480297285408587L;
@@ -35,8 +38,18 @@ public class CasesCacheCriteria implements Serializable {
 	}
 
 	public String getKey() {
-		return new StringBuffer().append(userId).append(type == null ? "-" : type).append(caseCodes).append(statusesToHide)
-		.append(statusesToShow).append(onlySubscribedCases).append(roles).append(groups).append(codes).append(procInstIds).toString();
+		return new StringBuffer()
+			.append(userId)
+			.append(type == null ? CoreConstants.MINUS : type)
+			.append(ListUtil.isEmpty(caseCodes) ? CoreConstants.MINUS : caseCodes)
+			.append(ListUtil.isEmpty(statusesToHide) ? CoreConstants.MINUS : statusesToHide)
+			.append(ListUtil.isEmpty(statusesToShow) ? CoreConstants.MINUS : statusesToShow)
+			.append(onlySubscribedCases)
+			.append(ListUtil.isEmpty(roles) ? CoreConstants.MINUS : roles)
+			.append(ListUtil.isEmpty(groups) ? CoreConstants.MINUS : groups)
+			.append(ListUtil.isEmpty(codes) ? CoreConstants.MINUS : codes)
+			.append(ListUtil.isEmpty(procInstIds) ? CoreConstants.MINUS : procInstIds)
+		.toString();
 	}
 
 	@Override
