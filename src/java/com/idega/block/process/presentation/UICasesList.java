@@ -207,7 +207,7 @@ public class UICasesList extends IWBaseComponent {
 	 * @return PagedDataCollection of cases.
 	 */
 	protected PagedDataCollection<CasePresentation> getCases(IWContext iwc) {
-		long start = System.currentTimeMillis();	//	TODO
+		long start = System.currentTimeMillis();
 
 		Integer pageSizeFromSession = getPageSizeFromSession(iwc);
 		if (pageSizeFromSession != null && pageSizeFromSession > 0)
@@ -233,11 +233,10 @@ public class UICasesList extends IWBaseComponent {
 				setPage(1);
 			}
 
-			Logger.getLogger(getClass().getName()).info("**************** Getting cases by search criterias");
 			Collection<CasePresentation> cases = casesSearcher.getSearchResults(id);
 			if (ListUtil.isEmpty(cases) && !StringUtil.isEmpty(getSearchResultsId())) {
 				cases = casesSearcher.getSearchResults(getSearchResultsId());
-				Logger.getLogger(getClass().getName()).info("**************** Got cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
+				Logger.getLogger(getClass().getName()).info("Got cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
 			}
 
 			CasesSearchCriteriaBean criterias = casesSearcher.getSearchCriteria(id);
@@ -245,7 +244,7 @@ public class UICasesList extends IWBaseComponent {
 			if (ListUtil.isEmpty(cases) || (criterias != null && !criterias.isAllDataLoaded())) {
 				start = System.currentTimeMillis();
 				cases = getReLoadedCases(criterias);
-				Logger.getLogger(getClass().getName()).info("**************** Reloaded cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
+				Logger.getLogger(getClass().getName()).info("Reloaded cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
 			}
 
 			if (ListUtil.isEmpty(cases))
@@ -267,7 +266,7 @@ public class UICasesList extends IWBaseComponent {
 		PagedDataCollection<CasePresentation> cases = manager.getCases(user, getType(), iwc.getCurrentLocale(),
 				getCaseCodes(),	getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(),
 				isOnlySubscribedCases(), isShowAllCases());
-		Logger.getLogger(getClass().getName()).info("**************** Got cases in " + (System.currentTimeMillis() - start) + " ms");
+		Logger.getLogger(getClass().getName()).info("Got cases in " + (System.currentTimeMillis() - start) + " ms");
 		return cases;
 	}
 
