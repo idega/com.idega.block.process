@@ -32,6 +32,7 @@ import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.business.DefaultSpringBean;
+import com.idega.core.cache.IWCacheManager2;
 import com.idega.data.IDOLookup;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
@@ -339,8 +340,15 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
+	private int lastUsedCacheSize = 75;
 	protected Map<CasesCacheCriteria, Map<Integer, Boolean>> getCache() {
-		return getCache(CASES_LIST_IDS_CACHE, 86400, 1000000);
+		int cacheSize = Integer.valueOf(getApplication().getSettings().getProperty("cases_cache_size", String.valueOf(75)));
+		if (cacheSize == lastUsedCacheSize)
+			return getCache(CASES_LIST_IDS_CACHE, 86400, cacheSize);
+
+		IWCacheManager2.getInstance(getApplication()).invalidate(CASES_LIST_IDS_CACHE);
+		lastUsedCacheSize = cacheSize;
+		return getCache();
 	}
 
 	protected CasesCacheCriteria getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
