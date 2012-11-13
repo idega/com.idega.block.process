@@ -1,24 +1,26 @@
 package com.idega.block.process.business;
 
 
-import com.idega.presentation.IWContext;
-import com.idega.idegaweb.IWResourceBundle;
-import com.idega.block.process.data.Case;
-import com.idega.block.process.data.CaseLog;
-
-import javax.ejb.CreateException;
-import com.idega.block.process.data.CaseStatus;
-import java.util.Map;
-import com.idega.block.process.data.CaseCode;
-import com.idega.user.data.User;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import com.idega.idegaweb.IWBundle;
-import com.idega.user.data.Group;
-import java.util.Locale;
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+
+import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseCode;
+import com.idega.block.process.data.CaseLog;
+import com.idega.block.process.data.CaseStatus;
 import com.idega.business.IBOService;
+import com.idega.idegaweb.IWBundle;
+import com.idega.idegaweb.IWResourceBundle;
+import com.idega.presentation.IWContext;
+import com.idega.user.data.Group;
+import com.idega.user.data.User;
 
 public interface CaseBusiness extends IBOService {
 	/**
@@ -165,7 +167,7 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLatestLogForCase
 	 */
 	public CaseLog getLatestLogForCase(Case theCase) throws FinderException;
-	
+
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
 	 */
@@ -295,7 +297,7 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatusDoNotSendUpdates
 	 */
 	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment) throws RemoteException;
-	
+
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatusDoNotSendUpdates
 	 */
@@ -350,7 +352,7 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getLocalizedCaseStatusDescription
 	 */
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) throws RemoteException;
-	
+
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) throws RemoteException;
 
 	/**
@@ -447,26 +449,28 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getIWResourceBundleForUser
 	 */
 	public IWResourceBundle getIWResourceBundleForUser(User user) throws RemoteException;
-	
+
 	public String[] getStatusesForOpenCases();
-	
+
 	public String[] getStatusesForClosedCases();
-	
+
 	public String[] getStatusesForMyCases();
-	
+
 	public String[] getStatusesForApprovedCases();
-	
+
 	public String[] getStatusesForRejectedCases();
-	
+
 	public CaseCode[] getCaseCodesForUserCasesList();
-	
+
 	public Collection<Case> getCasesByIds(Collection<Integer> ids);
-	
+
 	public boolean addSubscriber(Object casePK, User subscriber);
-		
+
 	public boolean isSubscribed(Object casePK, User user);
-	
+
 	public CaseStatus getCaseStatusCreated();
-	
+
 	public CaseStatus getCaseStatusFinished();
+
+	public List<String> getAllCasesStatuses();
 }
