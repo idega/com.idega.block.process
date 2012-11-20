@@ -34,7 +34,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 				pageSize = 0,
 				foundResults = 0;
 
-	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE;
+	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering;
 
 	private List<String> customColumns;
 
@@ -243,6 +243,14 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	public void setShowLoadingMessage(boolean showLoadingMessage) {
 		this.showLoadingMessage = showLoadingMessage;
+	}
+
+	public boolean isNoOrdering() {
+		return noOrdering;
+	}
+
+	public void setNoOrdering(boolean noOrdering) {
+		this.noOrdering = noOrdering;
 	}
 
 }
