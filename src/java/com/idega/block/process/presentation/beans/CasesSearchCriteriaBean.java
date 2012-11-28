@@ -36,7 +36,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering;
 
-	private List<String> customColumns;
+	private List<String> customColumns, exportColumns;
 
 	public boolean isShowStatistics() {
 		return showStatistics;
@@ -251,6 +251,14 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	public void setNoOrdering(boolean noOrdering) {
 		this.noOrdering = noOrdering;
+	}
+
+	public List<String> getExportColumns() {
+		return exportColumns;
+	}
+
+	public void setExportColumns(List<String> exportColumns) {
+		this.exportColumns = exportColumns;
 	}
 
 }
