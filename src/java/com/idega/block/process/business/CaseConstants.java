@@ -12,15 +12,22 @@ package com.idega.block.process.business;
 
 /**
  * Last modified: $Date: 2008/07/03 16:19:32 $ by $Author: civilis $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.5 $
  */
 public class CaseConstants {
-	
-	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.process";
-	public static final String METADATA_KEY_URL="CASE_URL";
-	public static final String ROLE_CASES_SUPER_ADMIN="ROLE_CASES_SUPER_ADMIN";
-	
+
+	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.process",
+
+								METADATA_KEY_URL="CASE_URL",
+
+								ROLE_CASES_SUPER_ADMIN="ROLE_CASES_SUPER_ADMIN",
+
+								CASE_PREFIX = "case_",
+								CASE_IDENTIFIER = CASE_PREFIX + "identifier",
+								CASE_CREATION_DATE = CASE_PREFIX + "creation_date",
+								CASE_STATUS = CASE_PREFIX + "status";
+
 
 }
