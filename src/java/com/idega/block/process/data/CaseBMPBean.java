@@ -1171,10 +1171,8 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		}
 
 		Collection<User> currentSubscribers = getSubscribers();
-		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber)) {
-			getLogger().warning("User " + subscriber + " is already subscribed to case " + getId());
+		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber))
 			return false;
-		}
 
 		this.idoAddTo(subscriber, COLUMN_CASE_SUBSCRIBERS);
 		return true;
