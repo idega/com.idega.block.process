@@ -10,8 +10,10 @@
 package com.idega.block.process.message.business;
 
 import java.util.Collection;
+
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.message.data.Message;
@@ -26,7 +28,7 @@ import com.idega.user.data.User;
  * TODO laddi Describe Type MessageBusiness
  * </p>
  *  Last modified: $Date: 2006/04/25 12:55:13 $ by $Author: thomas $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.3 $
  */
@@ -97,6 +99,12 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#findMessages
 	 */
+	public Collection <Message> findMessages(User user, String messageType, String CaseId)
+	throws FinderException, java.rmi.RemoteException;
+
+	/**
+	 * @see com.idega.block.process.message.business.MessageBusinessBean#findMessages
+	 */
 	public Collection findMessages(String messageType, User user, Collection groups, int numberOfEntries,
 			int startingEntry) throws FinderException, java.rmi.RemoteException;
 
@@ -120,10 +128,12 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#createMessage
 	 */
 	public Message createMessage(MessageValue msgValue) throws CreateException, java.rmi.RemoteException;
-	
+
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#createUserMessage
 	 */
-	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException, java.rmi.RemoteException;	
+	public Message createUserMessage(Case parentCase, User receiver, String subject, String body, boolean sendLetter) throws CreateException, java.rmi.RemoteException;
 	
+	public Collection<Message> findMessagesForUser(String messageType,User user, String status,Boolean read) throws FinderException;
+
 }

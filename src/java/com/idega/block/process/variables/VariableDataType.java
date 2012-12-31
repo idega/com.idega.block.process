@@ -9,7 +9,7 @@ import com.idega.util.CoreConstants;
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
  * @version $Revision: 1.3 $
- * 
+ *
  *          Last modified: $Date: 2009/01/14 04:33:36 $ by $Author: civilis $
  */
 public enum VariableDataType {
@@ -67,6 +67,12 @@ public enum VariableDataType {
 		public String toString() {
 			return longType;
 		}
+	},
+	DOUBLE {
+		@Override
+		public String toString() {
+			return doubleType;
+		}
 	};
 
 	private static final String date = "date",
@@ -77,7 +83,8 @@ public enum VariableDataType {
 								unspecified = CoreConstants.EMPTY,
 								objectList = "objlist",
 								system = "system",
-								longType = "long";
+								longType = "long",
+								doubleType = "double";
 
 	public static Set<String> getAllTypesInStrings() {
 

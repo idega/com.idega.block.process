@@ -1,11 +1,11 @@
 /*
  * $Id: CaseBMPBean.java,v 1.70 2009/06/23 09:33:27 valdas Exp $
- * 
+ *
  * Copyright (C) 2002 Idega hf. All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of Idega hf. Use is subject to
  * license terms.
- * 
+ *
  */
 package com.idega.block.process.data;
 
@@ -19,14 +19,18 @@ import java.util.logging.Level;
 
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
+
+import org.springframework.context.ApplicationEvent;
 
 import com.idega.block.process.business.ProcessConstants;
+import com.idega.block.process.event.CaseDeletedEvent;
 import com.idega.block.process.event.CaseModifiedEvent;
 import com.idega.core.data.ICTreeNode;
+import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
-import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
@@ -35,8 +39,11 @@ import com.idega.data.UniqueIDCapable;
 import com.idega.data.query.BetweenCriteria;
 import com.idega.data.query.Column;
 import com.idega.data.query.CountColumn;
+import com.idega.data.query.Criteria;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.OR;
+import com.idega.data.query.Order;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
@@ -44,6 +51,7 @@ import com.idega.data.query.range.DateRange;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.user.data.UserBMPBean;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.expression.ELUtil;
@@ -54,14 +62,14 @@ import com.idega.util.expression.ELUtil;
  * PROC_CASE.
  * <p>
  * Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
  * @version $Revision: 1.70 $
  */
-public final class CaseBMPBean extends com.idega.data.GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
+public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = -9118580756828123883L;
-	
+
 	public static final String TABLE_NAME = "PROC_CASE";
 	public static final String COLUMN_CASE_CODE = "CASE_CODE";
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
@@ -70,7 +78,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String COLUMN_USER = "USER_ID";
 	static final String COLUMN_CREATOR = "CREATOR_ID";
 	static final String COLUMN_HANDLER = "HANDLER_GROUP_ID";
-	static final String PK_COLUMN = TABLE_NAME + "_ID";
+	public static final String PK_COLUMN = TABLE_NAME + "_ID";
 	static final String COLUMN_EXTERNAL_ID = "EXTERNAL_ID";
 	static final String COLUMN_CASE_NUMBER = "CASE_NUMBER";
 	static final String COLUMN_EXTERNAL_HANDLER_ID = "EXTERNAL_HANDLER_ID";
@@ -78,8 +86,10 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	static final String COLUMN_CASE_BODY = "CASE_BODY";
 	public static final String COLUMN_CASE_MANAGER_TYPE = "CASE_MANAGER_TYPE";
 	public static final String COLUMN_CASE_IDENTIFIER = "CASE_IDENTIFIER";
-	
+
 	public static final String COLUMN_CASE_SUBSCRIBERS = TABLE_NAME + "_SUBSCRIBERS";
+	public static final String COLUMN_READ = TABLE_NAME + "READ";
+	public static final String COLUMN_CASE_VOTERS = TABLE_NAME + "_VOTERS";
 
 	public static final String CASE_STATUS_OPEN_KEY = "UBEH";
 	public static final String CASE_STATUS_INACTIVE_KEY = "TYST";
@@ -104,7 +114,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	public static final String CASE_STATUS_GROUPED_KEY = "GROU";
 	public static final String CASE_STATUS_CREATED_KEY = "CREA";
 	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
-	
+
 	@Override
 	public void initializeAttributes() {
 		addAttribute(getIDColumnName());
@@ -123,10 +133,12 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		addAttribute(COLUMN_CASE_BODY, "Case subject", String.class, 4000);
 		addAttribute(COLUMN_CASE_MANAGER_TYPE, "Case manager type", String.class);
 		addAttribute(COLUMN_CASE_IDENTIFIER, "Case identifier", String.class);
+		addAttribute(COLUMN_READ,"Is case read",Boolean.class);
 		addMetaDataRelationship();
 
 		addManyToManyRelationShip(User.class, COLUMN_CASE_SUBSCRIBERS);
-		
+		addManyToManyRelationShip(User.class, COLUMN_CASE_VOTERS);
+
 		addIndex("IDX_PROC_CASE_2", new String[] { getIDColumnName(), COLUMN_USER });
 		addIndex("IDX_PROC_CASE_3", new String[] { getIDColumnName(), COLUMN_CASE_CODE });
 		addIndex("IDX_PROC_CASE_4", new String[] { getIDColumnName(), COLUMN_CASE_STATUS });
@@ -199,149 +211,185 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		return (CaseHome) this.getEJBLocalHome();
 	}
 
+	@Override
 	public void setCode(String caseCode) {
 		setColumn(CaseBMPBean.COLUMN_CASE_CODE, caseCode);
 	}
 
+	@Override
 	public String getCode() {
 		return (this.getStringColumnValue(COLUMN_CASE_CODE));
 	}
 
+	@Override
 	public void setCaseCode(CaseCode caseCode) {
 		setColumn(CaseBMPBean.COLUMN_CASE_CODE, caseCode);
 	}
 
+	@Override
 	public CaseCode getCaseCode() {
 		return (CaseCode) (this.getColumnValue(COLUMN_CASE_CODE));
 	}
 
+	@Override
 	public void setCaseStatus(CaseStatus status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
 	}
-	
+
+	@Override
 	public String getCaseManagerType() {
 		return getStringColumnValue(COLUMN_CASE_MANAGER_TYPE);
 	}
-	
+
+	@Override
 	public void setCaseManagerType(String type) {
 		setColumn(COLUMN_CASE_MANAGER_TYPE, type);
 	}
 
+	@Override
 	public CaseStatus getCaseStatus() {
 		return (CaseStatus) (this.getColumnValue(COLUMN_CASE_STATUS));
 	}
 
+	@Override
 	public void setStatus(String status) {
 		setColumn(CaseBMPBean.COLUMN_CASE_STATUS, status);
 	}
 
+	@Override
 	public String getStatus() {
 		return (this.getStringColumnValue(COLUMN_CASE_STATUS));
 	}
 
+	@Override
 	public void setCreated(Timestamp statusChanged) {
 		setColumn(CaseBMPBean.COLUMN_CREATED, statusChanged);
 	}
 
+	@Override
 	public Timestamp getCreated() {
 		return ((Timestamp) getColumnValue(COLUMN_CREATED));
 	}
 
+	@Override
 	public void setParentCase(Case theCase) {
 		// throw new java.lang.UnsupportedOperationException("setParentCase() not
 		// implemented yet");
 		this.setColumn(CaseBMPBean.COLUMN_PARENT_CASE, theCase);
 	}
 
+	@Override
 	public Case getParentCase() {
 		// return (Case)super.getParentNode();
 		return (Case) getColumnValue(CaseBMPBean.COLUMN_PARENT_CASE);
 	}
 
+	@Override
 	public void setOwner(User owner) {
 		super.setColumn(COLUMN_USER, owner);
 	}
 
+	@Override
 	public void setCreator(User creator) {
 		super.setColumn(COLUMN_CREATOR, creator);
 	}
 
+	@Override
 	public Group getHandler() {
 		return (Group) this.getColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}
 
+	@Override
 	public int getHandlerId() {
 		return this.getIntColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}
 
+	@Override
 	public void setHandler(Group handler) {
 		super.setColumn(COLUMN_HANDLER, handler);
 	}
 
+	@Override
 	public void setHandler(int handlerGroupID) {
 		super.setColumn(COLUMN_HANDLER, handlerGroupID);
 	}
 
+	@Override
 	public User getOwner() {
 		return (User) this.getColumnValue(CaseBMPBean.COLUMN_USER);
 	}
 
+	@Override
 	public User getCreator() {
 		return (User) this.getColumnValue(CaseBMPBean.COLUMN_CREATOR);
 	}
 
+	@Override
 	public void setExternalId(String externalId) {
 		setColumn(COLUMN_EXTERNAL_ID, externalId);
 	}
 
+	@Override
 	public String getExternalId() {
 		return getStringColumnValue(COLUMN_EXTERNAL_ID);
 	}
 
+	@Override
 	public void setCaseNumber(String caseNumber) {
 		setColumn(COLUMN_CASE_NUMBER, caseNumber);
 	}
 
+	@Override
 	public String getCaseNumber() {
 		return getStringColumnValue(COLUMN_CASE_NUMBER);
 	}
 
+	@Override
 	public void setExternalHandler(User user) {
 		setColumn(COLUMN_EXTERNAL_HANDLER_ID, user.getPrimaryKey());
 	}
 
+	@Override
 	public User getExternalHandler() {
 		return (User) getColumnValue(COLUMN_EXTERNAL_HANDLER_ID);
 	}
 
+	@Override
 	public String getSubject() {
 		return getStringColumnValue(COLUMN_CASE_SUBJECT);
 	}
 
+	@Override
 	public void setSubject(String subject) {
 		setColumn(COLUMN_CASE_SUBJECT, subject);
 	}
 
+	@Override
 	public String getBody() {
 		return getStringColumnValue(COLUMN_CASE_BODY);
 	}
 
+	@Override
 	public void setBody(String body) {
 		setColumn(COLUMN_CASE_BODY, body);
 	}
-	
+
+	@Override
 	public String getCaseIdentifier() {
 		return getStringColumnValue(COLUMN_CASE_IDENTIFIER);
 	}
-	
+
+	@Override
 	public void setCaseIdentifier(String caseIdentifier) {
 		setColumn(COLUMN_CASE_IDENTIFIER, caseIdentifier);
 	}
 
+	@Override
 	public ICTreeNode getParentNode() {
 		return this.getParentCase();
 	}
 
+	@Override
 	public ICTreeNode getChildAtIndex(int childIndex) {
 		try {
 			return this.getCaseHome().findByPrimaryKey(new Integer(childIndex));
@@ -351,6 +399,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public int getChildCount() {
 		try {
 			return this.getCaseHome().countSubCasesUnder(this);
@@ -360,16 +409,17 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
-	public Iterator getChildrenIterator() {
-		Iterator it = null;
-		Collection children = getChildren();
-		if (children != null) {
-			it = children.iterator();
-		}
-		return it;
+	@Override
+	public Iterator<? extends Case> getChildrenIterator() {
+		Collection<? extends Case> children = getChildren();
+		if (children != null)
+			return children.iterator();
+
+		return null;
 	}
 
-	public Collection getChildren() {
+	@Override
+	public Collection<? extends Case> getChildren() {
 		try {
 			return this.getCaseHome().findSubCasesUnder(this);
 		}
@@ -378,6 +428,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public int getSiblingCount() {
 		try {
 			return this.getParentCase().getChildCount();
@@ -551,37 +602,44 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		}
 	}
 
+	@Override
 	public int getNodeID() {
 		return this.getID();
 	}
 
+	@Override
 	public String getNodeName() {
 		return getName();
 	}
 
+	@Override
 	public String getNodeName(Locale locale) {
 		return getNodeName();
 	}
 
+	@Override
 	public String getNodeName(Locale locale, IWApplicationContext iwac) {
 		return getNodeName(locale);
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return (this.getChildCount() == 0);
 	}
 
+	@Override
 	public int getIndex(ICTreeNode node) {
 		return Integer.parseInt(getId());
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
 
 	/**
 	 * Returns the cASE_STATUS_CANCELLED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusCancelled() {
@@ -590,7 +648,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_DELETED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusDeleted() {
@@ -599,7 +657,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_DENIED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusDenied() {
@@ -608,7 +666,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_GRANTED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusGranted() {
@@ -617,7 +675,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_INACTIVE_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusInactive() {
@@ -626,7 +684,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_OPEN_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusOpen() {
@@ -635,7 +693,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the cASE_STATUS_REVIEW_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusReview() {
@@ -644,7 +702,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_WAITING.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusWaiting() {
@@ -653,7 +711,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_PRELIMINARY_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusPreliminary() {
@@ -662,7 +720,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_PENDING_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusPending() {
@@ -671,7 +729,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusContract() {
@@ -680,7 +738,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_READY_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusReady() {
@@ -689,7 +747,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_REDEEM_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusRedeem() {
@@ -698,7 +756,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_ERROR.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusError() {
@@ -707,7 +765,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_MOVED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusMoved() {
@@ -716,7 +774,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_PLACED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusPlaced() {
@@ -725,7 +783,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_IN_PROCESS.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusInProcess() {
@@ -734,7 +792,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_CLOSED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusClosed() {
@@ -743,7 +801,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_ARCHIVED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusArchived() {
@@ -752,21 +810,21 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Returns the CASE_STATUS_LOCKED.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String ejbHomeGetCaseStatusLocked() {
 		return CASE_STATUS_LOCKED;
 	}
-	
+
 	public String ejbHomeGetCaseStatusGrouped() {
 		return CASE_STATUS_GROUPED_KEY;
 	}
-	
+
 	public String ejbHomeGetCaseStatusCreated() {
 		return CASE_STATUS_CREATED_KEY;
 	}
-	
+
 	public String ejbHomeGetCaseStatusFinished() {
 		return CASE_STATUS_FINISHED_KEY;
 	}
@@ -890,7 +948,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Gets the query for selecting all cases by user.
-	 * 
+	 *
 	 * @param user
 	 *          the cases has to be owned by
 	 * @return IDOQuery the resulting query.
@@ -908,7 +966,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/**
 	 * Gets the query for selecting all cases by group.
-	 * 
+	 *
 	 * @param group
 	 *          the cases will be handled by
 	 * @return IDOQuery the resulting query.
@@ -996,26 +1054,28 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.idega.block.process.data.Case#getUrl()
 	 */
+	@Override
 	public String getUrl() {
 		return getMetaData(ProcessConstants.METADATA_KEY_URL);
 	}
-	
+
+	@Override
 	public String getId(){
 		return getPrimaryKey().toString();
 	}
-	
-	public Collection ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+
+	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
-		
+
 		Table casesTable = new Table(this);
 		String casesTableIdColumnName = casesTable.getColumn(getIDColumnName()).getName();
-		
+
 		SelectQuery query = new SelectQuery(casesTable);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
-		
+
 		if (owner != null) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), MatchCriteria.EQUALS, owner.getId()));
 		}
@@ -1024,7 +1084,7 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 			for (Group group: groups) {
 				groupsIds.add(group.getId());
 			}
-			
+
 			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_HANDLER), groupsIds));
 		}
 		if (caseNumber != null) {
@@ -1059,31 +1119,91 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 		if (simpleCases) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CASE_MANAGER_TYPE), MatchCriteria.IS, MatchCriteria.NULL));
 		}
-		
+
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
-	
+
 		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
 		return idoFindPKsByQuery(query);
 	}
-	
-	public void addSubscriber(User subscriber) throws IDOAddRelationshipException {
-		this.idoAddTo(subscriber);
+
+	@Override
+	public boolean addVote(User voter) throws IDOAddRelationshipException {
+		if (voter == null)
+			return false;
+
+		Collection<User> voters = getVoters();
+		if (!ListUtil.isEmpty(voters) && voters.contains(voter))
+			return false;
+
+		this.idoAddTo(voter, COLUMN_CASE_VOTERS);
+		return true;
 	}
 
+	@Override
+	public boolean removeVote(User voter) throws IDORemoveRelationshipException {
+		if (voter == null)
+			return false;
+
+		super.idoRemoveFrom(voter, COLUMN_CASE_VOTERS);
+		return true;
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
-	public Collection<User> getSubscribers() {
+	public Collection<User> getVoters() {
 		try {
-			return super.idoGetRelatedEntities(User.class);
-		} catch (IDORelationshipException e) {
+			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
+			String caseId = TABLE_NAME + "_ID";
+			String query = "select u." + userId + " from " + UserBMPBean.SQL_TABLE_NAME + " u, " + COLUMN_CASE_VOTERS + " voters, " + TABLE_NAME +
+					" c where c." + caseId + " = " + getId() + " and u." + userId + " = voters." + userId + " and c." + caseId + " = voters." + caseId;
+			return super.idoGetRelatedEntitiesBySQL(User.class, query);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public void removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
-		super.idoRemoveFrom(subscriber);
+	@Override
+	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException {
+		if (subscriber == null) {
+			getLogger().warning("Subscriber is not provided");
+			return false;
+		}
+
+		Collection<User> currentSubscribers = getSubscribers();
+		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber))
+			return false;
+
+		this.idoAddTo(subscriber, COLUMN_CASE_SUBSCRIBERS);
+		return true;
 	}
-	
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Collection<User> getSubscribers() {
+		try {
+			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
+			String caseId = TABLE_NAME + "_ID";
+			String query = "select u." + userId + " from " + UserBMPBean.SQL_TABLE_NAME + " u, " + COLUMN_CASE_SUBSCRIBERS + " s, " + TABLE_NAME +
+					" c where c." + caseId + " = " + getId() + " and u." + userId + " = s." + userId + " and c." + caseId + " = s." + caseId;
+			return super.idoGetRelatedEntitiesBySQL(User.class, query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
+		if (subscriber == null) {
+			getLogger().warning("User is not provided");
+			return false;
+		}
+
+		super.idoRemoveFrom(subscriber, COLUMN_CASE_SUBSCRIBERS);
+		return true;
+	}
+
 	public Collection<Case> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhereEquals(COLUMN_CASE_CODE, code);
@@ -1094,20 +1214,103 @@ public final class CaseBMPBean extends com.idega.data.GenericEntity implements C
 	@Override
 	public void store() throws IDOStoreException {
 		super.store();
-		publishEvent();
+		publishEvent(new CaseModifiedEvent(this));
 	}
-	
-	private void publishEvent() {
-		final Case source = this;
-		Thread publisher = new Thread(new Runnable() {
-			public void run() {
-				try {
-					ELUtil.getInstance().getApplicationContext().publishEvent(new CaseModifiedEvent(source));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+
+	private void publishEvent(final ApplicationEvent event) {
+		ELUtil.getInstance().getApplicationContext().publishEvent(event);
+	}
+
+	@Override
+	public void remove() throws RemoveException {
+		super.remove();
+		publishEvent(new CaseDeletedEvent(this));
+	}
+
+	@Override
+	public Boolean isRead() {
+		return getBooleanColumnValue(COLUMN_READ);
+	}
+
+	@Override
+	public void setRead(Boolean read) {
+		setColumn(COLUMN_READ, read);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Case> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
+		return ejbFindCases(user.getId(), status, caseCode, read);
+	}
+
+	public Collection<Case> ejbFindCases(String userId, String status,String caseCode, Boolean read)  throws FinderException{
+		try {
+
+			SelectQuery query = idoQueryGetAllCasesByUser(userId, status, caseCode, read);
+			Order order = new Order(idoQueryTable().getColumn(COLUMN_CREATED), false);
+			query.addOrder(order);
+			return idoFindPKsByQuery(query);
+		}
+		catch(FinderException e){
+			throw e;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
+
+	protected SelectQuery idoSelectQueryGetAllCasesByUser(String userId) {
+		SelectQuery query = idoSelectQuery();
+		query.addCriteria(idoCriteriaForUser(userId));
+		return query;
+	}
+
+	protected Criteria idoCriteriaForUser(String userId) {
+		return new MatchCriteria(idoQueryTable(), COLUMN_USER, MatchCriteria.EQUALS, userId);
+	}
+
+	public Criteria idoCriteriaForStatus(String caseStatus) {
+		return new MatchCriteria(idoQueryTable(), COLUMN_CASE_STATUS, MatchCriteria.EQUALS, caseStatus, true);
+	}
+
+	public Criteria idoCriteriaForCaseCode(String code) {
+		return new MatchCriteria(idoQueryTable(), COLUMN_CASE_CODE, MatchCriteria.EQUALS, code, true);
+	}
+
+	public Criteria idoCriteriaForCaseRead(boolean read) {
+		if(read){
+			return new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.EQUALS, "Y", true);
+		}
+		Criteria notRead = new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.NOTEQUALS, "Y", true);
+		Criteria isNull = new MatchCriteria(idoQueryTable().getColumn(COLUMN_READ), false);
+		OR orCriteria = new OR(notRead, isNull);
+		return orCriteria;
+
+	}
+
+	protected SelectQuery idoQueryGetAllCasesByUser(String userId, String status, String caseCode,Boolean read) {
+		try {
+			SelectQuery query = idoSelectQueryGetAllCasesByUser(userId);
+
+			if(status != null){
+				query.addCriteria(idoCriteriaForStatus(status));
 			}
-		});
-		publisher.start();
+			if(caseCode != null){
+				query.addCriteria(idoCriteriaForCaseCode(caseCode));
+			}
+			if(read != null){
+					query.addCriteria(idoCriteriaForCaseRead(read));
+			}
+			return query;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
 	}
+
+	public Collection<Integer> ejbFindAllCasesBySubscriber(User subscriber) throws FinderException {
+		String query = "select " + PK_COLUMN + " from " + COLUMN_CASE_SUBSCRIBERS + " where " + UserBMPBean.getColumnNameUserID() +
+				" = " + subscriber.getId();
+		return idoFindPKsBySQL(query);
+	}
+
 }

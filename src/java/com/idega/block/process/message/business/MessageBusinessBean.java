@@ -1,17 +1,20 @@
 /*
  * $Id: MessageBusinessBean.java,v 1.10 2008/06/27 11:55:54 alexis Exp $ Created on Oct 12,
  * 2005
- * 
+ *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of Idega hf. Use is subject to
  * license terms.
  */
 package com.idega.block.process.message.business;
 
+import java.rmi.RemoteException;
 import java.util.Collection;
+
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseBusinessBean;
 import com.idega.block.process.data.Case;
@@ -28,7 +31,7 @@ import com.idega.user.data.User;
 
 /**
  * Last modified: $Date: 2008/06/27 11:55:54 $ by $Author: alexis $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.10 $
  */
@@ -42,6 +45,8 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 			throw new IBORuntimeException(ile);
 		}
 	}
+
+
 
 	public void deleteMessage(Object messagePK) throws FinderException {
 		Message message = getMessage(messagePK);
@@ -171,6 +176,21 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 		messageValue.setBody(body);
 		messageValue.setReceiver(receiver);
 		messageValue.setParentCase(parentCase);
+	}
+
+
+
+	public Collection <Message> findMessages(User user, String messageType, String caseId)
+			throws FinderException, RemoteException {
+		return getMessageHome(messageType).findMessages(user, caseId);
+	}
+
+
+
+	@Override
+	public Collection<Message> findMessagesForUser(String messageType,User user, String status,
+			Boolean read) throws FinderException {
+		return getMessageHome(messageType).findMessagesForUser(user, status, read);
 	}
 
 }

@@ -11,7 +11,9 @@ public class CaseListPropertiesBean {
 	private String dateCustomValueVariable;
 	private String dateCustomLabelLocalizationKey;
 	private String criteriasId;
-	
+	private String	specialBackPage,
+					casesListCustomizer;
+
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
 	private boolean allowPDFSigning;
@@ -24,15 +26,52 @@ public class CaseListPropertiesBean {
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
-	
+	private boolean useJavascriptForPageSwitching = true;
+	private boolean showLoadingMessage = true;
+	private boolean waitForAllCasePartsLoaded = true,
+					descriptionEditable = true;
+
+	private boolean showLogExportButton,
+					showCaseStatus = true,
+					showExportAllCasesButton,
+					showComments = true,
+					showContacts = true;
+
 	private int pageSize;
 	private int page;
 	private int foundResults;
-	
-	private List<String> caseCodes;
-	private List<String> statusesToShow;
-	private List<String> statusesToHide;
-	
+
+	private List<String>	caseCodes,
+							statusesToShow,
+							statusesToHide,
+							customColumns;
+
+	/**
+	 * @return the showLoadingMessage
+	 */
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+	/**
+	 * @param showLoadingMessage the showLoadingMessage to set
+	 */
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+
+	/**
+	 * @return the waitForAllCasePartsLoaded
+	 */
+	public boolean isWaitForAllCasePartsLoaded() {
+		return waitForAllCasePartsLoaded;
+	}
+	/**
+	 * @param waitForAllCasePartsLoaded the waitForAllCasePartsLoaded to set
+	 */
+	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
+		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -184,4 +223,72 @@ public class CaseListPropertiesBean {
 	public void setFoundResults(int foundResults) {
 		this.foundResults = foundResults;
 	}
+
+	public boolean getUseJavascriptForPageSwitching() {
+		return this.useJavascriptForPageSwitching;
+	}
+
+	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
+		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
+	}
+
+	public boolean isShowLogExportButton() {
+		return showLogExportButton;
+	}
+	public void setShowLogExportButton(boolean showLogExportButton) {
+		this.showLogExportButton = showLogExportButton;
+	}
+
+	public String getSpecialBackPage() {
+		return specialBackPage;
+	}
+	public void setSpecialBackPage(String specialBackPage) {
+		this.specialBackPage = specialBackPage;
+	}
+
+	public boolean isShowCaseStatus() {
+		return showCaseStatus;
+	}
+	public void setShowCaseStatus(boolean showCaseStatus) {
+		this.showCaseStatus = showCaseStatus;
+	}
+
+	public List<String> getCustomColumns() {
+		return customColumns;
+	}
+	public void setCustomColumns(List<String> customColumns) {
+		this.customColumns = customColumns;
+	}
+
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
+	}
+	public boolean isShowExportAllCasesButton() {
+		return showExportAllCasesButton;
+	}
+	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
+		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+	public boolean isShowComments() {
+		return showComments;
+	}
+	public void setShowComments(boolean showComments) {
+		this.showComments = showComments;
+	}
+	public boolean isShowContacts() {
+		return showContacts;
+	}
+	public void setShowContacts(boolean showContacts) {
+		this.showContacts = showContacts;
+	}
+	public boolean isDescriptionEditable() {
+		return descriptionEditable;
+	}
+	public void setDescriptionEditable(boolean descriptionEditable) {
+		this.descriptionEditable = descriptionEditable;
+	}
+
 }

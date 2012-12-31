@@ -3,6 +3,7 @@ package com.idega.block.process.business;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -292,6 +293,16 @@ public interface CaseBusiness extends IBOService {
 	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer) throws RemoteException;
 
 	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatusDoNotSendUpdates
+	 */
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment) throws RemoteException;
+
+	/**
+	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatusDoNotSendUpdates
+	 */
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment, boolean canBeSameStatus) throws RemoteException;
+
+	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#changeCaseStatus
 	 */
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer, Map attributes) throws RemoteException;
@@ -459,4 +470,6 @@ public interface CaseBusiness extends IBOService {
 	public CaseStatus getCaseStatusCreated();
 
 	public CaseStatus getCaseStatusFinished();
+
+	public List<String> getAllCasesStatuses();
 }

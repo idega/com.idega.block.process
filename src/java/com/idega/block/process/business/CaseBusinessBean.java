@@ -11,6 +11,7 @@ package com.idega.block.process.business;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import javax.ejb.FinderException;
 
 import com.idega.block.process.IWBundleStarter;
 import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseBMPBean;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseCodeHome;
 import com.idega.block.process.data.CaseHome;
@@ -51,6 +53,7 @@ import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
+import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
@@ -66,9 +69,6 @@ import com.idega.util.StringUtil;
  */
 public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
-	/**
-	 * Comment for <code>serialVersionUID</code>
-	 */
 	private static final long serialVersionUID = 5676084152460108081L;
 
 	private String CASE_STATUS_OPEN_KEY;
@@ -91,10 +91,35 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_FINISHED_KEY;
 	private String CASE_STATUS_CLOSED_KEY;
 
-	private Map _statusMap;
+	@Override
+	public List<String> getAllCasesStatuses() {
+		return Arrays.asList(
+				CASE_STATUS_OPEN_KEY,
+				CASE_STATUS_INACTIVE_KEY,
+				CASE_STATUS_GRANTED_KEY,
+				CASE_STATUS_DELETED_KEY,
+				CASE_STATUS_DENIED_KEY,
+				CASE_STATUS_REVIEW_KEY,
+				CASE_STATUS_CANCELLED_KEY,
+				CASE_STATUS_PRELIMINARY_KEY,
+				CASE_STATUS_CONTRACT_KEY,
+				CASE_STATUS_READY_KEY,
+				CASE_STATUS_REDEEM_KEY,
+				CASE_STATUS_ERROR_KEY,
+				CASE_STATUS_MOVED_KEY,
+				CASE_STATUS_PLACED_KEY,
+				CASE_STATUS_PENDING_KEY,
+				CASE_STATUS_WAITING_KEY,
+				CASE_STATUS_CREATED_KEY,
+				CASE_STATUS_FINISHED_KEY,
+				CASE_STATUS_CLOSED_KEY
+		);
+	}
 
-	private static Map listenerCaseCodeMap;
-	private static Map listenerCaseCodeStatusMap;
+	private Map<String, CaseStatus> _statusMap;
+
+	private static Map<String, List<CaseChangeListener>> listenerCaseCodeMap;
+	private static Map<String, Map<String, List<CaseChangeListener>>> listenerCaseCodeStatusMap;
 
 	protected final static String PARAMETER_SELECTED_CASE = "sel_case_nr";
 
@@ -125,14 +150,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	private CaseStatus getCaseStatusFromMap(String caseStatus) {
 		if (this._statusMap != null) {
-			return (CaseStatus) this._statusMap.get(caseStatus);
+			return this._statusMap.get(caseStatus);
 		}
 		return null;
 	}
 
 	private void putCaseStatusInMap(CaseStatus status) {
 		if (this._statusMap == null) {
-			this._statusMap = new HashMap();
+			this._statusMap = new HashMap<String, CaseStatus>();
 		}
 
 		this._statusMap.put(status.getStatus(), status);
@@ -685,6 +710,16 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment) {
+		changeCaseStatusDoNotSendUpdates(theCase, newCaseStatus, performer, comment, false);
+	}
+
+	@Override
+	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment, boolean canBeSameStatus) {
+		changeCaseStatus(theCase, newCaseStatus, comment, performer, null, canBeSameStatus, null, false);
+	}
+
+	@Override
 	public void changeCaseStatus(Case theCase, String newCaseStatus, User performer,Map attributes) {
 		changeCaseStatus(theCase, newCaseStatus, null, performer,null,false,attributes);
 	}
@@ -716,15 +751,15 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes, boolean sendUpdates) {
-		String oldCaseStatus = "";
+		String oldCaseStatus = CoreConstants.EMPTY;
 		try {
 			oldCaseStatus = theCase.getStatus();
-			Collection listeners = null;
+			Collection<CaseChangeListener> listeners = null;
 			if (sendUpdates) {
 				listeners = getCaseChangeListeners(theCase,newCaseStatus);
 
-			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-				CaseChangeListener listener = (CaseChangeListener) iter.next();
+			for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
+				CaseChangeListener listener = iter.next();
 				CaseChangeEvent event = new CaseChangeEvent(theCase);
 				event.setPerformer(performer);
 				event.setStatusFrom(oldCaseStatus);
@@ -755,8 +790,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 
 			if (sendUpdates) {
-			for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-				CaseChangeListener listener = (CaseChangeListener) iter.next();
+			for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
+				CaseChangeListener listener = iter.next();
 				CaseChangeEvent event = new CaseChangeEvent(theCase);
 				event.setPerformer(performer);
 				event.setStatusFrom(oldCaseStatus);
@@ -939,21 +974,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return code;
 	}
 
-
-	/**
-	 * <p>
-	 * TODO tryggvil describe method getCaseChangeListeners
-	 * </p>
-	 * @param theCase
-	 * @param newCaseStatus
-	 * @return
-	 */
-	protected List getCaseChangeListeners(Case theCase, String newCaseStatus) {
-		ArrayList list = new ArrayList();
+	protected List<CaseChangeListener> getCaseChangeListeners(Case theCase, String newCaseStatus) {
+		List<CaseChangeListener> list = new ArrayList<CaseChangeListener>();
 		String caseCode = theCase.getCode();
-		List codeList = getListenerListForCaseCode(caseCode);
+		List<CaseChangeListener> codeList = getListenerListForCaseCode(caseCode);
 		list.addAll(codeList);
-		List statusList = getListenerListForCaseCodeAndStatus(caseCode,newCaseStatus);
+		List<CaseChangeListener> statusList = getListenerListForCaseCodeAndStatus(caseCode,newCaseStatus);
 		list.addAll(statusList);
 		return list;
 	}
@@ -967,7 +993,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 */
 	@Override
 	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode){
-		List list = getListenerListForCaseCode(caseCode);
+		List<CaseChangeListener> list = getListenerListForCaseCode(caseCode);
 		list.add(myListener);
 	}
 
@@ -978,37 +1004,30 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @param caseCode
 	 * @return
 	 */
-	protected List getListenerListForCaseCode(String caseCode) {
+	protected List<CaseChangeListener> getListenerListForCaseCode(String caseCode) {
 		if(listenerCaseCodeMap==null){
-			listenerCaseCodeMap = new HashMap();
+			listenerCaseCodeMap = new HashMap<String, List<CaseChangeListener>>();
 		}
-		List listenerList = (List) listenerCaseCodeMap.get(caseCode);
+		List<CaseChangeListener> listenerList = listenerCaseCodeMap.get(caseCode);
 		if(listenerList==null){
-			listenerList = new ArrayList();
-			listenerCaseCodeMap.put(caseCode,listenerList);
+			listenerList = new ArrayList<CaseChangeListener>();
+			listenerCaseCodeMap.put(caseCode, listenerList);
 		}
 		return listenerList;
 	}
 
-	/**
-	 * <p>
-	 * TODO tryggvil describe method getListenerListForCaseCode
-	 * </p>
-	 * @param caseCode
-	 * @return
-	 */
-	protected List getListenerListForCaseCodeAndStatus(String caseCode,String caseStatus) {
+	protected List<CaseChangeListener> getListenerListForCaseCodeAndStatus(String caseCode, String caseStatus) {
 		if(listenerCaseCodeStatusMap==null){
-			listenerCaseCodeStatusMap = new HashMap();
+			listenerCaseCodeStatusMap = new HashMap<String, Map<String, List<CaseChangeListener>>>();
 		}
-		Map statusMap = (Map) listenerCaseCodeStatusMap.get(caseCode);
+		Map<String, List<CaseChangeListener>> statusMap = listenerCaseCodeStatusMap.get(caseCode);
 		if(statusMap==null){
-			statusMap = new HashMap();
-			listenerCaseCodeStatusMap.put(caseCode,statusMap);
+			statusMap = new HashMap<String, List<CaseChangeListener>>();
+			listenerCaseCodeStatusMap.put(caseCode, statusMap);
 		}
-		List listenerList = (List) statusMap.get(caseStatus);
+		List<CaseChangeListener> listenerList = statusMap.get(caseStatus);
 		if(listenerList==null){
-			listenerList = new ArrayList();
+			listenerList = new ArrayList<CaseChangeListener>();
 			statusMap.put(caseStatus,listenerList);
 		}
 		return listenerList;
@@ -1024,7 +1043,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 */
 	@Override
 	public void addCaseChangeListener(CaseChangeListener myListener,String caseCode,String caseStatusTo){
-		List list = getListenerListForCaseCodeAndStatus(caseCode,caseStatusTo);
+		List<CaseChangeListener> list = getListenerListForCaseCodeAndStatus(caseCode,caseStatusTo);
 		list.add(myListener);
 	}
 
@@ -1095,7 +1114,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public String[] getStatusesForOpenCases() {
-		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus()};
+		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus(), getCaseStatusPending().getStatus(),
+				CaseBMPBean.CASE_STATUS_IN_PROCESS_KEY};
 	}
 
 	@Override

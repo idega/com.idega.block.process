@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.idega.block.process.presentation.beans;
 
@@ -11,62 +11,55 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.idega.block.process.business.CaseBusiness;
+import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOLookup;
+import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 import com.idega.user.data.User;
 import com.idega.util.CoreUtil;
+import com.idega.util.StringUtil;
 
 /**
  * Case data needed in presentation layer.
- * 
+ *
  * @author donatas
  *
  */
 public class CasePresentation implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 2381335679460968723L;
+
 	private Integer primaryKey;
-	
-	private User owner;
-	
-	private String caseIdentifier;
-	
-	private String subject;
-	
+
+	private User owner, handledBy;
+
+	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName;
+
 	private CaseStatus caseStatus;
-	
+
 	private Timestamp created;
-	
-	private String localizedStatus;
-	
-	private String caseManagerType;
 
-	private String code;
-	
-	private String url;
-	
-	private String id;
-	
-	private String externalId;
-	
-	private String categoryId;
-	
-	private String caseTypeName;
+	private boolean isPrivate, bpm = false;
 
-	private boolean isPrivate = false;
-	
-	private User handledBy;
-	
-	private boolean bpm = false;
-	
-	private String processName;
-	
 	private List<AdvancedProperty> externalData;
-	
+
+	public CasePresentation() {
+		super();
+	}
+
+	public CasePresentation(Case theCase) {
+		this();
+
+		primaryKey = Integer.valueOf(theCase.getId());
+		owner = theCase.getOwner();
+		caseIdentifier = theCase.getCaseIdentifier();
+		subject = theCase.getSubject();
+		caseStatus = theCase.getCaseStatus();
+	}
+
 	public Integer getPrimaryKey() {
 		return primaryKey;
 	}
@@ -202,7 +195,7 @@ public class CasePresentation implements Serializable {
 	public void setProcessName(String processName) {
 		this.processName = processName;
 	}
-	
+
 	public String getCategoryId() {
 		return categoryId;
 	}
@@ -210,16 +203,16 @@ public class CasePresentation implements Serializable {
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
-	
+
 	public String getOwnerName() {
 		return owner == null ? null : owner.getName();
 	}
-	
+
 	public String getCaseStatusLocalized() {
-		if (caseStatus == null) {
+		if (caseStatus == null)
 			return null;
-		}
-		
+
+		String statusKey = caseStatus.getStatus();
 		try {
 			Locale locale = null;
 			IWContext iwc = CoreUtil.getIWContext();
@@ -228,18 +221,37 @@ public class CasePresentation implements Serializable {
 			} else {
 				locale = iwc.getCurrentLocale();
 			}
-			if (locale == null) {
+			if (locale == null)
 				locale = Locale.ENGLISH;
+
+			String localization = null;
+			CaseBusiness caseBusiness = null;
+			IWApplicationContext iwac = iwc == null ? IWMainApplication.getDefaultIWApplicationContext() : iwc;
+			try {
+				@SuppressWarnings("unchecked")
+				Class<? extends CaseBusiness> caseBusinessClass =
+						(Class<? extends CaseBusiness>) Class.forName("is.idega.idegaweb.egov.cases.business.CasesBusiness");
+				caseBusiness = IBOLookup.getServiceInstance(iwc == null ? IWMainApplication.getDefaultIWApplicationContext() : iwc,
+						caseBusinessClass);
+				localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			
-			CaseBusiness caseBusiness = (CaseBusiness) IBOLookup.getServiceInstance(iwc == null ?
-					IWMainApplication.getDefaultIWApplicationContext() : iwc, CaseBusiness.class);
-			return caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			if (!StringUtil.isEmpty(localization) && !localization.equals(statusKey))
+				return localization;
+
+			caseBusiness = IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
+			localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			if (StringUtil.isEmpty(localization) || localization.equals(statusKey))
+				localization = caseBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale, "is.idega.idegaweb.egov.cases");
+			if (StringUtil.isEmpty(localization))
+				return statusKey;
+			return localization;
 		} catch(Exception e) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Error getting localized status for: " + caseStatus, e);
 		}
-		
-		return caseStatus.getStatus();
+
+		return statusKey;
 	}
 
 	public List<AdvancedProperty> getExternalData() {

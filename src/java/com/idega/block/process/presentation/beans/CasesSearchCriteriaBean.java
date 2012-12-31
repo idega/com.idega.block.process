@@ -14,25 +14,42 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private static final long serialVersionUID = -4214566172500799450L;
 
-	private String caseNumber;
-	private String description;
-	private String name;
-	private String personalId;
-	private String contact;
-	private String statusId;
-	private String dateRange;
-	private String id;
-	private String instanceId;
-	
+	private String	caseNumber,
+					description,
+					name,
+					personalId,
+					contact,
+					statusId,
+					dateRange,
+					id,
+					instanceId,
+					casesListCustomizer;
+
 	private String[] statuses;
-	
-	private IWTimestamp dateFrom;
-	private IWTimestamp dateTo;
-	
-	private boolean allDataLoaded = Boolean.TRUE;
-	
+
+	private IWTimestamp	dateFrom,
+						dateTo;
+
+	private int page = 0,
+				pageSize = 0,
+				foundResults = 0;
+
+	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering;
+
+	private List<String> customColumns, exportColumns;
+
+	public boolean isShowStatistics() {
+		return showStatistics;
+	}
+
+	public void setShowStatistics(boolean showStatistics) {
+		this.showStatistics = showStatistics;
+	}
+
 	private List<AdvancedProperty> sortingOptions;
-	
+
+	private List<Long> procInstIds;
+
 	public void setCaseNumber(String caseNumber) {
 		this.caseNumber = caseNumber;
 	}
@@ -69,7 +86,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public String getCaseNumber() {
 		return caseNumber;
 	}
-	
+
 	public String getDateRange() {
 		return dateRange;
 	}
@@ -79,7 +96,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public IWTimestamp getDateFrom() {
 		if (dateFrom == null)
 			parseDateString();
-		
+
 		return dateFrom;
 	}
 
@@ -90,17 +107,17 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public IWTimestamp getDateTo() {
 		if (dateTo == null)
 			parseDateString();
-		
+
 		return dateTo;
 	}
 
 	public void setDateTo(IWTimestamp dateTo) {
 		this.dateTo = dateTo;
 	}
-	
+
 	private void parseDateString() {
 		Locale locale = IWContext.getCurrentInstance().getCurrentLocale();
-		
+
 		String dateRange = getDateRange();
 		if (dateRange != null) {
 			String splitter = " - ";
@@ -110,7 +127,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 			}
 			else {
 				String[] dateRangeParts = dateRange.split(splitter);
-				
+
 				Date date = IWDatePickerHandler.getParsedDate(dateRangeParts[0], locale);
 				dateFrom = date == null ? null : new IWTimestamp(date);
 				date = IWDatePickerHandler.getParsedDate(dateRangeParts[1], locale);
@@ -124,7 +141,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 			}
 		}
 	}
-	
+
 	public String[] getStatuses() {
 		return statuses;
 	}
@@ -132,7 +149,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setStatuses(String[] statuses) {
 		this.statuses = statuses;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -140,7 +157,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getInstanceId() {
 		return instanceId;
 	}
@@ -156,12 +173,92 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setSortingOptions(List<AdvancedProperty> sortingOptions) {
 		this.sortingOptions = sortingOptions;
 	}
-	
+
 	public boolean isAllDataLoaded() {
 		return allDataLoaded;
 	}
-	
+
 	public void setAllDataLoaded(boolean allDataLoaded) {
 		this.allDataLoaded = allDataLoaded;
 	}
+
+	public List<Long> getProcInstIds() {
+		return procInstIds;
+	}
+
+	public void setProcInstIds(List<Long> procInstIds) {
+		this.procInstIds = procInstIds;
+	}
+
+	public boolean isShowAllCases() {
+		return showAllCases;
+	}
+	public void setShowAllCases(boolean showAllCases) {
+		this.showAllCases = showAllCases;
+	}
+
+	public int getFoundResults() {
+		return foundResults;
+	}
+
+	public void setFoundResults(int foundResults) {
+		this.foundResults = foundResults;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
+	}
+
+	public List<String> getCustomColumns() {
+		return customColumns;
+	}
+
+	public void setCustomColumns(List<String> customColumns) {
+		this.customColumns = customColumns;
+	}
+
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+
+	public boolean isNoOrdering() {
+		return noOrdering;
+	}
+
+	public void setNoOrdering(boolean noOrdering) {
+		this.noOrdering = noOrdering;
+	}
+
+	public List<String> getExportColumns() {
+		return exportColumns;
+	}
+
+	public void setExportColumns(List<String> exportColumns) {
+		this.exportColumns = exportColumns;
+	}
+
 }

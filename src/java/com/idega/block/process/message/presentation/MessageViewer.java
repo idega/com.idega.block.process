@@ -22,27 +22,41 @@ import com.idega.util.text.TextSoap;
 
 public class MessageViewer extends MessageBlock {
 
+	private Message message = null;
+
+	public MessageViewer(){}
+
+	public MessageViewer(Message message){
+		this.message = message;
+	}
+
 	@Override
 	protected void present(IWContext iwc) throws Exception {
 		if (iwc.isParameterSet(PARAMETER_MESSAGE_PK)) {
+			message = getMessageBusiness().getMessage(iwc.getParameter(PARAMETER_MESSAGE_PK));
+		}
+		if (message == null) {
+			add(new Text(getResourceBundle().getLocalizedString("message.no_message_found", "No message found.")));
+			return;
+		}
+
 			Layer layer = new Layer(Layer.DIV);
 			layer.setID("messageViewer");
 			layer.setStyleClass("caseElement");
-			
+
 			Layer headerLayer = new Layer(Layer.DIV);
 			headerLayer.setStyleClass("caseHeader");
 			layer.add(headerLayer);
-			
+
 			headerLayer.add(new Heading1(getResourceBundle().getLocalizedString("message.viewer", "Message")));
-			
+
 			Layer messageLayer = new Layer(Layer.DIV);
 			messageLayer.setStyleClass("messageDiv");
 			layer.add(messageLayer);
-			
-			Message message = getMessageBusiness().getMessage(iwc.getParameter(PARAMETER_MESSAGE_PK));
+
 			User sender = message.getSender();
 			IWTimestamp created = new IWTimestamp(message.getCreated());
-			
+
 			getMessageBusiness().markMessageAsRead(message);
 
 			Layer messageItem = new Layer(Layer.DIV);
@@ -51,12 +65,12 @@ public class MessageViewer extends MessageBlock {
 			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("subject", "Subject")));
 			messageItem.add(new Text(message.getSubject() != null ? message.getSubject(): getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
 			messageLayer.add(messageItem);
-			
+
 			Layer subjectHeadingLayer = new Layer(Layer.DIV);
 			subjectHeadingLayer.setStyleClass("messageSubjectHeading");
 			subjectHeadingLayer.add(new Text(message.getSubject() != null ? message.getSubject(): getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
 			headerLayer.add(subjectHeadingLayer);
-			
+
 			if (sender != null) {
 				messageItem = new Layer(Layer.DIV);
 				messageItem.setID("messageSender");
@@ -66,25 +80,26 @@ public class MessageViewer extends MessageBlock {
 				messageItem.add(new Text(name.getName(iwc.getCurrentLocale())));
 				messageLayer.add(messageItem);
 			}
-		
+
 			messageItem = new Layer(Layer.DIV);
 			messageItem.setID("messageDate");
 			messageItem.setStyleClass("messageItem");
 			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("date", "Date")));
 			messageItem.add(new Text(created.getLocaleDateAndTime(iwc.getCurrentLocale(), IWTimestamp.MEDIUM, IWTimestamp.MEDIUM)));
 			messageLayer.add(messageItem);
-			
+
 			messageItem = new Layer(Layer.DIV);
 			messageItem.setID("messageBody");
 			messageItem.setStyleClass("messageItem");
 			messageItem.add(new Heading1(getResourceBundle().getLocalizedString("body", "Body")));
 			messageItem.add(new Text(message.getBody() != null ? TextSoap.formatText(message.getBody()): ""));
 			messageLayer.add(messageItem);
-			
+
 			add(layer);
-		}
-		else {
-			add(new Text(getResourceBundle().getLocalizedString("message.no_message_found", "No message found.")));
-		}
+
+
+
 	}
+
+
 }

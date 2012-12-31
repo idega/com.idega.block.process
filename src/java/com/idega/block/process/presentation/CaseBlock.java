@@ -10,6 +10,7 @@
 package com.idega.block.process.presentation;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.Map;
 
 import com.idega.block.process.business.CaseBusiness;
@@ -23,12 +24,14 @@ import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.Block;
 import com.idega.presentation.IWContext;
 import com.idega.user.business.UserBusiness;
+import com.idega.util.CoreConstants;
 import com.idega.util.PresentationUtil;
+import com.idega.util.StringUtil;
 
 
 /**
  * Last modified: $Date: 2009/06/30 09:35:57 $ by $Author: valdas $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.7 $
  */
@@ -36,14 +39,14 @@ public abstract class CaseBlock extends Block {
 
 	private CaseBusiness business;
 	private UserBusiness userBusiness;
-	
+
 	private IWBundle iwb;
 	private IWResourceBundle iwrb;
-	
+
 	/* Cases list parameters */
 	private int pageSize = 20;
 	private int page = 1;
-	
+
 	private boolean addCredentialsToExernalUrls;
 	private boolean showCaseNumberColumn = true;
 	private boolean showCreationTimeInDateColumn = true;
@@ -55,16 +58,33 @@ public abstract class CaseBlock extends Block {
 	private boolean showAttachmentStatistics;
 	private boolean showOnlyCreatorInContacts;
 	private boolean onlySubscribedCases;
-	
-	private String caseStatusesToHide;
-	private String caseStatusesToShow;
-	private String caseCodes;
-	private String commentsManagerIdentifier;
-	private String dateCustomValueVariable;
-	private String dateCustomLabelLocalizationKey;
-	private String searchResultsId;
+	private boolean showLegend, showAllCases;
+	private boolean showLoadingMessage = Boolean.TRUE;
+	private boolean waitForAllCasePartsLoaded = Boolean.TRUE;
+
+	private boolean showLogExportButton,
+					showCaseStatus = true,
+					showExportAllCasesButton,
+					showComments = true,
+					showContacts = true,
+					descriptionEditable = true;
+
+	private String	caseStatusesToHide,
+					caseStatusesToShow,
+					caseCodes,
+					commentsManagerIdentifier,
+					dateCustomValueVariable,
+					dateCustomLabelLocalizationKey,
+					searchResultsId,
+					specialBackPage,
+
+					customColumns,
+					casesListCustomizer;
+
+	private boolean useJavascriptForPageSwitching = true;
+	private String externalStyleSheet;
 	/* Cases list parameters */
-	
+
 	@Override
 	public void main(IWContext iwc) throws Exception {
 		initialize(iwc);
@@ -84,16 +104,19 @@ public abstract class CaseBlock extends Block {
 		this.business = getCaseBusiness(iwc);
 		this.userBusiness = getUserBusiness(iwc);
 		PresentationUtil.addStyleSheetToHeader(iwc, iwc.getIWMainApplication().getBundle(ProcessConstants.IW_BUNDLE_IDENTIFIER).getVirtualPathWithFileNameString("style/process.css"));
+		if (externalStyleSheet != null) {
+			PresentationUtil.addStyleSheetToHeader(iwc, externalStyleSheet);
+		}
 	}
-	
+
 	protected IWBundle getBundle() {
 		return this.iwb;
 	}
-	
+
 	protected IWResourceBundle getResourceBundle() {
 		return this.iwrb;
 	}
-	
+
 	protected CaseBusiness getBusiness() {
 		return this.business;
 	}
@@ -106,11 +129,11 @@ public abstract class CaseBlock extends Block {
 			throw new IBORuntimeException(ile);
 		}
 	}
-	
+
 	protected UserBusiness getUserBusiness() {
 		return this.userBusiness;
 	}
-	
+
 	private UserBusiness getUserBusiness(IWApplicationContext iwac) {
 		try {
 			return (UserBusiness) IBOLookup.getServiceInstance(iwac, UserBusiness.class);
@@ -122,9 +145,37 @@ public abstract class CaseBlock extends Block {
 	private void setBundle(IWBundle iwb) {
 		this.iwb = iwb;
 	}
-	
+
 	private void setResourceBundle(IWResourceBundle iwrb) {
 		this.iwrb = iwrb;
+	}
+
+	/**
+	 * @return the showLoadingMessage
+	 */
+	public boolean isShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+
+	/**
+	 * @param showLoadingMessage the showLoadingMessage to set
+	 */
+	public void setShowLoadingMessage(boolean showLoadingMessage) {
+		this.showLoadingMessage = showLoadingMessage;
+	}
+
+	/**
+	 * @return the waitForAllCasePartsLoaded
+	 */
+	public boolean isWaitForAllCasePartsLoaded() {
+		return waitForAllCasePartsLoaded;
+	}
+
+	/**
+	 * @param waitForAllCasePartsLoaded the waitForAllCasePartsLoaded to set
+	 */
+	public void setWaitForAllCasePartsLoaded(boolean waitForAllCasePartsLoaded) {
+		this.waitForAllCasePartsLoaded = waitForAllCasePartsLoaded;
 	}
 
 	public int getPageSize() {
@@ -247,7 +298,7 @@ public abstract class CaseBlock extends Block {
 	public void setCommentsManagerIdentifier(String commentsManagerIdentifier) {
 		this.commentsManagerIdentifier = commentsManagerIdentifier;
 	}
-	
+
 	public boolean isAddCredentialsToExernalUrls() {
 		return addCredentialsToExernalUrls;
 	}
@@ -261,7 +312,7 @@ public abstract class CaseBlock extends Block {
 
 	public UICasesList getCasesList(IWContext iwc, String id) throws RemoteException {
 		UICasesList list = (UICasesList)iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
-		
+
 		list.setType(getCasesProcessorType());
 		list.setUserCasesPageMap(getUserCasesPageMap());
 		list.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -287,12 +338,26 @@ public abstract class CaseBlock extends Block {
 		list.setShowOnlyCreatorInContacts(isShowOnlyCreatorInContacts());
 		list.setOnlySubscribedCases(isOnlySubscribedCases());
 		list.setSearchResultsId(getSearchResultsId());
-		
+		list.setUseJavascriptForPageSwitching(getUseJavascriptForPageSwitching());
+		list.setShowLegend(isShowLegend());
+		list.setShowLogExportButton(isShowLogExportButton());
+		list.setShowComments(isShowComments());
+		list.setShowContacts(isShowContacts());
+		list.setShowAllCases(isShowAllCases());
+		list.setSpecialBackPage(getSpecialBackPage());
+		list.setShowCaseStatus(isShowCaseStatus());
+		list.setCasesListCustomizer(getCasesListCustomizer());
+		list.setCustomColumns(StringUtil.isEmpty(getCustomColumns()) ? null : Arrays.asList(getCustomColumns().split(CoreConstants.COMMA)));
+		list.setShowExportAllCasesButton(isShowExportAllCasesButton());
+		list.setShowLoadingMessage(isShowLoadingMessage());
+		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
+		list.setDescriptionEditable(isDescriptionEditable());
+
 		return list;
 	}
-	
+
 	public abstract String getCasesProcessorType();
-	
+
 	public abstract Map<Object, Object> getUserCasesPageMap();
 
 	public boolean isShowAttachmentStatistics() {
@@ -325,5 +390,105 @@ public abstract class CaseBlock extends Block {
 
 	public void setSearchResultsId(String searchResultsId) {
 		this.searchResultsId = searchResultsId;
+	}
+
+	public boolean getUseJavascriptForPageSwitching() {
+		return this.useJavascriptForPageSwitching;
+	}
+
+	public void setUseJavascriptForPageSwitching(boolean useJavascriptForPageSwitching) {
+		this.useJavascriptForPageSwitching = useJavascriptForPageSwitching;
+	}
+
+	public boolean isShowLegend() {
+		return showLegend;
+	}
+
+	public void setShowLegend(boolean showLegend) {
+		this.showLegend = showLegend;
+	}
+
+	public boolean isShowLogExportButton() {
+		return showLogExportButton;
+	}
+
+	public void setShowLogExportButton(boolean showLogExportButton) {
+		this.showLogExportButton = showLogExportButton;
+	}
+
+	public boolean isShowAllCases() {
+		return showAllCases;
+	}
+
+	public void setShowAllCases(boolean showAllCases) {
+		this.showAllCases = showAllCases;
+	}
+
+	public String getSpecialBackPage() {
+		return specialBackPage;
+	}
+
+	public void setSpecialBackPage(String specialBackPage) {
+		this.specialBackPage = specialBackPage;
+	}
+
+	public void setExternalStyleSheet(String externalStyleSheet) {
+		this.externalStyleSheet = externalStyleSheet;
+	}
+
+	public boolean isShowCaseStatus() {
+		return showCaseStatus;
+	}
+
+	public void setShowCaseStatus(boolean showCaseStatus) {
+		this.showCaseStatus = showCaseStatus;
+	}
+
+	public String getCustomColumns() {
+		return customColumns;
+	}
+
+	public void setCustomColumns(String customColumns) {
+		this.customColumns = customColumns;
+	}
+
+	public String getCasesListCustomizer() {
+		return casesListCustomizer;
+	}
+
+	public void setCasesListCustomizer(String casesListCustomizer) {
+		this.casesListCustomizer = casesListCustomizer;
+	}
+
+	public boolean isShowExportAllCasesButton() {
+		return showExportAllCasesButton;
+	}
+
+	public void setShowExportAllCasesButton(boolean showExportAllCasesButton) {
+		this.showExportAllCasesButton = showExportAllCasesButton;
+	}
+
+	public boolean isShowComments() {
+		return showComments;
+	}
+
+	public void setShowComments(boolean showComments) {
+		this.showComments = showComments;
+	}
+
+	public boolean isShowContacts() {
+		return showContacts;
+	}
+
+	public void setShowContacts(boolean showContacts) {
+		this.showContacts = showContacts;
+	}
+
+	public boolean isDescriptionEditable() {
+		return descriptionEditable;
+	}
+
+	public void setDescriptionEditable(boolean descriptionEditable) {
+		this.descriptionEditable = descriptionEditable;
 	}
 }

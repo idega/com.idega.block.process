@@ -1,10 +1,10 @@
 /*
  * $Id: AbstractCaseBMPBean.java,v 1.61 2009/01/09 16:10:07 donatas Exp $
- * 
+ *
  * Copyright (C) 2002-2006 Idega hf. All Rights Reserved.
- * 
+ *
  * This software is the proprietary information of Idega hf. Use is subject to license terms.
- * 
+ *
  */
 package com.idega.block.process.data;
 
@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -20,10 +21,12 @@ import javax.ejb.RemoveException;
 
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
+import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.data.IDORelationshipException;
+import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
 import com.idega.data.MetaData;
@@ -36,6 +39,7 @@ import com.idega.data.query.Criteria;
 import com.idega.data.query.InCriteria;
 import com.idega.data.query.JoinCriteria;
 import com.idega.data.query.MatchCriteria;
+import com.idega.data.query.OR;
 import com.idega.data.query.Order;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
@@ -43,7 +47,10 @@ import com.idega.data.query.WildCardColumn;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.user.data.UserBMPBean;
 import com.idega.util.IWTimestamp;
+import com.idega.util.ListUtil;
+import com.idega.util.StringUtil;
 
 /**
  * <p>
@@ -51,11 +58,13 @@ import com.idega.util.IWTimestamp;
  * a second table that is one-to-one related to the base Case entity table.
  * <p>
  * Last modified: $Date: 2009/01/09 16:10:07 $ by $Author: donatas $
- * 
+ *
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
  * @version $Revision: 1.61 $
  */
 public abstract class AbstractCaseBMPBean extends GenericEntity implements Case, MetaDataCapable, UniqueIDCapable {
+
+	private static final long serialVersionUID = -5220291917851850708L;
 
 	private Case _case;
 	private Table caseTable;
@@ -76,6 +85,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		this.getAttribute(getIDColumnName()).setAsPrimaryKey(true);
 	}
 
+	@Override
 	public Object ejbCreate() throws CreateException {
 		this._case = this.getCaseHome().create();
 		this._case.setStatus(this.getCaseStatusOpen());
@@ -83,6 +93,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return super.ejbCreate();
 	}
 
+	@Override
 	public void setDefaultValues() {
 		/*
 		 * try{ System.out.println("AbstractCase : Calling setDefaultValues()"); setCode(getCaseCodeKey()); } catch(RemoteException e){ throw new
@@ -90,6 +101,16 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		 */
 	}
 
+	private static final String SUBSCRIBERS = "_SUBSCRIBERS",
+								VOTERS = "_VOTERS";
+
+	@Override
+	public void initializeAttributes() {
+		addManyToManyRelationShip(User.class, getTableName() + SUBSCRIBERS);
+		addManyToManyRelationShip(User.class, getTableName() + VOTERS);
+	}
+
+	@Override
 	public void insertStartData() {
 		try {
 			// CaseHome chome = (CaseHome)IDOLookup.getHome(Case.class);
@@ -149,21 +170,25 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return null;
 	}
 
+	@Override
 	protected boolean doInsertInCreate() {
 		return true;
 	}
 
+	@Override
 	public Object ejbFindByPrimaryKey(Object key) throws FinderException {
 		this._case = this.getCaseHome().findByPrimaryKey(key);
 		return super.ejbFindByPrimaryKey(key);
 	}
 
+	@Override
 	public void store() throws IDOStoreException {
 		initializeCaseCodeIfNull();
 		getGeneralCase().store();
 		super.store();
 	}
 
+	@Override
 	public void remove() throws RemoveException {
 		super.remove();
 		getGeneralCase().remove();
@@ -191,120 +216,149 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return this._case;
 	}
 
+	@Override
 	public Timestamp getCreated() {
 		return getGeneralCase().getCreated();
 	}
 
+	@Override
 	public void setCaseCode(CaseCode p0) {
 		getGeneralCase().setCaseCode(p0);
 	}
 
+	@Override
 	public void setParentCase(Case p0) {
 		getGeneralCase().setParentCase(p0);
 	}
 
+	@Override
 	public void setStatus(String p0) {
 		getGeneralCase().setStatus(p0);
 	}
 
+	@Override
 	public String getCode() {
 		initializeCaseCodeIfNull();
 		return this.getGeneralCase().getCode();
 	}
 
+	@Override
 	public void setCaseStatus(CaseStatus p0) {
 		this.getGeneralCase().setCaseStatus(p0);
 	}
 
+	@Override
 	public CaseCode getCaseCode() {
 		initializeCaseCodeIfNull();
 		return this.getGeneralCase().getCaseCode();
 	}
 
+	@Override
 	public void setOwner(User p0) {
 		this.getGeneralCase().setOwner(p0);
 	}
 
+	@Override
 	public void setCreator(User p0) {
 		this.getGeneralCase().setCreator(p0);
 	}
 
+	@Override
 	public Case getParentCase() {
 		return this.getGeneralCase().getParentCase();
 	}
 
+	@Override
 	public void setCode(String p0) {
 		this.getGeneralCase().setCode(p0);
 	}
 
+	@Override
 	public User getOwner() {
 		return this.getGeneralCase().getOwner();
 	}
 
+	@Override
 	public User getCreator() {
 		return this.getGeneralCase().getCreator();
 	}
 
+	@Override
 	public CaseStatus getCaseStatus() {
 		return this.getGeneralCase().getCaseStatus();
 	}
 
+	@Override
 	public String getStatus() {
 		return this.getGeneralCase().getStatus();
 	}
 
+	@Override
 	public void setCreated(Timestamp p0) {
 		this.getGeneralCase().setCreated(p0);
 	}
 
+	@Override
 	public Collection getChildren() {
 		return this.getGeneralCase().getChildren();
 	}
 
+	@Override
 	public Iterator getChildrenIterator() {
 		return this.getGeneralCase().getChildrenIterator();
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return this.getGeneralCase().getAllowsChildren();
 	}
 
+	@Override
 	public ICTreeNode getChildAtIndex(int childIndex) {
 		return this.getGeneralCase().getChildAtIndex(childIndex);
 	}
 
+	@Override
 	public int getChildCount() {
 		return this.getGeneralCase().getChildCount();
 	}
 
+	@Override
 	public int getIndex(ICTreeNode node) {
 		return this.getGeneralCase().getIndex(node);
 	}
 
+	@Override
 	public ICTreeNode getParentNode() {
 		return this.getGeneralCase().getParentNode();
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return this.getGeneralCase().isLeaf();
 	}
 
+	@Override
 	public String getNodeName() {
 		return this.getGeneralCase().getNodeName();
 	}
 
+	@Override
 	public String getNodeName(Locale locale) {
 		return this.getGeneralCase().getNodeName(locale);
 	}
 
+	@Override
 	public String getNodeName(Locale locale, IWApplicationContext iwac) {
 		return this.getGeneralCase().getNodeName(locale, iwac);
 	}
 
+	@Override
 	public int getNodeID() {
 		return this.getGeneralCase().getNodeID();
 	}
 
+	@Override
 	public int getSiblingCount() {
 		return this.getGeneralCase().getSiblingCount();
 	}
@@ -316,25 +370,29 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return -1;
 	}
 
+	@Override
 	public Group getHandler() {
 		return this.getGeneralCase().getHandler();
 	}
 
+	@Override
 	public int getHandlerId() {
 		return this.getGeneralCase().getHandlerId();
 	}
 
+	@Override
 	public void setHandler(Group handler) {
 		this.getGeneralCase().setHandler(handler);
 	}
 
+	@Override
 	public void setHandler(int handlerGroupID) {
 		this.getGeneralCase().setHandler(handlerGroupID);
 	}
 
 	/**
 	 * Returns the cASE_STATUS_CANCELLED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	protected String getCaseStatusCancelled() {
@@ -343,7 +401,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the cASE_STATUS_DENIED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	protected String getCaseStatusDenied() {
@@ -352,7 +410,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the cASE_STATUS_GRANTED_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	protected String getCaseStatusGranted() {
@@ -361,7 +419,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the cASE_STATUS_INACTIVE_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getCaseStatusInactive() {
@@ -370,7 +428,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the cASE_STATUS_OPEN_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getCaseStatusOpen() {
@@ -379,7 +437,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the cASE_STATUS_REVIEW_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getCaseStatusReview() {
@@ -388,7 +446,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the CASE_STATUS_PRELIMINARY_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getCaseStatusPreliminary() {
@@ -397,7 +455,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getCaseStatusContract() {
@@ -406,7 +464,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	/**
 	 * Returns the CASE_STATUS_CONTRACT_KEY.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getCaseStatusReady() {
@@ -433,10 +491,14 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return CaseBMPBean.COLUMN_CASE_CODE;
 	}
 
+	protected String getSQLGeneralCaseReadColumnName() {
+		return CaseBMPBean.COLUMN_READ;
+	}
+
 	protected String getSQLGeneralCaseCaseStatusColumnName() {
 		return CaseBMPBean.COLUMN_CASE_STATUS;
 	}
-	
+
 	protected String getSQLGeneralCaseCaseManagerTypeColumnName() {
 		return CaseBMPBean.COLUMN_CASE_MANAGER_TYPE;
 	}
@@ -448,7 +510,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	protected String getSQLGeneralCaseCreatedColumnName() {
 		return CaseBMPBean.COLUMN_CREATED;
 	}
-	
+
 	/**
 	 * Finds all cases for all users with the specified caseStatus and the associated caseCode
 	 */
@@ -471,13 +533,13 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/*
 	 * public IDOQuery idoQueryGetAllCasesByUser(User user) { String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new StringBuffer(); IDOQuery
 	 * sql = idoQuery(); sql.append("select * from ");
-	 * 
+	 *
 	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,"); sql.append(this.getTableName()); sql.append(" a where g.");
 	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a."); sql.append(this.getIDColumnName()); sql.append(" and g.");
 	 * sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='"); sql.append(caseCode); sql.append("'"); sql.append(" and g.");
 	 * sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.append(" order by g.");
 	 * sql.append(this.getSQLGeneralCaseCreatedColumnName());
-	 * 
+	 *
 	 * return sql; //return (Collection) super.idoFindPKsBySQL(sql.toString()); }
 	 */
 	/**
@@ -506,7 +568,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * sql.append(this.getIDColumnName()); sql.append(" and g."); sql.append(this.getSQLGeneralCaseCaseCodeColumnName()); sql.append("='");
 	 * sql.append(caseCode); sql.append("'"); sql.append(" and g."); sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append("='");
 	 * sql.append(caseStatus); sql.append("'"); //sql.append(" order by "); //sql.append(this.getSQLGeneralCaseCreatedColumnName());
-	 * 
+	 *
 	 * return sql; //return (Collection) super.idoFindPKsBySQL(sql.toString()); }
 	 */
 
@@ -545,6 +607,20 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	public Criteria idoCriteriaForStatus(String caseStatus) {
 		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseStatusColumnName(), MatchCriteria.EQUALS, caseStatus, true);
 	}
+	public Criteria idoCriteriaForCaseCode(String code) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseCodeColumnName(), MatchCriteria.EQUALS, code, true);
+	}
+
+	public Criteria idoCriteriaForCaseRead(boolean read) {
+		if(read){
+			return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.EQUALS, "Y", true);
+		}
+		Criteria notRead = new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.NOTEQUALS, "Y", true);
+		Criteria isNull = new MatchCriteria(idoTableGeneralCase().getColumn(getSQLGeneralCaseReadColumnName()), false);
+		OR orCriteria = new OR(notRead, isNull);
+		return orCriteria;
+
+	}
 
 	public Criteria idoCriteriaForStatus(String[] caseStatus) {
 		return new InCriteria(idoTableGeneralCase(), getSQLGeneralCaseCaseStatusColumnName(), caseStatus);
@@ -571,7 +647,11 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	public Criteria idoCriteriaForParentCase(Case parentCase) {
-		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseParentColumnName(), MatchCriteria.EQUALS, parentCase.getPrimaryKey().toString());
+		return idoCriteriaForParentCase(parentCase.getPrimaryKey().toString());
+	}
+
+	public Criteria idoCriteriaForParentCase(String parentCasePK) {
+		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseParentColumnName(), MatchCriteria.EQUALS, parentCasePK);
 	}
 
 	public Criteria idoCriteriaForCreatedWithinDates(IWTimestamp theFrom, IWTimestamp theTo) {
@@ -877,9 +957,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * (length - 1)) sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append(" and g.");
 	 * sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.append(" order by g.");
 	 * sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
-	 * 
+	 *
 	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-	 * 
+	 *
 	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
 	 */
 
@@ -901,9 +981,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1)) sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append(" and
 	 * g."); sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.append(" order by
 	 * g."); sql.append(this.getSQLGeneralCaseCreatedColumnName());
-	 * 
+	 *
 	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-	 * 
+	 *
 	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
 	 */
 
@@ -918,10 +998,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/*
 	 * protected IDOQuery idQueryCountCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) { String[] groupIDs = new
 	 * String[groups.size()]; int row = 0;
-	 * 
+	 *
 	 * Iterator iter = groups.iterator(); while (iter.hasNext()) { Group element = (Group) iter.next(); groupIDs[row++] =
 	 * element.getPrimaryKey().toString(); }
-	 * 
+	 *
 	 * try { String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select count(*)
 	 * from "); sql.append(getSQLGeneralCaseTableName()); sql.append(" g,"); sql.append(this.getTableName()); sql.append(" a where g.");
 	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a."); sql.append(this.getIDColumnName()); sql.append(" and g.");
@@ -931,9 +1011,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * (g."); sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.appendOr();
 	 * sql.append(this.getSQLGeneralCaseHandlerColumnName()); sql.appendInArray(groupIDs); sql.append(") order by g.");
 	 * sql.append(this.getSQLGeneralCaseCreatedColumnName());
-	 * 
+	 *
 	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-	 * 
+	 *
 	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
 	 */
 
@@ -949,10 +1029,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/*
 	 * protected IDOQuery idQueryGetAllCasesByUserAndGroupsAndStatusArray(User user, Collection groups, String caseStatus[]) { String[] groupIDs = new
 	 * String[groups.size()]; int row = 0;
-	 * 
+	 *
 	 * Iterator iter = groups.iterator(); while (iter.hasNext()) { Group element = (Group) iter.next(); groupIDs[row++] =
 	 * element.getPrimaryKey().toString(); }
-	 * 
+	 *
 	 * try { String caseCode = this.getCaseCodeKey(); //StringBuffer sql = new StringBuffer(); IDOQuery sql = idoQuery(); sql.append("select * from ");
 	 * sql.append(getSQLGeneralCaseTableName()); sql.append(" g,"); sql.append(this.getTableName()); sql.append(" a where g.");
 	 * sql.append(this.getSQLGeneralCasePKColumnName()); sql.append("=a."); sql.append(this.getIDColumnName()); sql.append(" and g.");
@@ -962,9 +1042,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * (g."); sql.append(this.getSQLGeneralCaseUserColumnName()); sql.append("="); sql.append(user.getPrimaryKey().toString()); sql.appendOr();
 	 * sql.append(this.getSQLGeneralCaseHandlerColumnName()); sql.appendInArray(groupIDs); sql.append(") order by g.");
 	 * sql.append(this.getSQLGeneralCaseCreatedColumnName() + " desc");
-	 * 
+	 *
 	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-	 * 
+	 *
 	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
 	 */
 
@@ -987,9 +1067,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * (length - 1)) sql.append("', "); else sql.append("'"); } sql.append(")"); sql.append(" and g.");
 	 * sql.append(this.getSQLGeneralCaseHandlerColumnName()); sql.append("="); sql.append(group.getPrimaryKey().toString()); sql.append(" order by g.");
 	 * sql.append(this.getSQLGeneralCaseCreatedColumnName());
-	 * 
+	 *
 	 * debug("AbstractCase.idoQueryGetAllCasesByUserAndStatusArray(): sql = " + sql.toString());
-	 * 
+	 *
 	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
 	 */
 
@@ -1009,9 +1089,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	 * sql.append(caseCode); sql.append("'"); sql.append(" and g."); sql.append(this.getSQLGeneralCaseCaseStatusColumnName()); sql.append(" in ("); int
 	 * length = caseStatus.length; for (int i = 0; i < length; i++) { sql.append("'"); sql.append(caseStatus[i]); if (i != (length - 1)) sql.append("',
 	 * "); else sql.append("'"); } sql.append(")"); sql.append(" order by g."); sql.append(this.getSQLGeneralCaseCreatedColumnName());
-	 * 
+	 *
 	 * debug("AbstractCase.idoQueryGetAllCasesByStatusArray(): sql = " + sql.toString());
-	 * 
+	 *
 	 * return sql; } catch (Exception e) { throw new IDORuntimeException(e, this); } }
 	 */
 	protected SelectQuery idoSelectQueryGetAllCasesByStatusArray(String caseStatus[]) {
@@ -1021,46 +1101,57 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return query;
 	}
 
+	@Override
 	public String getExternalId() {
 		return getGeneralCase().getExternalId();
 	}
 
+	@Override
 	public void setExternalId(String externalId) {
 		getGeneralCase().setExternalId(externalId);
 	}
 
+	@Override
 	public String getCaseNumber() {
 		return getGeneralCase().getCaseNumber();
 	}
 
+	@Override
 	public void setCaseNumber(String caseNumber) {
 		getGeneralCase().setCaseNumber(caseNumber);
 	}
 
+	@Override
 	public void setExternalHandler(User user) {
 		getGeneralCase().setExternalHandler(user);
 	}
 
+	@Override
 	public User getExternalHandler() {
 		return getGeneralCase().getExternalHandler();
 	}
 
+	@Override
 	public String getSubject() {
 		return getGeneralCase().getSubject();
 	}
 
+	@Override
 	public void setSubject(String subject) {
 		getGeneralCase().setSubject(subject);
 	}
 
+	@Override
 	public String getBody() {
 		return getGeneralCase().getBody();
 	}
 
+	@Override
 	public void setBody(String body) {
 		getGeneralCase().setBody(body);
 	}
 
+	@Override
 	public String getUrl() {
 		return getGeneralCase().getUrl();
 	}
@@ -1127,27 +1218,31 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * Sets all the metadata key/values for this instance with the given map where the is keys and values of String type.
 	 */
-	public void setMetaDataAttributes(java.util.Map map) {
+	@Override
+	public void setMetaDataAttributes(Map<String, String> map) {
 		getGeneralCase().setMetaDataAttributes(map);
 	}
 
 	/**
 	 * Gets all the metadata key/values for this instance with the given map where the keys and values of String type.
 	 */
-	public java.util.Map getMetaDataAttributes() {
+	@Override
+	public Map<String, String> getMetaDataAttributes() {
 		return getGeneralCase().getMetaDataAttributes();
 	}
 
 	/**
 	 * Sets all the metadata types this instance with the given map which is keys and values of String type.
 	 */
-	public java.util.Map getMetaDataTypes() {
+	@Override
+	public Map<String, String> getMetaDataTypes() {
 		return getGeneralCase().getMetaDataTypes();
 	}
 
 	/**
 	 * Set the metadata set for the key metaDataKey to value value
 	 */
+	@Override
 	public void setMetaData(String metaDataKey, String value) {
 		getGeneralCase().setMetaData(metaDataKey, value);
 	}
@@ -1155,6 +1250,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * Set the metadata set for the key metaDataKey to value value
 	 */
+	@Override
 	public void setMetaData(String metaDataKey, String value, String type) {
 		getGeneralCase().setMetaData(metaDataKey, value, type);
 	}
@@ -1162,6 +1258,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * Gets the metadata set for the key metaDataKey
 	 */
+	@Override
 	public String getMetaData(String metaDataKey) {
 		return getGeneralCase().getMetaData(metaDataKey);
 	}
@@ -1169,6 +1266,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * Rename a metadata key
 	 */
+	@Override
 	public void renameMetaData(String oldKeyName, String newKeyName) {
 		getGeneralCase().renameMetaData(oldKeyName, newKeyName);
 	}
@@ -1176,6 +1274,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * Rename a metadata key, and change the value
 	 */
+	@Override
 	public void renameMetaData(String oldKeyName, String newKeyName, String value) {
 		getGeneralCase().renameMetaData(oldKeyName, newKeyName, value);
 	}
@@ -1183,6 +1282,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * Gets the metadata for the key metaDataKey
 	 */
+	@Override
 	public boolean removeMetaData(String metaDataKey) {
 		return getGeneralCase().removeMetaData(metaDataKey);
 	}
@@ -1190,24 +1290,27 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	/**
 	 * @return The unique id string of the entity if it has it, otherwise null
 	 */
+	@Override
 	public String getUniqueId() {
 		return getGeneralCase().getUniqueId();
 	}
 
 	/**
 	 * Sets the Unique ID column. This method should generally never be called manually
-	 * 
+	 *
 	 * @param uniqueId
 	 */
+	@Override
 	public void setUniqueId(String uniqueId) {
 		getGeneralCase().setUniqueId(uniqueId);
 	}
 
+	@Override
 	public String getId() {
 		return getPrimaryKey().toString();
 	}
-	
-	// set case code (of general case) to case code key (of this instance) 
+
+	// set case code (of general case) to case code key (of this instance)
 	// if the case code (of general case) is not set
 	// this happens when the case was just created
 	private void initializeCaseCodeIfNull() {
@@ -1215,19 +1318,23 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 			setCode(getCaseCodeKey());
 		}
 	}
-	
+
+	@Override
 	public String getCaseManagerType() {
 		return getGeneralCase().getCaseManagerType();
 	}
 
+	@Override
 	public void setCaseManagerType(String type) {
 		getGeneralCase().setCaseManagerType(type);
 	}
-	
+
+	@Override
 	public String getCaseIdentifier() {
 		return getGeneralCase().getCaseIdentifier();
 	}
 
+	@Override
 	public void setCaseIdentifier(String caseIdentifier) {
 		getGeneralCase().setCaseIdentifier(caseIdentifier);
 	}
@@ -1235,22 +1342,140 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	protected String getSQLGeneralCaseExternalIdColumnName() {
 		return CaseBMPBean.COLUMN_EXTERNAL_ID;
 	}
-	
+
 	public Criteria idoCriteriaForExternalId(String externalId) {
 		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseExternalIdColumnName(), MatchCriteria.EQUALS, externalId);
 	}
-	
+
 	public Criteria idoJoinCriteraWithBaseCaseTable(){
 		Table subCasetable = idoTableSubCase();
 		return new JoinCriteria(new Column(idoTableGeneralCase(), getSQLGeneralCasePKColumnName()), new Column(subCasetable, getIDColumnName()));
 
 	}
-	
+
 	public Object ejbFindByExternalId(String externalId) throws FinderException {
 		SelectQuery query = new SelectQuery(idoTableSubCase());
 		query.addColumn(new Column(idoTableSubCase(),getIDColumnName()));
 		query.addCriteria(idoJoinCriteraWithBaseCaseTable());
 		query.addCriteria(idoCriteriaForExternalId(externalId));
-		return idoFindOnePKByQuery(query);	
+		return idoFindOnePKByQuery(query);
 	}
+
+	@Override
+	public Boolean isRead() {
+		return getGeneralCase().isRead();
+	}
+
+	@Override
+	public void setRead(Boolean read) {
+		getGeneralCase().setRead(read);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Integer> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
+		try {
+			SelectQuery query = idoQueryGetAllCasesByUser(user, status, caseCode, read);
+			Order order = new Order(idoTableGeneralCase().getColumn(getSQLGeneralCaseCreatedColumnName()), false);
+			query.addOrder(order);
+			return idoFindPKsByQuery(query);
+		}
+		catch(FinderException e){
+			throw e;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
+
+	protected SelectQuery idoQueryGetAllCasesByUser(User user, String status, String caseCode,Boolean read) {
+		try {
+			SelectQuery query = idoSelectQueryGetAllCasesByUser(user);
+
+			if(status != null){
+				query.addCriteria(idoCriteriaForStatus(status));
+			}
+			if(caseCode != null){
+				query.addCriteria(idoCriteriaForCaseCode(caseCode));
+			}
+			if(read != null){
+					query.addCriteria(idoCriteriaForCaseRead(read));
+			}
+			return query;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
+
+	@Override
+	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException {
+		return addUserRelation(subscriber, SUBSCRIBERS, getSubscribers());
+	}
+
+	@Override
+	public boolean addVote(User voter) throws IDOAddRelationshipException {
+		return addUserRelation(voter, VOTERS, getVoters());
+	}
+
+	private boolean addUserRelation(User user, String relation, Collection<User> currentRelations) throws IDOAddRelationshipException {
+		if (user == null || StringUtil.isEmpty(relation)) {
+			getLogger().warning("Either user (" + user + ") and/or relation (" + relation + ") are not provided");
+			return false;
+		}
+
+		if (!ListUtil.isEmpty(currentRelations) && currentRelations.contains(user)) {
+			getLogger().warning("User " + user + " already exists in relation " + relation + " with case " + getId() + " from " +
+					getTableName());
+			return false;
+		}
+
+		this.idoAddTo(user, getTableName() + relation);
+		return true;
+	}
+
+	@Override
+	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
+		return removeUserRelation(subscriber, SUBSCRIBERS);
+	}
+
+	@Override
+	public boolean removeVote(User voter) throws IDORemoveRelationshipException {
+		return removeUserRelation(voter, VOTERS);
+	}
+
+	private boolean removeUserRelation(User user, String relation) throws IDORemoveRelationshipException {
+		if (user == null) {
+			getLogger().warning("User is not provided");
+			return false;
+		}
+
+		super.idoRemoveFrom(user, getTableName() + relation);
+		return true;
+	}
+
+	@Override
+	public Collection<User> getSubscribers() {
+		return getUserRelations(SUBSCRIBERS);
+	}
+
+	@Override
+	public Collection<User> getVoters() {
+		return getUserRelations(VOTERS);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Collection<User> getUserRelations(String relation) {
+		try {
+			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
+			String caseId = getTableName() + "_ID";
+			String query = "select u." + userId + " from " + UserBMPBean.SQL_TABLE_NAME + " u, " + getTableName() + relation + " r, " +
+					getTableName() + " c where c." + caseId + " = " + getId() + " and u." + userId + " = r." + userId + " and c." + caseId +
+					" = r." + caseId;
+			return super.idoGetRelatedEntitiesBySQL(User.class, query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
