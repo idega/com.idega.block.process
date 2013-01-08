@@ -380,7 +380,6 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
@@ -390,7 +389,6 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Collection<Case> findByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 
@@ -399,7 +397,6 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException {
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
