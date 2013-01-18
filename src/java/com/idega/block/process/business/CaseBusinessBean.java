@@ -756,17 +756,17 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			oldCaseStatus = theCase.getStatus();
 			Collection<CaseChangeListener> listeners = null;
 			if (sendUpdates) {
-				listeners = getCaseChangeListeners(theCase,newCaseStatus);
+				listeners = getCaseChangeListeners(theCase, newCaseStatus);
 
-			for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
-				CaseChangeListener listener = iter.next();
-				CaseChangeEvent event = new CaseChangeEvent(theCase);
-				event.setPerformer(performer);
-				event.setStatusFrom(oldCaseStatus);
-				event.setStatusTo(newCaseStatus);
-				event.setAttributes(attributes);
-				listener.beforeCaseChange(event);
-			}
+				for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
+					CaseChangeListener listener = iter.next();
+					CaseChangeEvent event = new CaseChangeEvent(theCase);
+					event.setPerformer(performer);
+					event.setStatusFrom(oldCaseStatus);
+					event.setStatusTo(newCaseStatus);
+					event.setAttributes(attributes);
+					listener.beforeCaseChange(event);
+				}
 			}
 
 			theCase.setStatus(newCaseStatus);
@@ -790,19 +790,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 
 			if (sendUpdates) {
-			for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
-				CaseChangeListener listener = iter.next();
-				CaseChangeEvent event = new CaseChangeEvent(theCase);
-				event.setPerformer(performer);
-				event.setStatusFrom(oldCaseStatus);
-				event.setStatusTo(newCaseStatus);
-				event.setAttributes(attributes);
-				listener.afterCaseChange(event);
-			}
+				for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
+					CaseChangeListener listener = iter.next();
+					CaseChangeEvent event = new CaseChangeEvent(theCase);
+					event.setPerformer(performer);
+					event.setStatusFrom(oldCaseStatus);
+					event.setStatusTo(newCaseStatus);
+					event.setAttributes(attributes);
+					listener.afterCaseChange(event);
+				}
 			}
 
-		}
-		catch (CreateException e) {
+		} catch (CreateException e) {
 			throw new EJBException("Error changing case status: " + oldCaseStatus + " to " + newCaseStatus + ":" + e.getMessage());
 		}
 	}
