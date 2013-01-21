@@ -1004,11 +1004,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @return
 	 */
 	protected List<CaseChangeListener> getListenerListForCaseCode(String caseCode) {
-		if(listenerCaseCodeMap==null){
+		if (listenerCaseCodeMap == null)
 			listenerCaseCodeMap = new HashMap<String, List<CaseChangeListener>>();
-		}
+
 		List<CaseChangeListener> listenerList = listenerCaseCodeMap.get(caseCode);
-		if(listenerList==null){
+		if (listenerList == null) {
 			listenerList = new ArrayList<CaseChangeListener>();
 			listenerCaseCodeMap.put(caseCode, listenerList);
 		}
@@ -1016,16 +1016,17 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	protected List<CaseChangeListener> getListenerListForCaseCodeAndStatus(String caseCode, String caseStatus) {
-		if(listenerCaseCodeStatusMap==null){
+		if (listenerCaseCodeStatusMap == null)
 			listenerCaseCodeStatusMap = new HashMap<String, Map<String, List<CaseChangeListener>>>();
-		}
+
 		Map<String, List<CaseChangeListener>> statusMap = listenerCaseCodeStatusMap.get(caseCode);
-		if(statusMap==null){
+		if (statusMap==null) {
 			statusMap = new HashMap<String, List<CaseChangeListener>>();
 			listenerCaseCodeStatusMap.put(caseCode, statusMap);
 		}
+
 		List<CaseChangeListener> listenerList = statusMap.get(caseStatus);
-		if(listenerList==null){
+		if (listenerList == null) {
 			listenerList = new ArrayList<CaseChangeListener>();
 			statusMap.put(caseStatus,listenerList);
 		}
