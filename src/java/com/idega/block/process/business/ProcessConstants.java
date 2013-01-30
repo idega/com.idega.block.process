@@ -28,7 +28,8 @@ import com.idega.user.data.User;
  */
 public final class ProcessConstants implements Singleton {
 
-	public static final String	CASE_IDENTIFIER = "string_caseIdentifier",
+	public static final String	CASE_ID = "string_caseId",
+								CASE_IDENTIFIER = "string_caseIdentifier",
 								CASE_DESCRIPTION = "string_caseDescription",
 								FINANCING_OF_THE_TASKS = "objlist_ownerFinanceOfTasks",
 								BOARD_FINANCING_SUGGESTION = "string_ownerGradeComment",
