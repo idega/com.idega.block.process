@@ -11,7 +11,9 @@ package com.idega.block.process.presentation;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.ProcessConstants;
@@ -43,31 +45,32 @@ public abstract class CaseBlock extends Block {
 	private IWBundle iwb;
 	private IWResourceBundle iwrb;
 
-	/* Cases list parameters */
-	private int pageSize = 20;
-	private int page = 1;
+	private int pageSize = 20,
+				page = 1;
 
-	private boolean addCredentialsToExernalUrls;
-	private boolean showCaseNumberColumn = true;
-	private boolean showCreationTimeInDateColumn = true;
-	private boolean showCreatorColumn = true;
-	private boolean usePDFDownloadColumn = true;
-	private boolean allowPDFSigning = true;
-	private boolean showStatistics;
-	private boolean hideEmptySection;
-	private boolean showAttachmentStatistics;
-	private boolean showOnlyCreatorInContacts;
-	private boolean onlySubscribedCases;
-	private boolean showLegend, showAllCases;
-	private boolean showLoadingMessage = Boolean.TRUE;
-	private boolean waitForAllCasePartsLoaded = Boolean.TRUE;
-
-	private boolean showLogExportButton,
+	private boolean addCredentialsToExernalUrls,
+					showCaseNumberColumn = true,
+					showCreationTimeInDateColumn = true,
+					showCreatorColumn = true,
+					usePDFDownloadColumn = true,
+					allowPDFSigning = true,
+					showStatistics,
+					hideEmptySection,
+					showAttachmentStatistics,
+					showOnlyCreatorInContacts,
+					onlySubscribedCases,
+					showLegend,
+					showAllCases,
+					showLoadingMessage = Boolean.TRUE,
+					waitForAllCasePartsLoaded = Boolean.TRUE,
+					showLogExportButton,
 					showCaseStatus = true,
 					showExportAllCasesButton,
 					showComments = true,
 					showContacts = true,
-					descriptionEditable = true;
+					descriptionEditable = true,
+					useJavascriptForPageSwitching = true,
+					showCasesOnlyByProvidedProcesses = false;
 
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
@@ -79,17 +82,30 @@ public abstract class CaseBlock extends Block {
 					specialBackPage,
 
 					customColumns,
-					casesListCustomizer;
+					casesListCustomizer,
 
-	private boolean useJavascriptForPageSwitching = true;
-	private String externalStyleSheet;
-	/* Cases list parameters */
+					externalStyleSheet;
+
+	private List<Long> procInstIds;
+	private Set<String> roles;
+
+	public List<Long> getProcInstIds() {
+		return procInstIds;
+	}
+
+	public void setProcInstIds(List<Long> procInstIds) {
+		this.procInstIds = procInstIds;
+	}
 
 	@Override
 	public void main(IWContext iwc) throws Exception {
 		initialize(iwc);
+
+		doResolveIds(iwc);
 		present(iwc);
 	}
+
+	protected void doResolveIds(IWContext iwc) throws Exception {}
 
 	protected abstract void present(IWContext iwc) throws Exception;
 
@@ -311,7 +327,7 @@ public abstract class CaseBlock extends Block {
 	public abstract boolean showCheckBoxes();
 
 	public UICasesList getCasesList(IWContext iwc, String id) throws RemoteException {
-		UICasesList list = (UICasesList)iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
+		UICasesList list = (UICasesList) iwc.getApplication().createComponent(UICasesList.COMPONENT_TYPE);
 
 		list.setType(getCasesProcessorType());
 		list.setUserCasesPageMap(getUserCasesPageMap());
@@ -352,6 +368,9 @@ public abstract class CaseBlock extends Block {
 		list.setShowLoadingMessage(isShowLoadingMessage());
 		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
 		list.setDescriptionEditable(isDescriptionEditable());
+		list.setProcInstIds(getProcInstIds());
+		list.setRoles(getRoles());
+		list.setShowCasesOnlyByProvidedProcesses(isShowCasesOnlyByProvidedProcesses());
 
 		return list;
 	}
@@ -491,4 +510,21 @@ public abstract class CaseBlock extends Block {
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
 	}
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	public boolean isShowCasesOnlyByProvidedProcesses() {
+		return showCasesOnlyByProvidedProcesses;
+	}
+
+	public void setShowCasesOnlyByProvidedProcesses(boolean showCasesOnlyByProvidedProcesses) {
+		this.showCasesOnlyByProvidedProcesses = showCasesOnlyByProvidedProcesses;
+	}
+
 }

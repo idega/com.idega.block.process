@@ -84,7 +84,6 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
 			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases) {
 
@@ -115,13 +114,20 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
+	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
+			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases, List<Long> ids,
+			Set<String> roles) {
+		return getCases(user, type, locale, caseCodes, caseStatusesToHide, caseStatusesToShow, startIndex, count, onlySubscribedCases, showAllCases);
+	}
+
+	@Override
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 	@Override
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds) throws Exception {
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -406,7 +412,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	protected List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, Integer caseId, List<Long> procInstIds) throws Exception {
+			boolean onlySubscribedCases, boolean showAllCases, Integer caseId, List<Long> procInstIds, Set<String> roles) throws Exception {
 		throw new UnsupportedOperationException("This method is not implemented");
 	}
 

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.component.UIComponent;
 
@@ -48,14 +49,16 @@ public interface CasesRetrievalManager {
 
 	public abstract UIComponent getView(IWContext iwc, Integer caseId, String type, String caseManagerType);
 
-	public abstract PagedDataCollection<CasePresentation> getCases(User user,
-	        String type, Locale locale, List<String> caseCodes, List<String> statusesToHide,
-	        List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases);
+	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes,
+			List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases);
+	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes,
+			List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases,
+			List<Long> procInstIds, Set<String> roles);
 
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases) throws Exception;
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds) throws Exception;
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles) throws Exception;
 
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 

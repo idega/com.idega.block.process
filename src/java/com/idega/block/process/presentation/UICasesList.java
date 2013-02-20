@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -51,6 +52,9 @@ public class UICasesList extends IWBaseComponent {
 	private int pageSize = 20;
 	private int page = 1;
 
+	private List<Long> procInstIds;
+	private Set<String> roles;
+
 	private boolean showCheckBoxes,
 					usePDFDownloadColumn,
 					allowPDFSigning,
@@ -72,7 +76,8 @@ public class UICasesList extends IWBaseComponent {
 					showContacts = true,
 					showLoadingMessage = true,
 					waitForAllCasePartsLoaded= true,
-					descriptionEditable = true;
+					descriptionEditable = true,
+					showCasesOnlyByProvidedProcesses = false;
 
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -263,9 +268,14 @@ public class UICasesList extends IWBaseComponent {
 
 		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
 		CasesRetrievalManager manager = getCaseManagersProvider().getCaseManager();
-		PagedDataCollection<CasePresentation> cases = manager.getCases(user, getType(), iwc.getCurrentLocale(),
+		PagedDataCollection<CasePresentation> cases = null;
+		if (isShowCasesOnlyByProvidedProcesses() && ListUtil.isEmpty(getProcInstIds())) {
+			cases = new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>(0));
+		} else {
+			cases = manager.getCases(user, getType(), iwc.getCurrentLocale(),
 				getCaseCodes(),	getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(),
-				isOnlySubscribedCases(), isShowAllCases());
+				isOnlySubscribedCases(), isShowAllCases(), getProcInstIds(), getRoles());
+		}
 		Logger.getLogger(getClass().getName()).info("Got cases in " + (System.currentTimeMillis() - start) + " ms");
 		return cases;
 	}
@@ -609,6 +619,30 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
+	}
+
+	public List<Long> getProcInstIds() {
+		return procInstIds;
+	}
+
+	public void setProcInstIds(List<Long> procInstIds) {
+		this.procInstIds = procInstIds;
+	}
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	public boolean isShowCasesOnlyByProvidedProcesses() {
+		return showCasesOnlyByProvidedProcesses;
+	}
+
+	public void setShowCasesOnlyByProvidedProcesses(boolean showCasesOnlyByProvidedProcesses) {
+		this.showCasesOnlyByProvidedProcesses = showCasesOnlyByProvidedProcesses;
 	}
 
 }
