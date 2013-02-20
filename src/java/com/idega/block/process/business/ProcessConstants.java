@@ -42,7 +42,8 @@ public final class ProcessConstants implements Singleton {
 								ACTIVE_PROCESS_DEFINITION = "active_process_definition_id",
 								METADATA_KEY_URL="CASE_URL",
 								CASE_LIST_TYPE_SEARCH_RESULTS = "searchResults",
-								HANDLER_IDENTIFIER = "handlerUserId";
+								HANDLER_IDENTIFIER = "handlerUserId",
+								CASE_STATUS_KEY = "case_status_key";
 
 	public static final List<CasesListColumn> getCasesListMainColumns(IWResourceBundle iwrb) {
 		CasesListColumn[] columns = new CasesListColumn[6];

@@ -824,7 +824,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) {
-		return getLocalizedString("case_status_key." + status.toString(), status.toString(), locale, bundleIdentifier);
+		return getLocalizedString(ProcessConstants.CASE_STATUS_KEY + CoreConstants.DOT + status.toString(), status.toString(), locale, bundleIdentifier);
 	}
 
 	/**
