@@ -52,6 +52,7 @@ import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
+import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.expression.ELUtil;
@@ -1278,9 +1279,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 
 	public Criteria idoCriteriaForCaseRead(boolean read) {
 		if(read){
-			return new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.EQUALS, "Y", true);
+			return new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.EQUALS, CoreConstants.Y, true);
 		}
-		Criteria notRead = new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.NOTEQUALS, "Y", true);
+		Criteria notRead = new MatchCriteria(idoQueryTable(), COLUMN_READ, MatchCriteria.NOTEQUALS, CoreConstants.Y, true);
 		Criteria isNull = new MatchCriteria(idoQueryTable().getColumn(COLUMN_READ), false);
 		OR orCriteria = new OR(notRead, isNull);
 		return orCriteria;

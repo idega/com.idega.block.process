@@ -48,6 +48,7 @@ import com.idega.idegaweb.IWApplicationContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
+import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
@@ -613,9 +614,9 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 
 	public Criteria idoCriteriaForCaseRead(boolean read) {
 		if(read){
-			return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.EQUALS, "Y", true);
+			return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.EQUALS, CoreConstants.Y, true);
 		}
-		Criteria notRead = new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.NOTEQUALS, "Y", true);
+		Criteria notRead = new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseReadColumnName(), MatchCriteria.NOTEQUALS, CoreConstants.Y, true);
 		Criteria isNull = new MatchCriteria(idoTableGeneralCase().getColumn(getSQLGeneralCaseReadColumnName()), false);
 		OR orCriteria = new OR(notRead, isNull);
 		return orCriteria;
