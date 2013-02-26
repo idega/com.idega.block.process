@@ -29,7 +29,8 @@ public interface CasesRetrievalManager {
 								CASE_LIST_TYPE_USER = "UserCases",
 								CASE_LIST_TYPE_OPEN = "OpenCases",
 								CASE_LIST_TYPE_CLOSED = "ClosedCases",
-								CASE_LIST_TYPE_PUBLIC = "PublicCases";
+								CASE_LIST_TYPE_PUBLIC = "PublicCases",
+								CASE_LIST_TYPE_HANDLER = "HandlerCases";
 
 	public static final String COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier";
 
