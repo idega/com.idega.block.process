@@ -963,6 +963,25 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 			throw new IDORuntimeException(e, this);
 		}
 	}
+	
+	/**
+	 * <p>Creates query for searching in {@link Case}s table.</p>
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, 
+	 * not <code>null</code>.
+	 * @return formatted query.
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 * @throws IDORuntimeException
+	 */
+	protected IDOQuery idoQueryGetAllCasesByCaseIdentifier(String caseIdentifier) {
+		try {
+			IDOQuery query = this.idoQueryGetSelect();
+			query.appendWhereEqualsQuoted(COLUMN_CASE_IDENTIFIER, caseIdentifier);
+			return query;
+		}
+		catch (Exception e) {
+			throw new IDORuntimeException(e, this);
+		}
+	}
 
 	/**
 	 * Gets the query for selecting all cases by group.
@@ -1067,6 +1086,21 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		return getPrimaryKey().toString();
 	}
 
+	/**
+	 * <p>Finds {@link Case#getPrimaryKey()}s by 
+	 * {@link Case#getCaseIdentifier()}.</p>
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not 
+	 * <code>null</code>.
+	 * @return {@link Collection} of {@link Case#getPrimaryKey()} or 
+	 * <code>null</code> on failure.
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 * @throws FinderException 
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<Integer> ejbFindByCaseIdentifier(String caseIdentifier) throws FinderException {
+		return idoFindPKsByQuery(idoQueryGetAllCasesByCaseIdentifier(caseIdentifier));
+	}
+	
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 

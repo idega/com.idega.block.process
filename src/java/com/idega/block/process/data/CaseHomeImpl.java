@@ -21,6 +21,7 @@ import com.idega.data.IDOLookup;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
+import com.idega.util.StringUtil;
 
 
 /**
@@ -480,6 +481,20 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	public Collection<Case> findCasesForSubscriber(User subscriber) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesBySubscriber(subscriber);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
+	@Override
+	public Collection<Case> findCasesByCaseIdentifier(String caseIdentifier)
+			throws FinderException {
+		if (StringUtil.isEmpty(caseIdentifier)) {
+			return null;
+		}
+		
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		@SuppressWarnings("rawtypes")
+		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindByCaseIdentifier(caseIdentifier);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}

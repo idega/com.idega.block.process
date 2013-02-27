@@ -174,6 +174,17 @@ public interface CaseBusiness extends IBOService {
 	public Case getCase(int caseID) throws FinderException, RemoteException;
 
 	/**
+	 * 
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, 
+	 * not <code>null</code>;
+	 * @return
+	 * @throws FinderException usually means than nothing found;
+	 * @throws RemoteException usually means that unable to connect datasource;
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 */
+	public Case getCaseByIdentifier(String caseIdentifier) throws FinderException, RemoteException;
+	
+	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCase
 	 */
 	public Case getCase(Object casePK) throws FinderException, RemoteException;
@@ -473,4 +484,14 @@ public interface CaseBusiness extends IBOService {
 	public CaseStatus getCaseStatusFinished();
 
 	public List<String> getAllCasesStatuses();
+	
+	/**
+	 * 
+	 * <p>Checks if status of given case belongs to 
+	 * {@link CaseBusiness#getStatusesForClosedCases()}</p>
+	 * @return <code>true</code>, if case is belongs to closed statuses, 
+	 * <code>false</code> otherwise, <code>null</code> if impossible to define.
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 */
+	public Boolean isCaseClosed(String caseIdentifier);
 }

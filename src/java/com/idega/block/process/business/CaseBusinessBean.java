@@ -9,6 +9,7 @@
  */
 package com.idega.block.process.business;
 
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1212,5 +1213,54 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 		Collection<User> subscribers = theCase.getSubscribers();
 		return ListUtil.isEmpty(subscribers) ? false : subscribers.contains(user);
+	}
+
+	@Override
+	public Boolean isCaseClosed(String caseIdentifier) {
+		if (StringUtil.isEmpty(caseIdentifier)) {
+			return null;
+		}
+		
+		Case machingCase = null;
+		try {
+			machingCase = getCaseByIdentifier(caseIdentifier);
+		} catch (FinderException e) {
+			getLogger().log(Level.WARNING, "", e);
+		} catch (RemoteException e) {
+			getLogger().log(Level.WARNING, "", e);
+		}
+		
+		if (machingCase == null) {
+			return null;
+		}
+		
+		CaseStatus currentCaseStatus = machingCase.getCaseStatus();
+		if (currentCaseStatus == null) {
+			return null;
+		}
+		
+		String[] closedCasesStatuses = getStatusesForClosedCases();
+		if (closedCasesStatuses == null) {
+			return null;
+		}
+		
+		for (String closedCaseStatus: closedCasesStatuses) {
+			if (closedCaseStatus.equals(currentCaseStatus.getStatus())) {
+				return Boolean.TRUE;
+			}
+		}
+		
+		return Boolean.FALSE;
+	}
+
+	@Override
+	public Case getCaseByIdentifier(String caseIdentifier)
+			throws FinderException, RemoteException {
+		Collection<Case> cases = getCaseHome().findCasesByCaseIdentifier(caseIdentifier);
+		for (Case caseInstance: cases) {
+			return caseInstance;
+		}
+		
+		return null;
 	}
 }
