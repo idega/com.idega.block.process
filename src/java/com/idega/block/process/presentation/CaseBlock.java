@@ -61,6 +61,7 @@ public abstract class CaseBlock extends Block {
 	private boolean showLegend, showAllCases;
 	private boolean showLoadingMessage = Boolean.TRUE;
 	private boolean waitForAllCasePartsLoaded = Boolean.TRUE;
+	private boolean userNameShown = Boolean.TRUE;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -352,6 +353,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowLoadingMessage(isShowLoadingMessage());
 		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
 		list.setDescriptionEditable(isDescriptionEditable());
+		list.setNameFromExternalEntity(!isUserNameShown());
 
 		return list;
 	}
@@ -490,5 +492,13 @@ public abstract class CaseBlock extends Block {
 
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
+	}
+	
+	public boolean isUserNameShown() {
+		return userNameShown;
+	}
+
+	public void setUserNameShown(boolean userNameShown) {
+		this.userNameShown = userNameShown;
 	}
 }
