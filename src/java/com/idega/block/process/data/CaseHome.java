@@ -260,4 +260,14 @@ public interface CaseHome extends IDOHome {
 	public Collection<Case> getCases(User user, String status, String caseCode, Boolean read) throws FinderException;
 
 	public Collection<Case> findCasesForSubscriber(User subscriber) throws FinderException;
+	
+	/**
+	 * 
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not 
+	 * <code>null</code>;
+	 * @return {@link Case} when found, <code>null</code> otherwise;
+	 * @throws FinderException usually means that nothing found;
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 */
+	public Collection<Case> findCasesByCaseIdentifier(String caseIdentifier) throws FinderException;
 }
