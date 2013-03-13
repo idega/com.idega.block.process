@@ -73,7 +73,8 @@ public class UICasesList extends IWBaseComponent {
 					showLoadingMessage = true,
 					waitForAllCasePartsLoaded= true,
 					descriptionEditable = true,
-					nameFromExternalEntity = false;
+					nameFromExternalEntity = false,
+					showUserProfilePicture = Boolean.TRUE;
 	
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
@@ -198,6 +199,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowLoadingMessage(isShowLoadingMessage());
 		properties.setDescriptionEditable(isDescriptionEditable());
 		properties.setNameFromExternalEntity(isNameFromExternalEntity());
+		properties.setShowUserProfilePicture(isShowUserProfilePicture());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -620,5 +622,12 @@ public class UICasesList extends IWBaseComponent {
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
 	}
+	
+	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
+		this.showUserProfilePicture = showUserProfilePicture;
+	}
 
+	public boolean isShowUserProfilePicture() {
+		return showUserProfilePicture;
+	}
 }
