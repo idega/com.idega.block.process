@@ -29,7 +29,8 @@ public class CaseListPropertiesBean {
 	private boolean useJavascriptForPageSwitching = true;
 	private boolean showLoadingMessage = true;
 	private boolean waitForAllCasePartsLoaded = true,
-					descriptionEditable = true;
+					  descriptionEditable = true;
+	private boolean nameFromExternalEntity = false;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -45,6 +46,16 @@ public class CaseListPropertiesBean {
 							statusesToShow,
 							statusesToHide,
 							customColumns;
+	
+	
+	
+	public boolean isNameFromExternalEntity() {
+		return nameFromExternalEntity;
+	}
+
+	public void setNameFromExternalEntity(boolean nameFromExternalEntity) {
+		this.nameFromExternalEntity = nameFromExternalEntity;
+	}
 
 	/**
 	 * @return the showLoadingMessage

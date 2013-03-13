@@ -63,6 +63,7 @@ public abstract class CaseBlock extends Block {
 					showAllCases,
 					showLoadingMessage = Boolean.TRUE,
 					waitForAllCasePartsLoaded = Boolean.TRUE,
+					userNameShown = Boolean.TRUE,
 					showLogExportButton,
 					showCaseStatus = true,
 					showExportAllCasesButton,
@@ -371,6 +372,7 @@ public abstract class CaseBlock extends Block {
 		list.setProcInstIds(getProcInstIds());
 		list.setRoles(getRoles());
 		list.setShowCasesOnlyByProvidedProcesses(isShowCasesOnlyByProvidedProcesses());
+		list.setNameFromExternalEntity(!isUserNameShown());
 
 		return list;
 	}
@@ -527,4 +529,11 @@ public abstract class CaseBlock extends Block {
 		this.showCasesOnlyByProvidedProcesses = showCasesOnlyByProvidedProcesses;
 	}
 
+	public boolean isUserNameShown() {
+		return userNameShown;
+	}
+
+	public void setUserNameShown(boolean userNameShown) {
+		this.userNameShown = userNameShown;
+	}
 }

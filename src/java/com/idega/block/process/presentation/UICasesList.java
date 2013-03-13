@@ -77,7 +77,16 @@ public class UICasesList extends IWBaseComponent {
 					showLoadingMessage = true,
 					waitForAllCasePartsLoaded= true,
 					descriptionEditable = true,
-					showCasesOnlyByProvidedProcesses = false;
+					showCasesOnlyByProvidedProcesses = false,
+					nameFromExternalEntity = false;
+
+	public boolean isNameFromExternalEntity() {
+		return nameFromExternalEntity;
+	}
+
+	public void setNameFromExternalEntity(boolean nameFromExternalEntity) {
+		this.nameFromExternalEntity = nameFromExternalEntity;
+	}
 
 	public boolean isShowLogExportButton() {
 		return showLogExportButton;
@@ -193,6 +202,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowExportAllCasesButton(isShowExportAllCasesButton());
 		properties.setShowLoadingMessage(isShowLoadingMessage());
 		properties.setDescriptionEditable(isDescriptionEditable());
+		properties.setNameFromExternalEntity(isNameFromExternalEntity());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
