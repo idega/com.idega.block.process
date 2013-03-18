@@ -19,7 +19,9 @@ import com.idega.data.GenericEntity;
 
 public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
 
-  public static final String TABLE_NAME = "PROC_CASE_STATUS";
+	private static final long serialVersionUID = 5433451868667200950L;
+
+	public static final String TABLE_NAME = "PROC_CASE_STATUS";
 
   private static final String CASE_STATUS = "CASE_STATUS";
   private static final String CASE_STATUS_DESC = "CASE_STATUS_DESC";
@@ -27,33 +29,39 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
 
   private static final String LOC_KEY_PREFIX = "case.status";
 
-  public void initializeAttributes() {
+  @Override
+public void initializeAttributes() {
     addAttribute(CASE_STATUS,"Status",String.class,4);
     this.setAsPrimaryKey(CASE_STATUS,true);
     addAttribute(CASE_STATUS_DESC,"Description",String.class,1000);
     addAttribute(CASE_STATUS_DESC_LOC_KEY,"Localized Description Key",String.class);
     getEntityDefinition().setAllRecordsCached(true);
   }
-  public String getEntityName() {
+  @Override
+public String getEntityName() {
     return TABLE_NAME;
   }
 
-  public String getIDColumnName(){
+  @Override
+public String getIDColumnName(){
     return CASE_STATUS;
   }
 
-  public Class getPrimaryKeyClass(){
+  @Override
+public Class<String> getPrimaryKeyClass(){
     return String.class;
   }
 
-  public void setDefaultValues(){
+  @Override
+public void setDefaultValues(){
     String sCode = this.getStatus();
     if(sCode!=null){
       this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+sCode);
     }
   }
 
-  public void setStatus(String status) {
+  @Override
+public void setStatus(String status) {
     String sKey = this.getDescriptionLocalizedKey();
     if(sKey!=null){
       this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+status);
@@ -61,38 +69,45 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     setColumn(CaseStatusBMPBean.CASE_STATUS,status);
   }
 
-  public String getStatus() {
+  @Override
+public String getStatus() {
     return(this.getStringColumnValue(CASE_STATUS));
   }
 
 
-  public void setDescription(String desc) {
+  @Override
+public void setDescription(String desc) {
     setColumn(CaseStatusBMPBean.CASE_STATUS_DESC,desc);
   }
 
-  public String getDescription() {
+  @Override
+public String getDescription() {
     return(this.getStringColumnValue(CASE_STATUS_DESC));
   }
 
-  public void setDescriptionLocalizedKey(String key) {
+  @Override
+public void setDescriptionLocalizedKey(String key) {
     setColumn(CaseStatusBMPBean.CASE_STATUS_DESC_LOC_KEY,key);
   }
 
-  public String getDescriptionLocalizedKey() {
+  @Override
+public String getDescriptionLocalizedKey() {
     return(this.getStringColumnValue(CASE_STATUS_DESC_LOC_KEY));
   }
 
     /**
      * @todo: Implement
      */
-  public void setDescription(String desc,Locale locale) {
+  @Override
+public void setDescription(String desc,Locale locale) {
     setDescription(desc);
   }
 
     /**
      * @todo: Implement
      */
-  public String getDescription(Locale inLocale) {
+  @Override
+public String getDescription(Locale inLocale) {
     return getDescription();
   }
 
@@ -100,7 +115,8 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     /**
      * @todo: Implement
      */
-  public void setAssociatedCaseCode(CaseCode caseCode) {
+  @Override
+public void setAssociatedCaseCode(CaseCode caseCode) {
     //throw new java.lang.UnsupportedOperationException("Method setAssociatedCaseCode(caseCode) not yet implemented.");
     try{
       super.idoAddTo(caseCode);
@@ -113,7 +129,8 @@ public class CaseStatusBMPBean extends GenericEntity implements CaseStatus{
     /**
      * @todo: Implement
      */
-  public CaseCode getAssociatedCaseCode() {
+  @Override
+public CaseCode getAssociatedCaseCode() {
     //throw new java.lang.UnsupportedOperationException("Method getAssociatedCaseCode() not yet implemented.");
     try{
       Collection c = super.idoGetRelatedEntities(CaseCode.class);

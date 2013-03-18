@@ -5,7 +5,7 @@ public interface CaseStatus extends com.idega.data.IDOEntity
 {
  public void setStatus(java.lang.String p0);
  public java.lang.String getDescription();
- public java.lang.Class getPrimaryKeyClass();
+ public java.lang.Class<String> getPrimaryKeyClass();
  public void setDescription(java.lang.String p0);
  public void setDefaultValues();
  public void setDescription(java.lang.String p0,java.util.Locale p1);
