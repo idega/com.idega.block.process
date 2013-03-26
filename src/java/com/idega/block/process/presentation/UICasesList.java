@@ -77,9 +77,15 @@ public class UICasesList extends IWBaseComponent {
 					showLoadingMessage = true,
 					waitForAllCasePartsLoaded= true,
 					descriptionEditable = true,
+<<<<<<< HEAD
 					showCasesOnlyByProvidedProcesses = false,
 					nameFromExternalEntity = false;
 
+=======
+					nameFromExternalEntity = false,
+					showUserProfilePicture = Boolean.TRUE;
+	
+>>>>>>> 765550cb5b6d6d24a1bb48159f340cb27b6ce62e
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
 	}
@@ -203,6 +209,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowLoadingMessage(isShowLoadingMessage());
 		properties.setDescriptionEditable(isDescriptionEditable());
 		properties.setNameFromExternalEntity(isNameFromExternalEntity());
+		properties.setShowUserProfilePicture(isShowUserProfilePicture());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -630,7 +637,12 @@ public class UICasesList extends IWBaseComponent {
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
 	}
+	
+	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
+		this.showUserProfilePicture = showUserProfilePicture;
+	}
 
+<<<<<<< HEAD
 	public List<Long> getProcInstIds() {
 		return procInstIds;
 	}
@@ -655,4 +667,9 @@ public class UICasesList extends IWBaseComponent {
 		this.showCasesOnlyByProvidedProcesses = showCasesOnlyByProvidedProcesses;
 	}
 
+=======
+	public boolean isShowUserProfilePicture() {
+		return showUserProfilePicture;
+	}
+>>>>>>> 765550cb5b6d6d24a1bb48159f340cb27b6ce62e
 }

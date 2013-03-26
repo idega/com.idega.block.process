@@ -65,6 +65,7 @@ public abstract class CaseBlock extends Block {
 					waitForAllCasePartsLoaded = Boolean.TRUE,
 					userNameShown = Boolean.TRUE,
 					showLogExportButton,
+					showUserProfilePicture = Boolean.TRUE,
 					showCaseStatus = true,
 					showExportAllCasesButton,
 					showComments = true,
@@ -373,6 +374,7 @@ public abstract class CaseBlock extends Block {
 		list.setRoles(getRoles());
 		list.setShowCasesOnlyByProvidedProcesses(isShowCasesOnlyByProvidedProcesses());
 		list.setNameFromExternalEntity(!isUserNameShown());
+		list.setShowUserProfilePicture(isShowUserProfilePicture());
 
 		return list;
 	}
@@ -535,5 +537,13 @@ public abstract class CaseBlock extends Block {
 
 	public void setUserNameShown(boolean userNameShown) {
 		this.userNameShown = userNameShown;
+	}
+
+	public boolean isShowUserProfilePicture() {
+		return showUserProfilePicture;
+	}
+
+	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
+		this.showUserProfilePicture = showUserProfilePicture;
 	}
 }

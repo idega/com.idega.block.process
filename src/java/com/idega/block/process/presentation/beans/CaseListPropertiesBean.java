@@ -31,6 +31,7 @@ public class CaseListPropertiesBean {
 	private boolean waitForAllCasePartsLoaded = true,
 					  descriptionEditable = true;
 	private boolean nameFromExternalEntity = false;
+	protected boolean showUserProfilePicture = Boolean.TRUE;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -301,5 +302,12 @@ public class CaseListPropertiesBean {
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
 	}
+	
+	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
+		this.showUserProfilePicture = showUserProfilePicture;
+	}
 
+	public boolean isShowUserProfilePicture() {
+		return showUserProfilePicture;
+	}
 }
