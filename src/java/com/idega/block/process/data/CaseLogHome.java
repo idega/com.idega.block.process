@@ -11,11 +11,13 @@ package com.idega.block.process.data;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.ejb.FinderException;
 
 import com.idega.data.IDOException;
 import com.idega.data.IDOHome;
+import com.idega.user.data.User;
 
 
 /**
@@ -54,6 +56,18 @@ public interface CaseLogHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseAndDate
 	 */
 	public Collection findAllCaseLogsByCaseAndDate(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException;
+	
+	/**
+	 * 
+	 * @param theCase to find logs for;
+	 * @param fromDate - starting date of submission; 
+	 * @param toDate - ending date of submission;
+	 * @param performer - {@link User}, who performed operation;
+	 * @return {@link CaseLog}s by criteria or {@link Collections#emptyList()} 
+	 * on failure.
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 */
+	public Collection<CaseLog> findAllCaseLogs(Case theCase, Timestamp fromDate, Timestamp toDate, User performer) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByDateAndStatusChange

@@ -2,6 +2,7 @@ package com.idega.block.process.data;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.ejb.FinderException;
 
@@ -221,5 +222,44 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_AFTER, statusAfter);
 		query.appendAndEquals(COLUMN_CASE_ID, theCase);
 		return super.idoGetNumberOfRecords(query);
+	}
+
+	/**
+	 * 
+	 * @param theCase to find logs for;
+	 * @param fromDate - starting date of submission; 
+	 * @param toDate - ending date of submission;
+	 * @param performer - {@link User}, who performed operation;
+	 * @return ids of {@link CaseLog}s or {@link Collections#emptyList()}
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 * @throws FinderException 
+	 */
+	public Collection<Long> ejbFindAllCaseLogsByCaseAndDate(Case theCase,
+			Timestamp fromDate, Timestamp toDate, User performer) throws FinderException {
+		IDOQuery query = idoQuery();
+		query.appendSelectAllFrom(this);
+		query.appendWhere();
+		query.append(COLUMN_CASE_LOG_ID).appendIsNotNull();
+		
+		if (toDate != null) {
+			query.appendAnd();
+			query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+		}
+		
+		if (fromDate != null) {
+			query.appendAnd();
+			query.append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+		}
+		
+		if (theCase != null) {
+			query.appendAndEquals(COLUMN_CASE_ID, theCase);
+		}
+		
+		if (performer != null) {
+			query.appendAndEquals(COLUMN_PERFORMER, performer);
+		}
+		
+		query.appendOrderBy(COLUMN_TIMESTAMP);
+		return super.idoFindPKsByQuery(query);
 	}
 }
