@@ -16,6 +16,7 @@ import javax.ejb.FinderException;
 
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
+import com.idega.user.data.User;
 
 
 /**
@@ -25,6 +26,8 @@ import com.idega.data.IDOFactory;
  * @version $Revision: 1.1 $
  */
 public class CaseLogHomeImpl extends IDOFactory implements CaseLogHome {
+
+	private static final long serialVersionUID = 1L;
 
 	protected Class getEntityInterfaceClass() {
 		return CaseLog.class;
@@ -72,6 +75,15 @@ public class CaseLogHomeImpl extends IDOFactory implements CaseLogHome {
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
+	
+	@Override
+	public Collection<CaseLog> findAllCaseLogs(Case theCase,
+			Timestamp fromDate, Timestamp toDate, User performer) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Long> ids = ((CaseLogBMPBean) entity).ejbFindAllCaseLogsByCaseAndDate(theCase, fromDate, toDate, performer);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
 
 	public Collection findAllCaseLogsByDateAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
@@ -93,5 +105,4 @@ public class CaseLogHomeImpl extends IDOFactory implements CaseLogHome {
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
-
 }
