@@ -288,7 +288,11 @@ public class UICasesList extends IWBaseComponent {
 				getCaseCodes(),	getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(),
 				isOnlySubscribedCases(), isShowAllCases(), getProcInstIds(), getRoles());
 		}
-		Logger.getLogger(getClass().getName()).info("Got cases in " + (System.currentTimeMillis() - start) + " ms");
+
+		long duration = System.currentTimeMillis() - start;
+		if (duration >= 1000)
+			Logger.getLogger(getClass().getName()).info("Got cases in " + duration + " ms");
+
 		return cases;
 	}
 
