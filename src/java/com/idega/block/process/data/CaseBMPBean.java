@@ -963,10 +963,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 			throw new IDORuntimeException(e, this);
 		}
 	}
-	
+
 	/**
 	 * <p>Creates query for searching in {@link Case}s table.</p>
-	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, 
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()},
 	 * not <code>null</code>.
 	 * @return formatted query.
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
@@ -1087,20 +1087,20 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	/**
-	 * <p>Finds {@link Case#getPrimaryKey()}s by 
+	 * <p>Finds {@link Case#getPrimaryKey()}s by
 	 * {@link Case#getCaseIdentifier()}.</p>
-	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not 
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not
 	 * <code>null</code>.
-	 * @return {@link Collection} of {@link Case#getPrimaryKey()} or 
+	 * @return {@link Collection} of {@link Case#getPrimaryKey()} or
 	 * <code>null</code> on failure.
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
-	 * @throws FinderException 
+	 * @throws FinderException
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<Integer> ejbFindByCaseIdentifier(String caseIdentifier) throws FinderException {
 		return idoFindPKsByQuery(idoQueryGetAllCasesByCaseIdentifier(caseIdentifier));
 	}
-	
+
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 
@@ -1271,7 +1271,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		setColumn(COLUMN_READ, read);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Case> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
 		return ejbFindCases(user.getId(), status, caseCode, read);
 	}
