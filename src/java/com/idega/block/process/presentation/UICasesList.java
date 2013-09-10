@@ -75,7 +75,7 @@ public class UICasesList extends IWBaseComponent {
 					descriptionEditable = true,
 					nameFromExternalEntity = false,
 					showUserProfilePicture = Boolean.TRUE;
-	
+
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
 	}
@@ -278,7 +278,11 @@ public class UICasesList extends IWBaseComponent {
 		PagedDataCollection<CasePresentation> cases = manager.getCases(user, getType(), iwc.getCurrentLocale(),
 				getCaseCodes(),	getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(),
 				isOnlySubscribedCases(), isShowAllCases());
-		Logger.getLogger(getClass().getName()).info("Got cases in " + (System.currentTimeMillis() - start) + " ms");
+
+		long duration = System.currentTimeMillis() - start;
+		if (duration > 1000) {
+			Logger.getLogger(getClass().getName()).info("Got cases in " + duration + " ms");
+		}
 		return cases;
 	}
 
@@ -622,7 +626,7 @@ public class UICasesList extends IWBaseComponent {
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
 	}
-	
+
 	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
 		this.showUserProfilePicture = showUserProfilePicture;
 	}
