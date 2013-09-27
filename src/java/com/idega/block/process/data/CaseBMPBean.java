@@ -1238,7 +1238,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		return true;
 	}
 
-	public Collection<Case> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
+	public Collection<?> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhereEquals(COLUMN_CASE_CODE, code);
 //		TODO: I did not like this group by
