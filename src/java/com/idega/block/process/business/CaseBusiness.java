@@ -4,9 +4,11 @@ package com.idega.block.process.business;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
@@ -494,4 +496,63 @@ public interface CaseBusiness extends IBOService {
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
 	 */
 	public Boolean isCaseClosed(String caseIdentifier);
+
+	/**
+	 * 
+	 * @param handlers to search {@link Case}s by, not <code>null</code>;
+	 * @return all ids of {@link Case}s where {@link User} is in 
+	 * {@link Case#getSubscribers()} or {@link Collections#emptySet()}
+	 * on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public Set<Integer> findSubscribedCasesIds(Collection<User> handlers);
+
+	/**
+	 * 
+	 * @param handlers to search {@link Case}s by, not <code>null</code>;
+	 * @return all {@link Case}s where {@link User} is in 
+	 * {@link Case#getSubscribers()} or {@link Collections#emptySet()}
+	 * on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public Set<Case> findSubscribedCasesByHandlers(Collection<User> handlers);
+
+	/**
+	 * 
+	 * @param groups to provide {@link Case}s for, not <code>null</code>;
+	 * @return {@link Case}s, which can be managed by provided {@link Group}s
+	 * of handlers or {@link Collections#emptySet()} on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public Set<Case> findSubscribedCases(Collection<Group> groups);
+
+	/**
+	 * 
+	 * @param groupName is {@link Group#getName()} to provide {@link Case}s for, 
+	 * not <code>null</code>;
+	 * @return {@link Case}s, which can be managed by provided {@link Group}s
+	 * of handlers or {@link Collections#emptySet()} on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public Set<Case> findSubscribedCases(String groupName);
+
+	/**
+	 * 
+	 * @param groupName is {@link Group#getPrimaryKey()} to provide {@link Case}s for, 
+	 * not <code>null</code>;
+	 * @return {@link Case}s, which can be managed by provided {@link Group}s
+	 * of handlers or {@link Collections#emptySet()} on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public Set<Case> findSubscribedCasesByPrimaryKey(String groupPrimaryKey);
+
+	/**
+	 * 
+	 * @param group to provide {@link Case}s for, 
+	 * not <code>null</code>;
+	 * @return {@link Case}s, which can be managed by provided {@link Group}s
+	 * of handlers or {@link Collections#emptySet()} on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public Set<Case> findSubscribedCases(Group group);
 }
