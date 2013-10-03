@@ -25,35 +25,35 @@ import org.springframework.stereotype.Service;
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 @Service(CaseManagersProvider.beanIdentifier)
 public class CaseManagersProvider implements ApplicationContextAware {
-	
+
 	public static final String beanIdentifier = "casesHandlersProvider";
-	
+
 	private ApplicationContext applicationContext;
 	private final Map<String, String> caseManagersTypesBeanIdentifiers;
-	
+
 	public CaseManagersProvider() {
 		caseManagersTypesBeanIdentifiers = new HashMap<String, String>();
 	}
-		
+
 	public List<CasesRetrievalManager> getCaseManagers() {
 		List<CasesRetrievalManager> managers = new ArrayList<CasesRetrievalManager>(caseManagersTypesBeanIdentifiers.size());
-		
+
 		for (String handlerIdentifier : caseManagersTypesBeanIdentifiers.values()) {
 			CasesRetrievalManager handler = (CasesRetrievalManager)getApplicationContext().getBean(handlerIdentifier);
 			if (handler != null)
 				managers.add(handler);
 		}
-		
+
 		return managers;
 	}
-	
+
 	/**
 	 * Returns case manager according to their priorities.
-	 * 
+	 *
 	 * @return CaseManager implementation.
 	 */
 	public CasesRetrievalManager getCaseManager() {
-		String beanIdentifier = caseManagersTypesBeanIdentifiers.get("CasesBPM");
+		String beanIdentifier = caseManagersTypesBeanIdentifiers.get(ProcessConstants.BPM_CASE);
 		if (beanIdentifier == null) {
 			beanIdentifier = caseManagersTypesBeanIdentifiers.get("CasesDefault");
 		}
@@ -62,12 +62,12 @@ public class CaseManagersProvider implements ApplicationContextAware {
 		}
 		return (CasesRetrievalManager) getApplicationContext().getBean(beanIdentifier);
 	}
-	
+
 	@Autowired(required=false)
 	public void setCaseManagers(List<CasesRetrievalManager> caseManagers) {
 		for (CasesRetrievalManager caseManager: caseManagers) {
 			String beanIdentifier = caseManager.getBeanIdentifier();
-			
+
 			if (beanIdentifier == null)
 				Logger.getLogger(getClass().getName()).log(Level.WARNING, "No bean identifier provided for case handler. Skipping. Class name: " +
 						caseManager.getClass().getName());
@@ -76,10 +76,11 @@ public class CaseManagersProvider implements ApplicationContextAware {
 		}
 	}
 
+	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
-	
+
 	protected ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}
