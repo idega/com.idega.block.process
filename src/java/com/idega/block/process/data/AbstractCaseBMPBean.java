@@ -1413,6 +1413,11 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
+	public boolean addSubscribers(Collection<User> subscribers) {
+		return addUserRelations(subscribers, SUBSCRIBERS);
+	}
+	
+	@Override
 	public boolean addVote(User voter) throws IDOAddRelationshipException {
 		return addUserRelation(voter, VOTERS, getVoters());
 	}
@@ -1432,6 +1437,28 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		this.idoAddTo(user, getTableName() + relation);
 		return true;
 	}
+	
+	/**
+	 * 
+	 * <p>Adds subscribers to relation table.</p>
+	 * @param relations is {@link User}s, who should be realted with this 
+	 * entity instance, not <code>null</code>;
+	 * @param ralationTableNamePostfix is postfix of table name related to this one, for
+	 * example: "_SUBSCRIBERS", where full name would be: "PROC_CASE_SUBSCRIBERS";
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	protected boolean addUserRelations(Collection<User> relations, String ralationTableNamePostfix) {
+		if (ListUtil.isEmpty(relations) || StringUtil.isEmpty(ralationTableNamePostfix)) { 
+			return false;
+		}
+
+		Collection<User> currentSubscribers = getSubscribers();
+		if (!ListUtil.isEmpty(currentSubscribers)) {
+			relations.removeAll(currentSubscribers);
+		}
+
+		return idoAddTo(relations, getTableName() + ralationTableNamePostfix);
+	}
 
 	@Override
 	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
@@ -1439,8 +1466,25 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
+	public boolean removeSubscribers() {
+		return removeUserRelations(SUBSCRIBERS);
+	}
+
+	@Override
 	public boolean removeVote(User voter) throws IDORemoveRelationshipException {
 		return removeUserRelation(voter, VOTERS);
+	}
+
+	/**
+	 * 
+	 * <p>Removes a records from related SQL table.</p>
+	 * @param relations is postfix of table name related to this one, for
+	 * example: "_SUBSCRIBERS", where full name would be: "PROC_CASE_SUBSCRIBERS";
+	 * @return <code>true</code> on success, <code>false</code> otherwise;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	protected boolean removeUserRelations(String relations) {
+		return super.idoRemoveFrom(getTableName() + relations);
 	}
 
 	private boolean removeUserRelation(User user, String relation) throws IDORemoveRelationshipException {

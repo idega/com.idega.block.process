@@ -1305,7 +1305,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 		}
 
-		sb.append(");");
+		sb.append(")");
 
 		String[] caseIds = null;
 		try {

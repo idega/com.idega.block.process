@@ -974,9 +974,8 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	 */
 	protected IDOQuery idoQueryGetAllCasesByCaseIdentifier(String caseIdentifier) {
 		try {
-			IDOQuery query = this.idoQueryGetSelect();
-			query.appendWhereEqualsQuoted(COLUMN_CASE_IDENTIFIER, caseIdentifier);
-			return query;
+			return idoQueryGetSelect().appendWhereEqualsQuoted(
+					COLUMN_CASE_IDENTIFIER, caseIdentifier);
 		}
 		catch (Exception e) {
 			throw new IDORuntimeException(e, this);
@@ -1213,6 +1212,20 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
+	public boolean addSubscribers(Collection<User> subscribers) {
+		if (ListUtil.isEmpty(subscribers)) { 
+			return false;
+		}
+
+		Collection<User> currentSubscribers = getSubscribers();
+		if (!ListUtil.isEmpty(currentSubscribers)) {
+			subscribers.removeAll(currentSubscribers);
+		}
+
+		return idoAddTo(subscribers, COLUMN_CASE_SUBSCRIBERS);
+	}
+	
+	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
 		try {
@@ -1225,6 +1238,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean removeSubscribers() {
+		return super.idoRemoveFrom(COLUMN_CASE_SUBSCRIBERS);
 	}
 
 	@Override
