@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 import javax.ejb.FinderException;
@@ -53,6 +54,8 @@ import com.idega.util.datastructures.map.MapUtil;
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 @Service(CasesRetrievalManagerImpl.beanIdentifier)
 public class CasesRetrievalManagerImpl extends DefaultSpringBean implements CasesRetrievalManager {
+
+	private ReentrantLock lock = new ReentrantLock();
 
 	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
@@ -341,7 +344,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	private int lastUsedCacheSize = 75;
-	protected Map<CasesCacheCriteria, Map<Integer, Boolean>> getCache() {
+	private Map<CasesCacheCriteria, Map<Integer, Boolean>> getCache() {
 		int cacheSize = Integer.valueOf(getApplication().getSettings().getProperty("cases_cache_size", String.valueOf(75)));
 		if (cacheSize == lastUsedCacheSize)
 			return getCache(CASES_LIST_IDS_CACHE, 86400, cacheSize);
@@ -356,6 +359,89 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 		return new CasesCacheCriteria(user == null ? -1 : Integer.valueOf(user.getId()), type, caseCodes, statusesToHide, statusesToShow,
 				onlySubscribedCases, roles, groups, codes, showAllCases, procInstIds);
+	}
+
+	protected void clearCache() throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			getCache().clear();
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected void removeFromCache(CasesCacheCriteria key) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			getCache().remove(key);
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected void removeElementFromCache(CasesCacheCriteria key, Integer id) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<Integer, Boolean> ids = getCache().get(key);
+			if (ids != null) {
+				ids.remove(id);
+			}
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected boolean containsElement(CasesCacheCriteria key, Integer id) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<Integer, Boolean> ids = getCache().get(key);
+			return !MapUtil.isEmpty(ids) && ids.containsKey(id);
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected void addElementToCache(CasesCacheCriteria key, Integer id) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
+			Map<Integer, Boolean> ids = getCache().get(key);
+			if (ids == null) {
+				ids = new LinkedHashMap<Integer, Boolean>();
+				cache.put(key, ids);
+			}
+
+			ids.put(id, Boolean.TRUE);
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected Collection<CasesCacheCriteria> getCacheKeySet() throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			return new ArrayList<CasesCacheCriteria>(getCache().keySet());
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+
+		return Collections.emptyList();
 	}
 
 	protected List<Integer> getCachedIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide,
