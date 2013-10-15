@@ -47,9 +47,17 @@ public class CaseListPropertiesBean {
 							statusesToShow,
 							statusesToHide,
 							customColumns;
-	
-	
-	
+
+	private Long subscribersGroupId;
+
+	public Long getSubscribersGroupId() {
+		return subscribersGroupId;
+	}
+
+	public void setSubscribersGroupId(Long groupId) {
+		this.subscribersGroupId = groupId;
+	}
+
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
 	}

@@ -1,6 +1,7 @@
 package com.idega.block.process.business;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -55,8 +56,45 @@ public interface CasesRetrievalManager {
 
 	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases) throws Exception;
-	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds) throws Exception;
+	
+	/**
+	 * 
+	 * @param user to get {@link Case}s for, not <code>null</code>;
+	 * @param type is one of:
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_CLOSED}</li>
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_HANDLER}</li>
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_MY}</li>
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_OPEN}</li>
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_PUBLIC}</li>
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_USER}</li>
+	 * @param caseCodes is {@link Collection} of {@link Case#getCaseCode()} or
+	 * process definition names;
+	 * @param statusesToHide is {@link Collection} of {@link Case#getStatus()}
+	 * telling about which {@link Case}s should be hidden;
+	 * @param statusesToShow is {@link Collection} of {@link Case#getStatus()}
+	 * telling about which {@link Case}s should be shown;
+	 * @param onlySubscribedCases show cases where given {@link User} is
+	 * {@link Case#getSubscribers()} list;
+	 * @param showAllCases if <code>true</code>, then statuses are ignored;
+	 * @param procInstIds is {@link Collection} of process instance id's for
+	 * {@link Case};
+	 * @param handlerCategoryIDs is {@link Group#getPrimaryKey()}s of 
+	 * {@link Group}s where subscribers are;
+	 * @return filtered {@link List} of {@link Case#getPrimaryKey()} or 
+	 * {@link Collections#emptyList()} on failure;
+	 * @throws Exception
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public List<Integer> getCasePrimaryKeys(
+			User user, 
+			String type, 
+			List<String> caseCodes, 
+			List<String> statusesToHide, 
+			List<String> statusesToShow,
+			boolean onlySubscribedCases, 
+			boolean showAllCases, 
+			List<Long> procInstIds, 
+			Collection<Long> handlerCategoryIDs) throws Exception;
 
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 
