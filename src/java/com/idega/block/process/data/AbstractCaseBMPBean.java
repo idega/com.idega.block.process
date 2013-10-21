@@ -9,8 +9,10 @@
 package com.idega.block.process.data;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,6 +21,8 @@ import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
+import com.idega.block.process.business.CaseBusiness;
+import com.idega.business.IBOLookup;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
@@ -45,6 +49,7 @@ import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
 import com.idega.idegaweb.IWApplicationContext;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
@@ -1416,7 +1421,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	public boolean addSubscribers(Collection<User> subscribers) {
 		return addUserRelations(subscribers, SUBSCRIBERS);
 	}
-	
+
 	@Override
 	public boolean addVote(User voter) throws IDOAddRelationshipException {
 		return addUserRelation(voter, VOTERS, getVoters());
@@ -1437,18 +1442,18 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		this.idoAddTo(user, getTableName() + relation);
 		return true;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <p>Adds subscribers to relation table.</p>
-	 * @param relations is {@link User}s, who should be realted with this 
+	 * @param relations is {@link User}s, who should be realted with this
 	 * entity instance, not <code>null</code>;
 	 * @param ralationTableNamePostfix is postfix of table name related to this one, for
 	 * example: "_SUBSCRIBERS", where full name would be: "PROC_CASE_SUBSCRIBERS";
 	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
 	 */
 	protected boolean addUserRelations(Collection<User> relations, String ralationTableNamePostfix) {
-		if (ListUtil.isEmpty(relations) || StringUtil.isEmpty(ralationTableNamePostfix)) { 
+		if (ListUtil.isEmpty(relations) || StringUtil.isEmpty(ralationTableNamePostfix)) {
 			return false;
 		}
 
@@ -1476,7 +1481,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	/**
-	 * 
+	 *
 	 * <p>Removes a records from related SQL table.</p>
 	 * @param relations is postfix of table name related to this one, for
 	 * example: "_SUBSCRIBERS", where full name would be: "PROC_CASE_SUBSCRIBERS";
@@ -1520,6 +1525,25 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isClosed() {
+		CaseStatus status = getCaseStatus();
+		if (status == null)
+			return false;
+
+		String statusKey = status.getStatus();
+		if (StringUtil.isEmpty(statusKey)) {
+			return false;
+		}
+
+		try {
+			CaseBusiness caseBusiness = IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), CaseBusiness.class);
+			List<String> closedCaseStatuses = Arrays.asList(caseBusiness.getStatusesForClosedCases());
+			return closedCaseStatuses.contains(statusKey);
+		} catch (Exception e) {}
+		return false;
 	}
 
 }
