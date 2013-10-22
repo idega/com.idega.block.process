@@ -11,6 +11,7 @@ package com.idega.block.process.data;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -23,9 +24,11 @@ import javax.ejb.RemoveException;
 
 import org.springframework.context.ApplicationEvent;
 
+import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.event.CaseDeletedEvent;
 import com.idega.block.process.event.CaseModifiedEvent;
+import com.idega.business.IBOLookup;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
@@ -49,11 +52,13 @@ import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
 import com.idega.data.query.range.DateRange;
 import com.idega.idegaweb.IWApplicationContext;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
+import com.idega.util.StringUtil;
 import com.idega.util.expression.ELUtil;
 
 /**
@@ -1213,7 +1218,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 
 	@Override
 	public boolean addSubscribers(Collection<User> subscribers) {
-		if (ListUtil.isEmpty(subscribers)) { 
+		if (ListUtil.isEmpty(subscribers)) {
 			return false;
 		}
 
@@ -1224,7 +1229,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 
 		return idoAddTo(subscribers, COLUMN_CASE_SUBSCRIBERS);
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
@@ -1363,6 +1368,25 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		String query = "select " + PK_COLUMN + " from " + COLUMN_CASE_SUBSCRIBERS + " where " + UserBMPBean.getColumnNameUserID() +
 				" = " + subscriber.getId();
 		return idoFindPKsBySQL(query);
+	}
+
+	@Override
+	public boolean isClosed() {
+		CaseStatus status = getCaseStatus();
+		if (status == null)
+			return false;
+
+		String statusKey = status.getStatus();
+		if (StringUtil.isEmpty(statusKey)) {
+			return false;
+		}
+
+		try {
+			CaseBusiness caseBusiness = IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), CaseBusiness.class);
+			List<String> closedCaseStatuses = Arrays.asList(caseBusiness.getStatusesForClosedCases());
+			return closedCaseStatuses.contains(statusKey);
+		} catch (Exception e) {}
+		return false;
 	}
 
 }

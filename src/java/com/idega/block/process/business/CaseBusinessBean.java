@@ -99,6 +99,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_FINISHED_KEY;
 	private String CASE_STATUS_CLOSED_KEY;
 
+	@Override
 	public List<String> getAllCasesStatuses() {
 		return Arrays.asList(
 				CASE_STATUS_OPEN_KEY,
@@ -426,14 +427,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if (this.groupBusiness == null) {
 			try {
 				this.groupBusiness = IBOLookup.getServiceInstance(
-						getIWApplicationContext(), 
+						getIWApplicationContext(),
 						GroupBusiness.class);
 			} catch (IBOLookupException e) {
-				getLogger().log(Level.WARNING, 
+				getLogger().log(Level.WARNING,
 						"Failed to get " + GroupBusiness.class, e);
 			}
 		}
-		
+
 		return this.groupBusiness;
 	}
 
@@ -445,7 +446,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			throw new IBORuntimeException(ile);
 		}
 	}
-	
+
 	protected User getUser(int userID) throws FinderException {
 		return this.getUserHome().findByPrimaryKey(new Integer(userID));
 	}
@@ -1133,7 +1134,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	private UserBusiness getUserBusiness() throws IBOLookupException {
-		return (UserBusiness) this.getServiceInstance(UserBusiness.class);
+		return this.getServiceInstance(UserBusiness.class);
 	}
 
 	@Override
@@ -1244,37 +1245,19 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if (StringUtil.isEmpty(caseIdentifier)) {
 			return null;
 		}
-		
-		Case machingCase = null;
+
+		Case theCase = null;
 		try {
-			machingCase = getCaseByIdentifier(caseIdentifier);
-		} catch (FinderException e) {
-			getLogger().log(Level.WARNING, "", e);
-		} catch (RemoteException e) {
-			getLogger().log(Level.WARNING, "", e);
+			theCase = getCaseByIdentifier(caseIdentifier);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Unable to find case by identifier: " + caseIdentifier, e);
 		}
-		
-		if (machingCase == null) {
-			return null;
+
+		if (theCase == null) {
+			return Boolean.FALSE;
 		}
-		
-		CaseStatus currentCaseStatus = machingCase.getCaseStatus();
-		if (currentCaseStatus == null) {
-			return null;
-		}
-		
-		String[] closedCasesStatuses = getStatusesForClosedCases();
-		if (closedCasesStatuses == null) {
-			return null;
-		}
-		
-		for (String closedCaseStatus: closedCasesStatuses) {
-			if (closedCaseStatus.equals(currentCaseStatus.getStatus())) {
-				return Boolean.TRUE;
-			}
-		}
-		
-		return Boolean.FALSE;
+
+		return theCase.isClosed();
 	}
 
 	@Override
@@ -1284,7 +1267,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		for (Case caseInstance: cases) {
 			return caseInstance;
 		}
-		
+
 		return null;
 	}
 
@@ -1311,10 +1294,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		try {
 			caseIds = SimpleQuerier.executeStringQuery(sb.toString());
 		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Failed to execute query: " + 
+			getLogger().log(Level.WARNING, "Failed to execute query: " +
 					sb.toString() + " cause of: ", e);
 		}
-		
+
 		if (ArrayUtil.isEmpty(caseIds)) {
 			return Collections.emptySet();
 		}
@@ -1326,7 +1309,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 		return ids;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.util.Collection)
@@ -1337,7 +1320,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if (ListUtil.isEmpty(caseIds)) {
 			return Collections.emptySet();
 		}
-		
+
 		Collection<Case> cases = getCasesByIds(caseIds);
 		if (ListUtil.isEmpty(cases)) {
 			return Collections.emptySet();
@@ -1345,7 +1328,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 		return new HashSet<Case>(cases);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.util.Set)
@@ -1356,10 +1339,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return Collections.emptySet();
 		}
 
-		/* 	
-		 * FIXME need method in group business, which would return all users 
-		 * from multiple groups. For now, this method usually takes only one 
-		 * group 
+		/*
+		 * FIXME need method in group business, which would return all users
+		 * from multiple groups. For now, this method usually takes only one
+		 * group
 		 */
 		Collection<User> handlers = new ArrayList<User>();
 		Collection<User> users = null;
@@ -1368,16 +1351,16 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				users = getGroupBusiness().getUsers(group);
 			} catch (Exception e) {
 				getLogger().log(
-						Level.WARNING, 
+						Level.WARNING,
 						"Failed to get users from groups: ", e);
 			}
 
 			if (!ListUtil.isEmpty(users)) {
-				handlers.addAll(users);			
+				handlers.addAll(users);
 			}
 		}
 
-		return findSubscribedCasesByHandlers(handlers);		
+		return findSubscribedCasesByHandlers(handlers);
 	}
 
 	/* (non-Javadoc)
@@ -1419,11 +1402,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		} catch (RemoteException e) {
 			getLogger().log(Level.WARNING, "Unable to find groups: ", e);
 		} catch (NumberFormatException e) {
-			getLogger().log(Level.WARNING, 
-					"Unable to convert: " + groupPrimaryKey + 
+			getLogger().log(Level.WARNING,
+					"Unable to convert: " + groupPrimaryKey +
 					" to " + Integer.class, e);
 		} catch (FinderException e) {
-			getLogger().log(Level.WARNING, 
+			getLogger().log(Level.WARNING,
 					"Group by id " + groupPrimaryKey + " not found!");
 		}
 
@@ -1441,5 +1424,5 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	@Override
 	public Set<Case> findSubscribedCases(Group group) {
 		return findSubscribedCases(new HashSet<Group>(Arrays.asList(group)));
-	}	
+	}
 }
