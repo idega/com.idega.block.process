@@ -1409,7 +1409,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 */
 	@Override
 	public Set<Case> findSubscribedCasesByPrimaryKey(String groupPrimaryKey) {
-		if (groupPrimaryKey == null) {
+		if (StringUtil.isEmpty(groupPrimaryKey)) {
 			return Collections.emptySet();
 		}
 
