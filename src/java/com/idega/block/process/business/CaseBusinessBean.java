@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1272,12 +1271,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public Set<Integer> findSubscribedCasesIds(Collection<User> handlers) {
+	public List<Integer> findSubscribedCasesIds(Collection<User> handlers) {
 		if (ListUtil.isEmpty(handlers)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
-		StringBuilder sb = new StringBuilder("SELECT pcs.PROC_CASE_ID ");
+		StringBuilder sb = new StringBuilder("SELECT distinct pcs.PROC_CASE_ID ");
 		sb.append("FROM proc_case_subscribers pcs ");
 		sb.append("WHERE pcs.IC_USER_ID IN (");
 		for (Iterator<User> iterator = handlers.iterator(); iterator.hasNext();) {
@@ -1299,10 +1298,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 
 		if (ArrayUtil.isEmpty(caseIds)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
-		Set<Integer> ids = new HashSet<Integer>(caseIds.length);
+		List<Integer> ids = new ArrayList<Integer>(caseIds.length);
 		for (String caseId : caseIds) {
 			ids.add(Integer.valueOf(caseId));
 		}
@@ -1315,18 +1314,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.util.Collection)
 	 */
 	@Override
-	public Set<Case> findSubscribedCasesByHandlers(Collection<User> handlers) {
-		Set<Integer> caseIds = findSubscribedCasesIds(handlers);
+	public List<Case> findSubscribedCasesByHandlers(Collection<User> handlers) {
+		List<Integer> caseIds = findSubscribedCasesIds(handlers);
 		if (ListUtil.isEmpty(caseIds)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
 		Collection<Case> cases = getCasesByIds(caseIds);
 		if (ListUtil.isEmpty(cases)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
-		return new HashSet<Case>(cases);
+		return new ArrayList<Case>(cases);
 	}
 
 	/*
@@ -1334,9 +1333,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.util.Set)
 	 */
 	@Override
-	public Set<Case> findSubscribedCases(Collection<Group> groups) {
+	public List<Case> findSubscribedCases(Collection<Group> groups) {
 		if (ListUtil.isEmpty(groups)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
 		/*
@@ -1346,7 +1345,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		 */
 		Collection<User> handlers = new ArrayList<User>();
 		Collection<User> users = null;
-		for (Group group : groups) {
+		for (Group group: groups) {
 			try {
 				users = getGroupBusiness().getUsers(group);
 			} catch (Exception e) {
@@ -1367,9 +1366,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @see is.idega.idegaweb.egov.reykjavik.business.HandlerGroupManagerBusiness#findAllCases(java.lang.String)
 	 */
 	@Override
-	public Set<Case> findSubscribedCases(String groupName) {
+	public List<Case> findSubscribedCases(String groupName) {
 		if (StringUtil.isEmpty(groupName)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
 		Collection<Group> groups = null;
@@ -1380,7 +1379,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 
 		if (ListUtil.isEmpty(groups)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
 		return findSubscribedCases(new HashSet<Group>(groups));
@@ -1391,14 +1390,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.lang.Object)
 	 */
 	@Override
-	public Set<Case> findSubscribedCasesByPrimaryKey(String groupPrimaryKey) {
+	public List<Case> findSubscribedCasesByPrimaryKey(String groupPrimaryKey) {
 		if (StringUtil.isEmpty(groupPrimaryKey)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
-		Group groups = null;
+		Group group = null;
 		try {
-			groups = getGroupBusiness().getGroupByGroupID(Integer.valueOf(groupPrimaryKey));
+			group = getGroupBusiness().getGroupByGroupID(Integer.valueOf(groupPrimaryKey));
 		} catch (RemoteException e) {
 			getLogger().log(Level.WARNING, "Unable to find groups: ", e);
 		} catch (NumberFormatException e) {
@@ -1410,11 +1409,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 					"Group by id " + groupPrimaryKey + " not found!");
 		}
 
-		if (groups == null) {
-			return Collections.emptySet();
+		if (group == null) {
+			return Collections.emptyList();
 		}
 
-		return findSubscribedCases(groups);
+		return findSubscribedCases(group);
 	}
 
 	/*
@@ -1422,7 +1421,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @see is.idega.idegaweb.egov.reykjavik.business.HandlerGroupManagerBusiness#findAllCases(com.idega.user.data.Group)
 	 */
 	@Override
-	public Set<Case> findSubscribedCases(Group group) {
-		return findSubscribedCases(new HashSet<Group>(Arrays.asList(group)));
+	public List<Case> findSubscribedCases(Group group) {
+		return findSubscribedCases(Arrays.asList(group));
 	}
 }
