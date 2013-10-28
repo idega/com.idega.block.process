@@ -119,6 +119,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	public static final String CASE_STATUS_GROUPED_KEY = "GROU";
 	public static final String CASE_STATUS_CREATED_KEY = "CREA";
 	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
+	public static final String CASE_STATUS_REPORT = "REPO";
 
 	@Override
 	public void initializeAttributes() {
@@ -802,6 +803,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	 */
 	public String ejbHomeGetCaseStatusClosed() {
 		return CASE_STATUS_CLOSED;
+	}
+	
+	public String ejbHomeGetCaseStatusReport() {
+		return CASE_STATUS_REPORT;
 	}
 
 	/**

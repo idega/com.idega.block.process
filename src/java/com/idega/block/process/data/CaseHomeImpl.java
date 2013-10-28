@@ -272,6 +272,13 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
+	
+	public String getCaseStatusReport() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusReport();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
 
 	@Override
 	public String getCaseStatusArchived() {

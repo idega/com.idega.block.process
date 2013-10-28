@@ -267,4 +267,6 @@ public interface CaseHome extends IDOHome {
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
 	 */
 	public Collection<Case> findCasesByCaseIdentifier(String caseIdentifier) throws FinderException;
+
+	public String getCaseStatusReport();
 }
