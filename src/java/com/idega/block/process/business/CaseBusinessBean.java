@@ -788,6 +788,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 					log.setComment(comment);
 				}
 				log.store();
+				getLogger().info("Created log (" + log.getPrimaryKey() + ") for changing status from '" + oldCaseStatus + "' to '" +  newCaseStatus +
+						"' by " + performer + " for case " + theCase + ", comment: " + comment);
+			} else {
+				getLogger().info("Not creating log for changing status from '" + oldCaseStatus + "' to '" +  newCaseStatus + "' by " + performer +
+						" for case " + theCase + ", comment: " + comment);
 			}
 
 			if (sendUpdates) {
@@ -1221,7 +1226,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if (StringUtil.isEmpty(caseIdentifier)) {
 			return null;
 		}
-		
+
 		Case machingCase = null;
 		try {
 			machingCase = getCaseByIdentifier(caseIdentifier);
@@ -1230,27 +1235,27 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		} catch (RemoteException e) {
 			getLogger().log(Level.WARNING, "", e);
 		}
-		
+
 		if (machingCase == null) {
 			return null;
 		}
-		
+
 		CaseStatus currentCaseStatus = machingCase.getCaseStatus();
 		if (currentCaseStatus == null) {
 			return null;
 		}
-		
+
 		String[] closedCasesStatuses = getStatusesForClosedCases();
 		if (closedCasesStatuses == null) {
 			return null;
 		}
-		
+
 		for (String closedCaseStatus: closedCasesStatuses) {
 			if (closedCaseStatus.equals(currentCaseStatus.getStatus())) {
 				return Boolean.TRUE;
 			}
 		}
-		
+
 		return Boolean.FALSE;
 	}
 
@@ -1261,7 +1266,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		for (Case caseInstance: cases) {
 			return caseInstance;
 		}
-		
+
 		return null;
 	}
 }
