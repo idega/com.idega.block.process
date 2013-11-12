@@ -278,8 +278,26 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	public void setCaseIdentifier(String caseIdentifier);
 
 	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException;
+
+	/**
+	 *
+	 * @param subscribers to add, not <code>null</code>;
+	 * @return <code>true</code> if successfully appended, <code>false</code>
+	 * otherwise;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public boolean addSubscribers(Collection<User> subscribers);
+
 	public Collection<User> getSubscribers();
 	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException;
+
+	/**
+	 *
+	 * <p>Removes all subscribers from this {@link Case}.</p>
+	 * @return <code>true</code> on success, <code>false</code> otherwise;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	public boolean removeSubscribers();
 
 	public Boolean isRead();
 
@@ -288,4 +306,7 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	public boolean addVote(User voter) throws IDOAddRelationshipException;
 	public boolean removeVote(User voter) throws IDORemoveRelationshipException;
 	public Collection<User> getVoters();
+
+	public boolean isClosed();
+
 }

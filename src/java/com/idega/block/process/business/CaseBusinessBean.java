@@ -14,7 +14,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +39,7 @@ import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
 import com.idega.block.process.message.business.MessageTypeManager;
+import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.business.IBOServiceBean;
@@ -46,14 +49,17 @@ import com.idega.data.IDOException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.data.IDOStoreException;
+import com.idega.data.SimpleQuerier;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.UnavailableIWContext;
 import com.idega.presentation.IWContext;
+import com.idega.user.business.GroupBusiness;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
+import com.idega.util.ArrayUtil;
 import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
@@ -88,6 +94,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	private String CASE_STATUS_PLACED_KEY;
 	private String CASE_STATUS_PENDING_KEY;
 	private String CASE_STATUS_WAITING_KEY;
+	private String CASE_STATUS_REPORT;
 	private String CASE_STATUS_CREATED_KEY;
 	private String CASE_STATUS_FINISHED_KEY;
 	private String CASE_STATUS_CLOSED_KEY;
@@ -147,6 +154,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		this.CASE_STATUS_CREATED_KEY = this.getCaseHome().getCaseStatusCreated();
 		this.CASE_STATUS_FINISHED_KEY = this.getCaseHome().getCaseStatusFinished();
 		this.CASE_STATUS_CLOSED_KEY = this.getCaseHome().getCaseStatusClosed();
+		this.CASE_STATUS_REPORT = this.getCaseHome().getCaseStatusReport();
 	}
 
 	private CaseStatus getCaseStatusFromMap(String caseStatus) {
@@ -414,6 +422,23 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return getCaseCodeHome().findByPrimaryKey(caseCode);
 	}
 
+	private GroupBusiness groupBusiness;
+
+	protected GroupBusiness getGroupBusiness() {
+		if (this.groupBusiness == null) {
+			try {
+				this.groupBusiness = IBOLookup.getServiceInstance(
+						getIWApplicationContext(),
+						GroupBusiness.class);
+			} catch (IBOLookupException e) {
+				getLogger().log(Level.WARNING,
+						"Failed to get " + GroupBusiness.class, e);
+			}
+		}
+
+		return this.groupBusiness;
+	}
+
 	protected UserHome getUserHome() {
 		try {
 			return (UserHome) IDOLookup.getHome(User.class);
@@ -523,6 +548,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	@Override
 	public CaseStatus getCaseStatusWaiting() {
 		return getCaseStatus(this.CASE_STATUS_WAITING_KEY);
+	}
+
+	@Override
+	public CaseStatus getCaseStatusReport() {
+		return getCaseStatus(this.CASE_STATUS_REPORT);
 	}
 
 	@Override
@@ -1115,7 +1145,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	private UserBusiness getUserBusiness() throws IBOLookupException {
-		return (UserBusiness) this.getServiceInstance(UserBusiness.class);
+		return this.getServiceInstance(UserBusiness.class);
 	}
 
 	@Override
@@ -1227,36 +1257,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return null;
 		}
 
-		Case machingCase = null;
+		Case theCase = null;
 		try {
-			machingCase = getCaseByIdentifier(caseIdentifier);
-		} catch (FinderException e) {
-			getLogger().log(Level.WARNING, "", e);
-		} catch (RemoteException e) {
-			getLogger().log(Level.WARNING, "", e);
+			theCase = getCaseByIdentifier(caseIdentifier);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Unable to find case by identifier: " + caseIdentifier, e);
 		}
 
-		if (machingCase == null) {
-			return null;
+		if (theCase == null) {
+			return Boolean.FALSE;
 		}
 
-		CaseStatus currentCaseStatus = machingCase.getCaseStatus();
-		if (currentCaseStatus == null) {
-			return null;
-		}
-
-		String[] closedCasesStatuses = getStatusesForClosedCases();
-		if (closedCasesStatuses == null) {
-			return null;
-		}
-
-		for (String closedCaseStatus: closedCasesStatuses) {
-			if (closedCaseStatus.equals(currentCaseStatus.getStatus())) {
-				return Boolean.TRUE;
-			}
-		}
-
-		return Boolean.FALSE;
+		return theCase.isClosed();
 	}
 
 	@Override
@@ -1268,5 +1280,160 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<Integer> findSubscribedCasesIds(Collection<User> handlers) {
+		if (ListUtil.isEmpty(handlers)) {
+			return Collections.emptyList();
+		}
+
+		StringBuilder sb = new StringBuilder("SELECT distinct pcs.PROC_CASE_ID ");
+		sb.append("FROM proc_case_subscribers pcs ");
+		sb.append("WHERE pcs.IC_USER_ID IN (");
+		for (Iterator<User> iterator = handlers.iterator(); iterator.hasNext();) {
+			sb.append(iterator.next().getPrimaryKey().toString());
+			if (iterator.hasNext()) {
+				sb.append(CoreConstants.COMMA);
+				sb.append(CoreConstants.SPACE);
+			}
+		}
+
+		sb.append(")");
+
+		String[] caseIds = null;
+		try {
+			caseIds = SimpleQuerier.executeStringQuery(sb.toString());
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Failed to execute query: " +
+					sb.toString() + " cause of: ", e);
+		}
+
+		if (ArrayUtil.isEmpty(caseIds)) {
+			return Collections.emptyList();
+		}
+
+		List<Integer> ids = new ArrayList<Integer>(caseIds.length);
+		for (String caseId : caseIds) {
+			ids.add(Integer.valueOf(caseId));
+		}
+
+		return ids;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.util.Collection)
+	 */
+	@Override
+	public List<Case> findSubscribedCasesByHandlers(Collection<User> handlers) {
+		List<Integer> caseIds = findSubscribedCasesIds(handlers);
+		if (ListUtil.isEmpty(caseIds)) {
+			return Collections.emptyList();
+		}
+
+		Collection<Case> cases = getCasesByIds(caseIds);
+		if (ListUtil.isEmpty(cases)) {
+			return Collections.emptyList();
+		}
+
+		return new ArrayList<Case>(cases);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.util.Set)
+	 */
+	@Override
+	public List<Case> findSubscribedCases(Collection<Group> groups) {
+		if (ListUtil.isEmpty(groups)) {
+			return Collections.emptyList();
+		}
+
+		/*
+		 * FIXME need method in group business, which would return all users
+		 * from multiple groups. For now, this method usually takes only one
+		 * group
+		 */
+		Collection<User> handlers = new ArrayList<User>();
+		Collection<User> users = null;
+		for (Group group: groups) {
+			try {
+				users = getGroupBusiness().getUsers(group);
+			} catch (Exception e) {
+				getLogger().log(
+						Level.WARNING,
+						"Failed to get users from groups: ", e);
+			}
+
+			if (!ListUtil.isEmpty(users)) {
+				handlers.addAll(users);
+			}
+		}
+
+		return findSubscribedCasesByHandlers(handlers);
+	}
+
+	/* (non-Javadoc)
+	 * @see is.idega.idegaweb.egov.reykjavik.business.HandlerGroupManagerBusiness#findAllCases(java.lang.String)
+	 */
+	@Override
+	public List<Case> findSubscribedCases(String groupName) {
+		if (StringUtil.isEmpty(groupName)) {
+			return Collections.emptyList();
+		}
+
+		Collection<Group> groups = null;
+		try {
+			groups = getGroupBusiness().getGroupsByGroupName(groupName);
+		} catch (RemoteException e) {
+			getLogger().log(Level.WARNING, "Unable to find groups: ", e);
+		}
+
+		if (ListUtil.isEmpty(groups)) {
+			return Collections.emptyList();
+		}
+
+		return findSubscribedCases(new HashSet<Group>(groups));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#findSubscribedCases(java.lang.Object)
+	 */
+	@Override
+	public List<Case> findSubscribedCasesByPrimaryKey(String groupPrimaryKey) {
+		if (StringUtil.isEmpty(groupPrimaryKey)) {
+			return Collections.emptyList();
+		}
+
+		Group group = null;
+		try {
+			group = getGroupBusiness().getGroupByGroupID(Integer.valueOf(groupPrimaryKey));
+		} catch (RemoteException e) {
+			getLogger().log(Level.WARNING, "Unable to find groups: ", e);
+		} catch (NumberFormatException e) {
+			getLogger().log(Level.WARNING,
+					"Unable to convert: " + groupPrimaryKey +
+					" to " + Integer.class, e);
+		} catch (FinderException e) {
+			getLogger().log(Level.WARNING,
+					"Group by id " + groupPrimaryKey + " not found!");
+		}
+
+		if (group == null) {
+			return Collections.emptyList();
+		}
+
+		return findSubscribedCases(group);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see is.idega.idegaweb.egov.reykjavik.business.HandlerGroupManagerBusiness#findAllCases(com.idega.user.data.Group)
+	 */
+	@Override
+	public List<Case> findSubscribedCases(Group group) {
+		return findSubscribedCases(Arrays.asList(group));
 	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 import javax.ejb.FinderException;
@@ -53,6 +54,8 @@ import com.idega.util.datastructures.map.MapUtil;
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 @Service(CasesRetrievalManagerImpl.beanIdentifier)
 public class CasesRetrievalManagerImpl extends DefaultSpringBean implements CasesRetrievalManager {
+
+	private ReentrantLock lock = new ReentrantLock();
 
 	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
@@ -125,9 +128,16 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			boolean onlySubscribedCases, boolean showAllCases) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
+
 	@Override
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles) throws Exception {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	@Override
+	public List<Integer> getCasePrimaryKeys(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -347,7 +357,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	private int lastUsedCacheSize = 75;
-	protected Map<CasesCacheCriteria, Map<Integer, Boolean>> getCache() {
+	private Map<CasesCacheCriteria, Map<Integer, Boolean>> getCache() {
 		int cacheSize = Integer.valueOf(getApplication().getSettings().getProperty("cases_cache_size", String.valueOf(75)));
 		if (cacheSize == lastUsedCacheSize)
 			return getCache(CASES_LIST_IDS_CACHE, 86400, cacheSize);
@@ -357,42 +367,235 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		return getCache();
 	}
 
-	protected CasesCacheCriteria getCacheKey(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases, List<Long> procInstIds) {
-
-		return new CasesCacheCriteria(user == null ? -1 : Integer.valueOf(user.getId()), type, caseCodes, statusesToHide, statusesToShow,
-				onlySubscribedCases, roles, groups, codes, showAllCases, procInstIds);
+	/**
+	 *
+	 * <p>Creates new search criteria for cache by:</p>
+	 * @param user
+	 * @param type
+	 * @param caseCodes
+	 * @param statusesToHide is {@link Collection} of {@link Case#getStatus()},
+	 * which should be hidden;
+	 * @param statusesToShow is {@link Collection} of {@link Case#getStatus()},
+	 * which should be shown;
+	 * @param onlySubscribedCases shows only those {@link Case}s where given
+	 * {@link User} is in {@link Case#getSubscribers()};
+	 * @param roles of BPM processes, which {@link User} can access. More info
+	 * in bpm_actors table;
+	 * @param groups
+	 * @param codes
+	 * @param showAllCases
+	 * @param procInstIds is id's of BPM process instances;
+	 * @param handlerCategoryIDs is ID's of groups, which has {@link User}s, who
+	 * is in {@link Case#getSubscribers()} list;
+	 * @return criteria bean for querying cache;
+	 */
+	protected CasesCacheCriteria getCacheKey(
+			User user,
+			String type,
+			Collection<String> caseCodes,
+			Collection<String> statusesToHide,
+			Collection<String> statusesToShow,
+			boolean onlySubscribedCases,
+			Collection<String> roles,
+			Collection<Integer> groups,
+			Collection<String> codes,
+			boolean showAllCases,
+			Collection<Long> procInstIds,
+			Collection<Long> handlerCategoryIDs
+	) {
+		return new CasesCacheCriteria(
+				user == null ? -1 : Integer.valueOf(user.getId()),
+				type, caseCodes, statusesToHide, statusesToShow, roles, groups,
+				codes, procInstIds, handlerCategoryIDs, onlySubscribedCases,
+				showAllCases);
 	}
 
-	protected List<Integer> getCachedIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide,
-			List<String> caseStatusesToShow, boolean onlySubscribedCases, Set<String> roles, List<Integer> groups, List<String> codes,
-			boolean showAllCases, List<Long> procInstIds) {
+	protected void clearCache() throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
 
-		Map<CasesCacheCriteria,Map<Integer, Boolean>> cache = getCache();
+		try {
+			getCache().clear();
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected void removeFromCache(CasesCacheCriteria key) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			getCache().remove(key);
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected void removeElementFromCache(CasesCacheCriteria key, Integer id) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<Integer, Boolean> ids = getCache().get(key);
+			if (ids != null) {
+				ids.remove(id);
+			}
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected boolean containsElement(CasesCacheCriteria key, Integer id) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<Integer, Boolean> ids = getCache().get(key);
+			return !MapUtil.isEmpty(ids) && ids.containsKey(id);
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected void addElementToCache(CasesCacheCriteria key, Integer id) throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
+			Map<Integer, Boolean> ids = getCache().get(key);
+			if (ids == null) {
+				ids = new LinkedHashMap<Integer, Boolean>();
+				cache.put(key, ids);
+			}
+
+			ids.put(id, Boolean.TRUE);
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	protected Collection<CasesCacheCriteria> getCacheKeySet() throws Exception {
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			return new ArrayList<CasesCacheCriteria>(getCache().keySet());
+		} catch (Exception e) {
+		} finally {
+			lock.unlock();
+		}
+
+		return Collections.emptyList();
+	}
+
+	/**
+	 *
+	 * <p>Searches {@link Case#getPrimaryKey()}s in cache {@link Map}.</p>
+	 * @param user
+	 * @param type
+	 * @param caseCodes
+	 * @param caseStatusesToHide is {@link Collection} of {@link Case#getStatus()},
+	 * which should be hidden;
+	 * @param caseStatusesToShow is {@link Collection} of {@link Case#getStatus()},
+	 * which should be shown;
+	 * @param onlySubscribedCases shows only those {@link Case}s where given
+	 * {@link User} is in {@link Case#getSubscribers()};
+	 * @param roles of BPM processes, which {@link User} can access. More info
+	 * in bpm_actors table;
+	 * @param groups
+	 * @param codes
+	 * @param showAllCases
+	 * @param procInstIds is id's of BPM process instances;
+	 * @param handlerCategoryIDs is ID's of groups, which has {@link User}s, who
+	 * is in {@link Case#getSubscribers()} list;
+	 * @return cached {@link Case#getPrimaryKey()}s or {@link Collections#emptyList()}
+	 * on failure;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	protected List<Integer> getCachedIds(
+			User user,
+			String type,
+			Collection<String> caseCodes,
+			Collection<String> caseStatusesToHide,
+			Collection<String> caseStatusesToShow,
+			boolean onlySubscribedCases,
+			Collection<String> roles,
+			Collection<Integer> groups,
+			Collection<String> codes,
+			boolean showAllCases,
+			Collection<Long> procInstIds,
+			Collection<Long> handlerCategoryIDs
+	) {
+		Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
 		if (cache == null)
-			return null;
+			return Collections.emptyList();
 
-		CasesCacheCriteria key = getCacheKey(user, type, caseCodes, caseStatusesToHide, caseStatusesToShow, onlySubscribedCases, roles,	groups, codes,
-				showAllCases, procInstIds);
+		/* Creating key */
+		CasesCacheCriteria key = getCacheKey(user, type, caseCodes,
+				caseStatusesToHide, caseStatusesToShow, onlySubscribedCases,
+				roles,	groups, codes, showAllCases, procInstIds,
+				handlerCategoryIDs);
+
+		/* Querying */
 		Map<Integer, Boolean> ids = cache.get(key);
 		if (MapUtil.isEmpty(ids))
-			return null;
+			return Collections.emptyList();
 
+		/* Inverting sort order */
 		List<Integer> cachedIds = new ArrayList<Integer>(ids.keySet());
 		Collections.sort(cachedIds, new Comparator<Integer>() {
-
 			@Override
 			public int compare(Integer id1, Integer id2) {
 				return -1 * (id1.compareTo(id2));
 			}
 		});
+
 		return cachedIds;
 	}
 
-	protected void putIdsToCache(List<Integer> ids, User user, String type, List<String> caseCodes, List<String> caseStatusesToHide,
-			List<String> caseStatusesToShow, boolean onlySubscribedCases, Set<String> roles, List<Integer> groups, List<String> codes,
-			boolean showAllCases, List<Long> procInstIds) {
-
+	/**
+	 *
+	 * <p>Puts {@link Case#getPrimaryKey()}s to {@link Map}</p>
+	 * @param ids is {@link Case#getPrimaryKey()}s to put, not <code>null</code>;
+	 * @param user
+	 * @param type
+	 * @param caseCodes
+	 * @param caseStatusesToHide is {@link Collection} of {@link Case#getStatus()},
+	 * which should be hidden;
+	 * @param caseStatusesToShow is {@link Collection} of {@link Case#getStatus()},
+	 * which should be shown;
+	 * @param onlySubscribedCases shows only those {@link Case}s where given
+	 * {@link User} is in {@link Case#getSubscribers()};
+	 * @param roles of BPM processes, which {@link User} can access. More info
+	 * in bpm_actors table;
+	 * @param groups
+	 * @param codes
+	 * @param showAllCases
+	 * @param procInstIds is id's of BPM process instances;
+	 * @param handlerCategoryIDs is ID's of groups, which has {@link User}s, who
+	 * is in {@link Case#getSubscribers()} list;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	protected void putIdsToCache(
+			Collection<Integer> ids,
+			User user,
+			String type,
+			Collection<String> caseCodes,
+			Collection<String> caseStatusesToHide,
+			Collection<String> caseStatusesToShow,
+			boolean onlySubscribedCases,
+			Collection<String> roles,
+			Collection<Integer> groups,
+			Collection<String> codes,
+			boolean showAllCases,
+			Collection<Long> procInstIds,
+			Collection<Long> handlerCategoryIDs
+	) {
 		if (ListUtil.isEmpty(ids))
 			return;
 
@@ -400,19 +603,37 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		if (cache == null)
 			return;
 
-		CasesCacheCriteria key = getCacheKey(user, type, caseCodes, caseStatusesToHide, caseStatusesToShow, onlySubscribedCases, roles,	groups, codes,
-				showAllCases, procInstIds);
+		/* Creating key */
+		CasesCacheCriteria key = getCacheKey(user, type, caseCodes,
+				caseStatusesToHide, caseStatusesToShow, onlySubscribedCases,
+				roles,	groups, codes, showAllCases, procInstIds,
+				handlerCategoryIDs);
+
+		/* Getting id's, that already cached by given criteria */
 		Map<Integer, Boolean> cachedIds = cache.get(key);
 		if (cachedIds == null) {
 			cachedIds = new LinkedHashMap<Integer, Boolean>();
 			cache.put(key, cachedIds);
 		}
+
+		/* Putting to cache */
 		for (Integer id: ids)
 			cachedIds.put(id, Boolean.TRUE);
 	}
 
-	protected List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> caseStatusesToHide, List<String> caseStatusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, Integer caseId, List<Long> procInstIds, Set<String> roles) throws Exception {
+	protected List<Integer> getCaseIds(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> caseStatusesToHide,
+			List<String> caseStatusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer caseId,
+			List<Long> procInstIds,
+			Set<String> roles,
+			Collection<Long> handlerCategoryIDs
+	) throws Exception {
 		throw new UnsupportedOperationException("This method is not implemented");
 	}
 

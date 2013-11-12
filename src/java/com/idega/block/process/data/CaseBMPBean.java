@@ -11,6 +11,7 @@ package com.idega.block.process.data;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -23,9 +24,11 @@ import javax.ejb.RemoveException;
 
 import org.springframework.context.ApplicationEvent;
 
+import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.event.CaseDeletedEvent;
 import com.idega.block.process.event.CaseModifiedEvent;
+import com.idega.business.IBOLookup;
 import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
@@ -49,12 +52,14 @@ import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
 import com.idega.data.query.range.DateRange;
 import com.idega.idegaweb.IWApplicationContext;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
 import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
+import com.idega.util.StringUtil;
 import com.idega.util.expression.ELUtil;
 
 /**
@@ -115,6 +120,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	public static final String CASE_STATUS_GROUPED_KEY = "GROU";
 	public static final String CASE_STATUS_CREATED_KEY = "CREA";
 	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
+	public static final String CASE_STATUS_REPORT = "REPO";
 
 	@Override
 	public void initializeAttributes() {
@@ -799,6 +805,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	public String ejbHomeGetCaseStatusClosed() {
 		return CASE_STATUS_CLOSED;
 	}
+	
+	public String ejbHomeGetCaseStatusReport() {
+		return CASE_STATUS_REPORT;
+	}
 
 	/**
 	 * Returns the CASE_STATUS_ARCHIVED.
@@ -964,10 +974,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 			throw new IDORuntimeException(e, this);
 		}
 	}
-	
+
 	/**
 	 * <p>Creates query for searching in {@link Case}s table.</p>
-	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, 
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()},
 	 * not <code>null</code>.
 	 * @return formatted query.
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
@@ -975,9 +985,8 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	 */
 	protected IDOQuery idoQueryGetAllCasesByCaseIdentifier(String caseIdentifier) {
 		try {
-			IDOQuery query = this.idoQueryGetSelect();
-			query.appendWhereEqualsQuoted(COLUMN_CASE_IDENTIFIER, caseIdentifier);
-			return query;
+			return idoQueryGetSelect().appendWhereEqualsQuoted(
+					COLUMN_CASE_IDENTIFIER, caseIdentifier);
 		}
 		catch (Exception e) {
 			throw new IDORuntimeException(e, this);
@@ -1088,20 +1097,20 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	/**
-	 * <p>Finds {@link Case#getPrimaryKey()}s by 
+	 * <p>Finds {@link Case#getPrimaryKey()}s by
 	 * {@link Case#getCaseIdentifier()}.</p>
-	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not 
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not
 	 * <code>null</code>.
-	 * @return {@link Collection} of {@link Case#getPrimaryKey()} or 
+	 * @return {@link Collection} of {@link Case#getPrimaryKey()} or
 	 * <code>null</code> on failure.
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
-	 * @throws FinderException 
+	 * @throws FinderException
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<Integer> ejbFindByCaseIdentifier(String caseIdentifier) throws FinderException {
 		return idoFindPKsByQuery(idoQueryGetAllCasesByCaseIdentifier(caseIdentifier));
 	}
-	
+
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 
@@ -1214,6 +1223,20 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
+	public boolean addSubscribers(Collection<User> subscribers) {
+		if (ListUtil.isEmpty(subscribers)) {
+			return false;
+		}
+
+		Collection<User> currentSubscribers = getSubscribers();
+		if (!ListUtil.isEmpty(currentSubscribers)) {
+			subscribers.removeAll(currentSubscribers);
+		}
+
+		return idoAddTo(subscribers, COLUMN_CASE_SUBSCRIBERS);
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
 		try {
@@ -1229,6 +1252,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
+	public boolean removeSubscribers() {
+		return super.idoRemoveFrom(COLUMN_CASE_SUBSCRIBERS);
+	}
+
+	@Override
 	public boolean removeSubscriber(User subscriber) throws IDORemoveRelationshipException {
 		if (subscriber == null) {
 			getLogger().warning("User is not provided");
@@ -1239,10 +1267,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		return true;
 	}
 
-	public Collection<Case> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
+	public Collection<?> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhereEquals(COLUMN_CASE_CODE, code);
-		query.appendGroupBy(getIDColumnName());
+//		TODO: I did not like this group by
+//		query.appendGroupBy(getIDColumnName());
 		return super.idoFindPKsByQuery(query);
 	}
 
@@ -1272,7 +1301,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		setColumn(COLUMN_READ, read);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Case> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
 		return ejbFindCases(user.getId(), status, caseCode, read);
 	}
@@ -1346,6 +1374,25 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 		String query = "select " + PK_COLUMN + " from " + COLUMN_CASE_SUBSCRIBERS + " where " + UserBMPBean.getColumnNameUserID() +
 				" = " + subscriber.getId();
 		return idoFindPKsBySQL(query);
+	}
+
+	@Override
+	public boolean isClosed() {
+		CaseStatus status = getCaseStatus();
+		if (status == null)
+			return false;
+
+		String statusKey = status.getStatus();
+		if (StringUtil.isEmpty(statusKey)) {
+			return false;
+		}
+
+		try {
+			CaseBusiness caseBusiness = IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), CaseBusiness.class);
+			List<String> closedCaseStatuses = Arrays.asList(caseBusiness.getStatusesForClosedCases());
+			return closedCaseStatuses.contains(statusKey);
+		} catch (Exception e) {}
+		return false;
 	}
 
 }

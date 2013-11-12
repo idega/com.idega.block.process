@@ -25,6 +25,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 					instanceId,
 					casesListCustomizer;
 
+	private Long subscribersGroupId;
 	private String[] statuses;
 
 	private IWTimestamp	dateFrom,
@@ -37,6 +38,14 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering;
 
 	private List<String> customColumns, exportColumns;
+	
+	public Long getSubscribersGroupId() {
+		return subscribersGroupId;
+	}
+
+	public void setSubscribersGroupId(Long groupId) {
+		this.subscribersGroupId = groupId;
+	}
 
 	public boolean isShowStatistics() {
 		return showStatistics;

@@ -21,9 +21,6 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * <p>
- * TODO laddi Describe Type CaseHome
- * </p>
  *  Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
  *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
@@ -38,37 +35,37 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesByUser
 	 */
-	public Collection findAllCasesByUser(User user) throws FinderException;
+	public Collection<Case> findAllCasesByUser(User user) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesByGroup
 	 */
-	public Collection findAllCasesByGroup(Group group) throws FinderException;
+	public Collection<Case> findAllCasesByGroup(Group group) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesByUser
 	 */
-	public Collection findAllCasesByUser(User user, CaseCode caseCode) throws FinderException;
+	public Collection<Case> findAllCasesByUser(User user, CaseCode caseCode) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesByUser
 	 */
-	public Collection findAllCasesByUser(User user, String caseCode) throws FinderException;
+	public Collection<Case> findAllCasesByUser(User user, String caseCode) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesByUser
 	 */
-	public Collection findAllCasesByUser(User user, CaseCode caseCode, CaseStatus caseStatus) throws FinderException;
+	public Collection<Case> findAllCasesByUser(User user, CaseCode caseCode, CaseStatus caseStatus) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesByUser
 	 */
-	public Collection findAllCasesByUser(User user, String caseCode, String caseStatus) throws FinderException;
+	public Collection<Case> findAllCasesByUser(User user, String caseCode, String caseStatus) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindSubCasesUnder
 	 */
-	public Collection findSubCasesUnder(Case theCase) throws FinderException;
+	public Collection<Case> findSubCasesUnder(Case theCase) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeCountSubCasesUnder
@@ -182,12 +179,12 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForUserExceptCodes
 	 */
-	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException;
+	public Collection<Case> findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForUserByStatuses
 	 */
-	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException;
+	public Collection<Case> findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCountOfAllCasesForUserByStatuses
@@ -197,7 +194,7 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForGroupsByStatuses
 	 */
-	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException;
+	public Collection<Case> findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetCountOfAllCasesForGroupsByStatuses
@@ -207,12 +204,12 @@ public interface CaseHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForGroupsAndUserExceptCodes
 	 */
-	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException;
+	public Collection<Case> findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindAllCasesForGroupExceptCodes
 	 */
-	public Collection findAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException;
+	public Collection<Case> findAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbHomeGetNumberOfCasesForUserExceptCodes
@@ -260,14 +257,16 @@ public interface CaseHome extends IDOHome {
 	public Collection<Case> getCases(User user, String status, String caseCode, Boolean read) throws FinderException;
 
 	public Collection<Case> findCasesForSubscriber(User subscriber) throws FinderException;
-	
+
 	/**
-	 * 
-	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not 
+	 *
+	 * @param caseIdentifier - {@link Case#getCaseIdentifier()}, not
 	 * <code>null</code>;
 	 * @return {@link Case} when found, <code>null</code> otherwise;
 	 * @throws FinderException usually means that nothing found;
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
 	 */
 	public Collection<Case> findCasesByCaseIdentifier(String caseIdentifier) throws FinderException;
+
+	public String getCaseStatusReport();
 }

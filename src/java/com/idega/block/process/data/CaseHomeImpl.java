@@ -25,9 +25,6 @@ import com.idega.util.StringUtil;
 
 
 /**
- * <p>
- * TODO laddi Describe Type CaseHomeImpl
- * </p>
  *  Last modified: $Date: 2009/06/23 09:33:27 $ by $Author: valdas $
  *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
@@ -49,61 +46,61 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 
 	@Override
 	public Case findByPrimaryKey(Object pk) throws javax.ejb.FinderException {
-		return (Case) super.findByPrimaryKeyIDO(pk);
+		return super.findByPrimaryKeyIDO(pk);
 	}
 
 	@Override
-	public Collection findAllCasesByUser(User user) throws FinderException {
+	public Collection<Case> findAllCasesByUser(User user) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesByGroup(Group group) throws FinderException {
+	public Collection<Case> findAllCasesByGroup(Group group) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesByGroup(group);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesByGroup(group);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesByUser(User user, CaseCode caseCode) throws FinderException {
+	public Collection<Case> findAllCasesByUser(User user, CaseCode caseCode) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesByUser(User user, String caseCode) throws FinderException {
+	public Collection<Case> findAllCasesByUser(User user, String caseCode) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesByUser(User user, CaseCode caseCode, CaseStatus caseStatus) throws FinderException {
+	public Collection<Case> findAllCasesByUser(User user, CaseCode caseCode, CaseStatus caseStatus) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode, caseStatus);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode, caseStatus);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesByUser(User user, String caseCode, String caseStatus) throws FinderException {
+	public Collection<Case> findAllCasesByUser(User user, String caseCode, String caseStatus) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode, caseStatus);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesByUser(user, caseCode, caseStatus);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findSubCasesUnder(Case theCase) throws FinderException {
+	public Collection<Case> findSubCasesUnder(Case theCase) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindSubCasesUnder(theCase);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindSubCasesUnder(theCase);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -275,6 +272,13 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
+	
+	public String getCaseStatusReport() {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusReport();
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
 
 	@Override
 	public String getCaseStatusArchived() {
@@ -293,17 +297,17 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
-	public Collection findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+	public Collection<Case> findAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserExceptCodes(user, codes, startingCase, numberOfCases);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserExceptCodes(user, codes, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+	public Collection<Case> findAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserByStatuses(user, statuses, startingCase, numberOfCases);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesForUserByStatuses(user, statuses, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -317,9 +321,9 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
-	public Collection findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
+	public Collection<Case> findAllCasesForGroupsByStatuses(Collection groups, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses, startingCase, numberOfCases);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsByStatuses(groups, statuses, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -333,17 +337,17 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
-	public Collection findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+	public Collection<Case> findAllCasesForGroupsAndUserExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection findAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException {
+	public Collection<Case> findAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupExceptCodes(group, codes);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesForGroupExceptCodes(group, codes);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -454,7 +458,7 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	@Override
 	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection ids = ((CaseBMPBean) entity).ejbFindAllByCaseCode(code);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllByCaseCode(code);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -469,7 +473,7 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	@Override
 	public Collection<Case> getCases(User user, String status, String caseCode, Boolean read) throws FinderException{
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection ids = ((CaseBMPBean) entity).ejbFindCases(user, status,caseCode, read);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindCases(user, status,caseCode, read);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
@@ -477,21 +481,19 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	@Override
 	public Collection<Case> findCasesForSubscriber(User subscriber) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindAllCasesBySubscriber(subscriber);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllCasesBySubscriber(subscriber);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
 	@Override
-	public Collection<Case> findCasesByCaseIdentifier(String caseIdentifier)
-			throws FinderException {
+	public Collection<Case> findCasesByCaseIdentifier(String caseIdentifier) throws FinderException {
 		if (StringUtil.isEmpty(caseIdentifier)) {
 			return null;
 		}
-		
+
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		@SuppressWarnings("rawtypes")
-		java.util.Collection ids = ((CaseBMPBean) entity).ejbFindByCaseIdentifier(caseIdentifier);
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindByCaseIdentifier(caseIdentifier);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
