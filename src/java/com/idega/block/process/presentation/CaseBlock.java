@@ -63,6 +63,7 @@ public abstract class CaseBlock extends Block {
 	private boolean waitForAllCasePartsLoaded = Boolean.TRUE;
 	private boolean userNameShown = Boolean.TRUE;
 	private boolean showUserProfilePicture = Boolean.TRUE;
+	private boolean addExportContacts = false;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -125,7 +126,7 @@ public abstract class CaseBlock extends Block {
 
 	protected CaseBusiness getCaseBusiness(IWApplicationContext iwac) {
 		try {
-			return (CaseBusiness) IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
+			return IBOLookup.getServiceInstance(iwac, CaseBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
@@ -138,7 +139,7 @@ public abstract class CaseBlock extends Block {
 
 	private UserBusiness getUserBusiness(IWApplicationContext iwac) {
 		try {
-			return (UserBusiness) IBOLookup.getServiceInstance(iwac, UserBusiness.class);
+			return IBOLookup.getServiceInstance(iwac, UserBusiness.class);
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
@@ -356,6 +357,7 @@ public abstract class CaseBlock extends Block {
 		list.setDescriptionEditable(isDescriptionEditable());
 		list.setNameFromExternalEntity(!isUserNameShown());
 		list.setShowUserProfilePicture(isShowUserProfilePicture());
+		list.setAddExportContacts(isAddExportContacts());
 
 		return list;
 	}
@@ -510,5 +512,13 @@ public abstract class CaseBlock extends Block {
 
 	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
 		this.showUserProfilePicture = showUserProfilePicture;
+	}
+
+	public boolean isAddExportContacts() {
+		return addExportContacts;
+	}
+
+	public void setAddExportContacts(boolean addExportContacts) {
+		this.addExportContacts = addExportContacts;
 	}
 }
