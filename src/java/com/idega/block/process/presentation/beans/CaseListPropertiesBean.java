@@ -31,7 +31,8 @@ public class CaseListPropertiesBean {
 	private boolean waitForAllCasePartsLoaded = true,
 					  descriptionEditable = true;
 	private boolean nameFromExternalEntity = false;
-	protected boolean showUserProfilePicture = Boolean.TRUE;
+	protected boolean showUserProfilePicture = true;
+	protected boolean addExportContacts = true;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -317,5 +318,13 @@ public class CaseListPropertiesBean {
 
 	public boolean isShowUserProfilePicture() {
 		return showUserProfilePicture;
+	}
+
+	public boolean isAddExportContacts() {
+		return addExportContacts;
+	}
+
+	public void setAddExportContacts(boolean addExportContacts) {
+		this.addExportContacts = addExportContacts;
 	}
 }

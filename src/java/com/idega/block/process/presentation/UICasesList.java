@@ -79,7 +79,8 @@ public class UICasesList extends IWBaseComponent {
 					descriptionEditable = true,
 					showCasesOnlyByProvidedProcesses = false,
 					nameFromExternalEntity = false,
-					showUserProfilePicture = Boolean.TRUE;
+					showUserProfilePicture = true,
+					addExportContacts = true;
 
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
@@ -205,6 +206,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setDescriptionEditable(isDescriptionEditable());
 		properties.setNameFromExternalEntity(isNameFromExternalEntity());
 		properties.setShowUserProfilePicture(isShowUserProfilePicture());
+		properties.setAddExportContacts(isAddExportContacts());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -667,5 +669,13 @@ public class UICasesList extends IWBaseComponent {
 
 	public boolean isShowUserProfilePicture() {
 		return showUserProfilePicture;
+	}
+
+	public boolean isAddExportContacts() {
+		return addExportContacts;
+	}
+
+	public void setAddExportContacts(boolean addExportContacts) {
+		this.addExportContacts = addExportContacts;
 	}
 }
