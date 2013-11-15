@@ -2,6 +2,7 @@ package com.idega.block.process.business;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,7 +61,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
 
-	protected static final String CASES_LIST_IDS_CACHE = "casesListIdsCache";
+	private static final String CASES_LIST_IDS_CACHE = "casesListIdsCache";
 
 	@Override
 	public String getBeanIdentifier() {
@@ -462,21 +463,10 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	protected void addElementToCache(CasesCacheCriteria key, Integer id) throws Exception {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
-
-		try {
-			Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
-			Map<Integer, Boolean> ids = getCache().get(key);
-			if (ids == null) {
-				ids = new LinkedHashMap<Integer, Boolean>();
-				cache.put(key, ids);
-			}
-
-			ids.put(id, Boolean.TRUE);
-		} finally {
-			lock.unlock();
+		if (key == null || id == null) {
+			return;
 		}
+		putIdsToCache(Arrays.asList(id), key);
 	}
 
 	protected Collection<CasesCacheCriteria> getCacheKeySet() throws Exception {
@@ -531,31 +521,44 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Long> procInstIds,
 			Collection<Long> handlerCategoryIDs
 	) {
-		Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
-		if (cache == null)
-			return Collections.emptyList();
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
 
-		/* Creating key */
-		CasesCacheCriteria key = getCacheKey(user, type, caseCodes,
-				caseStatusesToHide, caseStatusesToShow, onlySubscribedCases,
-				roles,	groups, codes, showAllCases, procInstIds,
-				handlerCategoryIDs);
+		try {
+			/* Creating key */
+			CasesCacheCriteria key = getCacheKey(
+					user,
+					type,
+					caseCodes,
+					caseStatusesToHide,
+					caseStatusesToShow,
+					onlySubscribedCases,
+					roles,
+					groups,
+					codes,
+					showAllCases,
+					procInstIds,
+					handlerCategoryIDs
+			);
 
-		/* Querying */
-		Map<Integer, Boolean> ids = cache.get(key);
-		if (MapUtil.isEmpty(ids))
-			return Collections.emptyList();
-
-		/* Inverting sort order */
-		List<Integer> cachedIds = new ArrayList<Integer>(ids.keySet());
-		Collections.sort(cachedIds, new Comparator<Integer>() {
-			@Override
-			public int compare(Integer id1, Integer id2) {
-				return -1 * (id1.compareTo(id2));
+			Map<Integer, Boolean> ids = getCache().get(key);
+			if (MapUtil.isEmpty(ids)) {
+				return Collections.emptyList();
 			}
-		});
 
-		return cachedIds;
+			/* Inverting sort order */
+			List<Integer> cachedIds = new ArrayList<Integer>(ids.keySet());
+			Collections.sort(cachedIds, new Comparator<Integer>() {
+				@Override
+				public int compare(Integer id1, Integer id2) {
+					return -1 * (id1.compareTo(id2));
+				}
+			});
+
+			return cachedIds;
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	/**
@@ -596,29 +599,52 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Long> procInstIds,
 			Collection<Long> handlerCategoryIDs
 	) {
-		if (ListUtil.isEmpty(ids))
-			return;
-
-		Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
-		if (cache == null)
-			return;
-
 		/* Creating key */
-		CasesCacheCriteria key = getCacheKey(user, type, caseCodes,
-				caseStatusesToHide, caseStatusesToShow, onlySubscribedCases,
-				roles,	groups, codes, showAllCases, procInstIds,
-				handlerCategoryIDs);
+		CasesCacheCriteria key = getCacheKey(
+				user,
+				type,
+				caseCodes,
+				caseStatusesToHide,
+				caseStatusesToShow,
+				onlySubscribedCases,
+				roles,
+				groups,
+				codes,
+				showAllCases,
+				procInstIds,
+				handlerCategoryIDs
+		);
+		putIdsToCache(ids, key);
+	}
 
-		/* Getting id's, that already cached by given criteria */
-		Map<Integer, Boolean> cachedIds = cache.get(key);
-		if (cachedIds == null) {
-			cachedIds = new LinkedHashMap<Integer, Boolean>();
-			cache.put(key, cachedIds);
+	private void putIdsToCache(Collection<Integer> ids, CasesCacheCriteria key) {
+		if (ListUtil.isEmpty(ids) || key == null) {
+			return;
 		}
 
-		/* Putting to cache */
-		for (Integer id: ids)
-			cachedIds.put(id, Boolean.TRUE);
+		assert !lock.isHeldByCurrentThread();
+		lock.lock();
+
+		try {
+			Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
+			if (cache == null)
+				return;
+
+			/* Getting id's, that already cached by given criteria */
+			Map<Integer, Boolean> cachedIds = cache.get(key);
+			if (cachedIds == null) {
+				cachedIds = new LinkedHashMap<Integer, Boolean>();
+			}
+
+			/* Putting to cache */
+			for (Integer id: ids) {
+				cachedIds.put(id, Boolean.TRUE);
+			}
+
+			cache.put(key, cachedIds);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	protected List<Integer> getCaseIds(
