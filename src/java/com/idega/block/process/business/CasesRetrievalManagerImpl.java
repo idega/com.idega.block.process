@@ -2,15 +2,17 @@ package com.idega.block.process.business;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -358,7 +360,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	private int lastUsedCacheSize = 75;
-	private Map<CasesCacheCriteria, Map<Integer, Boolean>> getCache() {
+	private Map<CasesCacheCriteria, Map<Integer, Date>> getCache() {
 		int cacheSize = Integer.valueOf(getApplication().getSettings().getProperty("cases_cache_size", String.valueOf(75)));
 		if (cacheSize == lastUsedCacheSize)
 			return getCache(CASES_LIST_IDS_CACHE, 86400, cacheSize);
@@ -411,73 +413,104 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				showAllCases);
 	}
 
+	private boolean isLockRequired() {
+		return getApplication().getSettings().getBoolean("cases.list_lock_required", Boolean.FALSE);
+	}
+
 	protected void clearCache() throws Exception {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
 			getCache().clear();
 		} catch (Exception e) {
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 	}
 
 	protected void removeFromCache(CasesCacheCriteria key) throws Exception {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
 			getCache().remove(key);
 		} catch (Exception e) {
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 	}
 
 	protected void removeElementFromCache(CasesCacheCriteria key, Integer id) throws Exception {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
-			Map<Integer, Boolean> ids = getCache().get(key);
+			Map<Integer, Date> ids = getCache().get(key);
 			if (ids != null) {
 				ids.remove(id);
 			}
 		} catch (Exception e) {
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 	}
 
 	protected boolean containsElement(CasesCacheCriteria key, Integer id) throws Exception {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
-			Map<Integer, Boolean> ids = getCache().get(key);
+			Map<Integer, Date> ids = getCache().get(key);
 			return !MapUtil.isEmpty(ids) && ids.containsKey(id);
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 	}
 
-	protected void addElementToCache(CasesCacheCriteria key, Integer id) throws Exception {
+	protected void addElementToCache(CasesCacheCriteria key, Integer id, Date creationDate) throws Exception {
 		if (key == null || id == null) {
 			return;
 		}
-		putIdsToCache(Arrays.asList(id), key);
+		Map<Integer, Date> data = new HashMap<Integer, Date>();
+		data.put(id, creationDate);
+		putIdsToCache(data, key);
 	}
 
 	protected Collection<CasesCacheCriteria> getCacheKeySet() throws Exception {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
 			return new ArrayList<CasesCacheCriteria>(getCache().keySet());
 		} catch (Exception e) {
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 
 		return Collections.emptyList();
@@ -521,8 +554,11 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Long> procInstIds,
 			Collection<Long> handlerCategoryIDs
 	) {
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
 			/* Creating key */
@@ -541,23 +577,29 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 					handlerCategoryIDs
 			);
 
-			Map<Integer, Boolean> ids = getCache().get(key);
-			if (MapUtil.isEmpty(ids)) {
+			Map<Integer, Date> data = getCache().get(key);
+			if (MapUtil.isEmpty(data)) {
 				return Collections.emptyList();
 			}
 
-			/* Inverting sort order */
-			List<Integer> cachedIds = new ArrayList<Integer>(ids.keySet());
-			Collections.sort(cachedIds, new Comparator<Integer>() {
+			/* Sorting by date - latest on the top */
+			List<Map.Entry<Integer, Date>> entries = new ArrayList<Map.Entry<Integer,Date>>(data.entrySet());
+			Collections.sort(entries, new Comparator<Map.Entry<Integer, Date>>() {
 				@Override
-				public int compare(Integer id1, Integer id2) {
-					return -1 * (id1.compareTo(id2));
+				public int compare(Map.Entry<Integer, Date> o1, Map.Entry<Integer, Date> o2) {
+					return -1 * (o1.getValue().compareTo(o2.getValue()));
 				}
 			});
+			List<Integer> cachedIds = new ArrayList<Integer>();
+			for (Map.Entry<Integer, Date> entry: entries) {
+				cachedIds.add(entry.getKey());
+			}
 
 			return cachedIds;
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 	}
 
@@ -585,7 +627,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
 	 */
 	protected void putIdsToCache(
-			Collection<Integer> ids,
+			Map<Integer, Date> data,
 			User user,
 			String type,
 			Collection<String> caseCodes,
@@ -614,36 +656,41 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				procInstIds,
 				handlerCategoryIDs
 		);
-		putIdsToCache(ids, key);
+		putIdsToCache(data, key);
 	}
 
-	private void putIdsToCache(Collection<Integer> ids, CasesCacheCriteria key) {
-		if (ListUtil.isEmpty(ids) || key == null) {
+	protected void putIdsToCache(Map<Integer, Date> data, CasesCacheCriteria key) {
+		if (MapUtil.isEmpty(data) || key == null) {
 			return;
 		}
 
-		assert !lock.isHeldByCurrentThread();
-		lock.lock();
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
 
 		try {
-			Map<CasesCacheCriteria, Map<Integer, Boolean>> cache = getCache();
+			Map<CasesCacheCriteria, Map<Integer, Date>> cache = getCache();
 			if (cache == null)
 				return;
 
 			/* Getting id's, that already cached by given criteria */
-			Map<Integer, Boolean> cachedIds = cache.get(key);
+			Map<Integer, Date> cachedIds = cache.get(key);
 			if (cachedIds == null) {
-				cachedIds = new LinkedHashMap<Integer, Boolean>();
+				cachedIds = new LinkedHashMap<Integer, Date>();
 			}
 
 			/* Putting to cache */
-			for (Integer id: ids) {
-				cachedIds.put(id, Boolean.TRUE);
+			for (Entry<Integer, Date> newData: data.entrySet()) {
+				cachedIds.put(newData.getKey(), newData.getValue());
 			}
 
 			cache.put(key, cachedIds);
 		} finally {
-			lock.unlock();
+			if (lockRequired) {
+				lock.unlock();
+			}
 		}
 	}
 
