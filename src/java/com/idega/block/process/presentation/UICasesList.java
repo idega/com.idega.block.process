@@ -286,9 +286,20 @@ public class UICasesList extends IWBaseComponent {
 		if (isShowCasesOnlyByProvidedProcesses() && ListUtil.isEmpty(getProcInstIds())) {
 			cases = new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>(0));
 		} else {
-			cases = manager.getCases(user, getType(), iwc.getCurrentLocale(),
-				getCaseCodes(),	getCaseStatusesToHide(), getCaseStatusesToShow(), (getPage() - 1) * getPageSize(), getPageSize(),
-				isOnlySubscribedCases(), isShowAllCases(), getProcInstIds(), getRoles());
+			cases = manager.getCases(
+					user,
+					getType(),
+					iwc.getCurrentLocale(),
+					getCaseCodes(),
+					getCaseStatusesToHide(),
+					getCaseStatusesToShow(),
+					(getPage() - 1) * getPageSize(),
+					getPageSize(),
+					isOnlySubscribedCases(),
+					isShowAllCases(),
+					getProcInstIds(),
+					getRoles()
+			);
 		}
 
 		long duration = System.currentTimeMillis() - start;
