@@ -410,9 +410,18 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	) {
 		return new CasesCacheCriteria(
 				user == null ? -1 : Integer.valueOf(user.getId()),
-				type, caseCodes, statusesToHide, statusesToShow, roles, groups,
-				codes, procInstIds, handlerCategoryIDs, onlySubscribedCases,
-				showAllCases);
+				type,
+				caseCodes,
+				statusesToHide,
+				statusesToShow,
+				roles,
+				groups,
+				codes,
+				procInstIds,
+				handlerCategoryIDs,
+				onlySubscribedCases,
+				showAllCases
+		);
 	}
 
 	private boolean isLockRequired() {
@@ -494,7 +503,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		if (key == null || id == null) {
 			return;
 		}
-		Map<Integer, Date> data = new HashMap<Integer, Date>();
+		Map<Integer, Date> data = new HashMap<Integer, Date>(1);
 		data.put(id, creationDate);
 		putIdsToCache(data, key);
 	}
@@ -518,30 +527,6 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		return Collections.emptyList();
 	}
 
-	/**
-	 *
-	 * <p>Searches {@link Case#getPrimaryKey()}s in cache {@link Map}.</p>
-	 * @param user
-	 * @param type
-	 * @param caseCodes
-	 * @param caseStatusesToHide is {@link Collection} of {@link Case#getStatus()},
-	 * which should be hidden;
-	 * @param caseStatusesToShow is {@link Collection} of {@link Case#getStatus()},
-	 * which should be shown;
-	 * @param onlySubscribedCases shows only those {@link Case}s where given
-	 * {@link User} is in {@link Case#getSubscribers()};
-	 * @param roles of BPM processes, which {@link User} can access. More info
-	 * in bpm_actors table;
-	 * @param groups
-	 * @param codes
-	 * @param showAllCases
-	 * @param procInstIds is id's of BPM process instances;
-	 * @param handlerCategoryIDs is ID's of groups, which has {@link User}s, who
-	 * is in {@link Case#getSubscribers()} list;
-	 * @return cached {@link Case#getPrimaryKey()}s or {@link Collections#emptyList()}
-	 * on failure;
-	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
-	 */
 	protected Map<Integer, Date> getCachedIds(CasesCacheCriteria key) {
 		boolean lockRequired = isLockRequired();
 		if (lockRequired) {
@@ -554,46 +539,12 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			if (MapUtil.isEmpty(data)) {
 				return Collections.emptyMap();
 			}
-			return data;
+			return new LinkedHashMap<Integer, Date>(data);
 		} finally {
 			if (lockRequired) {
 				lock.unlock();
 			}
 		}
-	}
-
-	protected List<Integer> getCachedIds(
-			User user,
-			String type,
-			Collection<String> caseCodes,
-			Collection<String> caseStatusesToHide,
-			Collection<String> caseStatusesToShow,
-			boolean onlySubscribedCases,
-			Collection<String> roles,
-			Collection<Integer> groups,
-			Collection<String> codes,
-			boolean showAllCases,
-			Collection<Long> procInstIds,
-			Collection<Long> handlerCategoryIDs
-	) {
-		/* Creating key */
-		CasesCacheCriteria key = getCacheKey(
-				user,
-				type,
-				caseCodes,
-				caseStatusesToHide,
-				caseStatusesToShow,
-				onlySubscribedCases,
-				roles,
-				groups,
-				codes,
-				showAllCases,
-				procInstIds,
-				handlerCategoryIDs
-		);
-
-		Map<Integer, Date> data = getCachedIds(key);
-		return getSortedIds(data);
 	}
 
 	protected List<Integer> getSortedIds(Map<Integer, Date> data) {
@@ -602,7 +553,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		}
 
 		/* Sorting by date - latest on the top */
-		List<Map.Entry<Integer, Date>> entries = new ArrayList<Map.Entry<Integer,Date>>(data.entrySet());
+		List<Map.Entry<Integer, Date>> entries = new ArrayList<Map.Entry<Integer, Date>>(data.entrySet());
 		Collections.sort(entries, new Comparator<Map.Entry<Integer, Date>>() {
 			@Override
 			public int compare(Map.Entry<Integer, Date> o1, Map.Entry<Integer, Date> o2) {
