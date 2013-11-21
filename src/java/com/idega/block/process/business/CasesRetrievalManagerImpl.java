@@ -122,7 +122,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	@Override
 	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
 			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases, List<Long> ids,
-			Set<String> roles) {
+			Set<String> roles,
+			boolean searchQuery) {
 		return getCases(user, type, locale, caseCodes, caseStatusesToHide, caseStatusesToShow, startIndex, count, onlySubscribedCases, showAllCases);
 	}
 
@@ -140,7 +141,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public List<Integer> getCasePrimaryKeys(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs) throws Exception {
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs,
+			boolean searchQuery) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -540,6 +542,26 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	 * on failure;
 	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
 	 */
+	protected Map<Integer, Date> getCachedIds(CasesCacheCriteria key) {
+		boolean lockRequired = isLockRequired();
+		if (lockRequired) {
+			assert !lock.isHeldByCurrentThread();
+			lock.lock();
+		}
+
+		try {
+			Map<Integer, Date> data = getCache().get(key);
+			if (MapUtil.isEmpty(data)) {
+				return Collections.emptyMap();
+			}
+			return data;
+		} finally {
+			if (lockRequired) {
+				lock.unlock();
+			}
+		}
+	}
+
 	protected List<Integer> getCachedIds(
 			User user,
 			String type,
@@ -554,53 +576,45 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Long> procInstIds,
 			Collection<Long> handlerCategoryIDs
 	) {
-		boolean lockRequired = isLockRequired();
-		if (lockRequired) {
-			assert !lock.isHeldByCurrentThread();
-			lock.lock();
+		/* Creating key */
+		CasesCacheCriteria key = getCacheKey(
+				user,
+				type,
+				caseCodes,
+				caseStatusesToHide,
+				caseStatusesToShow,
+				onlySubscribedCases,
+				roles,
+				groups,
+				codes,
+				showAllCases,
+				procInstIds,
+				handlerCategoryIDs
+		);
+
+		Map<Integer, Date> data = getCachedIds(key);
+		return getSortedIds(data);
+	}
+
+	protected List<Integer> getSortedIds(Map<Integer, Date> data) {
+		if (MapUtil.isEmpty(data)) {
+			return Collections.emptyList();
 		}
 
-		try {
-			/* Creating key */
-			CasesCacheCriteria key = getCacheKey(
-					user,
-					type,
-					caseCodes,
-					caseStatusesToHide,
-					caseStatusesToShow,
-					onlySubscribedCases,
-					roles,
-					groups,
-					codes,
-					showAllCases,
-					procInstIds,
-					handlerCategoryIDs
-			);
-
-			Map<Integer, Date> data = getCache().get(key);
-			if (MapUtil.isEmpty(data)) {
-				return Collections.emptyList();
+		/* Sorting by date - latest on the top */
+		List<Map.Entry<Integer, Date>> entries = new ArrayList<Map.Entry<Integer,Date>>(data.entrySet());
+		Collections.sort(entries, new Comparator<Map.Entry<Integer, Date>>() {
+			@Override
+			public int compare(Map.Entry<Integer, Date> o1, Map.Entry<Integer, Date> o2) {
+				return -1 * (o1.getValue().compareTo(o2.getValue()));
 			}
-
-			/* Sorting by date - latest on the top */
-			List<Map.Entry<Integer, Date>> entries = new ArrayList<Map.Entry<Integer,Date>>(data.entrySet());
-			Collections.sort(entries, new Comparator<Map.Entry<Integer, Date>>() {
-				@Override
-				public int compare(Map.Entry<Integer, Date> o1, Map.Entry<Integer, Date> o2) {
-					return -1 * (o1.getValue().compareTo(o2.getValue()));
-				}
-			});
-			List<Integer> cachedIds = new ArrayList<Integer>();
-			for (Map.Entry<Integer, Date> entry: entries) {
-				cachedIds.add(entry.getKey());
-			}
-
-			return cachedIds;
-		} finally {
-			if (lockRequired) {
-				lock.unlock();
-			}
+		});
+		List<Integer> cachedIds = new ArrayList<Integer>();
+		for (Map.Entry<Integer, Date> entry: entries) {
+			cachedIds.add(entry.getKey());
 		}
+
+		return cachedIds;
 	}
 
 	/**
@@ -694,7 +708,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		}
 	}
 
-	protected List<Integer> getCaseIds(
+	protected List<Integer> getCasesIds(
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -705,7 +719,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Integer caseId,
 			List<Long> procInstIds,
 			Set<String> roles,
-			Collection<Long> handlerCategoryIDs
+			Collection<Long> handlerCategoryIDs,
+			boolean searchQuery
 	) throws Exception {
 		throw new UnsupportedOperationException("This method is not implemented");
 	}

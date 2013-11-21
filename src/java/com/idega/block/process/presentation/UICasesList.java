@@ -298,7 +298,8 @@ public class UICasesList extends IWBaseComponent {
 					isOnlySubscribedCases(),
 					isShowAllCases(),
 					getProcInstIds(),
-					getRoles()
+					getRoles(),
+					false
 			);
 		}
 
