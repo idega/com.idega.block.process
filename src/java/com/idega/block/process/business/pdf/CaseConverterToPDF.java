@@ -10,4 +10,6 @@ public interface CaseConverterToPDF {
 
 	public List<CasePDF> getPDFsForCase(Case theCase) throws Exception;
 
+	public List<CasePDF> getPDFsAndAttachmentsForCase(Integer caseId) throws Exception;
+
 }
