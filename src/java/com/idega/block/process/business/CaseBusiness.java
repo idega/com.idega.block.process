@@ -213,7 +213,7 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusOpen
 	 */
 	public CaseStatus getCaseStatusOpen() throws RemoteException;
-	
+
 	public CaseStatus getCaseStatusReport();
 
 	/**
@@ -285,7 +285,7 @@ public interface CaseBusiness extends IBOService {
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusRedeem
 	 */
 	public CaseStatus getCaseStatusRedeem() throws RemoteException;
-	
+
 	/**
 	 * @see com.idega.block.process.business.CaseBusinessBean#getCaseStatusError
 	 */

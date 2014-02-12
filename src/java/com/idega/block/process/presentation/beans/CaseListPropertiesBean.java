@@ -33,6 +33,8 @@ public class CaseListPropertiesBean {
 	private boolean nameFromExternalEntity = false;
 	protected boolean showUserProfilePicture = true;
 	protected boolean addExportContacts = true;
+	protected boolean showUserCompany = false;
+	protected boolean showLastLoginDate = false;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -326,5 +328,21 @@ public class CaseListPropertiesBean {
 
 	public void setAddExportContacts(boolean addExportContacts) {
 		this.addExportContacts = addExportContacts;
+	}
+
+	public boolean isShowUserCompany() {
+		return showUserCompany;
+	}
+
+	public void setShowUserCompany(boolean showUserCompany) {
+		this.showUserCompany = showUserCompany;
+	}
+
+	public boolean isShowLastLoginDate() {
+		return showLastLoginDate;
+	}
+
+	public void setShowLastLoginDate(boolean showLastLoginDate) {
+		this.showLastLoginDate = showLastLoginDate;
 	}
 }

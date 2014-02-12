@@ -67,6 +67,8 @@ public abstract class CaseBlock extends Block {
 					showLogExportButton,
 					showUserProfilePicture = Boolean.TRUE,
 					addExportContacts = false,
+					showUserCompany = false,
+					showLastLoginDate = false,
 					showCaseStatus = true,
 					showExportAllCasesButton,
 					showComments = true,
@@ -377,6 +379,8 @@ public abstract class CaseBlock extends Block {
 		list.setNameFromExternalEntity(!isUserNameShown());
 		list.setShowUserProfilePicture(isShowUserProfilePicture());
 		list.setAddExportContacts(isAddExportContacts());
+		list.setShowUserCompany(isShowUserCompany());
+		list.setShowLastLoginDate(isShowLastLoginDate());
 
 		return list;
 	}
@@ -555,5 +559,21 @@ public abstract class CaseBlock extends Block {
 
 	public void setAddExportContacts(boolean addExportContacts) {
 		this.addExportContacts = addExportContacts;
+	}
+
+	public boolean isShowUserCompany() {
+		return showUserCompany;
+	}
+
+	public void setShowUserCompany(boolean showUserCompany) {
+		this.showUserCompany = showUserCompany;
+	}
+
+	public boolean isShowLastLoginDate() {
+		return showLastLoginDate;
+	}
+
+	public void setShowLastLoginDate(boolean showLastLoginDate) {
+		this.showLastLoginDate = showLastLoginDate;
 	}
 }

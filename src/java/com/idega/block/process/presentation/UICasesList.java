@@ -80,7 +80,9 @@ public class UICasesList extends IWBaseComponent {
 					showCasesOnlyByProvidedProcesses = false,
 					nameFromExternalEntity = false,
 					showUserProfilePicture = true,
-					addExportContacts = true;
+					addExportContacts = true,
+					showUserCompany = false,
+					showLastLoginDate = false;
 
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
@@ -207,7 +209,9 @@ public class UICasesList extends IWBaseComponent {
 		properties.setNameFromExternalEntity(isNameFromExternalEntity());
 		properties.setShowUserProfilePicture(isShowUserProfilePicture());
 		properties.setAddExportContacts(isAddExportContacts());
-
+		properties.setShowUserCompany(isShowUserCompany());
+		properties.setShowLastLoginDate(isShowLastLoginDate());
+		
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -689,5 +693,21 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setAddExportContacts(boolean addExportContacts) {
 		this.addExportContacts = addExportContacts;
+	}
+
+	public boolean isShowUserCompany() {
+		return showUserCompany;
+	}
+
+	public void setShowUserCompany(boolean showUserCompany) {
+		this.showUserCompany = showUserCompany;
+	}
+
+	public boolean isShowLastLoginDate() {
+		return showLastLoginDate;
+	}
+
+	public void setShowLastLoginDate(boolean showLastLoginDate) {
+		this.showLastLoginDate = showLastLoginDate;
 	}
 }
