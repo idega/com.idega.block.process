@@ -23,7 +23,6 @@ import javax.ejb.RemoveException;
 
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.business.IBOLookup;
-import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
@@ -305,12 +304,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
-	public Collection getChildren() {
+	public Collection<Case> getChildren() {
 		return this.getGeneralCase().getChildren();
 	}
 
 	@Override
-	public Iterator getChildrenIterator() {
+	public Iterator<Case> getChildrenIterator() {
 		return this.getGeneralCase().getChildrenIterator();
 	}
 
@@ -320,7 +319,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
-	public ICTreeNode getChildAtIndex(int childIndex) {
+	public Case getChildAtIndex(int childIndex) {
 		return this.getGeneralCase().getChildAtIndex(childIndex);
 	}
 
@@ -330,12 +329,12 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
-	public int getIndex(ICTreeNode node) {
+	public int getIndex(Case node) {
 		return this.getGeneralCase().getIndex(node);
 	}
 
 	@Override
-	public ICTreeNode getParentNode() {
+	public Case getParentNode() {
 		return this.getGeneralCase().getParentNode();
 	}
 
@@ -370,7 +369,7 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	/**
-	 * @see com.idega.core.ICTreeNode#getNodeType()
+	 * @see com.idega.core.Case#getNodeType()
 	 */
 	public int getNodeType() {
 		return -1;

@@ -34,7 +34,7 @@ import com.idega.user.data.User;
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.23 $
  */
-public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCapable {
+public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, MetaDataCapable {
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setCode
@@ -190,13 +190,13 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	 * @see com.idega.block.process.data.CaseBMPBean#getParentNode
 	 */
 	@Override
-	public ICTreeNode getParentNode();
+	public Case getParentNode();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildAtIndex
 	 */
 	@Override
-	public ICTreeNode getChildAtIndex(int childIndex);
+	public Case getChildAtIndex(int childIndex);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildCount
@@ -208,13 +208,13 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildrenIterator
 	 */
 	@Override
-	public Iterator getChildrenIterator();
+	public Iterator<Case> getChildrenIterator();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getChildren
 	 */
 	@Override
-	public Collection getChildren();
+	public Collection<Case> getChildren();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getSiblingCount
@@ -256,7 +256,7 @@ public interface Case extends IDOEntity, ICTreeNode, UniqueIDCapable, MetaDataCa
 	 * @see com.idega.block.process.data.CaseBMPBean#getIndex
 	 */
 	@Override
-	public int getIndex(ICTreeNode node);
+	public int getIndex(Case node);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getAllowsChildren

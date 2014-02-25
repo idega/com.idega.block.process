@@ -29,7 +29,6 @@ import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.event.CaseDeletedEvent;
 import com.idega.block.process.event.CaseModifiedEvent;
 import com.idega.business.IBOLookup;
-import com.idega.core.data.ICTreeNode;
 import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
@@ -72,7 +71,7 @@ import com.idega.util.expression.ELUtil;
  * @author <a href="mailto:tryggvil@idega.com">tryggvil</a>
  * @version $Revision: 1.70 $
  */
-public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode, UniqueIDCapable, MetaDataCapable {
+public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = -9118580756828123883L;
 
@@ -392,12 +391,12 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
-	public ICTreeNode getParentNode() {
+	public Case getParentNode() {
 		return this.getParentCase();
 	}
 
 	@Override
-	public ICTreeNode getChildAtIndex(int childIndex) {
+	public Case getChildAtIndex(int childIndex) {
 		try {
 			return this.getCaseHome().findByPrimaryKey(new Integer(childIndex));
 		}
@@ -417,8 +416,8 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
-	public Iterator<? extends Case> getChildrenIterator() {
-		Collection<? extends Case> children = getChildren();
+	public Iterator<Case> getChildrenIterator() {
+		Collection<Case> children = getChildren();
 		if (children != null)
 			return children.iterator();
 
@@ -426,7 +425,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
-	public Collection<? extends Case> getChildren() {
+	public Collection<Case> getChildren() {
 		try {
 			return this.getCaseHome().findSubCasesUnder(this);
 		}
@@ -635,7 +634,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	}
 
 	@Override
-	public int getIndex(ICTreeNode node) {
+	public int getIndex(Case node) {
 		return Integer.parseInt(getId());
 	}
 
@@ -805,7 +804,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, ICTreeNode
 	public String ejbHomeGetCaseStatusClosed() {
 		return CASE_STATUS_CLOSED;
 	}
-	
+
 	public String ejbHomeGetCaseStatusReport() {
 		return CASE_STATUS_REPORT;
 	}
