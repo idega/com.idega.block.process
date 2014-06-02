@@ -68,6 +68,10 @@ public class CaseCodeManager implements Singleton{
 	}
 	
 	private Class getBusinessClass(CaseCode caseCode) {
+		if (caseCode == null) {
+			return null;
+		}
+		
 		String code = caseCode.getCode();
 		return (Class) getCaseCodeBusinessMap().get(code);
 	}
