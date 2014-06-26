@@ -1376,7 +1376,6 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		getGeneralCase().setRead(read);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Integer> ejbFindCases(User user, String status,String caseCode, Boolean read)  throws FinderException{
 		try {
 			SelectQuery query = idoQueryGetAllCasesByUser(user, status, caseCode, read);
@@ -1512,7 +1511,6 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return getUserRelations(VOTERS);
 	}
 
-	@SuppressWarnings("unchecked")
 	private Collection<User> getUserRelations(String relation) {
 		try {
 			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";

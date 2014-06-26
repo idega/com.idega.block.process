@@ -1105,7 +1105,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
 	 * @throws FinderException
 	 */
-	@SuppressWarnings("unchecked")
 	public Collection<Integer> ejbFindByCaseIdentifier(String caseIdentifier) throws FinderException {
 		return idoFindPKsByQuery(idoQueryGetAllCasesByCaseIdentifier(caseIdentifier));
 	}
@@ -1192,7 +1191,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Collection<User> getVoters() {
 		try {
 			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
@@ -1236,7 +1234,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Collection<User> getSubscribers() {
 		try {
 			String userId = UserBMPBean.SQL_TABLE_NAME + "_ID";
