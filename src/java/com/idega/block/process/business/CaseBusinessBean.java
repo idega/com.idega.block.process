@@ -231,7 +231,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the active Cases for the User
 	 */
 	@Override
-	public Collection getAllActiveCasesForUser(User user) throws FinderException {
+	public Collection<Case> getAllActiveCasesForUser(User user) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user);
 	}
 
@@ -239,7 +239,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the active Cases for the User with a specificed code
 	 */
 	@Override
-	public Collection getAllActiveCasesForUser(User user, CaseCode code) throws FinderException {
+	public Collection<Case> getAllActiveCasesForUser(User user, CaseCode code) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, code);
 	}
 
@@ -247,7 +247,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the active Cases for the User with a specificed code
 	 */
 	@Override
-	public Collection getAllActiveCasesForUser(User user, String caseCode) throws FinderException {
+	public Collection<Case> getAllActiveCasesForUser(User user, String caseCode) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, caseCode);
 	}
 
@@ -255,7 +255,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the active Cases for the User with a specificed code and status
 	 */
 	@Override
-	public Collection getAllActiveCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException {
+	public Collection<Case> getAllActiveCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, code, status);
 	}
 
@@ -263,7 +263,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the active Cases for the User with a specificed code and status
 	 */
 	@Override
-	public Collection getAllActiveCasesForUser(User user, String caseCode, String caseStatus) throws FinderException {
+	public Collection<Case> getAllActiveCasesForUser(User user, String caseCode, String caseStatus) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, caseCode, caseStatus);
 	}
 
@@ -271,7 +271,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the Cases for the User
 	 */
 	@Override
-	public Collection getAllCasesForUser(User user) throws FinderException {
+	public Collection<Case> getAllCasesForUser(User user) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user);
 	}
 
@@ -279,7 +279,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the Cases for the User
 	 */
 	@Override
-	public Collection getAllCasesForGroup(Group group) throws FinderException {
+	public Collection<Case> getAllCasesForGroup(Group group) throws FinderException {
 		return this.getCaseHome().findAllCasesByGroup(group);
 	}
 
@@ -288,7 +288,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * in the codes[] array.
 	 */
 	@Override
-	public Collection getAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+	public Collection<Case> getAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		return this.getCaseHome().findAllCasesForUserExceptCodes(user, codes, startingCase, numberOfCases);
 	}
 
@@ -307,7 +307,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * in the codes[] array.
 	 */
 	@Override
-	public Collection getAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException {
+	public Collection<Case> getAllCasesForGroupExceptCodes(Group group, CaseCode[] codes) throws FinderException {
 		return this.getCaseHome().findAllCasesForGroupExceptCodes(group, codes);
 	}
 
@@ -316,7 +316,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * in the codes[] array.
 	 */
 	@Override
-	public Collection getAllCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
+	public Collection<Case> getAllCasesForUserAndGroupsExceptCodes(User user, Collection groups, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		return this.getCaseHome().findAllCasesForGroupsAndUserExceptCodes(user, groups, codes, startingCase, numberOfCases);
 	}
 
@@ -334,7 +334,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the Cases for the User with a specificed code
 	 */
 	@Override
-	public Collection getAllCasesForUser(User user, CaseCode code) throws FinderException {
+	public Collection<Case> getAllCasesForUser(User user, CaseCode code) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, code);
 	}
 
@@ -342,7 +342,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the Cases for the User with a specificed code
 	 */
 	@Override
-	public Collection getAllCasesForUser(User user, String caseCode) throws FinderException {
+	public Collection<Case> getAllCasesForUser(User user, String caseCode) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, caseCode);
 	}
 
@@ -350,7 +350,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the Cases for the User with a specificed code and status
 	 */
 	@Override
-	public Collection getAllCasesForUser(User user, String caseCode, String caseStatus) throws FinderException {
+	public Collection<Case> getAllCasesForUser(User user, String caseCode, String caseStatus) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, caseCode, caseStatus);
 	}
 
@@ -358,32 +358,32 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * Gets all the Cases for the User with a specificed code and status
 	 */
 	@Override
-	public Collection getAllCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException {
+	public Collection<Case> getAllCasesForUser(User user, CaseCode code, CaseStatus status) throws FinderException {
 		return this.getCaseHome().findAllCasesByUser(user, code, status);
 	}
 
 	@Override
-	public Collection getCaseLogsByDates(Timestamp fromDate, Timestamp toDate) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByDates(Timestamp fromDate, Timestamp toDate) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByDate(fromDate, toDate);
 	}
 
 	@Override
-	public Collection getCaseLogsByCaseCodeAndDates(CaseCode caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByCaseCodeAndDates(CaseCode caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException {
 		return getCaseLogsByCaseCodeAndDates(caseCode.getCode(), fromDate, toDate);
 	}
 
 	@Override
-	public Collection getCaseLogsByCaseCodeAndDates(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByCaseCodeAndDates(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByCaseAndDate(caseCode, fromDate, toDate);
 	}
 
 	@Override
-	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, CaseStatus statusBefore, CaseStatus statusAfter) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, CaseStatus statusBefore, CaseStatus statusAfter) throws FinderException {
 		return getCaseLogsByDatesAndStatusChange(fromDate, toDate, statusBefore.getStatus(), statusAfter.getStatus());
 	}
 
 	@Override
-	public Collection getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByDatesAndStatusChange(Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByDateAndStatusChange(fromDate, toDate, statusBefore, statusAfter);
 	}
 
@@ -393,12 +393,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public Collection getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByCaseAndDatesAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByCaseAndDateAndStatusChange(caseCode, fromDate, toDate, statusBefore, statusAfter);
 	}
 
 	@Override
-	public Collection getCaseLogsByCase(Case theCase) throws FinderException {
+	public Collection<CaseLog> getCaseLogsByCase(Case theCase) throws FinderException {
 		return getCaseLogHome().findAllCaseLogsByCaseOrderedByDate(theCase);
 	}
 
@@ -489,24 +489,24 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public Collection getCaseCodes() {
+	public Collection<CaseCode> getCaseCodes() {
 		try {
 			return getCaseCodeHome().findAllCaseCodes();
 		}
 		catch (FinderException fe) {
 			fe.printStackTrace();
-			return new ArrayList();
+			return new ArrayList<CaseCode>();
 		}
 	}
 
 	@Override
-	public Collection getCaseStatuses() {
+	public Collection<CaseStatus> getCaseStatuses() {
 		try {
 			return getCaseStatusHome().findAllStatuses();
 		}
 		catch (FinderException fe) {
 			fe.printStackTrace();
-			return new ArrayList();
+			return new ArrayList<CaseStatus>();
 		}
 	}
 
