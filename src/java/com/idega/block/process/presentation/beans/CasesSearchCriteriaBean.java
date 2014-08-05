@@ -23,7 +23,8 @@ public class CasesSearchCriteriaBean implements Serializable {
 					dateRange,
 					id,
 					instanceId,
-					casesListCustomizer;
+					casesListCustomizer,
+					address;
 
 	private Long subscribersGroupId;
 	private String[] statuses;
@@ -38,7 +39,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering;
 
 	private List<String> customColumns, exportColumns;
-	
+
 	public Long getSubscribersGroupId() {
 		return subscribersGroupId;
 	}
@@ -269,5 +270,15 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setExportColumns(List<String> exportColumns) {
 		this.exportColumns = exportColumns;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
 
 }
