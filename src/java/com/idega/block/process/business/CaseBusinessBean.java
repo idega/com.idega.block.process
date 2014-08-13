@@ -51,6 +51,7 @@ import com.idega.data.IDOLookupException;
 import com.idega.data.IDOStoreException;
 import com.idega.data.SimpleQuerier;
 import com.idega.idegaweb.IWBundle;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.UnavailableIWContext;
 import com.idega.presentation.IWContext;
@@ -860,7 +861,17 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) {
-		return getLocalizedString(ProcessConstants.CASE_STATUS_KEY + CoreConstants.DOT + status.toString(), status.toString(), locale, bundleIdentifier);
+		String statusKey = status.toString();
+		String localizationKey = ProcessConstants.CASE_STATUS_KEY + CoreConstants.DOT + statusKey;
+		String localization = getLocalizedString(localizationKey, statusKey, locale, bundleIdentifier);
+		if ((StringUtil.isEmpty(localization) || statusKey.equals(localization)) && !ProcessConstants.IW_BUNDLE_IDENTIFIER.equals(bundleIdentifier)) {
+			getLogger().warning("Failed to get localization for " + localizationKey + " from bundle " + bundleIdentifier + ", will try to load it from bundle " + ProcessConstants.IW_BUNDLE_IDENTIFIER);
+			IWBundle bundle = IWMainApplication.getDefaultIWMainApplication().getBundle(ProcessConstants.IW_BUNDLE_IDENTIFIER);
+			IWResourceBundle iwrb = bundle.getResourceBundle(locale);
+			localization = iwrb.getLocalizedString(localizationKey, statusKey);
+		}
+
+		return StringUtil.isEmpty(localization) ? statusKey : localization;
 	}
 
 	/**
