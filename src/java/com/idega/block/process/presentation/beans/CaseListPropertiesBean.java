@@ -40,7 +40,9 @@ public class CaseListPropertiesBean {
 					showCaseStatus = true,
 					showExportAllCasesButton,
 					showComments = true,
-					showContacts = true;
+					showContacts = true,
+
+					search = false;
 
 	private int pageSize;
 	private int page;
@@ -313,7 +315,7 @@ public class CaseListPropertiesBean {
 	public void setDescriptionEditable(boolean descriptionEditable) {
 		this.descriptionEditable = descriptionEditable;
 	}
-	
+
 	public void setShowUserProfilePicture(boolean showUserProfilePicture) {
 		this.showUserProfilePicture = showUserProfilePicture;
 	}
@@ -345,4 +347,13 @@ public class CaseListPropertiesBean {
 	public void setShowLastLoginDate(boolean showLastLoginDate) {
 		this.showLastLoginDate = showLastLoginDate;
 	}
+
+	public boolean isSearch() {
+		return search;
+	}
+
+	public void setSearch(boolean search) {
+		this.search = search;
+	}
+
 }
