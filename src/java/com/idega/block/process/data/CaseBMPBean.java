@@ -136,7 +136,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		addManyToOneRelationship(COLUMN_EXTERNAL_HANDLER_ID, "External handler id", User.class);
 		addUniqueIDColumn();
 		addAttribute(COLUMN_CASE_SUBJECT, "Case subject", String.class);
-		addAttribute(COLUMN_CASE_BODY, "Case subject", String.class, 4000);
+		addAttribute(COLUMN_CASE_BODY, "Case body", String.class, 4000);
 		addAttribute(COLUMN_CASE_MANAGER_TYPE, "Case manager type", String.class);
 		addAttribute(COLUMN_CASE_IDENTIFIER, "Case identifier", String.class);
 		addAttribute(COLUMN_READ,"Is case read",Boolean.class);
