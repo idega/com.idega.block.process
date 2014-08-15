@@ -15,8 +15,10 @@ public interface CasesListCustomizer {
 	 * @return {@link Map} of (headerKey, header) or <code>null</code>.
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
 	 */
-	public Map<String, String> getHeadersAndVariables(List<String> headersKeys);
+	public Map<String, String> getHeadersAndVariables(CaseListPropertiesBean properties, List<String> headersKeys);
 
 	public Map<String, String> getLocalizedStatuses(List<String> casesIds, Locale locale);
+
+	public Map<String, Map<String, String>> getCustomColumnsForSearchResult(List<String> casesIds, Locale locale);
 
 }
