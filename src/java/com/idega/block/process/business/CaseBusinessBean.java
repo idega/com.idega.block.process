@@ -865,7 +865,6 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		String localizationKey = ProcessConstants.CASE_STATUS_KEY + CoreConstants.DOT + statusKey;
 		String localization = getLocalizedString(localizationKey, statusKey, locale, bundleIdentifier);
 		if ((StringUtil.isEmpty(localization) || statusKey.equals(localization)) && !ProcessConstants.IW_BUNDLE_IDENTIFIER.equals(bundleIdentifier)) {
-			getLogger().warning("Failed to get localization for " + localizationKey + " from bundle " + bundleIdentifier + ", will try to load it from bundle " + ProcessConstants.IW_BUNDLE_IDENTIFIER);
 			IWBundle bundle = IWMainApplication.getDefaultIWMainApplication().getBundle(ProcessConstants.IW_BUNDLE_IDENTIFIER);
 			IWResourceBundle iwrb = bundle.getResourceBundle(locale);
 			localization = iwrb.getLocalizedString(localizationKey, statusKey);
