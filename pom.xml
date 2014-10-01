@@ -6,25 +6,11 @@
     <version>5.0.0-SNAPSHOT</version>
   </parent>
   <name>Process</name>
-  <groupId>com.idega.block.platform</groupId>
   <artifactId>com.idega.block.process</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <inceptionYear>2005</inceptionYear>
   <description>idegaWeb Process Block</description>
   
-  <scm>
-    
-    <connection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.process/</connection>
-    <developerConnection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.process/</developerConnection> 
-     
-     <!--
-    <connection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.process/</connection>
-    <developerConnection>scm:cvs:ext:idegaweb@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.process/</developerConnection>
-    -->
-    <tag>com_idega_block_platform-4_1_2</tag>
-  </scm>
-
   <developers>
     <developer>
       <name>Tryggvi Larusson</name>
@@ -55,6 +41,7 @@
       <roles />
     </developer>
   </developers>
+  
   <dependencies>
     <dependency>
       <groupId>com.idega.block.platform</groupId>
@@ -63,6 +50,10 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
   	  <artifactId>com.idega.webface</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.idega.block.platform</groupId>
+  	  <artifactId>com.idega.hibernate</artifactId>
     </dependency>
   </dependencies>
 </project>
