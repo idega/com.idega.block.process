@@ -110,7 +110,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			}
 
 			int caseCount = caseBusiness.getNumberOfCasesForUserExceptCodes(user, codes);
-			return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(casesToShow, locale), caseCount);
+			return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(casesToShow, locale), Long.valueOf(caseCount));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (FinderException e) {
@@ -189,7 +189,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public PagedDataCollection<CasePresentation> getCasesByEntities(Collection<Case> cases, Locale locale) {
-		return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(cases, locale), cases.size());
+		return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(cases, locale), Long.valueOf(cases.size()));
 	}
 
 	@Override

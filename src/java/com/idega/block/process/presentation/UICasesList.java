@@ -52,6 +52,8 @@ public class UICasesList extends IWBaseComponent {
 	private int pageSize = 20;
 	private int page = 1;
 
+	private Long totalNumberOfCases = null;
+
 	private List<Long> procInstIds;
 	private Set<String> roles;
 
@@ -142,8 +144,10 @@ public class UICasesList extends IWBaseComponent {
 
 		GeneralCasesListBuilder listBuilder = ELUtil.getInstance().getBean(GeneralCasesListBuilder.SPRING_BEAN_IDENTIFIER);
 
-		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() || CasesRetrievalManager.CASE_LIST_TYPE_PUBLIC.equals(getType()) ?
-				getCases(iwc) : null;
+		PagedDataCollection<CasePresentation> cases = iwc.isLoggedOn() || CasesRetrievalManager.CASE_LIST_TYPE_PUBLIC.equals(getType()) ? getCases(iwc) : null;
+		if (getTotalNumberOfCases() != null && cases != null) {
+			cases.setTotalCount(getTotalNumberOfCases());
+		}
 
 		UIComponent casesListComponent = null;
 		CaseListPropertiesBean properties = new CaseListPropertiesBean();
@@ -211,7 +215,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setAddExportContacts(isAddExportContacts());
 		properties.setShowUserCompany(isShowUserCompany());
 		properties.setShowLastLoginDate(isShowLastLoginDate());
-		
+
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -710,4 +714,13 @@ public class UICasesList extends IWBaseComponent {
 	public void setShowLastLoginDate(boolean showLastLoginDate) {
 		this.showLastLoginDate = showLastLoginDate;
 	}
+
+	public Long getTotalNumberOfCases() {
+		return totalNumberOfCases;
+	}
+
+	public void setTotalNumberOfCases(Long totalNumberOfCases) {
+		this.totalNumberOfCases = totalNumberOfCases;
+	}
+
 }

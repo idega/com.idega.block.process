@@ -48,6 +48,8 @@ public abstract class CaseBlock extends Block {
 	private int pageSize = 20,
 				page = 1;
 
+	private Long totalNumberOfCases = null;
+
 	private boolean addCredentialsToExernalUrls,
 					showCaseNumberColumn = true,
 					showCreationTimeInDateColumn = true,
@@ -106,11 +108,17 @@ public abstract class CaseBlock extends Block {
 	public void main(IWContext iwc) throws Exception {
 		initialize(iwc);
 
-		doResolveIds(iwc);
+		int page = getPage();
+		doResolveIds(iwc, getPageSize(), page);
+		totalNumberOfCases = getTotalCountOfCases(iwc, page);
+
 		present(iwc);
 	}
 
-	protected void doResolveIds(IWContext iwc) throws Exception {}
+	protected Long getTotalCountOfCases(IWContext iwc, int page) throws Exception {
+		return null;
+	}
+	protected void doResolveIds(IWContext iwc, int pageSize, int page) throws Exception {}
 
 	protected abstract void present(IWContext iwc) throws Exception;
 
@@ -381,6 +389,7 @@ public abstract class CaseBlock extends Block {
 		list.setAddExportContacts(isAddExportContacts());
 		list.setShowUserCompany(isShowUserCompany());
 		list.setShowLastLoginDate(isShowLastLoginDate());
+		list.setTotalNumberOfCases(getTotalNumberOfCases());
 
 		return list;
 	}
@@ -576,4 +585,13 @@ public abstract class CaseBlock extends Block {
 	public void setShowLastLoginDate(boolean showLastLoginDate) {
 		this.showLastLoginDate = showLastLoginDate;
 	}
+
+	public Long getTotalNumberOfCases() {
+		return totalNumberOfCases;
+	}
+
+	public void setTotalNumberOfCases(Long totalNumberOfCases) {
+		this.totalNumberOfCases = totalNumberOfCases;
+	}
+
 }
