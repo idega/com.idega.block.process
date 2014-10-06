@@ -120,6 +120,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String CASE_STATUS_CREATED_KEY = "CREA";
 	public static final String CASE_STATUS_FINISHED_KEY = "FINI";
 	public static final String CASE_STATUS_REPORT = "REPO";
+	public static final String CASE_STATUS_OFFERED = "OFFR";
 
 	@Override
 	public void initializeAttributes() {
@@ -837,6 +838,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 	public String ejbHomeGetCaseStatusFinished() {
 		return CASE_STATUS_FINISHED_KEY;
+	}
+
+	public String ejbHomeGetCaseStatusOffered() {
+		return CASE_STATUS_OFFERED;
 	}
 
 	protected IDOQuery idoQueryGetAllCasesForUserExceptCodes(User user, CaseCode[] codes) {
