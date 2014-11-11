@@ -36,7 +36,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 				pageSize = 0,
 				foundResults = 0;
 
-	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering;
+	private boolean allDataLoaded = Boolean.TRUE, showAllCases, showStatistics, showLoadingMessage = Boolean.TRUE, noOrdering, showContacts = Boolean.TRUE;
 
 	private List<String> customColumns, exportColumns;
 
@@ -279,6 +279,12 @@ public class CasesSearchCriteriaBean implements Serializable {
 		this.address = address;
 	}
 
+	public boolean isShowContacts() {
+		return showContacts;
+	}
 
+	public void setShowContacts(boolean showContacts) {
+		this.showContacts = showContacts;
+	}
 
 }
