@@ -264,6 +264,6 @@ public class CasePresentation implements Serializable {
 
 	@Override
 	public String toString() {
-		return getId();
+		return "\n\t" + getId() + " case identifier: '" + getCaseIdentifier() + "'";
 	}
 }
