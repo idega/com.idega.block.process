@@ -49,19 +49,58 @@ public interface CasesRetrievalManager {
 
 	public abstract String getProcessIdentifier(Case theCase);
 
-	public abstract UIComponent getView(IWContext iwc, Integer caseId, String type, String caseManagerType);
+	public abstract UIComponent getView(
+			IWContext iwc, 
+			Integer caseId,
+			String type, 
+			String caseManagerType);
 
-	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes,
-			List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases);
-	public abstract PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes,
-			List<String> statusesToHide, List<String> statusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases,
-			List<Long> procInstIds, Set<String> roles,
+	public abstract PagedDataCollection<CasePresentation> getCases(
+			User user, 
+			String type, 
+			Locale locale, 
+			List<String> caseCodes,
+			List<String> statusesToHide, 
+			List<String> statusesToShow, 
+			int startIndex, 
+			int count, 
+			boolean onlySubscribedCases, 
+			boolean showAllCases);
+
+	public abstract PagedDataCollection<CasePresentation> getCases(
+			User user, 
+			String type, 
+			Locale locale, 
+			List<String> caseCodes,
+			List<String> statusesToHide, 
+			List<String> statusesToShow, 
+			int startIndex, int count, 
+			boolean onlySubscribedCases, 
+			boolean showAllCases,
+			List<Long> procInstIds, 
+			Set<String> roles,
 			boolean searchQuery);
 
-	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases) throws Exception;
-	public abstract List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles) throws Exception;
+	public abstract List<Integer> getCaseIds(
+			User user, 
+			String type, 
+			List<String> 
+			caseCodes, 
+			List<String> statusesToHide, 
+			List<String> statusesToShow,
+			boolean onlySubscribedCases, 
+			boolean showAllCases) throws Exception;
+
+	public abstract List<Integer> getCaseIds(
+			User user, 
+			String type, 
+			List<String> caseCodes, 
+			List<String> statusesToHide, 
+			List<String> statusesToShow,
+			boolean onlySubscribedCases, 
+			boolean showAllCases, 
+			List<Long> procInstIds, 
+			Set<String> roles) throws Exception;
 
 	/**
 	 *
