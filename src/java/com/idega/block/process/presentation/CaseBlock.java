@@ -77,7 +77,8 @@ public abstract class CaseBlock extends Block {
 					showContacts = true,
 					descriptionEditable = true,
 					useJavascriptForPageSwitching = true,
-					showCasesOnlyByProvidedProcesses = false;
+					showCasesOnlyByProvidedProcesses = false,
+					changerCheckboxVisible = Boolean.FALSE;
 
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
@@ -91,10 +92,28 @@ public abstract class CaseBlock extends Block {
 					customColumns,
 					casesListCustomizer,
 
-					externalStyleSheet;
+					externalStyleSheet,
+					commaSeparatedExcludedHandlersIds;
 
 	private List<Long> procInstIds;
 	private Set<String> roles;
+
+	public boolean isChangerCheckboxVisible() {
+		return changerCheckboxVisible;
+	}
+
+	public void setChangerCheckboxVisible(boolean changerCheckboxVisible) {
+		this.changerCheckboxVisible = changerCheckboxVisible;
+	}
+
+	public String getCommaSeparatedExcludedHandlersIds() {
+		return commaSeparatedExcludedHandlersIds;
+	}
+
+	public void setCommaSeparatedExcludedHandlersIds(
+			String commaSeparatedExcludedHandlersIds) {
+		this.commaSeparatedExcludedHandlersIds = commaSeparatedExcludedHandlersIds;
+	}
 
 	public List<Long> getProcInstIds() {
 		return procInstIds;
