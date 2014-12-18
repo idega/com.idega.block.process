@@ -68,4 +68,6 @@ case_sub_category=Case sub-category
 created_date=Created date
 message=Message
 loading=Loading...
+reply=Reply
+forward=Forward
 select_case_type=Select case type: 

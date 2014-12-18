@@ -60,3 +60,6 @@ subject=Subject
 user_cases=Cases
 user_messages=User messages
 view=View
+reply=Reply
+forward=Forward
+

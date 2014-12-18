@@ -51,4 +51,6 @@ viewpoint.applies=Avser
 viewpoint.confirmEnterViewpoint=Tack f\u00F6r din synpunkt. Den \u00E4r nu registrerad som ett \u00E4rende p\u00E5 Nacka24. En handl\u00E4ggare kommer att hantera och besvara \u00E4rendet.
 viewpoint.confirmEnterViewpointSubject=Tack f\u00F6r din synpunkt
 viewpoint.originalViewpoint=Ursprunglig synpunkt
+reply=Reply
+forward=Forward
 welcome_message.morning=

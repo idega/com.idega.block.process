@@ -39,12 +39,12 @@ import com.idega.util.text.Name;
 
 /**
  * Last modified: $Date: 2008/06/18 13:02:39 $ by $Author: laddi $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.12 $
  */
 public class UserMessages extends MessageBlock implements IWPageEventListener {
-	
+
 	private String messageType;
 	private ICPage iViewerPage;
 	private int iMaxNumberOfEntries = -1;
@@ -63,21 +63,21 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			add(new Text("No user logged on..."));
 			return;
 		}
-		
+
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
 		layer.setID("userMessages");
-		
+
 		Layer headerLayer = new Layer(Layer.DIV);
 		headerLayer.setStyleClass("caseHeader");
 		layer.add(headerLayer);
-		
+
 		headerLayer.add(new Heading1(getHeading()));
 
 		Layer navigationLayer = new Layer(Layer.DIV);
 		navigationLayer.setStyleClass("caseNavigation");
 		headerLayer.add(navigationLayer);
-		
+
 		ListNavigator navigator = new ListNavigator("userMessages", getMessageCount(iwc));
 		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
 		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("messages", "messages"));
@@ -85,16 +85,16 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			navigator.setNumberOfEntriesPerPage(this.iNumberOfEntriesShown);
 		}
 		navigationLayer.add(navigator);
-		
+
 		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
-		
+
 		add(layer);
 	}
-	
+
 	protected String getHeading() {
 		return getResourceBundle().getLocalizedString("user_messages", "User messages");
 	}
-	
+
 	private Table2 getCaseTable(IWContext iwc, int startingEntry, int numberOfEntries) throws RemoteException {
 		Table2 table = new Table2();
 		table.setStyleClass("caseTable");
@@ -102,7 +102,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		table.setWidth("100%");
 		table.setCellpadding(0);
 		table.setCellspacing(0);
-		
+
 		Collection cases = getMessages(iwc, startingEntry, numberOfEntries);
 
 		TableRowGroup group = table.createHeaderRowGroup();
@@ -111,28 +111,28 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		cell.setStyleClass("firstColumn");
 		cell.setStyleClass("messageCount");
 		cell.add(new Text(getResourceBundle().getLocalizedString("message_number", "Nr.")));
-		
+
 		cell = row.createHeaderCell();
 		cell.setStyleClass("messageSubject");
 		cell.add(new Text(getResourceBundle().getLocalizedString("subject", "Subject")));
-		
+
 		cell = row.createHeaderCell();
 		cell.setStyleClass("messsageSender");
 		cell.add(new Text(getResourceBundle().getLocalizedString("sender", "Sender")));
-		
+
 		cell = row.createHeaderCell();
 		cell.setStyleClass("messageDate");
 		cell.add(new Text(getResourceBundle().getLocalizedString("date", "Date")));
-		
+
 		cell = row.createHeaderCell();
 		cell.setStyleClass("lastColumn");
 		cell.setStyleClass("messageDelete");
 		cell.add(new Text(getResourceBundle().getLocalizedString("delete", "Delete")));
-		
+
 		group = table.createBodyRowGroup();
 		int iRow = 1;
 		int messageNumber = startingEntry + 1;
-		
+
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
 			row = group.createRow();
@@ -153,10 +153,10 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			cell.setStyleClass("firstColumn");
 			cell.setStyleClass("messageCount");
 			cell.add(new Text(String.valueOf(messageNumber)));
-			
+
 			cell = row.createCell();
 			cell.setStyleClass("messageSubject");
-			
+
 			Link link = new Link(new Text(message.getSubject() != null ? message.getSubject() : getResourceBundle().getLocalizedString("message.no_subject", "No subject")));
 			link.addParameter(PARAMETER_MESSAGE_PK, message.getPrimaryKey().toString());
 			if (getViewerPage() != null) {
@@ -180,11 +180,11 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			cell = row.createCell();
 			cell.setStyleClass("messageDate");
 			cell.add(new Text(created.getLocaleDateAndTime(iwc.getCurrentLocale(), IWTimestamp.SHORT, IWTimestamp.SHORT)));
-			
+
 			cell = row.createCell();
 			cell.setStyleClass("lastColumn");
 			cell.setStyleClass("messageDelete");
-			
+
 			link = new Link(getBundle(iwc).getImage("delete.png", getResourceBundle().getLocalizedString("delete_message", "Delete message")));
 			link.setStyleClass("deleteMessage");
 			link.setEventListener(UserMessages.class);
@@ -199,11 +199,11 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			else {
 				row.setStyleClass("oddRow");
 			}
-			
+
 			iRow++;
 			messageNumber++;
 		}
-		
+
 		return table;
 	}
 
@@ -220,7 +220,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			return new ArrayList();
 		}
 	}
-	
+
 	protected int getMessageCount(IWContext iwc) {
 		try {
 			return getMessageBusiness().getNumberOfMessages(this.messageType, iwc.getCurrentUser());
@@ -234,11 +234,12 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 			return 0;
 		}
 	}
-	
+
 	public void setViewerPage(ICPage page) {
 		this.iViewerPage = page;
 	}
 
+	@Override
 	public boolean actionPerformed(IWContext iwc) throws IWException {
 		if (iwc.isParameterSet(PARAMETER_MESSAGE_PK)) {
 			try {
@@ -259,22 +260,22 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	public void setMessageType(String type) {
 		this.messageType = type;
 	}
-	
+
 	public void setMaximumNumberOfEntries(int maxNumberOfEntries) {
 		this.iMaxNumberOfEntries = maxNumberOfEntries;
 	}
 
-	
+
 	protected int getMaxNumberOfEntries() {
 		return this.iMaxNumberOfEntries;
 	}
 
-	
+
 	protected ICPage getViewerPage() {
 		return this.iViewerPage;
 	}
 
-	
+
 	protected String getMessageType() {
 		return this.messageType;
 	}
