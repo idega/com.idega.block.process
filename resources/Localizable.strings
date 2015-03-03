@@ -54,6 +54,7 @@ message.no_message_found=No message found.
 message.no_subject=No subject
 message_number=Nr.
 messages=messages
+message.viewer=Message
 paa_acc_appl_failed=
 page=Page
 subject=Subject
@@ -62,4 +63,7 @@ user_messages=User messages
 view=View
 reply=Reply
 forward=Forward
-
+sender=Sender
+date=Date
+body=Body
+close=Close
