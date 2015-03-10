@@ -80,45 +80,33 @@ public class Variable {
 				: getName();
 	}
 
-	public static Variable parseDefaultStringRepresentation(
-			String representation) {
-
-		final String dataTypeStr;
-
+	public static Variable parseDefaultStringRepresentation(String representation) {
+		String dataTypeStr = null;
 		if (representation.contains(CoreConstants.UNDER)) {
-
-			dataTypeStr = representation.substring(0, representation
-					.indexOf(CoreConstants.UNDER));
+			dataTypeStr = representation.substring(0, representation.indexOf(CoreConstants.UNDER));
 		} else {
 			dataTypeStr = CoreConstants.EMPTY;
 		}
 
-		VariableDataType dataType = VariableDataType
-				.getByStringRepresentation(dataTypeStr);
+		dataTypeStr = dataTypeStr.trim();
+
+		VariableDataType dataType = VariableDataType.getByStringRepresentation(dataTypeStr);
 
 		if (dataType == null) {
-
 			StringBuilder supportedDataTypes = new StringBuilder();
-
-			for (String supportedDataType : VariableDataType
-					.getAllTypesInStrings()) {
-
+			for (String supportedDataType : VariableDataType.getAllTypesInStrings()) {
 				supportedDataTypes.append(CoreConstants.NEWLINE);
 				supportedDataTypes.append(supportedDataType);
 			}
 
 			throw new UnsupportedOperationException(
-					"Data type not supported of: >" + dataTypeStr
-							+ "<. Supported data types: "
-							+ supportedDataTypes.toString());
+					"Data type not supported of: >" + dataTypeStr + "<. Supported data types: "	+ supportedDataTypes.toString());
 		}
 
 		String variableName;
 
 		if (representation.contains(CoreConstants.UNDER)) {
-
-			variableName = representation.substring(representation
-					.indexOf(CoreConstants.UNDER) + 1);
+			variableName = representation.substring(representation.indexOf(CoreConstants.UNDER) + 1);
 		} else {
 			variableName = representation;
 		}
