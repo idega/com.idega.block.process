@@ -27,7 +27,8 @@ public class CaseConstants {
 								CASE_PREFIX = "case_",
 								CASE_IDENTIFIER = CASE_PREFIX + "identifier",
 								CASE_CREATION_DATE = CASE_PREFIX + "creation_date",
-								CASE_STATUS = CASE_PREFIX + "status";
+								CASE_STATUS = CASE_PREFIX + "status",
+								CASE_BODY = CASE_PREFIX + "body";
 
 
 }

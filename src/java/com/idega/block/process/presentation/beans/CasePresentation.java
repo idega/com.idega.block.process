@@ -36,7 +36,7 @@ public class CasePresentation implements Serializable {
 
 	private User owner, handledBy;
 
-	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName;
+	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName, body;
 
 	private CaseStatus caseStatus;
 
@@ -260,6 +260,14 @@ public class CasePresentation implements Serializable {
 
 	public void setExternalData(List<AdvancedProperty> externalData) {
 		this.externalData = externalData;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	@Override

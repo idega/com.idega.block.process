@@ -51,7 +51,8 @@ public class CaseListPropertiesBean {
 	private List<String>	caseCodes,
 							statusesToShow,
 							statusesToHide,
-							customColumns;
+							customColumns,
+							customColumnsForExport;
 
 	private Long subscribersGroupId;
 
@@ -354,6 +355,14 @@ public class CaseListPropertiesBean {
 
 	public void setSearch(boolean search) {
 		this.search = search;
+	}
+
+	public List<String> getCustomColumnsForExport() {
+		return customColumnsForExport;
+	}
+
+	public void setCustomColumnsForExport(List<String> customColumnsForExport) {
+		this.customColumnsForExport = customColumnsForExport;
 	}
 
 }

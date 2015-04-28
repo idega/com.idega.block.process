@@ -90,6 +90,7 @@ public abstract class CaseBlock extends Block {
 					specialBackPage,
 
 					customColumns,
+					customColumnsForExport,
 					casesListCustomizer,
 
 					externalStyleSheet,
@@ -409,6 +410,7 @@ public abstract class CaseBlock extends Block {
 		list.setShowUserCompany(isShowUserCompany());
 		list.setShowLastLoginDate(isShowLastLoginDate());
 		list.setTotalNumberOfCases(getTotalNumberOfCases());
+		list.setCustomColumnsForExport(StringUtil.isEmpty(getCustomColumnsForExport()) ? null : Arrays.asList(getCustomColumnsForExport().split(CoreConstants.COMMA)));
 
 		return list;
 	}
@@ -611,6 +613,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setTotalNumberOfCases(Long totalNumberOfCases) {
 		this.totalNumberOfCases = totalNumberOfCases;
+	}
+
+	public String getCustomColumnsForExport() {
+		return customColumnsForExport;
+	}
+
+	public void setCustomColumnsForExport(String customColumnsForExport) {
+		this.customColumnsForExport = customColumnsForExport;
 	}
 
 }

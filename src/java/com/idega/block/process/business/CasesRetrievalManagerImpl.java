@@ -253,6 +253,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+		bean.setBody(theCase.getBody());
 		try {
 			bean.setCaseStatus(getCaseBusiness().getCaseStatus(theCase.getStatus()));
 		} catch (Exception e) {

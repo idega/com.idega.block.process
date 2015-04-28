@@ -105,7 +105,8 @@ public class UICasesList extends IWBaseComponent {
 	private List<String>	caseStatusesToShow,
 							caseStatusesToHide,
 							caseCodes,
-							customColumns;
+							customColumns,
+							customColumnsForExport;
 
 	private String	instanceId,
 					componentId,
@@ -183,8 +184,9 @@ public class UICasesList extends IWBaseComponent {
 		properties.setHideEmptySection(isHideEmptySection());
 		properties.setPageSize(pageSize);
 		properties.setPage(page);
-		if (foundResults > 0)
+		if (foundResults > 0) {
 			properties.setFoundResults(foundResults);
+		}
 		properties.setInstanceId(getInstanceId());
 		properties.setComponentId(getComponentId());
 		properties.setShowCaseNumberColumn(isShowCaseNumberColumn());
@@ -215,6 +217,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setAddExportContacts(isAddExportContacts());
 		properties.setShowUserCompany(isShowUserCompany());
 		properties.setShowLastLoginDate(isShowLastLoginDate());
+		properties.setCustomColumnsForExport(getCustomColumnsForExport());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -235,6 +238,8 @@ public class UICasesList extends IWBaseComponent {
 	 */
 	protected PagedDataCollection<CasePresentation> getCases(IWContext iwc) {
 		long start = System.currentTimeMillis();
+
+		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
 
 		Integer pageSizeFromSession = getPageSizeFromSession(iwc);
 		if (pageSizeFromSession != null && pageSizeFromSession > 0)
@@ -263,7 +268,8 @@ public class UICasesList extends IWBaseComponent {
 			Collection<CasePresentation> cases = casesSearcher.getSearchResults(id);
 			if (ListUtil.isEmpty(cases) && !StringUtil.isEmpty(getSearchResultsId())) {
 				cases = casesSearcher.getSearchResults(getSearchResultsId());
-				Logger.getLogger(getClass().getName()).info("Got cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
+				Logger.getLogger(getClass().getName()).info("Got cases for " + user + (user == null ? "" : " (personal ID: " + user.getPersonalID() + ")") +
+						" by search criterias in " + (System.currentTimeMillis() - start) + " ms");
 			}
 
 			CasesSearchCriteriaBean criterias = casesSearcher.getSearchCriteria(id);
@@ -271,7 +277,8 @@ public class UICasesList extends IWBaseComponent {
 			if (ListUtil.isEmpty(cases) || (criterias != null && !criterias.isAllDataLoaded())) {
 				start = System.currentTimeMillis();
 				cases = getReLoadedCases(criterias);
-				Logger.getLogger(getClass().getName()).info("Reloaded cases by search criterias in " + (System.currentTimeMillis() - start) + " ms");
+				Logger.getLogger(getClass().getName()).info("Reloaded cases for " + user + (user == null ? "" : " (personal ID: " + user.getPersonalID() + ")") +
+						" by search criterias in " + (System.currentTimeMillis() - start) + " ms");
 			}
 
 			if (ListUtil.isEmpty(cases))
@@ -288,7 +295,6 @@ public class UICasesList extends IWBaseComponent {
 			return new PagedDataCollection<CasePresentation>(cases);
 		}
 
-		User user = iwc.isLoggedOn() ? iwc.getCurrentUser() : null;
 		CasesRetrievalManager manager = getCaseManagersProvider().getCaseManager();
 		PagedDataCollection<CasePresentation> cases = null;
 		if (isShowCasesOnlyByProvidedProcesses() && ListUtil.isEmpty(getProcInstIds())) {
@@ -313,7 +319,7 @@ public class UICasesList extends IWBaseComponent {
 
 		long duration = System.currentTimeMillis() - start;
 		if (duration >= 1000)
-			Logger.getLogger(getClass().getName()).info("Got cases in " + duration + " ms");
+			Logger.getLogger(getClass().getName()).info("Got cases for " + user + (user == null ? "" : " (personal ID: " + user.getPersonalID() + ")") + " in " + duration + " ms");
 
 		return cases;
 	}
@@ -721,6 +727,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setTotalNumberOfCases(Long totalNumberOfCases) {
 		this.totalNumberOfCases = totalNumberOfCases;
+	}
+
+	public List<String> getCustomColumnsForExport() {
+		return customColumnsForExport;
+	}
+
+	public void setCustomColumnsForExport(List<String> customColumnsForExport) {
+		this.customColumnsForExport = customColumnsForExport;
 	}
 
 }
