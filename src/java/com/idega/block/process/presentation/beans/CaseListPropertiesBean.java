@@ -12,8 +12,10 @@ public class CaseListPropertiesBean {
 	private String dateCustomLabelLocalizationKey;
 	private String criteriasId;
 	private String	specialBackPage,
-					casesListCustomizer;
+					casesListCustomizer,
+					caseNavigationBlockPosition;
 
+	private boolean useXMLDataProvider;
 	private boolean showCheckBoxes;
 	private boolean usePDFDownloadColumn;
 	private boolean allowPDFSigning;
@@ -56,6 +58,14 @@ public class CaseListPropertiesBean {
 
 	private Long subscribersGroupId;
 
+	public boolean isUseXMLDataProvider() {
+		return useXMLDataProvider;
+	}
+
+	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
+		this.useXMLDataProvider = useXMLDataProvider;
+	}
+	
 	public Long getSubscribersGroupId() {
 		return subscribersGroupId;
 	}
@@ -363,6 +373,15 @@ public class CaseListPropertiesBean {
 
 	public void setCustomColumnsForExport(List<String> customColumnsForExport) {
 		this.customColumnsForExport = customColumnsForExport;
+	}
+
+	public String getCaseNavigationBlockPosition() {
+		return caseNavigationBlockPosition;
+	}
+
+	public void setCaseNavigationBlockPosition(
+			String caseNavigationBlockPosition) {
+		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
 	}
 
 }

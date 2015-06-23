@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -84,7 +85,16 @@ public class UICasesList extends IWBaseComponent {
 					showUserProfilePicture = true,
 					addExportContacts = true,
 					showUserCompany = false,
-					showLastLoginDate = false;
+					showLastLoginDate = false,
+					useXMLDataProvider = true;
+
+	public boolean isUseXMLDataProvider() {
+		return useXMLDataProvider;
+	}
+
+	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
+		this.useXMLDataProvider = useXMLDataProvider;
+	}
 
 	public boolean isNameFromExternalEntity() {
 		return nameFromExternalEntity;
@@ -114,7 +124,8 @@ public class UICasesList extends IWBaseComponent {
 					searchResultsId,
 					dateCustomValueVariable,
 					dateCustomLabelLocalizationKey,
-					casesListCustomizer;
+					casesListCustomizer,
+					caseNavigationBlockPosition;
 
 	@SuppressWarnings("rawtypes")
 	private Map userCasesPageMap;
@@ -218,6 +229,8 @@ public class UICasesList extends IWBaseComponent {
 		properties.setShowUserCompany(isShowUserCompany());
 		properties.setShowLastLoginDate(isShowLastLoginDate());
 		properties.setCustomColumnsForExport(getCustomColumnsForExport());
+		properties.setUseXMLDataProvider(isUseXMLDataProvider());
+		properties.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -735,6 +748,15 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setCustomColumnsForExport(List<String> customColumnsForExport) {
 		this.customColumnsForExport = customColumnsForExport;
+	}
+
+	public String getCaseNavigationBlockPosition() {
+		return caseNavigationBlockPosition;
+	}
+
+	public void setCaseNavigationBlockPosition(
+			String caseNavigationBlockPosition) {
+		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
 	}
 
 }

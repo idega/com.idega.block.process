@@ -78,7 +78,9 @@ public abstract class CaseBlock extends Block {
 					descriptionEditable = true,
 					useJavascriptForPageSwitching = true,
 					showCasesOnlyByProvidedProcesses = false,
-					changerCheckboxVisible = Boolean.FALSE;
+					changerCheckboxVisible = Boolean.FALSE,
+					useXMLDataProvider = true;
+
 
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
@@ -94,11 +96,20 @@ public abstract class CaseBlock extends Block {
 					casesListCustomizer,
 
 					externalStyleSheet,
-					commaSeparatedExcludedHandlersIds;
+					commaSeparatedExcludedHandlersIds,
+					caseNavigationBlockPosition;
 
 	private List<Long> procInstIds;
 	private Set<String> roles;
 
+	public boolean isUseXMLDataProvider() {
+		return useXMLDataProvider;
+	}
+
+	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
+		this.useXMLDataProvider = useXMLDataProvider;
+	}
+	
 	public boolean isChangerCheckboxVisible() {
 		return changerCheckboxVisible;
 	}
@@ -411,7 +422,9 @@ public abstract class CaseBlock extends Block {
 		list.setShowLastLoginDate(isShowLastLoginDate());
 		list.setTotalNumberOfCases(getTotalNumberOfCases());
 		list.setCustomColumnsForExport(StringUtil.isEmpty(getCustomColumnsForExport()) ? null : Arrays.asList(getCustomColumnsForExport().split(CoreConstants.COMMA)));
-
+		list.setUseXMLDataProvider(isUseXMLDataProvider());
+		list.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
+		
 		return list;
 	}
 
@@ -621,6 +634,15 @@ public abstract class CaseBlock extends Block {
 
 	public void setCustomColumnsForExport(String customColumnsForExport) {
 		this.customColumnsForExport = customColumnsForExport;
+	}
+
+	public String getCaseNavigationBlockPosition() {
+		return caseNavigationBlockPosition;
+	}
+
+	public void setCaseNavigationBlockPosition(
+			String caseNavigationBlockPosition) {
+		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
 	}
 
 }
