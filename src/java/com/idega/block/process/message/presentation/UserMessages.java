@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
+import java.lang.String;
 import javax.ejb.FinderException;
 
 import com.idega.block.process.message.data.Message;
@@ -49,6 +49,7 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 	private ICPage iViewerPage;
 	private int iMaxNumberOfEntries = -1;
 	private int iNumberOfEntriesShown = -1;
+	private String navigatorPosition = null;
 
 	/* (non-Javadoc)
 	 * @see com.idega.block.process.presentation.CaseBlock#present(com.idega.presentation.IWContext)
@@ -76,8 +77,14 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 
 		Layer navigationLayer = new Layer(Layer.DIV);
 		navigationLayer.setStyleClass("caseNavigation");
+		
+		if (this.navigatorPosition == null ){
+			this.navigatorPosition = "top";
+		}
+		
+		if (this.navigatorPosition.equals("top")) {
 		headerLayer.add(navigationLayer);
-
+		}
 		ListNavigator navigator = new ListNavigator("userMessages", getMessageCount(iwc));
 		navigator.setFirstItemText(getResourceBundle().getLocalizedString("page", "Page") + ":");
 		navigator.setDropdownEntryName(getResourceBundle().getLocalizedString("messages", "messages"));
@@ -87,8 +94,15 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 		navigationLayer.add(navigator);
 
 		layer.add(getCaseTable(iwc, navigator.getStartingEntry(iwc), getMaxNumberOfEntries() != -1 ? getMaxNumberOfEntries() : navigator.getNumberOfEntriesPerPage(iwc)));
-
+		if (this.navigatorPosition.equals("bottom")) {
+			Layer footerLayer = new Layer(Layer.DIV);
+			footerLayer.setStyleClass("caseFooter");	
+		layer.add(footerLayer);
+		footerLayer.add(navigationLayer);
+		}
+		
 		add(layer);
+
 	}
 
 	protected String getHeading() {
@@ -282,5 +296,13 @@ public class UserMessages extends MessageBlock implements IWPageEventListener {
 
 	public void setNumberOfEntriesShownPerPage(int numberOfEntriesShown) {
 		this.iNumberOfEntriesShown = numberOfEntriesShown;
+	}
+
+	public String getNavigatorPosition() {
+		return navigatorPosition;
+	}
+
+	public void setNavigatorPosition(String navigatorPosition) {
+		this.navigatorPosition = navigatorPosition;
 	}
 }

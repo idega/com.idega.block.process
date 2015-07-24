@@ -239,8 +239,10 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private void showList(IWContext iwc) throws RemoteException {
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
-		layer.setID("userCases");
-
+		//layer.setID("userCases");
+		layer.getID();
+		layer.setMarkupAttribute("class", "userCases");
+		
 		UICasesList list = getCasesList(iwc, layer.getId());
 		layer.add(list);
 
