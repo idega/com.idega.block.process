@@ -18,6 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -39,6 +41,9 @@ import com.idega.user.data.bean.User;
 @Table(name = Case.ENTITY_NAME)
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@NamedQueries({
+	@NamedQuery(name = Case.FIND_ID_BY_SUBJECT, query = "select c.id from Case c where c.subject = :" + Case.PARAM_SUBJECT)
+})
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = 2009559065592278210L;
@@ -62,7 +67,11 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_IS_READ = "PROC_CASEREAD";
 
 	public static final String	ENTITY_NAME = "proc_case",
-								SQL_RELATION_METADATA = "ic_metadata_proc_case";
+								SQL_RELATION_METADATA = "ic_metadata_proc_case",
+
+								PARAM_SUBJECT = "subject",
+
+								FIND_ID_BY_SUBJECT = "Case.findIdBySubject";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -110,6 +119,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	private String uniqueId;
 
 	@Column(name = COLUMN_SUBJECT)
+	@Index(name = "CASE_SUBJECT_INDEX", columnNames={COLUMN_SUBJECT})
 	private String subject;
 
 	@Column(name = COLUMN_BODY, length = 4000)
