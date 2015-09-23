@@ -84,8 +84,7 @@ public interface CasesRetrievalManager {
 	public abstract List<Integer> getCaseIds(
 			User user, 
 			String type, 
-			List<String> 
-			caseCodes, 
+			List<String> caseCodes, 
 			List<String> statusesToHide, 
 			List<String> statusesToShow,
 			boolean onlySubscribedCases, 
