@@ -36,6 +36,7 @@ import com.idega.data.UniqueIDCapable;
 import com.idega.data.bean.Metadata;
 import com.idega.user.data.bean.Group;
 import com.idega.user.data.bean.User;
+import com.idega.util.DBUtil;
 
 @Entity
 @Table(name = Case.ENTITY_NAME)
@@ -172,6 +173,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	}
 
 	public User getUser() {
+		user = DBUtil.getInstance().lazyLoad(user);
 		return user;
 	}
 
@@ -180,6 +182,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	}
 
 	public User getCreator() {
+		creator = DBUtil.getInstance().lazyLoad(creator);
 		return creator;
 	}
 
@@ -188,6 +191,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	}
 
 	public Group getHandlerGroup() {
+		handlerGroup = DBUtil.getInstance().lazyLoad(handlerGroup);
 		return handlerGroup;
 	}
 
@@ -212,6 +216,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	}
 
 	public User getExternalHandler() {
+		externalHandler = DBUtil.getInstance().lazyLoad(externalHandler);
 		return externalHandler;
 	}
 
@@ -375,6 +380,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	}
 
 	public Set<Metadata> getMetadata() {
+		metadata = DBUtil.getInstance().lazyLoad(metadata);
 		return this.metadata;
 	}
 
@@ -401,6 +407,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	}
 
 	public Case getParentCase() {
+		parentCase = DBUtil.getInstance().lazyLoad(parentCase);
 		return parentCase;
 	}
 
