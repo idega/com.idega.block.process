@@ -1282,9 +1282,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public Case getCaseByIdentifier(String caseIdentifier)
-			throws FinderException, RemoteException {
+	public Case getCaseByIdentifier(String caseIdentifier) throws FinderException, RemoteException {
+		if (StringUtil.isEmpty(caseIdentifier)) {
+			getLogger().warning("Case identifier not provided");
+			return null;
+		}
+
 		Collection<Case> cases = getCaseHome().findCasesByCaseIdentifier(caseIdentifier);
+		if (ListUtil.isEmpty(cases)) {
+			getLogger().warning("Case was not found by identifier: " + caseIdentifier);
+			return null;
+		}
+
 		for (Case caseInstance: cases) {
 			return caseInstance;
 		}
