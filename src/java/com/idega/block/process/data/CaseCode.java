@@ -1,9 +1,12 @@
 package com.idega.block.process.data;
 
+import com.idega.block.process.data.model.CaseCodeModel;
+import com.idega.data.IDOEntity;
 
-public interface CaseCode extends com.idega.data.IDOEntity
-{
- public java.lang.String getCode() ;
+public interface CaseCode extends IDOEntity, CaseCodeModel {
+
+ @Override
+public java.lang.String getCode() ;
  public com.idega.core.component.data.ICObject getBusinessHandler();
  public java.lang.Class getPrimaryKeyClass();
  public void setBusinessHandler(com.idega.core.component.data.ICObject p0);

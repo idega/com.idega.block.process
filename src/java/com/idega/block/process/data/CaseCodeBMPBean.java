@@ -22,9 +22,11 @@ import com.idega.data.IDORuntimeException;
 
 public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
 
-  public static final String TABLE_NAME = "PROC_CASE_CODE";
+	private static final long serialVersionUID = -4149323672646413739L;
 
-  private static final String CASE_CODE = "CASE_CODE";
+	public static final String	TABLE_NAME = "PROC_CASE_CODE",
+								CASE_CODE = "CASE_CODE";
+
   private static final String CASE_CODE_DESC = "CASE_CODE_DESC";
   private static final String CASE_CODE_DESC_LOC_KEY = "CASE_CODE_DESC_LOC_KEY";
   private static final String CASE_CODE_HANDLER = "CASE_CODE_HANDLER_ID";
@@ -33,7 +35,8 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
 
   public CaseCodeBMPBean() {
   }
-  public void initializeAttributes() {
+  @Override
+public void initializeAttributes() {
     addAttribute(CASE_CODE,"Code",String.class,7);
     this.setAsPrimaryKey(CASE_CODE,true);
     addAttribute(CASE_CODE_DESC,"Description",String.class,1000);
@@ -41,26 +44,31 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     this.addManyToOneRelationship(CASE_CODE_HANDLER,"Business Handler Object",ICObject.class);
     addManyToManyRelationShip(CaseStatus.class);
   }
-  public String getEntityName() {
+  @Override
+public String getEntityName() {
     return TABLE_NAME;
   }
 
-  public Class getPrimaryKeyClass(){
+  @Override
+public Class getPrimaryKeyClass(){
     return String.class;
   }
 
-  public String getIDColumnName(){
+  @Override
+public String getIDColumnName(){
     return CASE_CODE;
   }
 
-  public void setDefaultValues(){
+  @Override
+public void setDefaultValues(){
     String sCode = this.getCode();
     if(sCode!=null){
       this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+sCode);
     }
   }
 
-  public void setCode(String caseCode) {
+  @Override
+public void setCode(String caseCode) {
     String sKey = this.getDescriptionLocalizedKey();
     if(sKey!=null){
       this.setDescriptionLocalizedKey(LOC_KEY_PREFIX+caseCode);
@@ -68,30 +76,37 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     setColumn(CaseCodeBMPBean.CASE_CODE,caseCode);
   }
 
-  public String getCode() {
+  @Override
+public String getCode() {
     return(this.getStringColumnValue(CASE_CODE));
   }
 
-  public void setDescription(String desc) {
+  @Override
+public void setDescription(String desc) {
     setColumn(CaseCodeBMPBean.CASE_CODE_DESC,desc);
   }
 
-  public String getDescription() {
+  @Override
+public String getDescription() {
     return(this.getStringColumnValue(CASE_CODE_DESC));
   }
 
-  public void setBusinessHandler(ICObject obj) {
+  @Override
+public void setBusinessHandler(ICObject obj) {
     setColumn(CaseCodeBMPBean.CASE_CODE_HANDLER,obj);
   }
 
-  public void setDescriptionLocalizedKey(String key) {
+  @Override
+public void setDescriptionLocalizedKey(String key) {
     setColumn(CaseCodeBMPBean.CASE_CODE_DESC_LOC_KEY,key);
   }
 
-  public String getDescriptionLocalizedKey() {
+  @Override
+public String getDescriptionLocalizedKey() {
     return(this.getStringColumnValue(CASE_CODE_DESC_LOC_KEY));
   }
-  public ICObject getBusinessHandler() {
+  @Override
+public ICObject getBusinessHandler() {
     return (ICObject) (this.getColumnValue(CASE_CODE_HANDLER));
   }
 
@@ -107,7 +122,8 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     /**
      * @todo: Implement
      */
-  public void addAssociatedCaseStatus(CaseStatus caseStatus){
+  @Override
+public void addAssociatedCaseStatus(CaseStatus caseStatus){
     try{
       this.idoAddTo(caseStatus);
     }
@@ -119,7 +135,8 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     /**
      * @todo: Implement
      */
-  public void removeAssociatedCaseStatus(CaseStatus caseStatus){
+  @Override
+public void removeAssociatedCaseStatus(CaseStatus caseStatus){
     try{
       this.idoRemoveFrom(caseStatus);
     }
@@ -131,7 +148,8 @@ public class CaseCodeBMPBean extends GenericEntity implements CaseCode{
     /**
      * @todo: Implement
      */
-  public Collection getAssociatedCaseStatuses(){
+  @Override
+public Collection getAssociatedCaseStatuses(){
       try{
       Collection c = this.idoGetRelatedEntities(CaseStatus.class);
       return c;
