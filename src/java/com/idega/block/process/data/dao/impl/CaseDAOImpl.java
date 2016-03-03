@@ -29,7 +29,23 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		try {
 			return getResultList(Case.FIND_ID_BY_SUBJECT, Integer.class, new Param(Case.PARAM_SUBJECT, subject));
 		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Error getting case ID with subject " + subject, e);
+			getLogger().log(Level.WARNING, "Error getting case ID with subject: " + subject, e);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Case getCaseById(Integer id) {
+		if (id == null) {
+			getLogger().warning("Case ID is not provided!");
+			return null;
+		}
+
+		try {
+			return getSingleResult(Case.FIND_ID_BY_ID, Case.class, new Param(Case.PARAM_ID, id));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting case by ID: " + id, e);
 		}
 
 		return null;

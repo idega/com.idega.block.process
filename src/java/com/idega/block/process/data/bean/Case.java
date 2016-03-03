@@ -43,7 +43,8 @@ import com.idega.util.DBUtil;
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
-	@NamedQuery(name = Case.FIND_ID_BY_SUBJECT, query = "select c.id from Case c where c.subject = :" + Case.PARAM_SUBJECT)
+	@NamedQuery(name = Case.FIND_ID_BY_SUBJECT, query = "select c.id from Case c where c.subject = :" + Case.PARAM_SUBJECT),
+	@NamedQuery(name = Case.FIND_ID_BY_ID, query = "select c from Case c where c.id = :" + Case.PARAM_ID)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
@@ -71,8 +72,10 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								SQL_RELATION_METADATA = "ic_metadata_proc_case",
 
 								PARAM_SUBJECT = "subject",
+								PARAM_ID = "id",
 
-								FIND_ID_BY_SUBJECT = "Case.findIdBySubject";
+								FIND_ID_BY_SUBJECT = "Case.findIdBySubject",
+								FIND_ID_BY_ID = "Case.findIdById";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
