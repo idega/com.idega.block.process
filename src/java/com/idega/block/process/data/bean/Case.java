@@ -15,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -27,7 +28,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
 import com.idega.core.idgenerator.business.IdGenerator;
 import com.idega.core.idgenerator.business.IdGeneratorFactory;
@@ -39,7 +39,10 @@ import com.idega.user.data.bean.User;
 import com.idega.util.DBUtil;
 
 @Entity
-@Table(name = Case.ENTITY_NAME)
+@Table(name = Case.ENTITY_NAME, indexes = {
+		@Index(name = "UNIQUE_ID", columnList = Case.COLUMN_UNIQUE_ID),
+		@Index(name = "CASE_SUBJECT_INDEX", columnList = Case.COLUMN_SUBJECT)
+})
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
@@ -61,8 +64,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_CASE_NUMBER = "CASE_NUMBER",
 								COLUMN_EXTERNAL_ID = "EXTERNAL_ID",
 								COLUMN_EXTERNAL_HANDLER = "EXTERNAL_HANDLER_ID",
-								COLUMN_UNIQUE_ID = "unique_id",
-								COLUMN_SUBJECT = "CASE_SUBJECT",
 								COLUMN_BODY = "CASE_BODY",
 								COLUMN_MANAGER_TYPE = "CASE_MANAGER_TYPE",
 								COLUMN_IDENTIFIER = "CASE_IDENTIFIER",
@@ -70,6 +71,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public static final String	ENTITY_NAME = "proc_case",
 								SQL_RELATION_METADATA = "ic_metadata_proc_case",
+
+								COLUMN_UNIQUE_ID = "unique_id",
+								COLUMN_SUBJECT = "CASE_SUBJECT",
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",
@@ -119,11 +123,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public static final String PROP_UNIQUE_ID = ENTITY_NAME + "_" + COLUMN_UNIQUE_ID;
 	@Column(name = COLUMN_UNIQUE_ID, length = 36, nullable = false, unique = true)
-	@Index(name = "UNIQUE_ID", columnNames={COLUMN_UNIQUE_ID})
 	private String uniqueId;
 
 	@Column(name = COLUMN_SUBJECT)
-	@Index(name = "CASE_SUBJECT_INDEX", columnNames={COLUMN_SUBJECT})
 	private String subject;
 
 	@Column(name = COLUMN_BODY, length = 4000)
@@ -131,7 +133,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	@Column(name = COLUMN_MANAGER_TYPE)
 	private String managerType;
-
 
 	@Column(name = COLUMN_IDENTIFIER)
 	private String identifier;
