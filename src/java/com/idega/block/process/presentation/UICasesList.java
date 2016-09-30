@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -56,6 +55,7 @@ public class UICasesList extends IWBaseComponent {
 	private Long totalNumberOfCases = null;
 
 	private List<Long> procInstIds;
+	private List<Integer> casesIds;
 	private Set<String> roles;
 
 	private boolean showCheckBoxes,
@@ -86,7 +86,9 @@ public class UICasesList extends IWBaseComponent {
 					addExportContacts = true,
 					showUserCompany = false,
 					showLastLoginDate = false,
-					useXMLDataProvider = true;
+					useXMLDataProvider = true,
+					allowToReloadCaseView = true,
+					showSettingsButton = true;
 
 	public boolean isUseXMLDataProvider() {
 		return useXMLDataProvider;
@@ -231,6 +233,8 @@ public class UICasesList extends IWBaseComponent {
 		properties.setCustomColumnsForExport(getCustomColumnsForExport());
 		properties.setUseXMLDataProvider(isUseXMLDataProvider());
 		properties.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
+		properties.setAllowToReloadCaseView(isAllowToReloadCaseView());
+		properties.setShowSettingsButton(isShowSettingsButton());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -310,7 +314,7 @@ public class UICasesList extends IWBaseComponent {
 
 		CasesRetrievalManager manager = getCaseManagersProvider().getCaseManager();
 		PagedDataCollection<CasePresentation> cases = null;
-		if (isShowCasesOnlyByProvidedProcesses() && ListUtil.isEmpty(getProcInstIds())) {
+		if (isShowCasesOnlyByProvidedProcesses() && (ListUtil.isEmpty(getProcInstIds()) || ListUtil.isEmpty(getCasesIds()))) {
 			cases = new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>(0));
 		} else {
 			cases = manager.getCases(
@@ -325,15 +329,16 @@ public class UICasesList extends IWBaseComponent {
 					isOnlySubscribedCases(),
 					isShowAllCases(),
 					getProcInstIds(),
+					getCasesIds(),
 					getRoles(),
 					false
 			);
 		}
 
 		long duration = System.currentTimeMillis() - start;
-		if (duration >= 1000)
+		if (duration >= 1000) {
 			Logger.getLogger(getClass().getName()).info("Got cases for " + user + (user == null ? "" : " (personal ID: " + user.getPersonalID() + ")") + " in " + duration + " ms");
-
+		}
 		return cases;
 	}
 
@@ -757,6 +762,30 @@ public class UICasesList extends IWBaseComponent {
 	public void setCaseNavigationBlockPosition(
 			String caseNavigationBlockPosition) {
 		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
+	}
+
+	public boolean isAllowToReloadCaseView() {
+		return allowToReloadCaseView;
+	}
+
+	public void setAllowToReloadCaseView(boolean allowToReloadCaseView) {
+		this.allowToReloadCaseView = allowToReloadCaseView;
+	}
+
+	public boolean isShowSettingsButton() {
+		return showSettingsButton;
+	}
+
+	public void setShowSettingsButton(boolean showSettingsButton) {
+		this.showSettingsButton = showSettingsButton;
+	}
+
+	public List<Integer> getCasesIds() {
+		return casesIds;
+	}
+
+	public void setCasesIds(List<Integer> casesIds) {
+		this.casesIds = casesIds;
 	}
 
 }

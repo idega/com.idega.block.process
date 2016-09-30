@@ -79,7 +79,9 @@ public abstract class CaseBlock extends Block {
 					useJavascriptForPageSwitching = true,
 					showCasesOnlyByProvidedProcesses = false,
 					changerCheckboxVisible = Boolean.FALSE,
-					useXMLDataProvider = true;
+					useXMLDataProvider = true,
+					allowToReloadCaseView = true,
+					showSettingsButton = true;
 
 
 	private String	caseStatusesToHide,
@@ -100,6 +102,7 @@ public abstract class CaseBlock extends Block {
 					caseNavigationBlockPosition;
 
 	private List<Long> procInstIds;
+	private List<Integer> casesIds;
 	private Set<String> roles;
 
 	public boolean isUseXMLDataProvider() {
@@ -109,7 +112,7 @@ public abstract class CaseBlock extends Block {
 	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
 		this.useXMLDataProvider = useXMLDataProvider;
 	}
-	
+
 	public boolean isChangerCheckboxVisible() {
 		return changerCheckboxVisible;
 	}
@@ -144,6 +147,14 @@ public abstract class CaseBlock extends Block {
 		totalNumberOfCases = getTotalCountOfCases(iwc, page);
 
 		present(iwc);
+	}
+
+	public List<Integer> getCasesIds() {
+		return casesIds;
+	}
+
+	public void setCasesIds(List<Integer> casesIds) {
+		this.casesIds = casesIds;
 	}
 
 	protected Long getTotalCountOfCases(IWContext iwc, int page) throws Exception {
@@ -413,6 +424,7 @@ public abstract class CaseBlock extends Block {
 		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
 		list.setDescriptionEditable(isDescriptionEditable());
 		list.setProcInstIds(getProcInstIds());
+		list.setCasesIds(getCasesIds());
 		list.setRoles(getRoles());
 		list.setShowCasesOnlyByProvidedProcesses(isShowCasesOnlyByProvidedProcesses());
 		list.setNameFromExternalEntity(!isUserNameShown());
@@ -424,7 +436,9 @@ public abstract class CaseBlock extends Block {
 		list.setCustomColumnsForExport(StringUtil.isEmpty(getCustomColumnsForExport()) ? null : Arrays.asList(getCustomColumnsForExport().split(CoreConstants.COMMA)));
 		list.setUseXMLDataProvider(isUseXMLDataProvider());
 		list.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
-		
+		list.setAllowToReloadCaseView(isAllowToReloadCaseView());
+		list.setShowSettingsButton(isShowSettingsButton());
+
 		return list;
 	}
 
@@ -643,6 +657,22 @@ public abstract class CaseBlock extends Block {
 	public void setCaseNavigationBlockPosition(
 			String caseNavigationBlockPosition) {
 		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
+	}
+
+	public boolean isAllowToReloadCaseView() {
+		return allowToReloadCaseView;
+	}
+
+	public void setAllowToReloadCaseView(boolean allowToReloadCaseView) {
+		this.allowToReloadCaseView = allowToReloadCaseView;
+	}
+
+	public boolean isShowSettingsButton() {
+		return showSettingsButton;
+	}
+
+	public void setShowSettingsButton(boolean showSettingsButton) {
+		this.showSettingsButton = showSettingsButton;
 	}
 
 }

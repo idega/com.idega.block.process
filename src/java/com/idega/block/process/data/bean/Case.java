@@ -41,7 +41,8 @@ import com.idega.util.DBUtil;
 @Entity
 @Table(name = Case.ENTITY_NAME, indexes = {
 		@Index(name = "UNIQUE_ID", columnList = Case.COLUMN_UNIQUE_ID),
-		@Index(name = "CASE_SUBJECT_INDEX", columnList = Case.COLUMN_SUBJECT)
+		@Index(name = "CASE_SUBJECT_INDEX", columnList = Case.COLUMN_SUBJECT),
+		@Index(name = "CASE_STATUS_INDEX", columnList = Case.COLUMN_CASE_STATUS)
 })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -55,7 +56,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	private static final String COLUMN_CASE_ID = "proc_case_id",
 								COLUMN_CASE_CODE = "case_code",
-								COLUMN_CASE_STATUS = "case_status",
 								COLUMN_CREATED = "CREATED",
 								COLUMN_PARENT_CASE = "PARENT_CASE_ID",
 								COLUMN_USER = "user_id",
@@ -74,6 +74,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 								COLUMN_UNIQUE_ID = "unique_id",
 								COLUMN_SUBJECT = "CASE_SUBJECT",
+								COLUMN_CASE_STATUS = "case_status",
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",

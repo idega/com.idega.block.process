@@ -15,27 +15,36 @@ public class CasesCacheCriteria implements Serializable {
 	private static final long serialVersionUID = 5256480297285408587L;
 
 	private Integer userId;
+
 	private String type;
+
 	private List<String> caseCodes, statusesToHide, statusesToShow, codes;
+
 	private boolean onlySubscribedCases, showAllCases;
+
 	private Set<String> roles;
-	private List<Integer> groups;
+
+	private List<Integer> groups, casesIds;
+
 	private List<Long> procInstIds;
+
 	private Collection<Long> handlercategoryIds;
 
 	public CasesCacheCriteria(
-			Integer userId, 
-			String type, 
-			Collection<String> caseCodes, 
-			Collection<String> statusesToHide, 
+			Integer userId,
+			String type,
+			Collection<String> caseCodes,
+			Collection<String> statusesToHide,
 			Collection<String> statusesToShow,
 			Collection<String> roles,
-			Collection<Integer> groups, 
-			Collection<String> codes, 
-			Collection<Long> procInstIds, 
+			Collection<Integer> groups,
+			Collection<String> codes,
+			Collection<Long> procInstIds,
+			List<Integer> casesIds,
 			Collection<Long> handlercategoryIds,
-			boolean onlySubscribedCases, 
-			boolean showAllCases) {
+			boolean onlySubscribedCases,
+			boolean showAllCases
+	) {
 		super();
 
 		this.userId = userId == null ? -1 : userId;
@@ -63,7 +72,7 @@ public class CasesCacheCriteria implements Serializable {
 			this.groups = new ArrayList<Integer>(groups);
 		}
 
-		if (!ListUtil.isEmpty(codes)) { 
+		if (!ListUtil.isEmpty(codes)) {
 			this.codes = new ArrayList<String>(codes);
 		}
 
@@ -71,14 +80,28 @@ public class CasesCacheCriteria implements Serializable {
 			this.procInstIds = new ArrayList<Long>(procInstIds);
 		}
 
+		if (!ListUtil.isEmpty(casesIds)) {
+			this.casesIds = new ArrayList<Integer>(casesIds);
+		}
+
 		this.handlercategoryIds = handlercategoryIds;
 	}
-	
-	public CasesCacheCriteria(Integer userId, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, Set<String> roles,	List<Integer> groups, List<String> codes, boolean showAllCases, List<Long> procInstIds) {
-		this(userId, type, caseCodes, statusesToHide, statusesToShow, roles, 
-				groups, codes, procInstIds, null, onlySubscribedCases, 
-				showAllCases);
+
+	public CasesCacheCriteria(
+			Integer userId,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			Set<String> roles,
+			List<Integer> groups,
+			List<String> codes,
+			boolean showAllCases,
+			List<Long> procInstIds,
+			List<Integer> casesIds
+	) {
+		this(userId, type, caseCodes, statusesToHide, statusesToShow, roles,  groups, codes, procInstIds, casesIds, null, onlySubscribedCases, showAllCases);
 	}
 
 	public String getKey() {
@@ -93,6 +116,7 @@ public class CasesCacheCriteria implements Serializable {
 			.append(ListUtil.isEmpty(groups) ? CoreConstants.MINUS : groups)
 			.append(ListUtil.isEmpty(codes) ? CoreConstants.MINUS : codes)
 			.append(ListUtil.isEmpty(procInstIds) ? CoreConstants.MINUS : procInstIds)
+			.append(ListUtil.isEmpty(casesIds) ? CoreConstants.MINUS : casesIds)
 			.append(ListUtil.isEmpty(handlercategoryIds) ? CoreConstants.MINUS : handlercategoryIds)
 		.toString();
 	}
@@ -152,6 +176,14 @@ public class CasesCacheCriteria implements Serializable {
 
 	public void setHandlercategoryIds(Collection<Long> handlercategoryIds) {
 		this.handlercategoryIds = handlercategoryIds;
+	}
+
+	public List<Integer> getCasesIds() {
+		return casesIds;
+	}
+
+	public void setCasesIds(List<Integer> casesIds) {
+		this.casesIds = casesIds;
 	}
 
 	@Override

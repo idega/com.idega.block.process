@@ -32,7 +32,11 @@ public class CaseListPropertiesBean {
 	private boolean showLoadingMessage = true;
 	private boolean waitForAllCasePartsLoaded = true,
 					  descriptionEditable = true;
-	private boolean nameFromExternalEntity = false;
+	private boolean nameFromExternalEntity = false,
+					allowToReloadCaseView = true,
+					showSettingsButton = true;
+
+
 	protected boolean showUserProfilePicture = true;
 	protected boolean addExportContacts = true;
 	protected boolean showUserCompany = false;
@@ -65,7 +69,7 @@ public class CaseListPropertiesBean {
 	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
 		this.useXMLDataProvider = useXMLDataProvider;
 	}
-	
+
 	public Long getSubscribersGroupId() {
 		return subscribersGroupId;
 	}
@@ -382,6 +386,22 @@ public class CaseListPropertiesBean {
 	public void setCaseNavigationBlockPosition(
 			String caseNavigationBlockPosition) {
 		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
+	}
+
+	public boolean isAllowToReloadCaseView() {
+		return allowToReloadCaseView;
+	}
+
+	public void setAllowToReloadCaseView(boolean allowToReloadCaseView) {
+		this.allowToReloadCaseView = allowToReloadCaseView;
+	}
+
+	public boolean isShowSettingsButton() {
+		return showSettingsButton;
+	}
+
+	public void setShowSettingsButton(boolean showSettingsButton) {
+		this.showSettingsButton = showSettingsButton;
 	}
 
 }

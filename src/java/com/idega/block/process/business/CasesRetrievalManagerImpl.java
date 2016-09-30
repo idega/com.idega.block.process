@@ -90,9 +90,18 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
-			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases) {
-
+	public PagedDataCollection<CasePresentation> getCases(
+			User user,
+			String type,
+			Locale locale,
+			List<String> caseCodes,
+			List<String> caseStatusesToHide,
+			List<String> caseStatusesToShow,
+			int startIndex,
+			int count,
+			boolean onlySubscribedCases,
+			boolean showAllCases
+	) {
 		CaseBusiness caseBusiness = getCaseBusiness();
 		try {
 			CaseCode[] codes = caseBusiness.getCaseCodesForUserCasesList();
@@ -100,7 +109,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Case> casesToShow = null;
 			if (onlySubscribedCases) {
 				casesToShow = new ArrayList<Case>();
-				for (Case theCase : cases) {
+				for (Case theCase: cases) {
 					Collection<User> subscribers = theCase.getSubscribers();
 					if (!ListUtil.isEmpty(subscribers) && subscribers.contains(user))
 						casesToShow.add(theCase);
@@ -120,10 +129,22 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public PagedDataCollection<CasePresentation> getCases(User user, String type, Locale locale, List<String> caseCodes, List<String> caseStatusesToHide,
-			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases, List<Long> ids,
+	public PagedDataCollection<CasePresentation> getCases(
+			User user,
+			String type,
+			Locale locale,
+			List<String> caseCodes,
+			List<String> caseStatusesToHide,
+			List<String> caseStatusesToShow,
+			int startIndex,
+			int count,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<Long> ids,
+			List<Integer> casesIds,
 			Set<String> roles,
-			boolean searchQuery) {
+			boolean searchQuery
+	) {
 		return getCases(user, type, locale, caseCodes, caseStatusesToHide, caseStatusesToShow, startIndex, count, onlySubscribedCases, showAllCases);
 	}
 
@@ -135,13 +156,13 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles) throws Exception {
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, List<Integer> casesIds, Set<String> roles) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	@Override
 	public List<Integer> getCasePrimaryKeys(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs,
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, List<Integer> casesIds, Set<String> roles, Collection<Long> handlerCategoryIDs,
 			boolean searchQuery) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -227,8 +248,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	protected CasePresentation convertToPresentation(Case theCase, CasePresentation bean, Locale locale) {
-		if (bean == null)
+		if (bean == null) {
 			bean = new CasePresentation();
+		}
 
 		CaseCode code = theCase.getCaseCode();
 
@@ -407,6 +429,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<String> codes,
 			boolean showAllCases,
 			Collection<Long> procInstIds,
+			List<Integer> casesIds,
 			Collection<Long> handlerCategoryIDs
 	) {
 		return new CasesCacheCriteria(
@@ -419,6 +442,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				groups,
 				codes,
 				procInstIds,
+				casesIds,
 				handlerCategoryIDs,
 				onlySubscribedCases,
 				showAllCases
@@ -605,6 +629,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<String> codes,
 			boolean showAllCases,
 			Collection<Long> procInstIds,
+			List<Integer> casesIds,
 			Collection<Long> handlerCategoryIDs
 	) {
 		/* Creating key */
@@ -620,6 +645,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				codes,
 				showAllCases,
 				procInstIds,
+				casesIds,
 				handlerCategoryIDs
 		);
 		putIdsToCache(data, key);
@@ -670,6 +696,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			boolean showAllCases,
 			Integer caseId,
 			List<Long> procInstIds,
+			List<Integer> casesIds,
 			Set<String> roles,
 			Collection<Long> handlerCategoryIDs,
 			boolean searchQuery
