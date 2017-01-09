@@ -1118,7 +1118,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 
 		Table casesTable = new Table(this);
-		String casesTableIdColumnName = casesTable.getColumn(getIDColumnName()).getName();
 
 		SelectQuery query = new SelectQuery(casesTable);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
@@ -1135,7 +1134,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_HANDLER), groupsIds));
 		}
 		if (caseNumber != null) {
-			Column column = new Column(casesTable, casesTableIdColumnName);
+			Column column = new Column(casesTable, COLUMN_CASE_IDENTIFIER);
 			column.setPrefix("lower(");
 			column.setPostfix(")");
 			query.addCriteria(new MatchCriteria(column, MatchCriteria.LIKE, true, caseNumber));
