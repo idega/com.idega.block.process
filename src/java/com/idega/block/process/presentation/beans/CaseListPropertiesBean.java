@@ -13,7 +13,8 @@ public class CaseListPropertiesBean {
 	private String criteriasId;
 	private String	specialBackPage,
 					casesListCustomizer,
-					caseNavigationBlockPosition;
+					caseNavigationBlockPosition,
+					inactiveTasksToShow;
 
 	private boolean useXMLDataProvider;
 	private boolean showCheckBoxes;
@@ -65,7 +66,7 @@ public class CaseListPropertiesBean {
 	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
 		this.useXMLDataProvider = useXMLDataProvider;
 	}
-	
+
 	public Long getSubscribersGroupId() {
 		return subscribersGroupId;
 	}
@@ -382,6 +383,14 @@ public class CaseListPropertiesBean {
 	public void setCaseNavigationBlockPosition(
 			String caseNavigationBlockPosition) {
 		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
+	}
+
+	public String getInactiveTasksToShow() {
+		return inactiveTasksToShow;
+	}
+
+	public void setInactiveTasksToShow(String inactiveTasksToShow) {
+		this.inactiveTasksToShow = inactiveTasksToShow;
 	}
 
 }

@@ -97,7 +97,8 @@ public abstract class CaseBlock extends Block {
 
 					externalStyleSheet,
 					commaSeparatedExcludedHandlersIds,
-					caseNavigationBlockPosition;
+					caseNavigationBlockPosition,
+					inactiveTasksToShow;
 
 	private List<Long> procInstIds;
 	private Set<String> roles;
@@ -109,7 +110,7 @@ public abstract class CaseBlock extends Block {
 	public void setUseXMLDataProvider(boolean useXMLDataProvider) {
 		this.useXMLDataProvider = useXMLDataProvider;
 	}
-	
+
 	public boolean isChangerCheckboxVisible() {
 		return changerCheckboxVisible;
 	}
@@ -424,7 +425,7 @@ public abstract class CaseBlock extends Block {
 		list.setCustomColumnsForExport(StringUtil.isEmpty(getCustomColumnsForExport()) ? null : Arrays.asList(getCustomColumnsForExport().split(CoreConstants.COMMA)));
 		list.setUseXMLDataProvider(isUseXMLDataProvider());
 		list.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
-		
+		list.setInactiveTasksToShow(getInactiveTasksToShow());
 		return list;
 	}
 
@@ -643,6 +644,14 @@ public abstract class CaseBlock extends Block {
 	public void setCaseNavigationBlockPosition(
 			String caseNavigationBlockPosition) {
 		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
+	}
+
+	public String getInactiveTasksToShow() {
+		return inactiveTasksToShow;
+	}
+
+	public void setInactiveTasksToShow(String inactiveTasksToShow) {
+		this.inactiveTasksToShow = inactiveTasksToShow;
 	}
 
 }

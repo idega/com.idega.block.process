@@ -47,7 +47,7 @@ public class UICasesList extends IWBaseComponent {
 	@Autowired
 	private CaseManagersProvider caseManagersProvider;
 
-	private String type, specialBackPage;
+	private String type, specialBackPage, inactiveTasksToShow;
 
 	private int pageSize = 20;
 	private int page = 1;
@@ -230,6 +230,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setCustomColumnsForExport(getCustomColumnsForExport());
 		properties.setUseXMLDataProvider(isUseXMLDataProvider());
 		properties.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
+		properties.setInactiveTasksToShow(getInactiveTasksToShow());
 
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
@@ -756,6 +757,14 @@ public class UICasesList extends IWBaseComponent {
 	public void setCaseNavigationBlockPosition(
 			String caseNavigationBlockPosition) {
 		this.caseNavigationBlockPosition = caseNavigationBlockPosition;
+	}
+
+	public String getInactiveTasksToShow() {
+		return inactiveTasksToShow;
+	}
+
+	public void setInactiveTasksToShow(String inactiveTasksToShow) {
+		this.inactiveTasksToShow = inactiveTasksToShow;
 	}
 
 }
