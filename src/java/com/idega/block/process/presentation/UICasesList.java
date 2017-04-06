@@ -85,7 +85,8 @@ public class UICasesList extends IWBaseComponent {
 					addExportContacts = true,
 					showUserCompany = false,
 					showLastLoginDate = false,
-					useXMLDataProvider = true;
+					useXMLDataProvider = true,
+					showTimeSpentOnCase = false;
 
 	public boolean isUseXMLDataProvider() {
 		return useXMLDataProvider;
@@ -231,7 +232,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setUseXMLDataProvider(isUseXMLDataProvider());
 		properties.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
 		properties.setInactiveTasksToShow(getInactiveTasksToShow());
-
+		properties.setShowTimeSpentOnCase(isShowTimeSpentOnCase());
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -765,6 +766,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setInactiveTasksToShow(String inactiveTasksToShow) {
 		this.inactiveTasksToShow = inactiveTasksToShow;
+	}
+
+	public boolean isShowTimeSpentOnCase() {
+		return showTimeSpentOnCase;
+	}
+
+	public void setShowTimeSpentOnCase(boolean showTimeSpentOnCase) {
+		this.showTimeSpentOnCase = showTimeSpentOnCase;
 	}
 
 }

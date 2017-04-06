@@ -44,7 +44,7 @@ public class CaseListPropertiesBean {
 					showExportAllCasesButton,
 					showComments = true,
 					showContacts = true,
-
+					showTimeSpentOnCase = false,
 					search = false;
 
 	private int pageSize;
@@ -391,6 +391,14 @@ public class CaseListPropertiesBean {
 
 	public void setInactiveTasksToShow(String inactiveTasksToShow) {
 		this.inactiveTasksToShow = inactiveTasksToShow;
+	}
+
+	public boolean isShowTimeSpentOnCase() {
+		return showTimeSpentOnCase;
+	}
+
+	public void setShowTimeSpentOnCase(boolean showTimeSpentOnCase) {
+		this.showTimeSpentOnCase = showTimeSpentOnCase;
 	}
 
 }

@@ -79,7 +79,8 @@ public abstract class CaseBlock extends Block {
 					useJavascriptForPageSwitching = true,
 					showCasesOnlyByProvidedProcesses = false,
 					changerCheckboxVisible = Boolean.FALSE,
-					useXMLDataProvider = true;
+					useXMLDataProvider = true,
+					showTimeSpentOnCase = false;
 
 
 	private String	caseStatusesToHide,
@@ -426,6 +427,7 @@ public abstract class CaseBlock extends Block {
 		list.setUseXMLDataProvider(isUseXMLDataProvider());
 		list.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
 		list.setInactiveTasksToShow(getInactiveTasksToShow());
+		list.setShowTimeSpentOnCase(isShowTimeSpentOnCase());
 		return list;
 	}
 
@@ -652,6 +654,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setInactiveTasksToShow(String inactiveTasksToShow) {
 		this.inactiveTasksToShow = inactiveTasksToShow;
+	}
+
+	public boolean isShowTimeSpentOnCase() {
+		return showTimeSpentOnCase;
+	}
+
+	public void setShowTimeSpentOnCase(boolean showTimeSpentOnCase) {
+		this.showTimeSpentOnCase = showTimeSpentOnCase;
 	}
 
 }
