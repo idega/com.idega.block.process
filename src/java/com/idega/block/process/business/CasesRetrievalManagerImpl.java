@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import javax.ejb.FinderException;
 import javax.faces.component.UIComponent;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -55,19 +56,19 @@ import com.idega.util.datastructures.map.MapUtil;
  *
  */
 @Scope(BeanDefinition.SCOPE_SINGLETON)
-@Service(CasesRetrievalManagerImpl.beanIdentifier)
+@Qualifier(CasesRetrievalManager.QUALIFIER)
+@Service(CasesRetrievalManager.BEAN_IDENTIFIER)
 public class CasesRetrievalManagerImpl extends DefaultSpringBean implements CasesRetrievalManager {
 
 	private ReentrantLock lock = new ReentrantLock();
 
-	public static final String beanIdentifier = "defaultCaseHandler";
 	public static final String caseHandlerType = "CasesDefault";
 
 	private static final String CASES_LIST_IDS_CACHE = "casesListIdsCache";
 
 	@Override
 	public String getBeanIdentifier() {
-		return beanIdentifier;
+		return CasesRetrievalManager.BEAN_IDENTIFIER;
 	}
 
 	@Override

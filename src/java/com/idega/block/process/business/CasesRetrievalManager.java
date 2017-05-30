@@ -26,14 +26,16 @@ import com.idega.user.data.User;
  */
 public interface CasesRetrievalManager {
 
-	public static final String CASE_LIST_TYPE_MY = "MyCases",
+	public static final String	CASE_LIST_TYPE_MY = "MyCases",
 								CASE_LIST_TYPE_USER = "UserCases",
 								CASE_LIST_TYPE_OPEN = "OpenCases",
 								CASE_LIST_TYPE_CLOSED = "ClosedCases",
 								CASE_LIST_TYPE_PUBLIC = "PublicCases",
-								CASE_LIST_TYPE_HANDLER = "HandlerCases";
+								CASE_LIST_TYPE_HANDLER = "HandlerCases",
 
-	public static final String COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier";
+								COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier",
+								BEAN_IDENTIFIER = "defaultCaseHandler",
+								QUALIFIER = BEAN_IDENTIFIER + "Qualifier";
 
 	public abstract String getBeanIdentifier();
 
@@ -50,55 +52,55 @@ public interface CasesRetrievalManager {
 	public abstract String getProcessIdentifier(Case theCase);
 
 	public abstract UIComponent getView(
-			IWContext iwc, 
+			IWContext iwc,
 			Integer caseId,
-			String type, 
+			String type,
 			String caseManagerType);
 
 	public abstract PagedDataCollection<CasePresentation> getCases(
-			User user, 
-			String type, 
-			Locale locale, 
+			User user,
+			String type,
+			Locale locale,
 			List<String> caseCodes,
-			List<String> statusesToHide, 
-			List<String> statusesToShow, 
-			int startIndex, 
-			int count, 
-			boolean onlySubscribedCases, 
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			int startIndex,
+			int count,
+			boolean onlySubscribedCases,
 			boolean showAllCases);
 
 	public abstract PagedDataCollection<CasePresentation> getCases(
-			User user, 
-			String type, 
-			Locale locale, 
+			User user,
+			String type,
+			Locale locale,
 			List<String> caseCodes,
-			List<String> statusesToHide, 
-			List<String> statusesToShow, 
-			int startIndex, int count, 
-			boolean onlySubscribedCases, 
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			int startIndex, int count,
+			boolean onlySubscribedCases,
 			boolean showAllCases,
-			List<Long> procInstIds, 
+			List<Long> procInstIds,
 			Set<String> roles,
 			boolean searchQuery);
 
 	public abstract List<Integer> getCaseIds(
-			User user, 
-			String type, 
-			List<String> caseCodes, 
-			List<String> statusesToHide, 
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
 			List<String> statusesToShow,
-			boolean onlySubscribedCases, 
+			boolean onlySubscribedCases,
 			boolean showAllCases) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
-			User user, 
-			String type, 
-			List<String> caseCodes, 
-			List<String> statusesToHide, 
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
 			List<String> statusesToShow,
-			boolean onlySubscribedCases, 
-			boolean showAllCases, 
-			List<Long> procInstIds, 
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<Long> procInstIds,
 			Set<String> roles) throws Exception;
 
 	/**
