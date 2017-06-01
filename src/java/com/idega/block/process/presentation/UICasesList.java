@@ -47,7 +47,7 @@ public class UICasesList extends IWBaseComponent {
 	@Autowired
 	private CaseManagersProvider caseManagersProvider;
 
-	private String type, specialBackPage, inactiveTasksToShow;
+	private String type, specialBackPage, inactiveTasksToShow, customView;
 
 	private int pageSize = 20;
 	private int page = 1;
@@ -233,6 +233,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
 		properties.setInactiveTasksToShow(getInactiveTasksToShow());
 		properties.setShowTimeSpentOnCase(isShowTimeSpentOnCase());
+		properties.setCustomView(getCustomView());
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -774,6 +775,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setShowTimeSpentOnCase(boolean showTimeSpentOnCase) {
 		this.showTimeSpentOnCase = showTimeSpentOnCase;
+	}
+
+	public String getCustomView() {
+		return customView;
+	}
+
+	public void setCustomView(String customView) {
+		this.customView = customView;
 	}
 
 }

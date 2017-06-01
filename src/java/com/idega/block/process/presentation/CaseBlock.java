@@ -99,7 +99,8 @@ public abstract class CaseBlock extends Block {
 					externalStyleSheet,
 					commaSeparatedExcludedHandlersIds,
 					caseNavigationBlockPosition,
-					inactiveTasksToShow;
+					inactiveTasksToShow,
+					customView;
 
 	private List<Long> procInstIds;
 	private Set<String> roles;
@@ -428,6 +429,7 @@ public abstract class CaseBlock extends Block {
 		list.setCaseNavigationBlockPosition(getCaseNavigationBlockPosition());
 		list.setInactiveTasksToShow(getInactiveTasksToShow());
 		list.setShowTimeSpentOnCase(isShowTimeSpentOnCase());
+		list.setCustomView(getCustomView());
 		return list;
 	}
 
@@ -662,6 +664,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setShowTimeSpentOnCase(boolean showTimeSpentOnCase) {
 		this.showTimeSpentOnCase = showTimeSpentOnCase;
+	}
+
+	public String getCustomView() {
+		return customView;
+	}
+
+	public void setCustomView(String customView) {
+		this.customView = customView;
 	}
 
 }

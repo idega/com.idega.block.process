@@ -14,7 +14,8 @@ public class CaseListPropertiesBean {
 	private String	specialBackPage,
 					casesListCustomizer,
 					caseNavigationBlockPosition,
-					inactiveTasksToShow;
+					inactiveTasksToShow,
+					customView;
 
 	private boolean useXMLDataProvider;
 	private boolean showCheckBoxes;
@@ -399,6 +400,14 @@ public class CaseListPropertiesBean {
 
 	public void setShowTimeSpentOnCase(boolean showTimeSpentOnCase) {
 		this.showTimeSpentOnCase = showTimeSpentOnCase;
+	}
+
+	public String getCustomView() {
+		return customView;
+	}
+
+	public void setCustomView(String customView) {
+		this.customView = customView;
 	}
 
 }
