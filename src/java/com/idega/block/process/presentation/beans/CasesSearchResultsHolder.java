@@ -36,4 +36,7 @@ public interface CasesSearchResultsHolder {
 	public CasesSearchCriteriaBean getSearchCriteria(String id);
 
 	public void concatExternalData(String id, List<CasePresentation> externalData);
+
+	public List<CasePresentation> getAllCases(String id);
+
 }
