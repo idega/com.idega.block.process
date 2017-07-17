@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,6 +46,8 @@ public class CasePresentation implements Serializable {
 	private boolean isPrivate, bpm = false;
 
 	private List<AdvancedProperty> externalData;
+
+	private Map<String, String> caseVariables;
 
 	public CasePresentation() {
 		super();
@@ -273,5 +276,13 @@ public class CasePresentation implements Serializable {
 	@Override
 	public String toString() {
 		return "\n\t" + getId() + " case identifier: '" + getCaseIdentifier() + "'";
+	}
+
+	public Map<String, String> getCaseVariables() {
+		return caseVariables;
+	}
+
+	public void setCaseVariables(Map<String, String> caseVariables) {
+		this.caseVariables = caseVariables;
 	}
 }
