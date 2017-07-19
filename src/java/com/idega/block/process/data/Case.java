@@ -309,4 +309,7 @@ public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, Meta
 
 	public boolean isClosed();
 
+	public default String getOwnerName() {
+		return getOwner() == null ? null : getOwner().getName();
+	}
 }
