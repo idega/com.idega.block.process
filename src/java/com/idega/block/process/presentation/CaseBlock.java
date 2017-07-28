@@ -81,7 +81,7 @@ public abstract class CaseBlock extends Block {
 					changerCheckboxVisible = Boolean.FALSE,
 					useXMLDataProvider = true,
 					showTimeSpentOnCase = false;
-
+	protected boolean showCaseSubstatus = false;
 
 	private String	caseStatusesToHide,
 					caseStatusesToShow,
@@ -430,6 +430,7 @@ public abstract class CaseBlock extends Block {
 		list.setInactiveTasksToShow(getInactiveTasksToShow());
 		list.setShowTimeSpentOnCase(isShowTimeSpentOnCase());
 		list.setCustomView(getCustomView());
+		list.setShowCaseSubstatus(isShowCaseSubstatus());
 		return list;
 	}
 
@@ -672,6 +673,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setCustomView(String customView) {
 		this.customView = customView;
+	}
+
+	public boolean isShowCaseSubstatus() {
+		return showCaseSubstatus;
+	}
+
+	public void setShowCaseSubstatus(boolean showCaseSubstatus) {
+		this.showCaseSubstatus = showCaseSubstatus;
 	}
 
 }

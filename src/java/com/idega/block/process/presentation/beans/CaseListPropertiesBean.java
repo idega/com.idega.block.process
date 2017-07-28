@@ -39,6 +39,7 @@ public class CaseListPropertiesBean {
 	protected boolean addExportContacts = true;
 	protected boolean showUserCompany = false;
 	protected boolean showLastLoginDate = false;
+	protected boolean showCaseSubstatus = false;
 
 	private boolean showLogExportButton,
 					showCaseStatus = true,
@@ -408,6 +409,14 @@ public class CaseListPropertiesBean {
 
 	public void setCustomView(String customView) {
 		this.customView = customView;
+	}
+
+	public boolean isShowCaseSubstatus() {
+		return showCaseSubstatus;
+	}
+
+	public void setShowCaseSubstatus(boolean showCaseSubstatus) {
+		this.showCaseSubstatus = showCaseSubstatus;
 	}
 
 }

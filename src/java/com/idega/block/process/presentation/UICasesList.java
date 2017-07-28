@@ -87,7 +87,7 @@ public class UICasesList extends IWBaseComponent {
 					showLastLoginDate = false,
 					useXMLDataProvider = true,
 					showTimeSpentOnCase = false;
-
+	protected boolean showCaseSubstatus = false;
 	public boolean isUseXMLDataProvider() {
 		return useXMLDataProvider;
 	}
@@ -234,6 +234,7 @@ public class UICasesList extends IWBaseComponent {
 		properties.setInactiveTasksToShow(getInactiveTasksToShow());
 		properties.setShowTimeSpentOnCase(isShowTimeSpentOnCase());
 		properties.setCustomView(getCustomView());
+		properties.setShowCaseSubstatus(isShowCaseSubstatus());
 		if (CasesRetrievalManager.CASE_LIST_TYPE_USER.equals(getType())) {
 			properties.setAddCredentialsToExernalUrls(isAddCredentialsToExernalUrls());
 			casesListComponent = listBuilder.getUserCasesList(iwc, cases, getUserCasesPageMap(), properties);
@@ -783,6 +784,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setCustomView(String customView) {
 		this.customView = customView;
+	}
+
+	public boolean isShowCaseSubstatus() {
+		return showCaseSubstatus;
+	}
+
+	public void setShowCaseSubstatus(boolean showCaseSubstatus) {
+		this.showCaseSubstatus = showCaseSubstatus;
 	}
 
 }
