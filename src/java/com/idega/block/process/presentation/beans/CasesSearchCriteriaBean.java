@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.idega.builder.bean.AdvancedProperty;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.ui.handlers.IWDatePickerHandler;
 import com.idega.util.IWTimestamp;
@@ -127,20 +128,36 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private void parseDateString() {
 		Locale locale = IWContext.getCurrentInstance().getCurrentLocale();
-
+		String format = IWMainApplication.getDefaultIWMainApplication().getSettings().getProperty("datepicker_date_format");
 		String dateRange = getDateRange();
 		if (dateRange != null) {
 			String splitter = " - ";
 			if (dateRange.indexOf(splitter) == -1) {
-				Date date = IWDatePickerHandler.getParsedDate(dateRange, locale);
+
+				Date date = null;
+				if (format == null) {
+					date = IWDatePickerHandler.getParsedDate(dateRange, locale);
+				} else {
+					date = IWDatePickerHandler.getParsedDateByFormat(dateRange, format);
+				}
 				dateFrom = date == null ? null : new IWTimestamp(date);
 			}
 			else {
 				String[] dateRangeParts = dateRange.split(splitter);
 
-				Date date = IWDatePickerHandler.getParsedDate(dateRangeParts[0], locale);
+				Date date = null;
+
+				if (format == null) {
+					date = IWDatePickerHandler.getParsedDate(dateRangeParts[0], locale);
+				} else {
+					date = IWDatePickerHandler.getParsedDateByFormat(dateRangeParts[0], format);
+				}
 				dateFrom = date == null ? null : new IWTimestamp(date);
-				date = IWDatePickerHandler.getParsedDate(dateRangeParts[1], locale);
+				if (format == null) {
+					date = IWDatePickerHandler.getParsedDate(dateRangeParts[1], locale);
+				} else {
+					date = IWDatePickerHandler.getParsedDateByFormat(dateRangeParts[1], format);
+				}
 				dateTo = date == null ? null : new IWTimestamp(date);
 				if (dateTo != null) {
 					dateTo.setHour(23);
