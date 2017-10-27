@@ -109,6 +109,15 @@ public enum VariableDataType {
 		return getAllDataTypesEnumsMappings().get(type);
 	}
 
+	public static final VariableDataType getVariableType(String variableName) {
+		for (VariableDataType type: VariableDataType.values()) {
+			if (variableName.startsWith(type.toString())) {
+				return type;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public abstract String toString();
 }
