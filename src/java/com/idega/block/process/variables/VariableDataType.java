@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.idega.util.CoreConstants;
+import com.idega.util.StringUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -110,6 +111,10 @@ public enum VariableDataType {
 	}
 
 	public static final VariableDataType getVariableType(String variableName) {
+		if (StringUtil.isEmpty(variableName)) {
+			return null;
+		}
+
 		for (VariableDataType type: VariableDataType.values()) {
 			if (variableName.startsWith(type.toString())) {
 				return type;
