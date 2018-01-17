@@ -556,4 +556,7 @@ public interface CaseBusiness extends IBOService {
 	 */
 	public List<Case> findSubscribedCases(Group group);
 
+	public String getCaseStatusLocalized(String statusKey);
+	public String getCaseStatusLocalized(CaseStatus caseStatus);
+
 }

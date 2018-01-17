@@ -62,6 +62,7 @@ import com.idega.user.data.User;
 import com.idega.user.data.UserHome;
 import com.idega.util.ArrayUtil;
 import com.idega.util.CoreConstants;
+import com.idega.util.CoreUtil;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
@@ -1455,4 +1456,58 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public List<Case> findSubscribedCases(Group group) {
 		return findSubscribedCases(Arrays.asList(group));
 	}
+
+	@Override
+	public String getCaseStatusLocalized(String statusKey) {
+		if (StringUtil.isEmpty(statusKey)) {
+			return null;
+		}
+
+		try {
+			CaseStatusHome caseStatusHome = getCaseStatusHome();
+			CaseStatus caseStatus = caseStatusHome.findByPrimaryKey(statusKey);
+			return getCaseStatusLocalized(caseStatus);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting localized status for: " + statusKey, e);
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getCaseStatusLocalized(CaseStatus caseStatus) {
+		if (caseStatus == null) {
+			return null;
+		}
+
+		String statusKey = caseStatus.getStatus();
+		try {
+			Locale locale = CoreUtil.getCurrentLocale();
+
+			String localization = null;
+			try {
+				@SuppressWarnings("unchecked")
+				Class<? extends CaseBusiness> caseBusinessClass = (Class<? extends CaseBusiness>) Class.forName("is.idega.idegaweb.egov.cases.business.CasesBusiness");
+				CaseBusiness casesBusiness = IBOLookup.getServiceInstance(getIWApplicationContext(), caseBusinessClass);
+				localization = casesBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			} catch (Exception e) {}
+			if (!StringUtil.isEmpty(localization) && !localization.equals(statusKey)) {
+				return localization;
+			}
+
+			localization = getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			if (StringUtil.isEmpty(localization) || localization.equals(statusKey)) {
+				localization = getLocalizedCaseStatusDescription(null, caseStatus, locale, "is.idega.idegaweb.egov.cases");
+			}
+			if (StringUtil.isEmpty(localization)) {
+				return statusKey;
+			}
+			return localization;
+		} catch(Exception e) {
+			getLogger().log(Level.WARNING, "Error getting localized status for: " + caseStatus, e);
+		}
+
+		return statusKey;
+	}
+
 }
