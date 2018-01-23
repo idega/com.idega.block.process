@@ -1161,13 +1161,25 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public String[] getStatusesForOpenCases() {
-		return new String[] {getCaseStatusOpen().getStatus(), getCaseStatusReview().getStatus(), getCaseStatusCreated().getStatus(), getCaseStatusPending().getStatus(),
-				CaseBMPBean.CASE_STATUS_IN_PROCESS_KEY};
+		return new String[] {
+				getCaseStatusOpen().getStatus(),
+				getCaseStatusReview().getStatus(),
+				getCaseStatusCreated().getStatus(),
+				getCaseStatusPending().getStatus(),
+				CaseBMPBean.CASE_STATUS_IN_PROCESS_KEY,
+				CaseBMPBean.CASE_STATUS_ASSIGNED,
+				CaseBMPBean.CASE_STATUS_ON_HOLD
+		};
 	}
 
 	@Override
 	public String[] getStatusesForClosedCases() {
-		return new String[] {getCaseStatusInactive().getStatus(), getCaseStatusReady().getStatus(), getCaseStatusFinished().getStatus()};
+		return new String[] {
+				getCaseStatusInactive().getStatus(),
+				getCaseStatusReady().getStatus(),
+				getCaseStatusFinished().getStatus(),
+				CaseBMPBean.CASE_STATUS_CLOSED
+		};
 	}
 
 	@Override
@@ -1182,7 +1194,10 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public String[] getStatusesForRejectedCases() {
-		return new String[] { getCaseStatusDenied().getStatus() };
+		return new String[] {
+				getCaseStatusDenied().getStatus(),
+				CaseBMPBean.CASE_STATUS_SPAM
+		};
 	}
 
 	@Override
