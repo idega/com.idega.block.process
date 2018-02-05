@@ -103,8 +103,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				casesToShow = new ArrayList<Case>();
 				for (Case theCase : cases) {
 					Collection<User> subscribers = theCase.getSubscribers();
-					if (!ListUtil.isEmpty(subscribers) && subscribers.contains(user))
+					if (!ListUtil.isEmpty(subscribers) && subscribers.contains(user)) {
 						casesToShow.add(theCase);
+					}
 				}
 			} else {
 				casesToShow = cases;
@@ -131,7 +132,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	@Override
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases) throws Exception {
-		throw new UnsupportedOperationException("Not implemented");
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -206,8 +207,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	 * @return List of CasePresentation beans.
 	 */
 	protected List<CasePresentation> convertToPresentationBeans(Collection<? extends Case> cases, Locale locale) {
-		if (ListUtil.isEmpty(cases))
+		if (ListUtil.isEmpty(cases)) {
 			return new ArrayList<CasePresentation>(0);
+		}
 
 		List<CasePresentation> beans = new ArrayList<CasePresentation>(cases.size());
 		for (Iterator<? extends Case> iterator = cases.iterator(); iterator.hasNext();) {
@@ -220,16 +222,18 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				getLogger().log(Level.WARNING, "Error while converting case " + caze + " to " + CasePresentation.class, e);
 			}
 
-			if (bean != null)
+			if (bean != null) {
 				beans.add(bean);
+			}
 		}
 
 		return beans;
 	}
 
 	protected CasePresentation convertToPresentation(Case theCase, CasePresentation bean, Locale locale) {
-		if (bean == null)
+		if (bean == null) {
 			bean = new CasePresentation();
+		}
 
 		CaseCode code = theCase.getCaseCode();
 
@@ -335,16 +339,18 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public String resolveCaseId(IWContext iwc) {
-		if (iwc == null)
+		if (iwc == null) {
 			return null;
+		}
 
 		return iwc.getParameter(UserCases.PARAMETER_CASE_PK);
 	}
 
 	@Override
 	public User getCaseOwner(Object entityId) {
-		if (entityId == null || entityId instanceof Long)
+		if (entityId == null || entityId instanceof Long) {
 			return null;
+		}
 
 		try {
 			CaseHome caseHome = (CaseHome) IDOLookup.getHome(Case.class);
@@ -366,8 +372,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	private int lastUsedCacheSize = 75;
 	private Map<CasesCacheCriteria, Map<Integer, Date>> getCache() {
 		int cacheSize = Integer.valueOf(getApplication().getSettings().getProperty("cases_cache_size", String.valueOf(75)));
-		if (cacheSize == lastUsedCacheSize)
+		if (cacheSize == lastUsedCacheSize) {
 			return getCache(CASES_LIST_IDS_CACHE, 86400, cacheSize);
+		}
 
 		IWCacheManager2.getInstance(getApplication()).invalidate(CASES_LIST_IDS_CACHE);
 		lastUsedCacheSize = cacheSize;
@@ -639,8 +646,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 		try {
 			Map<CasesCacheCriteria, Map<Integer, Date>> cache = getCache();
-			if (cache == null)
+			if (cache == null) {
 				return;
+			}
 
 			/* Getting id's, that already cached by given criteria */
 			Map<Integer, Date> cachedIds = cache.get(key);
@@ -680,8 +688,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public CasePresentation getCaseByIdLazily(Integer caseId) {
-		if (caseId == null)
+		if (caseId == null) {
 			return null;
+		}
 
 		Case theCase = null;
 		try {
@@ -690,8 +699,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			e.printStackTrace();
 		} catch (FinderException e) {
 		}
-		if (theCase == null)
+		if (theCase == null) {
 			return null;
+		}
 
 		CasePresentation casePresentation = new CasePresentation(theCase);
 		casePresentation.setLocalizedStatus(getLocalizedStatus(theCase, theCase.getCaseStatus(), getCurrentLocale()));
