@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.idega.block.process.data.CaseBMPBean;
 import com.idega.core.idgenerator.business.IdGenerator;
 import com.idega.core.idgenerator.business.IdGeneratorFactory;
 import com.idega.data.MetaDataCapable;
@@ -143,6 +145,10 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = Metadata.class)
 	@JoinTable(name = SQL_RELATION_METADATA, joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = Metadata.COLUMN_METADATA_ID) })
 	private Set<Metadata> metadata;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = User.class)
+	@JoinTable(name = CaseBMPBean.COLUMN_CASE_SUBSCRIBERS, joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
+	private List<User> subscribers;
 
 	public Integer getId() {
 		return id;
