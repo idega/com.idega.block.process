@@ -130,8 +130,17 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases) throws Exception {
+	public List<Integer> getCaseIds(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize
+	) throws Exception {
 		return Collections.emptyList();
 	}
 

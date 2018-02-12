@@ -90,7 +90,10 @@ public interface CasesRetrievalManager {
 			List<String> statusesToHide,
 			List<String> statusesToShow,
 			boolean onlySubscribedCases,
-			boolean showAllCases) throws Exception;
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize
+	) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
 			User user,
