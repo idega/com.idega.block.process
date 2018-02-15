@@ -95,6 +95,16 @@ public interface CasesRetrievalManager {
 			Integer pageSize
 	) throws Exception;
 
+	public abstract Long getCountedCaseIds(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases
+	) throws Exception;
+
 	public abstract List<Integer> getCaseIds(
 			User user,
 			String type,

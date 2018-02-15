@@ -717,4 +717,17 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		return casePresentation;
 	}
 
+	@Override
+	public Long getCountedCaseIds(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases
+	) throws Exception {
+		return Long.valueOf(0);
+	}
+
 }
