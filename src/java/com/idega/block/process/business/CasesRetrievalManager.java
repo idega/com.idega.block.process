@@ -1,5 +1,6 @@
 package com.idega.block.process.business;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -170,7 +171,7 @@ public interface CasesRetrievalManager {
 
 	public abstract String getProcessName(String processName, Locale locale);
 
-	public abstract Long getLatestProcessDefinitionIdByProcessName(String name);
+	public abstract <T extends Serializable> T getLatestProcessDefinitionIdByProcessName(String name);
 
 	public abstract PagedDataCollection<CasePresentation> getClosedCases(Collection<Group> groups);
 

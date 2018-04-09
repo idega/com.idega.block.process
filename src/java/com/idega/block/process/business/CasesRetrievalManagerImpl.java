@@ -1,5 +1,6 @@
 package com.idega.block.process.business;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,12 +155,12 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	public List<Integer> getCasePrimaryKeys(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs,
 			boolean searchQuery) throws Exception {
-		throw new UnsupportedOperationException("Not implemented");
+		return Collections.emptyList();
 	}
 
 	@Override
-	public Long getLatestProcessDefinitionIdByProcessName(String name) {
-		throw new UnsupportedOperationException("Not implemented");
+	public <T extends Serializable> T getLatestProcessDefinitionIdByProcessName(String name) {
+		return null;
 	}
 
 	@Override
@@ -184,7 +185,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public String getProcessName(String processName, Locale locale) {
-		throw new UnsupportedOperationException("Not implemented");
+		return null;
 	}
 
 	@Override
@@ -690,7 +691,9 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<Long> procInstIds,
 			Set<String> roles,
 			Collection<Long> handlerCategoryIDs,
-			boolean searchQuery
+			boolean searchQuery,
+			Integer page,
+			Integer pageSize
 	) throws Exception {
 		throw new UnsupportedOperationException("This method is not implemented");
 	}
