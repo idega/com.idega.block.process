@@ -39,6 +39,7 @@ import com.idega.block.process.data.CaseLogHome;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.block.process.data.CaseStatusHome;
 import com.idega.block.process.message.business.MessageTypeManager;
+import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
@@ -1051,8 +1052,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 * @return
 	 */
 	protected List<CaseChangeListener> getListenerListForCaseCode(String caseCode) {
-		if (listenerCaseCodeMap == null)
+		if (listenerCaseCodeMap == null) {
 			listenerCaseCodeMap = new HashMap<String, List<CaseChangeListener>>();
+		}
 
 		List<CaseChangeListener> listenerList = listenerCaseCodeMap.get(caseCode);
 		if (listenerList == null) {
@@ -1063,8 +1065,9 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	protected List<CaseChangeListener> getListenerListForCaseCodeAndStatus(String caseCode, String caseStatus) {
-		if (listenerCaseCodeStatusMap == null)
+		if (listenerCaseCodeStatusMap == null) {
 			listenerCaseCodeStatusMap = new HashMap<String, Map<String, List<CaseChangeListener>>>();
+		}
 
 		Map<String, List<CaseChangeListener>> statusMap = listenerCaseCodeStatusMap.get(caseCode);
 		if (statusMap==null) {
@@ -1523,6 +1526,68 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 
 		return statusKey;
+	}
+
+	@Override
+	public Map<String, AdvancedProperty> getCaseStatuses(boolean showAllStatuses, String caseStatusesToShow, String caseStatusesToHide) {
+		Collection<CaseStatus> allStatuses = null;
+		try {
+			allStatuses = getCaseStatuses();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (ListUtil.isEmpty(allStatuses)) {
+			getLogger().warning("There are no statuses available");
+			return null;
+		}
+
+		Locale l = CoreUtil.getCurrentLocale();
+		if (l == null) {
+			l = Locale.ENGLISH;
+		}
+
+		boolean addStatus = true;
+		String localizedStatus = null;
+		Map<String, AdvancedProperty> statuses = new HashMap<String, AdvancedProperty>();
+		for (CaseStatus status: allStatuses) {
+			addStatus = true;
+
+			try {
+				localizedStatus = getLocalizedCaseStatusDescription(null, status, l);
+				if (!showAllStatuses && localizedStatus.equals(status.getStatus())) {
+					addStatus = false;
+				}
+
+				if (caseStatusesToShow != null) {
+					if (caseStatusesToShow.indexOf(status.getStatus()) != -1) {
+						addStatus = true;
+					} else if (!showAllStatuses) {
+						addStatus = false;
+					}
+				}
+
+				if (caseStatusesToHide != null) {
+					if (caseStatusesToHide.indexOf(status.getStatus()) != -1) {
+						addStatus = false;
+					} else if (showAllStatuses) {
+						addStatus = true;
+					}
+				}
+
+				if (addStatus) {
+					String statusKey = status.getStatus();
+					if (statuses.containsKey(localizedStatus)) {
+						AdvancedProperty statusItem = statuses.get(localizedStatus);
+						statusItem.setId(statusItem.getId().concat(CoreConstants.COMMA).concat(statusKey));
+					} else {
+						statuses.put(localizedStatus, new AdvancedProperty(statusKey, localizedStatus));
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return statuses;
 	}
 
 }

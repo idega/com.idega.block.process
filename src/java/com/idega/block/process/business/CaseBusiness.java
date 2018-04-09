@@ -15,6 +15,7 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseCode;
 import com.idega.block.process.data.CaseLog;
 import com.idega.block.process.data.CaseStatus;
+import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOService;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
@@ -558,5 +559,7 @@ public interface CaseBusiness extends IBOService {
 
 	public String getCaseStatusLocalized(String statusKey);
 	public String getCaseStatusLocalized(CaseStatus caseStatus);
+
+	public Map<String, AdvancedProperty> getCaseStatuses(boolean showAllStatuses, String caseStatusesToShow, String caseStatusesToHide);
 
 }
