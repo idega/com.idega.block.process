@@ -32,7 +32,7 @@ public class CasePresentation implements Serializable {
 
 	private User owner, handledBy;
 
-	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName, body;
+	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName, body, uniqueId;
 
 	private CaseStatus caseStatus;
 
@@ -56,6 +56,7 @@ public class CasePresentation implements Serializable {
 		caseIdentifier = theCase.getCaseIdentifier();
 		subject = theCase.getSubject();
 		caseStatus = theCase.getCaseStatus();
+		uniqueId = theCase.getUniqueId();
 	}
 
 	public Integer getPrimaryKey() {
@@ -249,4 +250,13 @@ public class CasePresentation implements Serializable {
 	public void setCaseVariables(Map<String, String> caseVariables) {
 		this.caseVariables = caseVariables;
 	}
+
+	public final String getUniqueId() {
+		return uniqueId;
+	}
+
+	public final void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+
 }
