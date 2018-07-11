@@ -41,19 +41,6 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private List<String> customColumns, exportColumns;
 
-	private List<String> varCaseIdentifierList,
-						 varOwnerKennitalaList,
-						 varPropertyNumberList,
-						 varPropertyOwnerPersonalIdList,
-						 varOperatorPersonalIdList;
-
-	private String ownerKennitala,
-				   propertyNumber,
-				   propertyOwnerPersonalId,
-				   operatorPersonalId,
-				   freeVariableText;
-
-
 	public Long getSubscribersGroupId() {
 		return subscribersGroupId;
 	}
@@ -315,87 +302,6 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	public void setShowContacts(boolean showContacts) {
 		this.showContacts = showContacts;
-	}
-
-	public List<String> getVarCaseIdentifierList() {
-		return varCaseIdentifierList;
-	}
-
-	public void setVarCaseIdentifierList(List<String> varCaseIdentifierList) {
-		this.varCaseIdentifierList = varCaseIdentifierList;
-	}
-
-	public List<String> getVarOwnerKennitalaList() {
-		return varOwnerKennitalaList;
-	}
-
-	public void setVarOwnerKennitalaList(List<String> varOwnerKennitalaList) {
-		this.varOwnerKennitalaList = varOwnerKennitalaList;
-	}
-
-	public List<String> getVarPropertyNumberList() {
-		return varPropertyNumberList;
-	}
-
-	public void setVarPropertyNumberList(List<String> varPropertyNumberList) {
-		this.varPropertyNumberList = varPropertyNumberList;
-	}
-
-	public List<String> getVarPropertyOwnerPersonalIdList() {
-		return varPropertyOwnerPersonalIdList;
-	}
-
-	public void setVarPropertyOwnerPersonalIdList(List<String> varPropertyOwnerPersonalIdList) {
-		this.varPropertyOwnerPersonalIdList = varPropertyOwnerPersonalIdList;
-	}
-
-	public List<String> getVarOperatorPersonalIdList() {
-		return varOperatorPersonalIdList;
-	}
-
-	public void setVarOperatorPersonalIdList(List<String> varOperatorPersonalIdList) {
-		this.varOperatorPersonalIdList = varOperatorPersonalIdList;
-	}
-
-
-	public String getOwnerKennitala() {
-		return ownerKennitala;
-	}
-
-	public void setOwnerKennitala(String ownerKennitala) {
-		this.ownerKennitala = ownerKennitala;
-	}
-
-	public String getPropertyNumber() {
-		return propertyNumber;
-	}
-
-	public void setPropertyNumber(String propertyNumber) {
-		this.propertyNumber = propertyNumber;
-	}
-
-	public String getPropertyOwnerPersonalId() {
-		return propertyOwnerPersonalId;
-	}
-
-	public void setPropertyOwnerPersonalId(String propertyOwnerPersonalId) {
-		this.propertyOwnerPersonalId = propertyOwnerPersonalId;
-	}
-
-	public String getOperatorPersonalId() {
-		return operatorPersonalId;
-	}
-
-	public void setOperatorPersonalId(String operatorPersonalId) {
-		this.operatorPersonalId = operatorPersonalId;
-	}
-
-	public String getFreeVariableText() {
-		return freeVariableText;
-	}
-
-	public void setFreeVariableText(String freeVariableText) {
-		this.freeVariableText = freeVariableText;
 	}
 
 
