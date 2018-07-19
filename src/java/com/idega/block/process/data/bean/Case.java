@@ -102,8 +102,11 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	private Case parentCase;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn(name = COLUMN_USER, referencedColumnName = User.COLUMN_USER_ID)
+	@PrimaryKeyJoinColumn(name = COLUMN_USER, referencedColumnName = COLUMN_USER)
 	private User user;
+
+	@Column(name = COLUMN_USER)
+	private Integer userId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = COLUMN_CREATOR, referencedColumnName = User.COLUMN_USER_ID)
@@ -423,6 +426,14 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setParentCase(Case parentCase) {
 		this.parentCase = parentCase;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	@Override
