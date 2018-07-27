@@ -6,5 +6,6 @@
 
     <entity class="com.idega.block.process.data.bean.Case" />
     <entity class="com.idega.block.process.data.bean.CaseCode" />
+    <entity class="com.idega.block.process.data.bean.CaseInvoiceInfo" />
 
 </entity-mappings>
