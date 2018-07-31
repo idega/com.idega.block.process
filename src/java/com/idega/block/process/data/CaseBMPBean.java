@@ -124,6 +124,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String CASE_STATUS_ASSIGNED = "ASSI";
 	public static final String CASE_STATUS_ON_HOLD = "HOLD";
 	public static final String CASE_STATUS_SPAM = "SPAM";
+	public static final String CASE_STATUS_RECEIPT = "RECE";
 
 	@Override
 	public void initializeAttributes() {
@@ -422,8 +423,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	@Override
 	public Iterator<Case> getChildrenIterator() {
 		Collection<Case> children = getChildren();
-		if (children != null)
+		if (children != null) {
 			return children.iterator();
+		}
 
 		return null;
 	}
@@ -1177,12 +1179,14 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 	@Override
 	public boolean addVote(User voter) throws IDOAddRelationshipException {
-		if (voter == null)
+		if (voter == null) {
 			return false;
+		}
 
 		Collection<User> voters = getVoters();
-		if (!ListUtil.isEmpty(voters) && voters.contains(voter))
+		if (!ListUtil.isEmpty(voters) && voters.contains(voter)) {
 			return false;
+		}
 
 		this.idoAddTo(voter, COLUMN_CASE_VOTERS);
 		return true;
@@ -1190,8 +1194,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 	@Override
 	public boolean removeVote(User voter) throws IDORemoveRelationshipException {
-		if (voter == null)
+		if (voter == null) {
 			return false;
+		}
 
 		super.idoRemoveFrom(voter, COLUMN_CASE_VOTERS);
 		return true;
@@ -1219,8 +1224,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		}
 
 		Collection<User> currentSubscribers = getSubscribers();
-		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber))
+		if (!ListUtil.isEmpty(currentSubscribers) && currentSubscribers.contains(subscriber)) {
 			return false;
+		}
 
 		this.idoAddTo(subscriber, COLUMN_CASE_SUBSCRIBERS);
 		return true;
@@ -1382,8 +1388,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	@Override
 	public boolean isClosed() {
 		CaseStatus status = getCaseStatus();
-		if (status == null)
+		if (status == null) {
 			return false;
+		}
 
 		String statusKey = status.getStatus();
 		if (StringUtil.isEmpty(statusKey)) {
