@@ -1182,9 +1182,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				getCaseStatusReady().getStatus(),
 				getCaseStatusFinished().getStatus(),
 				CaseBMPBean.CASE_STATUS_CLOSED,
-				CaseBMPBean.CASE_STATUS_GRANTED_KEY,
-				CaseBMPBean.CASE_STATUS_DENIED_KEY,
-				CaseBMPBean.CASE_STATUS_DELETED_KEY
+				CaseBMPBean.CASE_STATUS_DELETED_KEY,
+				CaseBMPBean.CASE_STATUS_RECEIPT
 		};
 	}
 
