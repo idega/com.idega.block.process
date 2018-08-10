@@ -49,7 +49,8 @@ import com.idega.util.DBUtil;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
 	@NamedQuery(name = Case.FIND_ID_BY_SUBJECT, query = "select c.id from Case c where c.subject = :" + Case.PARAM_SUBJECT),
-	@NamedQuery(name = Case.FIND_ID_BY_ID, query = "select c from Case c where c.id = :" + Case.PARAM_ID)
+	@NamedQuery(name = Case.FIND_ID_BY_ID, query = "select c from Case c where c.id = :" + Case.PARAM_ID),
+	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c from Case c where c.uniqueId = :" + Case.PARAM_UUID)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
@@ -79,9 +80,11 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",
+								PARAM_UUID = "uuid",
 
 								FIND_ID_BY_SUBJECT = "Case.findIdBySubject",
-								FIND_ID_BY_ID = "Case.findIdById";
+								FIND_ID_BY_ID = "Case.findIdById",
+								FIND_ID_BY_UUID = "Case.findIdByUUID";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -152,6 +155,10 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = User.class)
 	@JoinTable(name = CaseBMPBean.COLUMN_CASE_SUBSCRIBERS, joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
 	private List<User> subscribers;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = Case.COLUMN_CASE_ID, referencedColumnName = CaseSettings.COLUMN_ID)
+	private CaseSettings settings;
 
 	public Integer getId() {
 		return id;
@@ -434,6 +441,17 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public CaseSettings getSettings() {
+		if (!DBUtil.getInstance().isInitialized(settings)) {
+			settings = DBUtil.getInstance().lazyLoad(settings);
+		}
+		return settings;
+	}
+
+	public void setSettings(CaseSettings settings) {
+		this.settings = settings;
 	}
 
 	@Override
