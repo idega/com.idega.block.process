@@ -7,5 +7,7 @@
     <entity class="com.idega.block.process.data.bean.Case" />
     <entity class="com.idega.block.process.data.bean.CaseCode" />
     <entity class="com.idega.block.process.data.bean.CaseInvoiceInfo" />
+    <entity class="com.idega.block.process.data.bean.CaseReminder" />
+    <entity class="com.idega.block.process.data.bean.CaseSettings" />
 
 </entity-mappings>

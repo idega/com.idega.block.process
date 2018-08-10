@@ -18,5 +18,17 @@
         timeToIdleSeconds="86400"
         timeToLiveSeconds="86400"
     />
+    <cache
+        maxElementsInMemory="500000"
+        name="com.idega.block.process.data.bean.CaseReminder"
+        timeToIdleSeconds="86400"
+        timeToLiveSeconds="86400"
+    />
+    <cache
+        maxElementsInMemory="500000"
+        name="com.idega.block.process.data.bean.CaseSettings"
+        timeToIdleSeconds="86400"
+        timeToLiveSeconds="86400"
+    />
     
 </ehcache>
