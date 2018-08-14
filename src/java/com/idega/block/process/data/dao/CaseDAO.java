@@ -13,4 +13,6 @@ public interface CaseDAO extends GenericDao {
 
 	public Case getCaseByUniqueId(String uuid);
 
+	public Integer getCaseIdByUniqueId(String uuid);
+
 }

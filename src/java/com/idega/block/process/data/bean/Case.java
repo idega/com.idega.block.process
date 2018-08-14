@@ -50,7 +50,8 @@ import com.idega.util.DBUtil;
 @NamedQueries({
 	@NamedQuery(name = Case.FIND_ID_BY_SUBJECT, query = "select c.id from Case c where c.subject = :" + Case.PARAM_SUBJECT),
 	@NamedQuery(name = Case.FIND_ID_BY_ID, query = "select c from Case c where c.id = :" + Case.PARAM_ID),
-	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c from Case c where c.uniqueId = :" + Case.PARAM_UUID)
+	@NamedQuery(name = Case.FIND_CASE_BY_UUID, query = "select c from Case c where c.uniqueId = :" + Case.PARAM_UUID),
+	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c.id from Case c where c.uniqueId = :" + Case.PARAM_UUID)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
@@ -84,6 +85,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 								FIND_ID_BY_SUBJECT = "Case.findIdBySubject",
 								FIND_ID_BY_ID = "Case.findIdById",
+								FIND_CASE_BY_UUID = "Case.findCaseByUUID",
 								FIND_ID_BY_UUID = "Case.findIdByUUID";
 
 	@Id

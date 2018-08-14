@@ -59,9 +59,25 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		}
 
 		try {
-			return getSingleResult(Case.FIND_ID_BY_UUID, Case.class, new Param(Case.PARAM_UUID, uuid));
+			return getSingleResult(Case.FIND_CASE_BY_UUID, Case.class, new Param(Case.PARAM_UUID, uuid));
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error getting case by UUID: " + uuid, e);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Integer getCaseIdByUniqueId(String uuid) {
+		if (StringUtil.isEmpty(uuid)) {
+			getLogger().warning("Case UUID is not provided!");
+			return null;
+		}
+
+		try {
+			return getSingleResult(Case.FIND_ID_BY_UUID, Integer.class, new Param(Case.PARAM_UUID, uuid));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting case ID by UUID: " + uuid, e);
 		}
 
 		return null;
