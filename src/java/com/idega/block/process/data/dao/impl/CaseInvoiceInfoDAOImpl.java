@@ -11,6 +11,9 @@ import com.idega.block.process.data.bean.CaseInvoiceInfo;
 import com.idega.block.process.data.dao.CaseInvoiceInfoDAO;
 import com.idega.core.persistence.Param;
 import com.idega.core.persistence.impl.GenericDaoImpl;
+import com.idega.presentation.IWContext;
+import com.idega.user.data.bean.User;
+import com.idega.util.CoreUtil;
 
 @Repository("caseInvoiceInfoDAO")
 @Transactional(readOnly = true)
@@ -36,19 +39,30 @@ public class CaseInvoiceInfoDAOImpl extends GenericDaoImpl implements CaseInvoic
 	@Override
 	@Transactional(readOnly = false)
 	public CaseInvoiceInfo createUpdateCaseInvoiceInfo(CaseInvoiceInfo info) {
-		if (info != null) {
-			try {
-				if (info.getId() == null) {
-					persist(info);
-				} else {
-					merge(info);
+		if (info == null) {
+			return null;
+		}
+
+		if (info.getCreatedBy() == null) {
+			IWContext iwc = CoreUtil.getIWContext();
+			if (iwc != null) {
+				User currentUser = iwc.getLoggedInUser();
+				if (currentUser != null) {
+					info.setCreatedBy(currentUser.getId());
 				}
-			} catch (Exception e) {
-				getLogger().log(Level.WARNING, "Could not create/update case invoice info. Error message was: " + e.getLocalizedMessage(), e);
 			}
+		}
+
+		try {
+			if (info.getId() == null) {
+				persist(info);
+			} else {
+				merge(info);
+			}
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Could not create/update case invoice info " + info + ". Error message was: " + e.getLocalizedMessage(), e);
 		}
 		return info;
 	}
-
 
 }

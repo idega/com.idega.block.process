@@ -42,7 +42,8 @@ public class CaseInvoiceInfo implements Serializable {
 								COLUMN_READ_DATE = "read_date",
 								COLUMN_IS_PROCESSED = "is_processed",
 								COLUMN_IS_APPROVED = "is_approved",
-								COLUMN_IS_DENIED = "is_denied";
+								COLUMN_IS_DENIED = "is_denied",
+								COLUMN_CRATED_BY = "created_by";
 
 	public static final String	ENTITY_NAME = "proc_case_invoice_info",
 
@@ -95,6 +96,9 @@ public class CaseInvoiceInfo implements Serializable {
 
 	@Column(name = COLUMN_IS_DENIED)
 	private Boolean denied = Boolean.FALSE;
+
+	@Column(name = COLUMN_CRATED_BY)
+	private Integer createdBy;
 
 	public Integer getId() {
 		return id;
@@ -218,6 +222,21 @@ public class CaseInvoiceInfo implements Serializable {
 		this.denied = denied;
 	}
 
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
 
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	@Override
+	public String toString() {
+		Integer id = getId();
+		Class<?> theClass = getClass();
+		return id == null ?
+				"Unknown ID for " + theClass.getName() :
+				theClass.getSimpleName() + ": " + id;
+	}
 
 }
