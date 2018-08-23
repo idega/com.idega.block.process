@@ -20,7 +20,7 @@ import com.idega.util.IWTimestamp;
 /**
  * Title: idegaWeb Description: Copyright: Copyright (c) 2002 Company: idega
  * software
- * 
+ *
  * @author <a href="tryggvi@idega.is">Tryggvi Larusson </a>
  * @version 1.0
  */
@@ -42,6 +42,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
 	private static final String COLUMN_COMMENT = "PROC_COMMENT";
 
+	@Override
 	public void initializeAttributes() {
 		addAttribute(COLUMN_CASE_LOG_ID);
 		this.addManyToOneRelationship(COLUMN_CASE_ID, "The case", Case.class);
@@ -52,94 +53,117 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		this.addAttribute(COLUMN_COMMENT, "Comment for change", String.class, 4000);
 	}
 
+	@Override
 	public void setDefaultValues() {
 		setTimeStamp(IWTimestamp.getTimestampRightNow());
 	}
 
+	@Override
 	public String getIDColumnName() {
 		return COLUMN_CASE_LOG_ID;
 	}
 
+	@Override
 	public String getEntityName() {
 		return TABLE_NAME;
 	}
 
+	@Override
 	public Case getCase() {
 		return (Case) (this.getColumnValue(COLUMN_CASE_ID));
 	}
 
+	@Override
 	public int getCaseId() {
 		return (this.getIntColumnValue(COLUMN_CASE_ID));
 	}
 
+	@Override
 	public void setCase(Case aCase) {
 		setColumn(COLUMN_CASE_ID, aCase);
 	}
 
+	@Override
 	public void setCase(int aCaseID) {
 		setColumn(COLUMN_CASE_ID, aCaseID);
 	}
 
+	@Override
 	public CaseStatus getCaseStatusBefore() {
 		return (CaseStatus) (this.getColumnValue(COLUMN_CASE_STATUS_BEFORE));
 	}
 
+	@Override
 	public String getStatusBefore() {
 		return (this.getStringColumnValue(COLUMN_CASE_STATUS_BEFORE));
 	}
 
+	@Override
 	public void setCaseStatusBefore(CaseStatus aCaseStatus) {
 		setColumn(COLUMN_CASE_STATUS_BEFORE, aCaseStatus);
 	}
 
+	@Override
 	public void setCaseStatusBefore(String caseStatus) {
 		setColumn(COLUMN_CASE_STATUS_BEFORE, caseStatus);
 	}
 
+	@Override
 	public CaseStatus getCaseStatusAfter() {
 		return (CaseStatus) (this.getColumnValue(COLUMN_CASE_STATUS_AFTER));
 	}
 
+	@Override
 	public String getStatusAfter() {
 		return (this.getStringColumnValue(COLUMN_CASE_STATUS_AFTER));
 	}
 
+	@Override
 	public void setCaseStatusAfter(CaseStatus aCaseStatus) {
 		setColumn(COLUMN_CASE_STATUS_AFTER, aCaseStatus);
 	}
 
+	@Override
 	public void setCaseStatusAfter(String caseStatus) {
 		setColumn(COLUMN_CASE_STATUS_AFTER, caseStatus);
 	}
 
+	@Override
 	public User getPerformer() {
 		return (User) (this.getColumnValue(COLUMN_PERFORMER));
 	}
 
+	@Override
 	public int getPerformerId() {
 		return (this.getIntColumnValue(COLUMN_PERFORMER));
 	}
 
+	@Override
 	public void setPerformer(User performer) {
 		setColumn(COLUMN_PERFORMER, performer);
 	}
 
+	@Override
 	public void setPerformer(int performerUserId) {
 		setColumn(COLUMN_PERFORMER, performerUserId);
 	}
 
+	@Override
 	public Timestamp getTimeStamp() {
 		return (Timestamp) getColumnValue(COLUMN_TIMESTAMP);
 	}
 
+	@Override
 	public void setTimeStamp(Timestamp stamp) {
 		setColumn(COLUMN_TIMESTAMP, stamp);
 	}
 
+	@Override
 	public String getComment() {
 		return getStringColumnValue(COLUMN_COMMENT);
 	}
 
+	@Override
 	public void setComment(String comment) {
 		setColumn(COLUMN_COMMENT, comment);
 	}
@@ -156,7 +180,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 	 */
 	public Collection ejbFindAllCaseLogsByCaseOrderedByDate(Case aCase) throws FinderException {
 		Table table = new Table(this);
-		
+
 		SelectQuery query = new SelectQuery(table);
 		query.addColumn(new WildCardColumn());
 		query.addCriteria(new MatchCriteria(table, COLUMN_CASE_ID, MatchCriteria.EQUALS, aCase));
@@ -225,14 +249,14 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param theCase to find logs for;
-	 * @param fromDate - starting date of submission; 
+	 * @param fromDate - starting date of submission;
 	 * @param toDate - ending date of submission;
 	 * @param performer - {@link User}, who performed operation;
 	 * @return ids of {@link CaseLog}s or {@link Collections#emptyList()}
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
-	 * @throws FinderException 
+	 * @throws FinderException
 	 */
 	public Collection<Long> ejbFindAllCaseLogsByCaseAndDate(Case theCase,
 			Timestamp fromDate, Timestamp toDate, User performer) throws FinderException {
@@ -240,25 +264,25 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		query.appendSelectAllFrom(this);
 		query.appendWhere();
 		query.append(COLUMN_CASE_LOG_ID).appendIsNotNull();
-		
+
+		if (theCase != null) {
+			query.appendAndEquals(COLUMN_CASE_ID, theCase);
+		}
+
 		if (toDate != null) {
 			query.appendAnd();
 			query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
 		}
-		
+
 		if (fromDate != null) {
 			query.appendAnd();
 			query.append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
 		}
-		
-		if (theCase != null) {
-			query.appendAndEquals(COLUMN_CASE_ID, theCase);
-		}
-		
+
 		if (performer != null) {
 			query.appendAndEquals(COLUMN_PERFORMER, performer);
 		}
-		
+
 		query.appendOrderBy(COLUMN_TIMESTAMP);
 		return super.idoFindPKsByQuery(query);
 	}
