@@ -7,6 +7,8 @@ import com.idega.user.data.bean.User;
 
 public interface SettingsModel {
 
+	public Integer getId();
+
 	public void setAutoCloseAfterInnactiveForMonths(Integer numberOfMonthsOfInnactivity);
 
 	public Integer getAutoCloseAfterInnactiveForMonths();

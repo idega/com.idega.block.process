@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.idega.block.process.data.model.ReminderModel;
@@ -25,12 +27,19 @@ import com.idega.util.DBUtil;
 @Entity
 @Table(name = CaseSettings.TABLE_NAME)
 @Cacheable
+@NamedQueries({
+	@NamedQuery(name = CaseSettings.FIND_BY_ID, query = "select s from CaseSettings s where s.id = :" + CaseSettings.PARAM_ID),
+})
 public class CaseSettings implements Serializable, SettingsModel {
 
 	private static final long serialVersionUID = 1654153851491187223L;
 
 	public static final String 	TABLE_NAME = Case.ENTITY_NAME + "_settings",
-								COLUMN_ID = TABLE_NAME + "_id";
+								COLUMN_ID = TABLE_NAME + "_id",
+
+								FIND_BY_ID = "CaseSettings.findById",
+
+								PARAM_ID = "caseSettingId";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,6 +61,7 @@ public class CaseSettings implements Serializable, SettingsModel {
 	@JoinTable(name = TABLE_NAME + "_rol", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = ICRole.COLUMN_ROLE_KEY) })
 	private List<ICRole> roles;
 
+	@Override
 	public Integer getId() {
 		return id;
 	}

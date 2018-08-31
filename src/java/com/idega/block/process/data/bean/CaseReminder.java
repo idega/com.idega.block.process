@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.idega.block.process.data.model.ReminderModel;
@@ -24,12 +26,18 @@ import com.idega.util.DBUtil;
 @Entity
 @Table(name = CaseReminder.TABLE_NAME)
 @Cacheable
+@NamedQueries({
+	@NamedQuery(name = CaseReminder.FIND_BY_IDS, query = "select r from CaseReminder r where r.id in (:" + CaseReminder.PARAM_IDS + ")"),
+})
 public class CaseReminder implements Serializable, ReminderModel {
 
 	private static final long serialVersionUID = 8770937327449914917L;
 
 	public static final String	TABLE_NAME = Case.ENTITY_NAME + "_reminder",
-								COLUMN_ID = TABLE_NAME + "_id";
+								COLUMN_ID = TABLE_NAME + "_id",
+
+								FIND_BY_IDS = "CaseReminder.findByIds",
+								PARAM_IDS = "caseReminderIds";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,6 +54,7 @@ public class CaseReminder implements Serializable, ReminderModel {
 	@Column(name = "message", length = 65000)
 	private String message;
 
+	@Override
 	public Integer getId() {
 		return id;
 	}

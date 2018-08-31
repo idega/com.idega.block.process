@@ -7,6 +7,8 @@ import com.idega.user.data.bean.User;
 
 public interface ReminderModel {
 
+	public Integer getId();
+
 	public void setReceivers(List<User> receivers);
 
 	public List<User> getReceivers();
