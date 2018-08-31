@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,7 +43,7 @@ public class CaseReminder implements Serializable, ReminderModel {
 	@Column(name = COLUMN_ID)
 	private Integer id;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = User.class)
+	@ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
 	@JoinTable(name = TABLE_NAME + "_rec", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
 	private List<User> receivers;
 
