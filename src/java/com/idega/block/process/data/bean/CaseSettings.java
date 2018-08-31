@@ -61,7 +61,7 @@ public class CaseSettings implements Serializable, SettingsModel {
 	private Integer numberOfMonthsOfInnactivity;
 
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = CaseReminder.class)
-	@JoinTable(name = TABLE_NAME + "_rem", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = CaseReminder.COLUMN_ID) })
+	@JoinTable(name = TABLE_NAME + "_rem", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = CaseReminder.COLUMN_ID, table = CaseReminder.TABLE_NAME) })
 	private List<ReminderModel> reminders;
 
 	@ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
