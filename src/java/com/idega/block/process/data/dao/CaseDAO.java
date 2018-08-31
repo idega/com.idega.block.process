@@ -20,6 +20,8 @@ public interface CaseDAO extends GenericDao {
 
 	public CaseSettings getCaseSettings(Integer settingsId);
 
+	public CaseSettings getSettings(Integer caseId);
+
 	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message);
 
 	public SettingsModel updateCaseSettings(

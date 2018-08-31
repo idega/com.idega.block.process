@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -25,10 +26,16 @@ import com.idega.user.data.bean.User;
 import com.idega.util.DBUtil;
 
 @Entity
-@Table(name = CaseSettings.TABLE_NAME)
+@Table(
+		name = CaseSettings.TABLE_NAME,
+		indexes = {
+				@Index(columnList = Case.COLUMN_CASE_ID, name = "case_settings_idx_case")
+		}
+)
 @Cacheable
 @NamedQueries({
 	@NamedQuery(name = CaseSettings.FIND_BY_ID, query = "select s from CaseSettings s where s.id = :" + CaseSettings.PARAM_ID),
+	@NamedQuery(name = CaseSettings.FIND_BY_ID_CASE_ID, query = "select s from CaseSettings s where s.caseId = :" + CaseSettings.PARAM_CASE_ID)
 })
 public class CaseSettings implements Serializable, SettingsModel {
 
@@ -38,13 +45,18 @@ public class CaseSettings implements Serializable, SettingsModel {
 								COLUMN_ID = TABLE_NAME + "_id",
 
 								FIND_BY_ID = "CaseSettings.findById",
+								FIND_BY_ID_CASE_ID = "CaseSettings.findByCaseId",
 
-								PARAM_ID = "caseSettingId";
+								PARAM_ID = "caseSettingId",
+								PARAM_CASE_ID = "caseId";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = COLUMN_ID)
 	private Integer id;
+
+	@Column(name = Case.COLUMN_CASE_ID, unique = true)
+	private Integer caseId;
 
 	@Column(name = "months_of_innactivity")
 	private Integer numberOfMonthsOfInnactivity;
@@ -111,6 +123,14 @@ public class CaseSettings implements Serializable, SettingsModel {
 	public List<ICRole> getRolesToHandle() {
 		roles = DBUtil.getInstance().lazyLoad(roles);
 		return roles;
+	}
+
+	public Integer getCaseId() {
+		return caseId;
+	}
+
+	public void setCaseId(Integer caseId) {
+		this.caseId = caseId;
 	}
 
 }

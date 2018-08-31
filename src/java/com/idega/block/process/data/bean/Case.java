@@ -57,8 +57,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = 2009559065592278210L;
 
-	private static final String COLUMN_CASE_ID = "proc_case_id",
-								COLUMN_CASE_CODE = "case_code",
+	private static final String COLUMN_CASE_CODE = "case_code",
 								COLUMN_CASE_STATUS = "case_status",
 								COLUMN_CREATED = "CREATED",
 								COLUMN_PARENT_CASE = "PARENT_CASE_ID",
@@ -76,6 +75,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	public static final String	ENTITY_NAME = "proc_case",
 								SQL_RELATION_METADATA = "ic_metadata_proc_case",
 
+								COLUMN_CASE_ID = "proc_case_id",
 								COLUMN_UNIQUE_ID = "unique_id",
 								COLUMN_SUBJECT = "CASE_SUBJECT",
 
@@ -157,10 +157,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = User.class)
 	@JoinTable(name = CaseBMPBean.COLUMN_CASE_SUBSCRIBERS, joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
 	private List<User> subscribers;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = Case.COLUMN_CASE_ID, referencedColumnName = CaseSettings.COLUMN_ID)
-	private CaseSettings settings;
 
 	public Integer getId() {
 		return id;
@@ -443,17 +439,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-
-	public CaseSettings getSettings() {
-		if (!DBUtil.getInstance().isInitialized(settings)) {
-			settings = DBUtil.getInstance().lazyLoad(settings);
-		}
-		return settings;
-	}
-
-	public void setSettings(CaseSettings settings) {
-		this.settings = settings;
 	}
 
 	@Override

@@ -114,6 +114,21 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 	}
 
 	@Override
+	public CaseSettings getSettings(Integer caseId) {
+		if (caseId == null) {
+			return null;
+		}
+
+		try {
+			return getSingleResult(CaseSettings.FIND_BY_ID_CASE_ID, CaseSettings.class, new Param(CaseSettings.PARAM_CASE_ID, caseId));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting case settings by case ID: " + caseId, e);
+		}
+
+		return null;
+	}
+
+	@Override
 	@Transactional(readOnly = false)
 	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message) {
 		CaseReminder reminder = null;
@@ -184,7 +199,7 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 			CaseSettings settings = null;
 			if (settingsId == null) {
-				settings = theCase.getSettings();
+				settings = getSettings(theCase.getId());
 			} else {
 				settings = getCaseSettings(settingsId);
 			}
@@ -223,20 +238,15 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			}
 			settings.setRolesToHandle(roles);
 
+			settings.setCaseId(theCase.getId());
+
 			if (settings.getId() == null) {
 				persist(settings);
 			} else {
 				merge(settings);
 			}
 
-			if (settings.getId() == null) {
-				return null;
-			}
-
-			theCase.setSettings(settings);
-			merge(theCase);
-
-			return settings;
+			return settings == null || settings.getId() == null ? null : settings;
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error updating settings " + (settingsId == null ? CoreConstants.EMPTY : "(ID: " + settingsId + ") ") + "for case with UUID " + caseUUID, e);
 		}
