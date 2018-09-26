@@ -99,6 +99,23 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 	}
 
 	@Override
+	public List<Case> getAllCasesByStatuses(List<String> statuses) {
+		if (ListUtil.isEmpty(statuses)) {
+			getLogger().warning("Statuses are not provided!");
+			return null;
+		}
+
+		try {
+			return getResultList(Case.FIND_ALL_BY_STATUSES, Case.class, new Param(Case.PARAM_STATUSES, statuses));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting cases by statuses: " + statuses, e);
+		}
+
+		return null;
+	}
+
+
+	@Override
 	public CaseSettings getCaseSettings(Integer settingsId) {
 		if (settingsId == null) {
 			return null;
@@ -253,5 +270,7 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 		return null;
 	}
+
+
 
 }

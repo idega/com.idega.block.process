@@ -51,7 +51,8 @@ import com.idega.util.DBUtil;
 	@NamedQuery(name = Case.FIND_ID_BY_SUBJECT, query = "select c.id from Case c where c.subject = :" + Case.PARAM_SUBJECT),
 	@NamedQuery(name = Case.FIND_ID_BY_ID, query = "select c from Case c where c.id = :" + Case.PARAM_ID),
 	@NamedQuery(name = Case.FIND_CASE_BY_UUID, query = "select c from Case c where c.uniqueId = :" + Case.PARAM_UUID),
-	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c.id from Case c where c.uniqueId = :" + Case.PARAM_UUID)
+	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c.id from Case c where c.uniqueId = :" + Case.PARAM_UUID),
+	@NamedQuery(name = Case.FIND_ALL_BY_STATUSES, query = "select c from Case c where c.caseStatus in (:" + Case.PARAM_STATUSES + ")")
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
@@ -82,11 +83,13 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",
 								PARAM_UUID = "uuid",
+								PARAM_STATUSES = "statuses",
 
 								FIND_ID_BY_SUBJECT = "Case.findIdBySubject",
 								FIND_ID_BY_ID = "Case.findIdById",
 								FIND_CASE_BY_UUID = "Case.findCaseByUUID",
-								FIND_ID_BY_UUID = "Case.findIdByUUID";
+								FIND_ID_BY_UUID = "Case.findIdByUUID",
+								FIND_ALL_BY_STATUSES = "Case.findAllByStatuses";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

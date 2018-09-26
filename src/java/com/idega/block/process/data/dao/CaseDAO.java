@@ -33,4 +33,6 @@ public interface CaseDAO extends GenericDao {
 			List<String> rolesKeys
 	);
 
+	public List<Case> getAllCasesByStatuses(List<String> statuses);
+
 }
