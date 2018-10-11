@@ -277,6 +277,13 @@ public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, Meta
 
 	public void setCaseIdentifier(String caseIdentifier);
 
+	/**
+	 *
+	 * @param subscriber to add, not <code>null</code>
+	 * @return <code>true</code> if successfully appended, <code>false</code>
+	 * otherwise;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
 	public boolean addSubscriber(User subscriber) throws IDOAddRelationshipException;
 
 	/**

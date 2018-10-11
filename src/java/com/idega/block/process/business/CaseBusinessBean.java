@@ -1235,28 +1235,40 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return new ArrayList<Case>();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#addSubscriber(java.lang.Object, com.idega.user.data.User)
+	 */
 	@Override
 	public boolean addSubscriber(Object casePK, User subscriber) {
-		if (subscriber == null) {
-			return false;
-		}
-
 		Case theCase = null;
 		try {
 			theCase = getCase(casePK);
 		} catch(Exception e) {
-			e.printStackTrace();
+			getLogger().log(Level.WARNING, "Failed to get case by id: " + casePK);
 		}
-		if (theCase == null) {
+
+		return addSubscriber(theCase, subscriber);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.idega.block.process.business.CaseBusiness#addSubscriber(com.idega.block.process.data.Case, com.idega.user.data.User)
+	 */
+	@Override
+	public boolean addSubscriber(Case theCase, User subscriber) {
+		if (subscriber == null || theCase == null) {
 			return false;
 		}
 
 		try {
 			theCase.addSubscriber(subscriber);
 		} catch (IDOAddRelationshipException e) {
-			e.printStackTrace();
+			getLogger().log(Level.WARNING, "Failed to add subscriber, cause of: ", e);
+
 			return false;
 		}
+
 		theCase.store();
 
 		return true;

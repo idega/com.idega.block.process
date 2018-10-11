@@ -478,7 +478,23 @@ public interface CaseBusiness extends IBOService {
 
 	public Collection<Case> getCasesByIds(Collection<Integer> ids);
 
-	public boolean addSubscriber(Object casePK, User subscriber);
+	/**
+	 *
+	 * @param subscriber to add, not <code>null</code>;
+	 * @return <code>true</code> if successfully appended, <code>false</code>
+	 * otherwise;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	boolean addSubscriber(Object casePK, User subscriber);
+
+	/**
+	 *
+	 * @param subscriber to add, not <code>null</code>;
+	 * @return <code>true</code> if successfully appended, <code>false</code>
+	 * otherwise;
+	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
+	 */
+	boolean addSubscriber(Case theCase, User subscriber);
 
 	public boolean isSubscribed(Object casePK, User user);
 
@@ -561,5 +577,4 @@ public interface CaseBusiness extends IBOService {
 	public String getCaseStatusLocalized(CaseStatus caseStatus);
 
 	public Map<String, AdvancedProperty> getCaseStatuses(boolean showAllStatuses, String caseStatusesToShow, String caseStatusesToHide);
-
 }
