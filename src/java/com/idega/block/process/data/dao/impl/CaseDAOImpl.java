@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,34 +173,13 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return reminder.getId() == null ? null : reminder;
 	}
 
-	private List<User> getUsers(List<String> uuids) {
-		if (ListUtil.isEmpty(uuids)) {
-			return null;
-		}
-
-		List<User> users = new ArrayList<>();
-		for (String uuid: uuids) {
-			User user = null;
-			try {
-				user = userDAO.getUserByUUID(uuid);
-			} catch (Exception e) {
-				getLogger().log(Level.WARNING, "Error getting user by UUID " + uuid, e);
-			}
-			if (user != null) {
-				users.add(user);
-			}
-		}
-
-		return users;
-	}
-
 	@Override
 	@Transactional(readOnly = false)
 	public CaseSettings updateCaseSettings(
 			String caseUUID,
 			Integer settingsId,
 			Integer numberOfMonthsOfInnactivity,
-			List<String> thirdPartiesUUIDs,
+			Set<String> thirdPartiesUUIDs,
 			List<Integer> remindersIds,
 			List<String> rolesKeys
 	) {

@@ -1,6 +1,7 @@
 package com.idega.block.process.data.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import com.idega.block.process.data.bean.Case;
 import com.idega.block.process.data.bean.CaseSettings;
@@ -28,7 +29,7 @@ public interface CaseDAO extends GenericDao {
 			String caseUUID,
 			Integer settingsId,
 			Integer numberOfMonthsOfInnactivity,
-			List<String> thirdPartiesUUIDs,
+			Set<String> thirdPartiesUUIDs,
 			List<Integer> remindersIds,
 			List<String> rolesKeys
 	);
