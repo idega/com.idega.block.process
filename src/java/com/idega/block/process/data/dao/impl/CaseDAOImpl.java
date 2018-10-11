@@ -159,8 +159,8 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		if (reminder == null) {
 			return null;
 		}
-
-		reminder.setReceivers(getUsers(receiversUUIDs));
+ 
+		reminder.setReceivers(!ListUtil.isEmpty(receiversUUIDs) ? userDAO.findAll(null, receiversUUIDs, null) : null);
 		reminder.setTimestamp(timestamp == null ? null : new Timestamp(timestamp));
 		reminder.setMessage(message);
 
@@ -204,7 +204,7 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 			settings.setAutoCloseAfterInnactiveForMonths(numberOfMonthsOfInnactivity);
 
-			List<User> thirdParties = getUsers(thirdPartiesUUIDs);
+			List<User> thirdParties = !ListUtil.isEmpty(thirdPartiesUUIDs) ? userDAO.findAll(null, thirdPartiesUUIDs, null) : new ArrayList<>();
 			settings.setPredefinedListOfThirdPartiesToInvite(thirdParties);
 
 			List<ReminderModel> reminders = null;
