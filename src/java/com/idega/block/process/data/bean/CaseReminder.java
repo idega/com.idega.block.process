@@ -18,9 +18,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hsqldb.lib.StringUtil;
+
 import com.idega.block.process.data.model.ReminderModel;
 import com.idega.user.data.bean.User;
+import com.idega.util.CoreConstants;
 import com.idega.util.DBUtil;
+import com.idega.util.ListUtil;
 
 @Entity
 @Table(name = CaseReminder.TABLE_NAME)
@@ -93,4 +97,29 @@ public class CaseReminder implements Serializable, ReminderModel {
 		return message;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder info = new StringBuilder();
+
+		if (this.timestamp != null) {
+			info.append(timestamp).append(CoreConstants.COLON);
+		}
+
+		if (!StringUtil.isEmpty(this.message)) {
+			info.append(message).append(CoreConstants.SPACE);
+		}
+
+		List<User> users = getReceivers();
+		if (!ListUtil.isEmpty(users)) {
+			for (User user: users) {
+				info.append(user.getName()).append(CoreConstants.SPACE);
+			}
+		}
+
+		return info.toString();
+	}
 }
