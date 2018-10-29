@@ -74,6 +74,12 @@ public enum VariableDataType {
 		public String toString() {
 			return doubleType;
 		}
+	},
+	ENUM {
+		@Override
+		public String toString() {
+			return enumType;
+		}
 	};
 
 	private static final String date = "date",
@@ -85,7 +91,8 @@ public enum VariableDataType {
 								objectList = "objlist",
 								system = "system",
 								longType = "long",
-								doubleType = "double";
+								doubleType = "double",
+								enumType = "enum";
 
 	public static Set<String> getAllTypesInStrings() {
 
@@ -96,8 +103,9 @@ public enum VariableDataType {
 
 	static {
 
-		for (VariableDataType type : values())
+		for (VariableDataType type : values()) {
 			allDataTypesEnumsMappings.put(type.toString(), type);
+		}
 	}
 
 	private static Map<String, VariableDataType> getAllDataTypesEnumsMappings() {
