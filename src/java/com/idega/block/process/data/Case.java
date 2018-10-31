@@ -36,6 +36,10 @@ import com.idega.user.data.User;
  */
 public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, MetaDataCapable {
 
+	public static final String 	METADATA_NOTIFICATION_FOR_TASK_PREFIX = "notification_for_task_",
+								METADATA_READ = "READ",
+								METADATA_UNREAD = "UNREAD";
+
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setCode
 	 */
