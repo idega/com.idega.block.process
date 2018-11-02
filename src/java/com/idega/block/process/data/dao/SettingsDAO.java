@@ -19,7 +19,10 @@ public interface SettingsDAO {
 			List<Integer> remindersIds,
 			List<String> rolesKeys,
 			List<Integer> signatureProfileIds,
-			List<Integer> decisionTemplateIds
+			List<Integer> decisionTemplateIds,
+			String invoicingType,
+			Double price,
+			Integer fixedInvoicedHours
 	);
 
 }
