@@ -2,15 +2,12 @@ package com.idega.block.process.data.dao;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 
 import com.idega.block.process.data.bean.Case;
 import com.idega.block.process.data.bean.CaseSettings;
-import com.idega.block.process.data.model.ReminderModel;
-import com.idega.block.process.data.model.SettingsModel;
 import com.idega.core.persistence.GenericDao;
 
-public interface CaseDAO extends GenericDao {
+public interface CaseDAO extends GenericDao, SettingsDAO {
 
 	public List<Integer> getCasesIdsByCaseSubject(String subject);
 
@@ -23,17 +20,6 @@ public interface CaseDAO extends GenericDao {
 	public CaseSettings getCaseSettings(Integer settingsId);
 
 	public CaseSettings getSettings(Integer caseId);
-
-	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message);
-
-	public SettingsModel updateCaseSettings(
-			String caseUUID,
-			Integer settingsId,
-			Integer numberOfMonthsOfInnactivity,
-			Set<String> thirdPartiesUUIDs,
-			List<Integer> remindersIds,
-			List<String> rolesKeys
-	);
 
 	public List<Case> getAllCasesByStatuses(List<String> statuses);
 

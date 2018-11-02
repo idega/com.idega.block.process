@@ -1,5 +1,6 @@
 package com.idega.block.process.data.dao.impl;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,14 +176,21 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 	@Override
 	@Transactional(readOnly = false)
-	public CaseSettings updateCaseSettings(
-			String caseUUID,
+	public <T extends Serializable> CaseSettings updateSettings(
+			T uuid,
 			Integer settingsId,
 			Integer numberOfMonthsOfInnactivity,
 			Set<String> thirdPartiesUUIDs,
 			List<Integer> remindersIds,
-			List<String> rolesKeys
+			List<String> rolesKeys,
+			List<Integer> signatureProfileIds,
+			List<Integer> decisionTemplateIds
 	) {
+		if (uuid == null) {
+			return null;
+		}
+
+		String caseUUID = uuid.toString();
 		if (StringUtil.isEmpty(caseUUID)) {
 			return null;
 		}
