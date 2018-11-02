@@ -232,26 +232,38 @@ public interface CaseHome extends IDOHome {
 	public Case findCaseByUniqueId(String uniqueId) throws FinderException;
 
 	public Collection<Case> findByCriteria(
-			String caseNumber, 
-			String description, 
-			Collection<String> owners, 
-			String[] statuses, 
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
 			IWTimestamp dateFrom,
-			IWTimestamp dateTo, 
-			User owner, 
-			Collection<Group> groups, 
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
 			boolean simpleCases) throws FinderException;
 
 	public Collection<Integer> findIDsByCriteria(
-			String caseNumber, 
-			String description, 
-			Collection<String> owners, 
-			String[] statuses, 
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
 			IWTimestamp dateFrom,
-			IWTimestamp dateTo, 
-			User owner, 
-			Collection<Group> groups, 
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
 			boolean simpleCases) throws FinderException;
+
+	public Collection<Integer> findIDsByCriteria(
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
+			IWTimestamp dateFrom,
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
+			boolean simpleCases,
+			Boolean withHandler) throws FinderException;
 
 	public abstract Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException;
 

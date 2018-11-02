@@ -159,7 +159,7 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		if (reminder == null) {
 			return null;
 		}
- 
+
 		reminder.setReceivers(!ListUtil.isEmpty(receiversUUIDs) ? userDAO.findAll(null, receiversUUIDs, null) : null);
 		reminder.setTimestamp(timestamp == null ? null : new Timestamp(timestamp));
 		reminder.setMessage(message);
@@ -251,6 +251,22 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return null;
 	}
 
+
+	@Override
+	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter) {
+		if (timestampAfter == null) {
+			getLogger().warning("Timestamp after is not provided!");
+			return null;
+		}
+
+		try {
+			return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, Long.class, new Param(Case.PARAM_CREATED, timestampAfter));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting count of cases created after the given timestamp: " + timestampAfter, e);
+		}
+
+		return null;
+	}
 
 
 }

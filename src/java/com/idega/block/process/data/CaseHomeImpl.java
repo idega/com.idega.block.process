@@ -272,7 +272,8 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return theReturn;
 	}
-	
+
+	@Override
 	public String getCaseStatusReport() {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		String theReturn = ((CaseBMPBean) entity).ejbHomeGetCaseStatusReport();
@@ -387,8 +388,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	@Override
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
+		return findIDsByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null);
+	}
+
+	@Override
+	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}

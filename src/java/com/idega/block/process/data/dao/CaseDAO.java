@@ -1,5 +1,6 @@
 package com.idega.block.process.data.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -36,4 +37,5 @@ public interface CaseDAO extends GenericDao {
 
 	public List<Case> getAllCasesByStatuses(List<String> statuses);
 
+	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter);
 }

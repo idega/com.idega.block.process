@@ -146,6 +146,22 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
+	public List<Integer> getCaseIds(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
+			Boolean handlerAssignedCases
+	) throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
 	public List<Integer> getCaseIds(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles) throws Exception {
 		throw new UnsupportedOperationException("Not implemented");
