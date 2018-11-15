@@ -33,6 +33,7 @@ public interface CasesRetrievalManager {
 								CASE_LIST_TYPE_CLOSED = "ClosedCases",
 								CASE_LIST_TYPE_PUBLIC = "PublicCases",
 								CASE_LIST_TYPE_HANDLER = "HandlerCases",
+								CASE_LIST_TYPE_SUBSCRIBER = "SubscriberCases",
 
 								COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier",
 								BEAN_IDENTIFIER = "defaultCaseHandler",
@@ -140,6 +141,7 @@ public interface CasesRetrievalManager {
 	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_OPEN}</li>
 	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_PUBLIC}</li>
 	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_USER}</li>
+	 * <li>{@link CasesRetrievalManager#CASE_LIST_TYPE_SUBSCRIBER}</li>
 	 * @param caseCodes is {@link Collection} of {@link Case#getCaseCode()} or
 	 * process definition names;
 	 * @param statusesToHide is {@link Collection} of {@link Case#getStatus()}
