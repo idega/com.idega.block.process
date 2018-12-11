@@ -22,7 +22,7 @@ import com.idega.user.data.User;
 
 /**
  * Last modified: $Date: 2004/06/28 09:09:50 $ by $Author: laddi $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.1 $
  */
@@ -56,14 +56,14 @@ public interface CaseLogHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseAndDate
 	 */
 	public Collection findAllCaseLogsByCaseAndDate(String caseCode, Timestamp fromDate, Timestamp toDate) throws FinderException;
-	
+
 	/**
-	 * 
+	 *
 	 * @param theCase to find logs for;
-	 * @param fromDate - starting date of submission; 
+	 * @param fromDate - starting date of submission;
 	 * @param toDate - ending date of submission;
 	 * @param performer - {@link User}, who performed operation;
-	 * @return {@link CaseLog}s by criteria or {@link Collections#emptyList()} 
+	 * @return {@link CaseLog}s by criteria or {@link Collections#emptyList()}
 	 * on failure.
 	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
 	 */
@@ -83,5 +83,7 @@ public interface CaseLogHome extends IDOHome {
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbHomeGetCountByStatusChange
 	 */
 	public int getCountByStatusChange(Case theCase, String statusBefore, String statusAfter) throws IDOException;
+
+	public Collection<CaseLog> findAllCaseLogs(Case theCase, Timestamp fromDate, Timestamp toDate, User performer, Boolean useGeneralAppend) throws FinderException;
 
 }

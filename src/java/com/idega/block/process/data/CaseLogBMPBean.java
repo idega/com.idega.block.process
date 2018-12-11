@@ -15,6 +15,7 @@ import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
 import com.idega.user.data.User;
+import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
 
 /**
@@ -248,6 +249,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		return super.idoGetNumberOfRecords(query);
 	}
 
+
 	/**
 	 *
 	 * @param theCase to find logs for;
@@ -260,6 +262,23 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 	 */
 	public Collection<Long> ejbFindAllCaseLogsByCaseAndDate(Case theCase,
 			Timestamp fromDate, Timestamp toDate, User performer) throws FinderException {
+		return ejbFindAllCaseLogsByCaseAndDate(theCase, fromDate, toDate, performer, null);
+	}
+
+
+	/**
+	 *
+	 * @param theCase to find logs for;
+	 * @param fromDate - starting date of submission;
+	 * @param toDate - ending date of submission;
+	 * @param performer - {@link User}, who performed operation;
+	 * @param useGeneralAppend Should use general append or not (with general append, if app property adjust_to_local_time_zone is enabled, timestamp will be changed and select will not be correct)
+	 * @return ids of {@link CaseLog}s or {@link Collections#emptyList()}
+	 * @author <a href="mailto:martynas@idega.com">Martynas Stakė</a>
+	 * @throws FinderException
+	 */
+	public Collection<Long> ejbFindAllCaseLogsByCaseAndDate(Case theCase,
+			Timestamp fromDate, Timestamp toDate, User performer, Boolean useGeneralAppend) throws FinderException {
 		IDOQuery query = idoQuery();
 		query.appendSelectAllFrom(this);
 		query.appendWhere();
@@ -271,12 +290,26 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
 		if (toDate != null) {
 			query.appendAnd();
-			query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+			if (useGeneralAppend != null && !useGeneralAppend.booleanValue()) {
+				String toDateString = toDate.toString();
+				toDateString = toDateString.substring(0, toDateString.lastIndexOf(CoreConstants.DOT));
+				toDateString = CoreConstants.QOUTE_SINGLE_MARK + toDateString + CoreConstants.QOUTE_SINGLE_MARK;
+				query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDateString);
+			} else {
+				query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
+			}
 		}
 
 		if (fromDate != null) {
 			query.appendAnd();
-			query.append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+			if (useGeneralAppend != null && !useGeneralAppend.booleanValue()) {
+				String fromDateString = fromDate.toString();
+				fromDateString = fromDateString.substring(0, fromDateString.lastIndexOf(CoreConstants.DOT));
+				fromDateString = CoreConstants.QOUTE_SINGLE_MARK + fromDateString + CoreConstants.QOUTE_SINGLE_MARK;
+				query.append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDateString);
+			} else {
+				query.append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
+			}
 		}
 
 		if (performer != null) {
