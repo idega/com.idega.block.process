@@ -53,7 +53,8 @@ import com.idega.util.DBUtil;
 	@NamedQuery(name = Case.FIND_CASE_BY_UUID, query = "select c from Case c where c.uniqueId = :" + Case.PARAM_UUID),
 	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c.id from Case c where c.uniqueId = :" + Case.PARAM_UUID),
 	@NamedQuery(name = Case.FIND_ALL_BY_STATUSES, query = "select c from Case c where c.caseStatus in (:" + Case.PARAM_STATUSES + ")"),
-	@NamedQuery(name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, query = "select count(c.id) from Case c where c.created > :" + Case.PARAM_CREATED)
+	@NamedQuery(name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, query = "select count(c.id) from Case c where c.created > :" + Case.PARAM_CREATED
+																				+ " and c.caseCode = 'GENCASE'")
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
