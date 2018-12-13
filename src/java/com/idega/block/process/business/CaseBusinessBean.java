@@ -1171,7 +1171,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				getCaseStatusPending().getStatus(),
 				CaseBMPBean.CASE_STATUS_IN_PROCESS_KEY,
 				CaseBMPBean.CASE_STATUS_ASSIGNED,
-				CaseBMPBean.CASE_STATUS_ON_HOLD
+				CaseBMPBean.CASE_STATUS_ON_HOLD,
+				CaseBMPBean.CASE_STATUS_RECEIPT
 		};
 	}
 
@@ -1182,8 +1183,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				getCaseStatusReady().getStatus(),
 				getCaseStatusFinished().getStatus(),
 				CaseBMPBean.CASE_STATUS_CLOSED,
-				CaseBMPBean.CASE_STATUS_DELETED_KEY,
-				CaseBMPBean.CASE_STATUS_RECEIPT
+				CaseBMPBean.CASE_STATUS_DELETED_KEY
 		};
 	}
 
