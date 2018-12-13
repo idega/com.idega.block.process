@@ -36,6 +36,7 @@ public final class ProcessConstants implements Singleton {
 								FINANCING_OF_THE_TASKS = "objlist_ownerFinanceOfTasks",
 								BOARD_FINANCING_SUGGESTION = "string_ownerGradeComment",
 								BOARD_FINANCING_DECISION = "string_ownerGrantAmauntValue",
+								VARIABLE_OWNER_PHONE_NUMBER = "string_ownerPhoneNumber",
 
 								IW_BUNDLE_IDENTIFIER = "com.idega.block.process",
 								EGOV_NEST_CASES_CACHE_KEY = "egovNestCasesCacheKey",
