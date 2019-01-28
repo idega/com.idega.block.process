@@ -40,7 +40,7 @@ public interface CaseLogHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseOrderedByDate
 	 */
-	public Collection findAllCaseLogsByCaseOrderedByDate(Case aCase) throws FinderException;
+	public Collection<CaseLog> findAllCaseLogsByCaseOrderedByDate(Case aCase) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindLastCaseLogForCase
