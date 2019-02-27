@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +35,8 @@ import com.idega.util.DBUtil;
 @Cacheable
 @NamedQueries({
 	@NamedQuery(name = CaseSettings.FIND_BY_ID, query = "select s from CaseSettings s where s.id = :" + CaseSettings.PARAM_ID),
-	@NamedQuery(name = CaseSettings.FIND_BY_ID_CASE_ID, query = "select s from CaseSettings s where s.caseId = :" + CaseSettings.PARAM_CASE_ID)
+	@NamedQuery(name = CaseSettings.FIND_BY_ID_CASE_ID, query = "select s from CaseSettings s where s.caseId = :" + CaseSettings.PARAM_CASE_ID),
+	@NamedQuery(name = CaseSettings.FIND_REMINDERS_BY_CASE_ID, query = "select s.reminders from CaseSettings s where s.id = :" + CaseSettings.PARAM_ID)
 })
 public class CaseSettings implements Serializable, SettingsModel {
 
@@ -45,6 +47,7 @@ public class CaseSettings implements Serializable, SettingsModel {
 
 								FIND_BY_ID = "CaseSettings.findById",
 								FIND_BY_ID_CASE_ID = "CaseSettings.findByCaseId",
+								FIND_REMINDERS_BY_CASE_ID = "CaseSettings.findRemindersByCaseId",
 
 								PARAM_ID = "caseSettingId",
 								PARAM_CASE_ID = "caseId";
@@ -60,7 +63,7 @@ public class CaseSettings implements Serializable, SettingsModel {
 	@Column(name = "months_of_innactivity")
 	private Integer numberOfMonthsOfInnactivity;
 
-	@ManyToMany(fetch = FetchType.LAZY, targetEntity = CaseReminder.class)
+	@ManyToMany(fetch = FetchType.LAZY, targetEntity = CaseReminder.class, cascade = { CascadeType.REMOVE })
 	@JoinTable(name = TABLE_NAME + "_rem", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = CaseReminder.COLUMN_ID, table = CaseReminder.TABLE_NAME) })
 	private List<ReminderModel> reminders;
 

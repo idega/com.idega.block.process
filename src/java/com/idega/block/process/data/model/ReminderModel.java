@@ -21,4 +21,8 @@ public interface ReminderModel {
 
 	public String getMessage();
 
+	public void setDashboardRoles(List<Integer> dashboardRoleIds);
+
+	public List<Integer> getDashboardRoles();
+
 }

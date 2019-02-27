@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -149,7 +151,7 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 	@Override
 	@Transactional(readOnly = false)
-	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message) {
+	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message, List<Integer> dashboardRoleIds) {
 		CaseReminder reminder = null;
 		if (reminderId == null) {
 			reminder = new CaseReminder();
@@ -164,6 +166,8 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		reminder.setReceivers(!ListUtil.isEmpty(receiversUUIDs) ? userDAO.findAll(null, receiversUUIDs, null) : null);
 		reminder.setTimestamp(timestamp == null ? null : new Timestamp(timestamp));
 		reminder.setMessage(message);
+		reminder.setDashboardRoles(dashboardRoleIds);
+
 
 		if (reminder.getId() == null) {
 			persist(reminder);
@@ -277,6 +281,51 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<ReminderModel> getRemindersBySettingsId(Integer settingsId) {
+		if (settingsId == null) {
+			return null;
+		}
+
+		try {
+			return getResultList(CaseSettings.FIND_REMINDERS_BY_CASE_ID, ReminderModel.class, new Param(CaseSettings.PARAM_ID, settingsId));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting reminders by settings ID: " + settingsId, e);
+		}
+
+		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public boolean removeReminderById(Integer reminderId) {
+		if (reminderId == null) {
+			return false;
+		}
+
+		try {
+			//Remove reminder users
+			Query qReminderUsers = getEntityManager().createNativeQuery("delete from " + CaseReminder.TABLE_NAME + "_rec" + " where " + CaseReminder.COLUMN_ID + " = ?");
+			qReminderUsers.setParameter(1, reminderId);
+			qReminderUsers.executeUpdate();
+
+			//Remove reminder dashboard roles
+			Query qReminderDashboardRoles = getEntityManager().createNativeQuery("delete from " + CaseReminder.TABLE_NAME + "_dr" + " where " + CaseReminder.JOIN_COLUMN_REMINDER_ID + " = ?");
+			qReminderDashboardRoles.setParameter(1, reminderId);
+			qReminderDashboardRoles.executeUpdate();
+
+			//Remove reminder itself
+			Query qReminder = getEntityManager().createNativeQuery("delete from " + CaseReminder.TABLE_NAME + " where " + CaseReminder.COLUMN_ID + " = ?");
+			qReminder.setParameter(1, reminderId);
+			qReminder.executeUpdate();
+
+			return true;
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error removing the reminder and all it's children: " + reminderId, e);
+		}
+		return false;
 	}
 
 

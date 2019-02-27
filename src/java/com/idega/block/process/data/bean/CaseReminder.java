@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -38,6 +40,8 @@ public class CaseReminder implements Serializable, ReminderModel {
 
 	public static final String	TABLE_NAME = Case.ENTITY_NAME + "_reminder",
 								COLUMN_ID = TABLE_NAME + "_id",
+								COLUMN_DASHBOARD_ROLE_ID = "dashboard_role_id",
+								JOIN_COLUMN_REMINDER_ID = "reminder_id",
 
 								FIND_BY_IDS = "CaseReminder.findByIds",
 								PARAM_IDS = "caseReminderIds";
@@ -47,7 +51,7 @@ public class CaseReminder implements Serializable, ReminderModel {
 	@Column(name = COLUMN_ID)
 	private Integer id;
 
-	@ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
+	@ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class, cascade = { CascadeType.REMOVE })
 	@JoinTable(name = TABLE_NAME + "_rec", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
 	private List<User> receivers;
 
@@ -56,6 +60,13 @@ public class CaseReminder implements Serializable, ReminderModel {
 
 	@Column(name = "message", length = 65000)
 	private String message;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = TABLE_NAME + "_dr",
+			joinColumns=@JoinColumn(name=JOIN_COLUMN_REMINDER_ID))
+	@Column(name = COLUMN_DASHBOARD_ROLE_ID)
+	private List<Integer> dashboardRoles;
 
 	@Override
 	public Integer getId() {
@@ -96,6 +107,17 @@ public class CaseReminder implements Serializable, ReminderModel {
 	public String getMessage() {
 		return message;
 	}
+
+	@Override
+	public List<Integer> getDashboardRoles() {
+		return dashboardRoles;
+	}
+
+	@Override
+	public void setDashboardRoles(List<Integer> dashboardRoles) {
+		this.dashboardRoles = dashboardRoles;
+	}
+
 
 	/*
 	 * (non-Javadoc)

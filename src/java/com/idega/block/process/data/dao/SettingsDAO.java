@@ -9,7 +9,11 @@ import com.idega.block.process.data.model.SettingsModel;
 
 public interface SettingsDAO {
 
-	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message);
+	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message, List<Integer> dashboardRoleIds);
+
+	public List<ReminderModel> getRemindersBySettingsId(Integer settingsId);
+
+	public boolean removeReminderById(Integer reminderId);
 
 	public <T extends Serializable> SettingsModel updateSettings(
 			T id,
