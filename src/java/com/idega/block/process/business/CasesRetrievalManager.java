@@ -107,7 +107,8 @@ public interface CasesRetrievalManager {
 			boolean showAllCases,
 			Integer page,
 			Integer pageSize,
-			Boolean handlerAssignedCases
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
@@ -171,6 +172,7 @@ public interface CasesRetrievalManager {
 			List<Long> procInstIds,
 			Set<String> roles,
 			Collection<Long> handlerCategoryIDs,
+			List<Integer> exceptOwnersIds,
 			boolean searchQuery
 	) throws Exception;
 

@@ -64,7 +64,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_CASE_STATUS = "case_status",
 								COLUMN_CREATED = "CREATED",
 								COLUMN_PARENT_CASE = "PARENT_CASE_ID",
-								COLUMN_USER = "user_id",
 								COLUMN_CREATOR = "creator_id",
 								COLUMN_HANDLER_GROUP = "HANDLER_GROUP_ID",
 								COLUMN_CASE_NUMBER = "CASE_NUMBER",
@@ -81,6 +80,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_CASE_ID = "proc_case_id",
 								COLUMN_UNIQUE_ID = "unique_id",
 								COLUMN_SUBJECT = "CASE_SUBJECT",
+								COLUMN_USER = "user_id",
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",

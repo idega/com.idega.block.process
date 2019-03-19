@@ -10,6 +10,7 @@
 package com.idega.block.process.data;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.FinderException;
 
@@ -263,7 +264,9 @@ public interface CaseHome extends IDOHome {
 			User owner,
 			Collection<Group> groups,
 			boolean simpleCases,
-			Boolean withHandler) throws FinderException;
+			Boolean withHandler,
+			List<Integer> exceptOwnersIds
+	) throws FinderException;
 
 	public abstract Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException;
 

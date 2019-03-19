@@ -10,6 +10,7 @@
 package com.idega.block.process.data;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
@@ -388,14 +389,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	@Override
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
-		return findIDsByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null);
+		return findIDsByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null, null);
 	}
 
 	@Override
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
-			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler) throws FinderException {
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler, List<Integer> exceptOwnersIds) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}

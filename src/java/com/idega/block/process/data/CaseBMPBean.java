@@ -1121,11 +1121,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
-		return ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null);
+		return ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null, null);
 	}
 
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
-			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler) throws FinderException {
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler, List<Integer> exceptOwnersIds) throws FinderException {
 
 		Table casesTable = new Table(this);
 
@@ -1181,6 +1181,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			} else {
 				query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_HANDLER), MatchCriteria.IS, MatchCriteria.NULL));
 			}
+		}
+		if (!ListUtil.isEmpty(exceptOwnersIds)) {
+			query.addCriteria(new InCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), exceptOwnersIds, true));
 		}
 
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));

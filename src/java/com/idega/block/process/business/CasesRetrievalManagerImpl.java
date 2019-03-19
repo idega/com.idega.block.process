@@ -156,7 +156,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			boolean showAllCases,
 			Integer page,
 			Integer pageSize,
-			Boolean handlerAssignedCases
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds
 	) throws Exception {
 		return Collections.emptyList();
 	}
@@ -169,7 +170,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public List<Integer> getCasePrimaryKeys(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
-			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs,
+			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs, List<Integer> exceptOwnersIds,
 			boolean searchQuery) throws Exception {
 		return Collections.emptyList();
 	}
@@ -441,7 +442,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<String> codes,
 			boolean showAllCases,
 			Collection<Long> procInstIds,
-			Collection<Long> handlerCategoryIDs
+			Collection<Long> handlerCategoryIDs,
+			List<Integer> exceptOwnersIds
 	) {
 		return new CasesCacheCriteria(
 				user == null ? -1 : Integer.valueOf(user.getId()),
@@ -455,7 +457,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				procInstIds,
 				handlerCategoryIDs,
 				onlySubscribedCases,
-				showAllCases
+				showAllCases,
+				exceptOwnersIds
 		);
 	}
 
@@ -639,7 +642,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<String> codes,
 			boolean showAllCases,
 			Collection<Long> procInstIds,
-			Collection<Long> handlerCategoryIDs
+			Collection<Long> handlerCategoryIDs,
+			List<Integer> exceptOwnersIds
 	) {
 		/* Creating key */
 		CasesCacheCriteria key = getCacheKey(
@@ -654,7 +658,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 				codes,
 				showAllCases,
 				procInstIds,
-				handlerCategoryIDs
+				handlerCategoryIDs,
+				exceptOwnersIds
 		);
 		putIdsToCache(data, key);
 	}
@@ -709,7 +714,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Long> handlerCategoryIDs,
 			boolean searchQuery,
 			Integer page,
-			Integer pageSize
+			Integer pageSize,
+			List<Integer> exceptOwnersIds
 	) throws Exception {
 		throw new UnsupportedOperationException("This method is not implemented");
 	}
