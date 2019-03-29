@@ -26,7 +26,8 @@ public interface SettingsDAO {
 			List<Integer> decisionTemplateIds,
 			String invoicingType,
 			Double price,
-			Integer fixedInvoicedHours
+			Integer fixedInvoicedHours,
+			List<Integer> settingsFileIds
 	);
 
 }

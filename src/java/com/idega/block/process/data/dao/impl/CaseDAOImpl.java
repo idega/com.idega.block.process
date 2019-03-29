@@ -191,7 +191,8 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			List<Integer> decisionTemplateIds,
 			String invoicingType,
 			Double price,
-			Integer fixedInvoicedHours
+			Integer fixedInvoicedHours,
+			List<Integer> settingsFileIds
 	) {
 		if (uuid == null) {
 			return null;
