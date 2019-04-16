@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.idega.block.process.data.model.ReminderModel;
 import com.idega.block.process.data.model.SettingsModel;
+import com.idega.core.file.data.bean.ICFile;
 
 public interface SettingsDAO {
 
@@ -27,7 +28,7 @@ public interface SettingsDAO {
 			String invoicingType,
 			Double price,
 			Integer fixedInvoicedHours,
-			List<Integer> settingsFileIds
+			List<ICFile> settingsFiles
 	);
 
 }
