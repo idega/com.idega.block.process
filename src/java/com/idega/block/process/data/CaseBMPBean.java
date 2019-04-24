@@ -1294,9 +1294,19 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public Collection<?> ejbFindAllByCaseCode(CaseCode code) throws FinderException {
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhereEquals(COLUMN_CASE_CODE, code);
-//		TODO: I did not like this group by
-//		query.appendGroupBy(getIDColumnName());
 		return super.idoFindPKsByQuery(query);
+	}
+
+	public Integer ejbHomeGetNumberOfCasesByCaseCode(String code) throws FinderException, IDOException {
+		if (StringUtil.isEmpty(code)) {
+			return 0;
+		}
+
+		Table casesTable = new Table(this);
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(new CountColumn(casesTable, getIDColumnName()));
+		query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_CODE), MatchCriteria.EQUALS, code));
+		return super.idoGetNumberOfRecords(query);
 	}
 
 	@Override
