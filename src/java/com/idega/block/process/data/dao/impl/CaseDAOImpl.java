@@ -17,6 +17,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.idega.block.process.data.bean.Case;
+import com.idega.block.process.data.bean.CaseConsultant;
+import com.idega.block.process.data.bean.CaseMaterial;
+import com.idega.block.process.data.bean.CaseMileageReimbursement;
 import com.idega.block.process.data.bean.CaseReminder;
 import com.idega.block.process.data.bean.CaseSettings;
 import com.idega.block.process.data.dao.CaseDAO;
@@ -25,6 +28,7 @@ import com.idega.core.accesscontrol.data.bean.ICRole;
 import com.idega.core.persistence.Param;
 import com.idega.core.persistence.impl.GenericDaoImpl;
 import com.idega.user.dao.UserDAO;
+import com.idega.user.data.bean.Group;
 import com.idega.user.data.bean.User;
 import com.idega.util.CoreConstants;
 import com.idega.util.ListUtil;
@@ -178,6 +182,8 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return reminder.getId() == null ? null : reminder;
 	}
 
+
+
 	@Override
 	@Transactional(readOnly = false)
 	public <T extends Serializable> CaseSettings updateSettings(
@@ -192,7 +198,15 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			String invoicingType,
 			Double price,
 			Integer fixedInvoicedHours,
-			List<Integer> settingsFileIds
+			List<Integer> settingsFileIds,
+			List<Integer> rateIds,
+			List<Integer> mileageReimbursementIds,
+			List<Integer> materialIds,
+			List<Integer> consultantIds,
+			Group referenceUnit,
+			String invoiceReferenceCode,
+			Integer priceRateId
+
 	) {
 		if (uuid == null) {
 			return null;
@@ -329,5 +343,158 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return false;
 	}
 
+
+	@Override
+	@Transactional(readOnly = false)
+	public CaseMileageReimbursement updateMileageReimbursement(
+			Integer id,
+			String name,
+			Double price,
+			String type,
+			Integer specifiedQuantity,
+			Double specifiedVAT
+	) {
+		CaseMileageReimbursement mileageReimbursement = null;
+		if (id == null) {
+			mileageReimbursement = new CaseMileageReimbursement();
+		} else {
+			List<CaseMileageReimbursement> mileageReimbursements = getResultList(CaseMileageReimbursement.FIND_BY_IDS, CaseMileageReimbursement.class, new Param(CaseMileageReimbursement.PARAM_IDS, Arrays.asList(id)));
+			mileageReimbursement = ListUtil.isEmpty(mileageReimbursements) ? null : mileageReimbursements.iterator().next();
+		}
+		if (mileageReimbursement == null) {
+			return null;
+		}
+
+		mileageReimbursement.setName(name);
+		mileageReimbursement.setPrice(price);
+		mileageReimbursement.setRateType(type);
+		mileageReimbursement.setSpecifiedQuantity(specifiedQuantity);
+		mileageReimbursement.setSpecifiedVAT(specifiedVAT);
+
+		if (mileageReimbursement.getId() == null) {
+			persist(mileageReimbursement);
+		} else {
+			merge(mileageReimbursement);
+		}
+
+		return mileageReimbursement.getId() == null ? null : mileageReimbursement;
+	}
+
+
+	@Override
+	@Transactional(readOnly = false)
+	public CaseMaterial updateMaterial(
+			Integer id,
+			String name,
+			Double price,
+			Integer quantity,
+			Integer specifiedQuantity,
+			Double specifiedVAT
+	) {
+		CaseMaterial caseMaterial = null;
+		if (id == null) {
+			caseMaterial = new CaseMaterial();
+		} else {
+			List<CaseMaterial> caseMaterials = getResultList(CaseMaterial.FIND_BY_IDS, CaseMaterial.class, new Param(CaseMaterial.PARAM_IDS, Arrays.asList(id)));
+			caseMaterial = ListUtil.isEmpty(caseMaterials) ? null : caseMaterials.iterator().next();
+		}
+		if (caseMaterial == null) {
+			return null;
+		}
+
+		caseMaterial.setName(name);
+		caseMaterial.setPrice(price);
+		caseMaterial.setQuantity(quantity);
+		caseMaterial.setSpecifiedQuantity(specifiedQuantity);
+		caseMaterial.setSpecifiedVAT(specifiedVAT);
+
+		if (caseMaterial.getId() == null) {
+			persist(caseMaterial);
+		} else {
+			merge(caseMaterial);
+		}
+
+		return caseMaterial.getId() == null ? null : caseMaterial;
+	}
+
+
+	@Override
+	@Transactional(readOnly = false)
+	public CaseConsultant updateConsultant(
+			Integer id,
+			String name,
+			Double price,
+			Integer quantity,
+			Integer specifiedQuantity,
+			Double specifiedVAT
+	) {
+		CaseConsultant caseConsultant = null;
+		if (id == null) {
+			caseConsultant = new CaseConsultant();
+		} else {
+			List<CaseConsultant> caseConsultants = getResultList(CaseConsultant.FIND_BY_IDS, CaseConsultant.class, new Param(CaseConsultant.PARAM_IDS, Arrays.asList(id)));
+			caseConsultant = ListUtil.isEmpty(caseConsultants) ? null : caseConsultants.iterator().next();
+		}
+		if (caseConsultant == null) {
+			return null;
+		}
+
+		caseConsultant.setName(name);
+		caseConsultant.setPrice(price);
+		caseConsultant.setQuantity(quantity);
+		caseConsultant.setSpecifiedQuantity(specifiedQuantity);
+		caseConsultant.setSpecifiedVAT(specifiedVAT);
+
+		if (caseConsultant.getId() == null) {
+			persist(caseConsultant);
+		} else {
+			merge(caseConsultant);
+		}
+
+		return caseConsultant.getId() == null ? null : caseConsultant;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Case updateCase(
+			Integer caseId,
+			List<Integer> mileageReimbursementIds,
+			List<Integer> materialIds,
+			List<Integer> consultantIds
+	) {
+		if (caseId == null) {
+			return null;
+		}
+
+		Case theCase = getCaseById(caseId);
+		if (theCase == null) {
+			return null;
+		}
+
+		//Mileage reimbursements
+		List<CaseMileageReimbursement> mileageReimbursements = null;
+		if (!ListUtil.isEmpty(mileageReimbursementIds)) {
+			mileageReimbursements = getResultList(CaseMileageReimbursement.FIND_BY_IDS, CaseMileageReimbursement.class, new Param(CaseMileageReimbursement.PARAM_IDS, mileageReimbursementIds));
+		}
+		theCase.setMileageReimbursements(mileageReimbursements);
+
+		//Materials
+		List<CaseMaterial> caseMaterials = null;
+		if (!ListUtil.isEmpty(materialIds)) {
+			caseMaterials = getResultList(CaseMaterial.FIND_BY_IDS, CaseMaterial.class, new Param(CaseMaterial.PARAM_IDS, materialIds));
+		}
+		theCase.setMaterials(caseMaterials);
+
+		//Consultants
+		List<CaseConsultant> caseConsultants = null;
+		if (!ListUtil.isEmpty(consultantIds)) {
+			caseConsultants = getResultList(CaseConsultant.FIND_BY_IDS, CaseConsultant.class, new Param(CaseConsultant.PARAM_IDS, consultantIds));
+		}
+		theCase.setConsultants(caseConsultants);
+
+		merge(theCase);
+
+		return theCase;
+	}
 
 }

@@ -9,5 +9,8 @@
     <entity class="com.idega.block.process.data.bean.CaseInvoiceInfo" />
     <entity class="com.idega.block.process.data.bean.CaseReminder" />
     <entity class="com.idega.block.process.data.bean.CaseSettings" />
+    <entity class="com.idega.block.process.data.bean.CaseMileageReimbursement" />
+    <entity class="com.idega.block.process.data.bean.CaseMaterial" />
+    <entity class="com.idega.block.process.data.bean.CaseConsultant" />
 
 </entity-mappings>
