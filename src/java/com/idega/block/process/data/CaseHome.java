@@ -222,6 +222,8 @@ public interface CaseHome extends IDOHome {
 	 */
 	public int getNumberOfCasesByGroupsOrUserExceptCodes(User user, Collection groups, CaseCode[] codes) throws IDOException;
 
+	public Integer getNumberOfCasesByCaseCode(String code) throws FinderException, IDOException;
+
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#ejbFindCaseByExternalId
 	 */

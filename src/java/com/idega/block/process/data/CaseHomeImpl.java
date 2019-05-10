@@ -371,6 +371,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
+	public Integer getNumberOfCasesByCaseCode(String code) throws FinderException, IDOException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		int theReturn = ((CaseBMPBean) entity).ejbHomeGetNumberOfCasesByCaseCode(code);
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
+	}
+
+	@Override
 	public Case findCaseByExternalId(String externalId) throws FinderException {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
 		Object pk = ((CaseBMPBean) entity).ejbFindCaseByExternalId(externalId);

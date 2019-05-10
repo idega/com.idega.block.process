@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.idega.block.process.data.model.ReminderModel;
 import com.idega.block.process.data.model.SettingsModel;
+import com.idega.core.file.data.bean.ICFile;
 import com.idega.user.data.bean.Group;
 
 public interface SettingsDAO {
@@ -28,16 +29,14 @@ public interface SettingsDAO {
 			String invoicingType,
 			Double price,
 			Integer fixedInvoicedHours,
-			List<Integer> settingsFileIds,
 			List<Integer> rateIds,
 			List<Integer> mileageReimbursementIds,
 			List<Integer> materialIds,
 			List<Integer> consultantIds,
 			Group referenceUnit,
 			String invoiceReferenceCode,
-			Integer priceRateId
-
-
+			Integer priceRateId,
+			List<ICFile> settingsFiles
 	);
 
 }

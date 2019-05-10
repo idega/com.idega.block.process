@@ -25,6 +25,7 @@ import com.idega.block.process.data.bean.CaseSettings;
 import com.idega.block.process.data.dao.CaseDAO;
 import com.idega.block.process.data.model.ReminderModel;
 import com.idega.core.accesscontrol.data.bean.ICRole;
+import com.idega.core.file.data.bean.ICFile;
 import com.idega.core.persistence.Param;
 import com.idega.core.persistence.impl.GenericDaoImpl;
 import com.idega.user.dao.UserDAO;
@@ -198,15 +199,14 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			String invoicingType,
 			Double price,
 			Integer fixedInvoicedHours,
-			List<Integer> settingsFileIds,
 			List<Integer> rateIds,
 			List<Integer> mileageReimbursementIds,
 			List<Integer> materialIds,
 			List<Integer> consultantIds,
 			Group referenceUnit,
 			String invoiceReferenceCode,
-			Integer priceRateId
-
+			Integer priceRateId,
+			List<ICFile> settingsFiles
 	) {
 		if (uuid == null) {
 			return null;
@@ -280,7 +280,6 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 		return null;
 	}
-
 
 	@Override
 	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter) {
