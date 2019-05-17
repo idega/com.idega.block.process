@@ -208,4 +208,29 @@ public interface CasesRetrievalManager {
 	public abstract User getCaseOwner(Object entityId);
 
 	public abstract Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) throws Exception;
+	
+	public abstract List<String> getSuggestedCasesSubjects(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds
+	) throws Exception;
+	
+	public abstract List<String> getSuggestedOwnerNames(
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds
+	) throws Exception;
+	
 }

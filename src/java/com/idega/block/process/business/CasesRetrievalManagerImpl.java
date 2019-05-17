@@ -755,4 +755,24 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		return Long.valueOf(0);
 	}
 
+	@Override
+	public List<String> getSuggestedCasesSubjects(User user, String type,
+			List<String> caseCodes, List<String> statusesToHide,
+			List<String> statusesToShow, boolean onlySubscribedCases,
+			boolean showAllCases, Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds)
+			throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<String> getSuggestedOwnerNames(User user, String type,
+			List<String> caseCodes, List<String> statusesToHide,
+			List<String> statusesToShow, boolean onlySubscribedCases,
+			boolean showAllCases, Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds)
+			throws Exception {
+		return Collections.emptyList();
+	}
+
 }
