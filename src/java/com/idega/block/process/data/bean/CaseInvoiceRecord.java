@@ -1,7 +1,7 @@
 package com.idega.block.process.data.bean;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Cacheable;
@@ -62,7 +62,7 @@ public class CaseInvoiceRecord implements Serializable {
 	private List<CaseConsultant> consultants;
 
 	@Column(name = "created")
-	private Date created;
+	private Timestamp created;
 
 	public Integer getId() {
 		return id;
@@ -107,15 +107,15 @@ public class CaseInvoiceRecord implements Serializable {
 	@PrePersist
 	private void prePersist() {
 		if (created == null) {
-			created = new Date(System.currentTimeMillis());
+			created = new Timestamp(System.currentTimeMillis());
 		}
 	}
 
-	public Date getCreated() {
+	public Timestamp getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Timestamp created) {
 		this.created = created;
 	}
 
