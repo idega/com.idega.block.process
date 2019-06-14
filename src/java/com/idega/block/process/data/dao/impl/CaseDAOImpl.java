@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.idega.block.process.data.bean.Case;
 import com.idega.block.process.data.bean.CaseConsultant;
+import com.idega.block.process.data.bean.CaseInvoiceRecord;
 import com.idega.block.process.data.bean.CaseMaterial;
 import com.idega.block.process.data.bean.CaseMileageReimbursement;
 import com.idega.block.process.data.bean.CaseReminder;
@@ -454,9 +455,28 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 	}
 
 	@Override
+	public CaseInvoiceRecord getCaseInvoiceRecordById(Integer id) {
+		if (id == null) {
+			return null;
+		}
+
+		return getSingleResult(CaseInvoiceRecord.QUERY_FIND_BY_ID, CaseInvoiceRecord.class, new Param(CaseInvoiceRecord.PARAM_ID, id));
+	}
+
+	@Override
+	public List<CaseInvoiceRecord> getAllByCaseId(Integer caseId) {
+		if (caseId == null) {
+			return null;
+		}
+
+		return getResultList(CaseInvoiceRecord.QUERY_FIND_ALL_BY_CASE_ID, CaseInvoiceRecord.class, new Param(CaseInvoiceRecord.PARAM_CASE_ID, caseId));
+	}
+
+	@Override
 	@Transactional(readOnly = false)
-	public Case updateCase(
+	public CaseInvoiceRecord updateCaseInvoice(
 			Integer caseId,
+			Integer invoiceId,
 			List<Integer> mileageReimbursementIds,
 			List<Integer> materialIds,
 			List<Integer> consultantIds
@@ -470,30 +490,46 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			return null;
 		}
 
+		CaseInvoiceRecord cir = null;
+		if (invoiceId == null) {
+			cir = new CaseInvoiceRecord();
+		} else {
+			cir = getCaseInvoiceRecordById(invoiceId);
+		}
+		if (cir == null) {
+			return null;
+		}
+
+		cir.setCaseId(caseId);
+
 		//Mileage reimbursements
 		List<CaseMileageReimbursement> mileageReimbursements = null;
 		if (!ListUtil.isEmpty(mileageReimbursementIds)) {
 			mileageReimbursements = getResultList(CaseMileageReimbursement.FIND_BY_IDS, CaseMileageReimbursement.class, new Param(CaseMileageReimbursement.PARAM_IDS, mileageReimbursementIds));
 		}
-		theCase.setMileageReimbursements(mileageReimbursements);
+		cir.setMileageReimbursements(mileageReimbursements);
 
 		//Materials
 		List<CaseMaterial> caseMaterials = null;
 		if (!ListUtil.isEmpty(materialIds)) {
 			caseMaterials = getResultList(CaseMaterial.FIND_BY_IDS, CaseMaterial.class, new Param(CaseMaterial.PARAM_IDS, materialIds));
 		}
-		theCase.setMaterials(caseMaterials);
+		cir.setMaterials(caseMaterials);
 
 		//Consultants
 		List<CaseConsultant> caseConsultants = null;
 		if (!ListUtil.isEmpty(consultantIds)) {
 			caseConsultants = getResultList(CaseConsultant.FIND_BY_IDS, CaseConsultant.class, new Param(CaseConsultant.PARAM_IDS, consultantIds));
 		}
-		theCase.setConsultants(caseConsultants);
+		cir.setConsultants(caseConsultants);
 
-		merge(theCase);
+		if (cir.getId() == null) {
+			persist(cir);
+		} else {
+			merge(cir);
+		}
 
-		return theCase;
+		return cir;
 	}
 
 }

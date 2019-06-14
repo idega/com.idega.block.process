@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.idega.block.process.data.bean.Case;
 import com.idega.block.process.data.bean.CaseConsultant;
+import com.idega.block.process.data.bean.CaseInvoiceRecord;
 import com.idega.block.process.data.bean.CaseMaterial;
 import com.idega.block.process.data.bean.CaseMileageReimbursement;
 import com.idega.block.process.data.bean.CaseSettings;
@@ -55,10 +56,16 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 			Double specifiedVAT
 	);
 
-	public Case updateCase(
+	public CaseInvoiceRecord getCaseInvoiceRecordById(Integer id);
+
+	public List<CaseInvoiceRecord> getAllByCaseId(Integer caseId);
+
+	public CaseInvoiceRecord updateCaseInvoice(
 			Integer caseId,
+			Integer invoiceId,
 			List<Integer> mileageReimbursementIds,
 			List<Integer> materialIds,
 			List<Integer> consultantIds
 	);
+
 }

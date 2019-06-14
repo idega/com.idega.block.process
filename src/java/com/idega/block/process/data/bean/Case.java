@@ -165,19 +165,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	@JoinTable(name = CaseBMPBean.COLUMN_CASE_SUBSCRIBERS, joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
 	private List<User> subscribers;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = CaseMileageReimbursement.class)
-	@JoinTable(name = Case.ENTITY_NAME + "_ml", joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = CaseMileageReimbursement.COLUMN_ID, table = CaseMileageReimbursement.TABLE_NAME) })
-	private List<CaseMileageReimbursement> mileageReimbursements;
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = CaseMaterial.class)
-	@JoinTable(name = Case.ENTITY_NAME + "_mt", joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = CaseMaterial.COLUMN_ID, table = CaseMaterial.TABLE_NAME) })
-	private List<CaseMaterial> materials;
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = CaseConsultant.class)
-	@JoinTable(name = Case.ENTITY_NAME + "_cl", joinColumns = { @JoinColumn(name = COLUMN_CASE_ID) }, inverseJoinColumns = { @JoinColumn(name = CaseConsultant.COLUMN_ID, table = CaseConsultant.TABLE_NAME) })
-	private List<CaseConsultant> consultants;
-
-
 	public Integer getId() {
 		return id;
 	}
@@ -459,35 +446,6 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-
-
-
-	public List<CaseMileageReimbursement> getMileageReimbursements() {
-		mileageReimbursements = DBUtil.getInstance().lazyLoad(mileageReimbursements);
-		return mileageReimbursements;
-	}
-
-	public void setMileageReimbursements(List<CaseMileageReimbursement> mileageReimbursements) {
-		this.mileageReimbursements = mileageReimbursements;
-	}
-
-	public List<CaseMaterial> getMaterials() {
-		materials = DBUtil.getInstance().lazyLoad(materials);
-		return materials;
-	}
-
-	public void setMaterials(List<CaseMaterial> materials) {
-		this.materials = materials;
-	}
-
-	public List<CaseConsultant> getConsultants() {
-		consultants = DBUtil.getInstance().lazyLoad(consultants);
-		return consultants;
-	}
-
-	public void setConsultants(List<CaseConsultant> consultants) {
-		this.consultants = consultants;
 	}
 
 	@Override
