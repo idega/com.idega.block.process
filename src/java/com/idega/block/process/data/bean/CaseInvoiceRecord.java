@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -103,7 +104,12 @@ public class CaseInvoiceRecord implements Serializable {
 		this.consultants = consultants;
 	}
 
-
+	@PrePersist
+	private void prePersist() {
+		if (created == null) {
+			created = new Date(System.currentTimeMillis());
+		}
+	}
 
 	public Date getCreated() {
 		return created;
