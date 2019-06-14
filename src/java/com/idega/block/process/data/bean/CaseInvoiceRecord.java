@@ -103,6 +103,16 @@ public class CaseInvoiceRecord implements Serializable {
 		this.consultants = consultants;
 	}
 
+
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
 	@Override
 	public String toString() {
 		return "ID: " + getId();
