@@ -3,6 +3,7 @@ package com.idega.block.process.data.bean;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -20,12 +21,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.idega.util.StringUtil;
+
 @Entity
 @Table(name = CaseInvoiceRecord.ENTITY_NAME)
 @Cacheable
 @NamedQueries({
 	@NamedQuery(name = CaseInvoiceRecord.QUERY_FIND_BY_ID, query = "select cir from CaseInvoiceRecord cir where cir.id = :" + CaseInvoiceRecord.PARAM_ID),
-	@NamedQuery(name = CaseInvoiceRecord.QUERY_FIND_ALL_BY_CASE_ID, query = "select cir from CaseInvoiceRecord cir where cir.caseId = :" + CaseInvoiceRecord.PARAM_CASE_ID + " order by cir.created desc")
+	@NamedQuery(name = CaseInvoiceRecord.QUERY_FIND_ALL_BY_CASE_ID, query = "select cir from CaseInvoiceRecord cir where cir.caseId = :" + CaseInvoiceRecord.PARAM_CASE_ID + " order by cir.created desc"),
+	@NamedQuery(name = CaseInvoiceRecord.QUERY_FIND_BY_UUID, query = "select cir from CaseInvoiceRecord cir where cir.uniqueId = :" + CaseInvoiceRecord.PARAM_UUID)
 })
 public class CaseInvoiceRecord implements Serializable {
 
@@ -37,9 +41,11 @@ public class CaseInvoiceRecord implements Serializable {
 
 								QUERY_FIND_BY_ID = "CaseInvoiceRecord.findById",
 								QUERY_FIND_ALL_BY_CASE_ID = "CaseInvoiceRecord.findAllByCaseId",
+								QUERY_FIND_BY_UUID = "CaseInvoiceRecord.findByUUID",
 
 								PARAM_ID = "id",
-								PARAM_CASE_ID = "caseId";
+								PARAM_CASE_ID = "caseId",
+								PARAM_UUID = "uniqueId";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,6 +69,9 @@ public class CaseInvoiceRecord implements Serializable {
 
 	@Column(name = "created")
 	private Timestamp created;
+
+	@Column(name = "unique_id")
+	private String uniqueId;
 
 	public Integer getId() {
 		return id;
@@ -109,6 +118,9 @@ public class CaseInvoiceRecord implements Serializable {
 		if (created == null) {
 			created = new Timestamp(System.currentTimeMillis());
 		}
+		if (StringUtil.isEmpty(uniqueId)) {
+			uniqueId = UUID.randomUUID().toString();
+		}
 	}
 
 	public Timestamp getCreated() {
@@ -117,6 +129,14 @@ public class CaseInvoiceRecord implements Serializable {
 
 	public void setCreated(Timestamp created) {
 		this.created = created;
+	}
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 
 	@Override

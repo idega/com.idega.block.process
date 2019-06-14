@@ -464,6 +464,15 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 	}
 
 	@Override
+	public CaseInvoiceRecord getCaseInvoiceRecordByUniqeId(String uniqueId) {
+		if (StringUtil.isEmpty(uniqueId)) {
+			return null;
+		}
+
+		return getSingleResult(CaseInvoiceRecord.QUERY_FIND_BY_UUID, CaseInvoiceRecord.class, new Param(CaseInvoiceRecord.PARAM_UUID, uniqueId));
+	}
+
+	@Override
 	public List<CaseInvoiceRecord> getAllByCaseId(Integer caseId) {
 		if (caseId == null) {
 			return null;

@@ -58,6 +58,8 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 
 	public CaseInvoiceRecord getCaseInvoiceRecordById(Integer id);
 
+	public CaseInvoiceRecord getCaseInvoiceRecordByUniqeId(String uniqueId);
+
 	public List<CaseInvoiceRecord> getAllByCaseId(Integer caseId);
 
 	public CaseInvoiceRecord updateCaseInvoice(
