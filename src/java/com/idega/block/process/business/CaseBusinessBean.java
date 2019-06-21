@@ -784,9 +784,14 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes, boolean sendUpdates) {
+	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus, Map attributes, boolean sendUpdates) {
 		String oldCaseStatus = CoreConstants.EMPTY;
 		try {
+			if (StringUtil.isEmpty(newCaseStatus)) {
+				getLogger().info("Case's status can not be null/empty: not creating log for changing status from '" + oldCaseStatus + "' to '" +  newCaseStatus + "' by " + performer +
+						" for case " + theCase + ", comment: " + comment);
+			}
+
 			oldCaseStatus = theCase.getStatus();
 			Collection<CaseChangeListener> listeners = null;
 			if (sendUpdates) {
