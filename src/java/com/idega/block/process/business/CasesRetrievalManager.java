@@ -27,7 +27,8 @@ import com.idega.user.data.User;
  */
 public interface CasesRetrievalManager {
 
-	public static final String	CASE_LIST_TYPE_MY = "MyCases",
+	public static final String	CASE_LIST_TYPE_ALL = "AllCases",
+								CASE_LIST_TYPE_MY = "MyCases",
 								CASE_LIST_TYPE_USER = "UserCases",
 								CASE_LIST_TYPE_OPEN = "OpenCases",
 								CASE_LIST_TYPE_CLOSED = "ClosedCases",
@@ -86,6 +87,7 @@ public interface CasesRetrievalManager {
 			boolean searchQuery);
 
 	public abstract List<Integer> getCaseIds(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -98,6 +100,7 @@ public interface CasesRetrievalManager {
 	) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -113,6 +116,7 @@ public interface CasesRetrievalManager {
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -164,6 +168,7 @@ public interface CasesRetrievalManager {
 	 * @author <a href="mailto:martynas@idega.is">Martynas Stakė</a>
 	 */
 	public List<Integer> getCasePrimaryKeys(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -212,6 +217,7 @@ public interface CasesRetrievalManager {
 	public abstract Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) throws Exception;
 
 	public abstract List<String> getSuggestedCasesSubjects(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -224,6 +230,7 @@ public interface CasesRetrievalManager {
 	) throws Exception;
 
 	public abstract List<String> getSuggestedOwnerNames(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,

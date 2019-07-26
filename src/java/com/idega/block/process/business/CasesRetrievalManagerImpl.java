@@ -132,6 +132,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public List<Integer> getCaseIds(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -147,6 +148,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public List<Integer> getCaseIds(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -170,7 +172,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public List<Integer> getCasePrimaryKeys(User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
+	public List<Integer> getCasePrimaryKeys(IWContext iwc, User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs, List<Integer> exceptOwnersIds,
 			boolean searchQuery) throws Exception {
 		return Collections.emptyList();
@@ -745,6 +747,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public Long getCountedCaseIds(
+			IWContext iwc,
 			User user,
 			String type,
 			List<String> caseCodes,
@@ -758,7 +761,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public List<String> getSuggestedCasesSubjects(User user, String type,
+	public List<String> getSuggestedCasesSubjects(IWContext iwc, User user, String type,
 			List<String> caseCodes, List<String> statusesToHide,
 			List<String> statusesToShow, boolean onlySubscribedCases,
 			boolean showAllCases, Boolean handlerAssignedCases,
@@ -768,7 +771,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public List<String> getSuggestedOwnerNames(User user, String type,
+	public List<String> getSuggestedOwnerNames(IWContext iwc, User user, String type,
 			List<String> caseCodes, List<String> statusesToHide,
 			List<String> statusesToShow, boolean onlySubscribedCases,
 			boolean showAllCases, Boolean handlerAssignedCases,
