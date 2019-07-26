@@ -157,7 +157,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Integer page,
 			Integer pageSize,
 			Boolean handlerAssignedCases,
-			List<Integer> exceptOwnersIds
+			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes
 	) throws Exception {
 		return Collections.emptyList();
 	}
@@ -750,7 +751,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<String> statusesToHide,
 			List<String> statusesToShow,
 			boolean onlySubscribedCases,
-			boolean showAllCases
+			boolean showAllCases,
+			List<String> exceptCaseCodes
 	) throws Exception {
 		return Long.valueOf(0);
 	}

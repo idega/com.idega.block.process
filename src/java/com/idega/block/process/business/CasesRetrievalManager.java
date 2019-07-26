@@ -108,7 +108,8 @@ public interface CasesRetrievalManager {
 			Integer page,
 			Integer pageSize,
 			Boolean handlerAssignedCases,
-			List<Integer> exceptOwnersIds
+			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
@@ -118,7 +119,8 @@ public interface CasesRetrievalManager {
 			List<String> statusesToHide,
 			List<String> statusesToShow,
 			boolean onlySubscribedCases,
-			boolean showAllCases
+			boolean showAllCases,
+			List<String> exceptCaseCodes
 	) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
@@ -208,7 +210,7 @@ public interface CasesRetrievalManager {
 	public abstract User getCaseOwner(Object entityId);
 
 	public abstract Collection<CasePresentation> getReLoadedCases(CasesSearchCriteriaBean criterias) throws Exception;
-	
+
 	public abstract List<String> getSuggestedCasesSubjects(
 			User user,
 			String type,
@@ -220,7 +222,7 @@ public interface CasesRetrievalManager {
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds
 	) throws Exception;
-	
+
 	public abstract List<String> getSuggestedOwnerNames(
 			User user,
 			String type,
@@ -232,5 +234,5 @@ public interface CasesRetrievalManager {
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds
 	) throws Exception;
-	
+
 }
