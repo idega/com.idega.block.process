@@ -49,7 +49,9 @@ public final class ProcessConstants implements Singleton {
 								CASE_MANAGER_TYPE = "caseManagerType",
 
 								BPM_CASE = "CasesBPM",
-								BPM_2_CASE = "CasesBPM_2";
+								BPM_2_CASE = "CasesBPM_2",
+
+								GENERAL_SUPPORT_CASE_CODE = "GENSUPP";
 
 	public static final List<CasesListColumn> getCasesListMainColumns(IWResourceBundle iwrb) {
 		CasesListColumn[] columns = new CasesListColumn[6];
