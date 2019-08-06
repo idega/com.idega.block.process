@@ -110,20 +110,34 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 	@Override
 	public List<Case> getAllCasesByStatuses(List<String> statuses) {
+		return getByStatuses(statuses, Case.class);
+	}
+
+	@Override
+	public List<Integer> getCasesIDsByStatuses(List<String> statuses) {
+		return getByStatuses(statuses, Integer.class);
+	}
+
+	private <T> List<T> getByStatuses(List<String> statuses, Class<T> type) {
 		if (ListUtil.isEmpty(statuses)) {
 			getLogger().warning("Statuses are not provided!");
 			return null;
 		}
 
+		boolean cases = false;
 		try {
-			return getResultList(Case.FIND_ALL_BY_STATUSES, Case.class, new Param(Case.PARAM_STATUSES, statuses));
+			cases = type.getName().equals(Case.class.getName());
+			return getResultList(
+					cases ? Case.FIND_ALL_BY_STATUSES : Case.FIND_IDS_BY_STATUSES,
+					type,
+					new Param(Case.PARAM_STATUSES, statuses)
+			);
 		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Error getting cases by statuses: " + statuses, e);
+			getLogger().log(Level.WARNING, "Error getting cases " + (cases ? CoreConstants.EMPTY : "IDs") + " by statuses: " + statuses, e);
 		}
 
 		return null;
 	}
-
 
 	@Override
 	public CaseSettings getCaseSettings(Integer settingsId) {
