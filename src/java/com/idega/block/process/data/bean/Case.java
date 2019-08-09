@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.data.CaseBMPBean;
 import com.idega.core.idgenerator.business.IdGenerator;
 import com.idega.core.idgenerator.business.IdGeneratorFactory;
@@ -54,8 +55,11 @@ import com.idega.util.DBUtil;
 	@NamedQuery(name = Case.FIND_ID_BY_UUID, query = "select c.id from Case c where c.uniqueId = :" + Case.PARAM_UUID),
 	@NamedQuery(name = Case.FIND_ALL_BY_STATUSES, query = "select c from Case c where c.caseStatus in (:" + Case.PARAM_STATUSES + ")"),
 	@NamedQuery(name = Case.FIND_IDS_BY_STATUSES, query = "select c.id from Case c where c.caseStatus in (:" + Case.PARAM_STATUSES + ")"),
-	@NamedQuery(name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, query = "select count(c.id) from Case c where c.created > :" + Case.PARAM_CREATED
-				+ " and c.caseCode != 'GENCASE' and c.caseCode != 'GENSUPP' and c.identifier is not null")
+	@NamedQuery(
+			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP,
+			query = "select count(c.id) from Case c where c.created > :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
+			"') and c.identifier is not null"
+	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
