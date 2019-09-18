@@ -34,6 +34,7 @@ public interface CasesRetrievalManager {
 								CASE_LIST_TYPE_CLOSED = "ClosedCases",
 								CASE_LIST_TYPE_PUBLIC = "PublicCases",
 								CASE_LIST_TYPE_HANDLER = "HandlerCases",
+								CASE_LIST_TYPE_HANDLER_BPM2 = "HandlerCasesBPM2",
 								CASE_LIST_TYPE_SUBSCRIBER = "SubscriberCases",
 
 								COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier",
