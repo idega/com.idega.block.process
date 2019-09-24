@@ -814,8 +814,30 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 			theCase.store();
 
-			if (oldCaseStatus != newCaseStatus || canBeSameStatus) {
-				CaseLog log = getCaseLogHome().create();
+			CaseLogHome caseLogHome = getCaseLogHome();
+
+			boolean createLog = !oldCaseStatus.equals(newCaseStatus) || canBeSameStatus;
+			if (!createLog && !StringUtil.isEmpty(comment)) {
+				Collection<CaseLog> allLogs = null;
+				try {
+					allLogs = caseLogHome.findAllCaseLogsByCaseOrderedByDate(theCase);
+				} catch (Exception e) {}
+				if (ListUtil.isEmpty(allLogs)) {
+					createLog = true;
+				} else {
+					boolean foundSameComment = false;
+					for (Iterator<CaseLog> iter = allLogs.iterator(); (!foundSameComment && iter.hasNext());) {
+						CaseLog log = iter.next();
+						String existingComment = log.getComment();
+						if (!StringUtil.isEmpty(existingComment) && comment.equals(existingComment)) {
+							foundSameComment = true;
+						}
+					}
+					createLog = !foundSameComment;
+				}
+			}
+			if (createLog) {
+				CaseLog log = caseLogHome.create();
 				log.setCase(Integer.parseInt(theCase.getPrimaryKey().toString()));
 				log.setCaseStatusBefore(oldCaseStatus);
 				log.setCaseStatusAfter(newCaseStatus);
