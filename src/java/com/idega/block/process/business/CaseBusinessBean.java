@@ -1189,29 +1189,47 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return this.getServiceInstance(UserBusiness.class);
 	}
 
+	private boolean isStatusForOpenCase(String status) {
+		if (StringUtil.isEmpty(status)) {
+			return false;
+		}
+		return getSettings().getBoolean("case.status_open_".concat(status), Boolean.FALSE);
+	}
+
 	@Override
 	public String[] getStatusesForOpenCases() {
-		return new String[] {
+		String[] statuses = new String[] {
 				getCaseStatusOpen().getStatus(),
 				getCaseStatusReview().getStatus(),
 				getCaseStatusCreated().getStatus(),
 				getCaseStatusPending().getStatus(),
 				CaseBMPBean.CASE_STATUS_IN_PROCESS_KEY,
 				CaseBMPBean.CASE_STATUS_ASSIGNED,
-				CaseBMPBean.CASE_STATUS_ON_HOLD,
-				CaseBMPBean.CASE_STATUS_RECEIPT
+				CaseBMPBean.CASE_STATUS_ON_HOLD
 		};
+		if (isStatusForOpenCase(CaseBMPBean.CASE_STATUS_RECEIPT)) {
+			List<String> tmp = new ArrayList<>(Arrays.asList(statuses));
+			tmp.add(CaseBMPBean.CASE_STATUS_RECEIPT);
+			statuses = ArrayUtil.convertListToArray(tmp);
+		}
+		return statuses;
 	}
 
 	@Override
 	public String[] getStatusesForClosedCases() {
-		return new String[] {
+		String[] statuses = new String[] {
 				getCaseStatusInactive().getStatus(),
 				getCaseStatusReady().getStatus(),
 				getCaseStatusFinished().getStatus(),
 				CaseBMPBean.CASE_STATUS_CLOSED,
 				CaseBMPBean.CASE_STATUS_DELETED_KEY
 		};
+		if (!isStatusForOpenCase(CaseBMPBean.CASE_STATUS_RECEIPT)) {
+			List<String> tmp = new ArrayList<>(Arrays.asList(statuses));
+			tmp.add(CaseBMPBean.CASE_STATUS_RECEIPT);
+			statuses = ArrayUtil.convertListToArray(tmp);
+		}
+		return statuses;
 	}
 
 	@Override
