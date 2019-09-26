@@ -1193,7 +1193,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		if (StringUtil.isEmpty(status)) {
 			return false;
 		}
-		return getSettings().getBoolean("case.status_open_".concat(status), Boolean.FALSE);
+		return getSettings().getBoolean("case.status_open_".concat(status), Boolean.TRUE);
 	}
 
 	@Override
