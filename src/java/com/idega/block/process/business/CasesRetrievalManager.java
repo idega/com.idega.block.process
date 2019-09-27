@@ -36,6 +36,7 @@ public interface CasesRetrievalManager {
 								CASE_LIST_TYPE_HANDLER = "HandlerCases",
 								CASE_LIST_TYPE_HANDLER_BPM2 = "HandlerCasesBPM2",
 								CASE_LIST_TYPE_SUBSCRIBER = "SubscriberCases",
+								CASE_LIST_TYPE_SELECTED_USERS = "SelectedUsers",
 
 								COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier",
 								BEAN_IDENTIFIER = "defaultCaseHandler",
@@ -113,7 +114,8 @@ public interface CasesRetrievalManager {
 			Integer pageSize,
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds,
-			List<String> exceptCaseCodes
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
@@ -125,7 +127,8 @@ public interface CasesRetrievalManager {
 			List<String> statusesToShow,
 			boolean onlySubscribedCases,
 			boolean showAllCases,
-			List<String> exceptCaseCodes
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch
 	) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
