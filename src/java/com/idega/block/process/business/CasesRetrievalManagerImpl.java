@@ -704,6 +704,25 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		}
 	}
 
+	@Override
+	public List<Integer> getCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes
+	) throws Exception {
+		throw new UnsupportedOperationException("This method is not implemented");
+	}
+
 	protected List<Integer> getCasesIds(
 			User user,
 			String type,
@@ -744,6 +763,21 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		CasePresentation casePresentation = new CasePresentation(theCase);
 		casePresentation.setLocalizedStatus(getLocalizedStatus(theCase, theCase.getCaseStatus(), getCurrentLocale()));
 		return casePresentation;
+	}
+
+	@Override
+	public Long getCountedCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<String> exceptCaseCodes
+	) throws Exception {
+		return getCountedCaseIds(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, exceptCaseCodes, null);
 	}
 
 	@Override

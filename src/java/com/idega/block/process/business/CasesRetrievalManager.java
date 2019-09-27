@@ -114,8 +114,36 @@ public interface CasesRetrievalManager {
 			Integer pageSize,
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes
+	) throws Exception;
+
+	public abstract List<Integer> getCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds,
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch
+	) throws Exception;
+
+	public abstract Long getCountedCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<String> exceptCaseCodes
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
