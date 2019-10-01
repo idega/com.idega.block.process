@@ -125,8 +125,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String CASE_STATUS_ON_HOLD = "HOLD";
 	public static final String CASE_STATUS_SPAM = "SPAM";
 	public static final String CASE_STATUS_RECEIPT = "RECE";
-	public static final String CASE_STATUS_ACTION = "ACTI";
-	public static final String CASE_STATUS_EXTERNAL_SYSTEM = "EXSY";
 
 	@Override
 	public void initializeAttributes() {
