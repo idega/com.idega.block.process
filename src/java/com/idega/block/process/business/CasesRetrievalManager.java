@@ -113,7 +113,8 @@ public interface CasesRetrievalManager {
 			Integer pageSize,
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds,
-			List<String> exceptCaseCodes
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
@@ -125,7 +126,8 @@ public interface CasesRetrievalManager {
 			List<String> statusesToShow,
 			boolean onlySubscribedCases,
 			boolean showAllCases,
-			List<String> exceptCaseCodes
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch
 	) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
