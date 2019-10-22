@@ -112,8 +112,53 @@ public interface CasesRetrievalManager {
 			boolean showAllCases,
 			Integer page,
 			Integer pageSize,
+			Boolean onlyCasesRequiringAction
+	) throws Exception;
+
+	public abstract List<Integer> getCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch
+	) throws Exception;
+
+	public abstract List<Integer> getCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch,
+			Boolean onlyCasesRequiringAction
+	) throws Exception;
+
+	public abstract Long getCountedCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch
 	) throws Exception;
@@ -128,7 +173,8 @@ public interface CasesRetrievalManager {
 			boolean onlySubscribedCases,
 			boolean showAllCases,
 			List<String> exceptCaseCodes,
-			List<Integer> userIdsToUseInSearch
+			List<Integer> userIdsToUseInSearch,
+			Boolean onlyCasesRequiringAction
 	) throws Exception;
 
 	public abstract List<Integer> getCaseIds(
@@ -184,7 +230,8 @@ public interface CasesRetrievalManager {
 			Set<String> roles,
 			Collection<Long> handlerCategoryIDs,
 			List<Integer> exceptOwnersIds,
-			boolean searchQuery
+			boolean searchQuery,
+			Boolean onlyCasesRequiringAction
 	) throws Exception;
 
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);

@@ -143,6 +143,23 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Integer page,
 			Integer pageSize
 	) throws Exception {
+		return getCaseIds(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, page, pageSize, null);
+	}
+
+	@Override
+	public List<Integer> getCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
+			Boolean onlyCasesRequiringAction
+	) throws Exception {
 		return Collections.emptyList();
 	}
 
@@ -163,6 +180,27 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch
 	) throws Exception {
+		return getCaseIds(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, page, pageSize, handlerAssignedCases, exceptOwnersIds, exceptCaseCodes, userIdsToUseInSearch, null);
+	}
+
+	@Override
+	public List<Integer> getCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			Integer page,
+			Integer pageSize,
+			Boolean handlerAssignedCases,
+			List<Integer> exceptOwnersIds,
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch,
+			Boolean onlyCasesRequiringAction
+	) throws Exception {
 		return Collections.emptyList();
 	}
 
@@ -175,7 +213,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	@Override
 	public List<Integer> getCasePrimaryKeys(IWContext iwc, User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs, List<Integer> exceptOwnersIds,
-			boolean searchQuery) throws Exception {
+			boolean searchQuery, Boolean onlyCasesRequiringAction) throws Exception {
 		return Collections.emptyList();
 	}
 
@@ -758,6 +796,23 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			boolean showAllCases,
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch
+	) throws Exception {
+		return getCountedCaseIds(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, exceptCaseCodes, userIdsToUseInSearch, null);
+	}
+
+	@Override
+	public Long getCountedCaseIds(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<String> exceptCaseCodes,
+			List<Integer> userIdsToUseInSearch,
+			Boolean onlyCasesRequiringAction
 	) throws Exception {
 		return Long.valueOf(0);
 	}
