@@ -58,7 +58,7 @@ import com.idega.util.DBUtil;
 	@NamedQuery(
 			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP,
 			query = "select count(c.id) from Case c where c.created > :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
-			"') and c.identifier is not null"
+			"', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null"
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
