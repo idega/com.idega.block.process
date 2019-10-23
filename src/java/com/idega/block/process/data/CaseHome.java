@@ -243,7 +243,8 @@ public interface CaseHome extends IDOHome {
 			IWTimestamp dateTo,
 			User owner,
 			Collection<Group> groups,
-			boolean simpleCases) throws FinderException;
+			boolean simpleCases
+	) throws FinderException;
 
 	public Collection<Integer> findIDsByCriteria(
 			String caseNumber,
@@ -254,7 +255,8 @@ public interface CaseHome extends IDOHome {
 			IWTimestamp dateTo,
 			User owner,
 			Collection<Group> groups,
-			boolean simpleCases) throws FinderException;
+			boolean simpleCases
+	) throws FinderException;
 
 	public Collection<Integer> findIDsByCriteria(
 			String caseNumber,
@@ -270,6 +272,21 @@ public interface CaseHome extends IDOHome {
 			List<Integer> exceptOwnersIds
 	) throws FinderException;
 
+	public Collection<Integer> findIDsByCriteria(
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
+			IWTimestamp dateFrom,
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
+			boolean simpleCases,
+			Boolean withHandler,
+			List<Integer> exceptOwnersIds,
+			String caseCode
+	) throws FinderException;
+
 	public abstract Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException;
 
 	public void createDefaultCaseStatuses();
@@ -277,6 +294,8 @@ public interface CaseHome extends IDOHome {
 	public Collection<Case> findAllByCaseCode(CaseCode code) throws FinderException;
 
 	public Collection<Case> getCasesByIds(Collection<Integer> ids) throws FinderException;
+
+	public int getCountedCasesByCasesIdsAndByCaseCode(Collection<Integer> casesIds, String caseCode) throws FinderException, IDOException;
 
 	/**
 	 *

@@ -403,8 +403,26 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	@Override
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler, List<Integer> exceptOwnersIds) throws FinderException {
+		return findIDsByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds, null);
+	}
+
+	@Override
+	public Collection<Integer> findIDsByCriteria(
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
+			IWTimestamp dateFrom,
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
+			boolean simpleCases,
+			Boolean withHandler,
+			List<Integer> exceptOwnersIds,
+			String caseCode
+	) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds, caseCode);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}
@@ -478,6 +496,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		Collection<?> ids = ((CaseBMPBean) entity).ejbFindAllByCaseCode(code);
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
+	@Override
+	public int getCountedCasesByCasesIdsAndByCaseCode(Collection<Integer> casesIds, String caseCode) throws FinderException, IDOException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		int theReturn = ((CaseBMPBean) entity).ejbGetCountedCasesByCasesIdsAndByCaseCode(casesIds, caseCode);
+		this.idoCheckInPooledEntity(entity);
+		return theReturn;
 	}
 
 	@Override

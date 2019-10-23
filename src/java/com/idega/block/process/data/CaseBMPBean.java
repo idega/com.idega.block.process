@@ -1123,11 +1123,24 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
-		return ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null, null);
+		return ejbFindByCriteria(
+				caseNumber,
+				description,
+				owners,
+				statuses,
+				dateFrom,
+				dateTo,
+				owner,
+				groups,
+				simpleCases,
+				null,
+				null,
+				null
+		);
 	}
 
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
-			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler, List<Integer> exceptOwnersIds) throws FinderException {
+			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases, Boolean withHandler, List<Integer> exceptOwnersIds, String caseCode) throws FinderException {
 
 		Table casesTable = new Table(this);
 
@@ -1186,6 +1199,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		}
 		if (!ListUtil.isEmpty(exceptOwnersIds)) {
 			query.addCriteria(new InCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), exceptOwnersIds, true));
+		}
+
+		if (!StringUtil.isEmpty(caseCode)) {
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_CODE), MatchCriteria.EQUALS, caseCode));
 		}
 
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
@@ -1297,6 +1314,15 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		IDOQuery query = this.idoQueryGetSelect();
 		query.appendWhereEquals(COLUMN_CASE_CODE, code);
 		return super.idoFindPKsByQuery(query);
+	}
+
+	public int ejbGetCountedCasesByCasesIdsAndByCaseCode(Collection<Integer> casesIds, String caseCode) throws FinderException, IDOException {
+		Table casesTable = new Table(this);
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(new CountColumn(casesTable, getIDColumnName()));
+		query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_CODE), MatchCriteria.EQUALS, caseCode));
+		query.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
+		return super.idoGetNumberOfRecords(query);
 	}
 
 	public Integer ejbHomeGetNumberOfCasesByCaseCode(String code) throws FinderException, IDOException {
