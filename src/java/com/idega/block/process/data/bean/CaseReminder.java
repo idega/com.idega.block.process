@@ -51,7 +51,7 @@ public class CaseReminder implements Serializable, ReminderModel {
 	@Column(name = COLUMN_ID)
 	private Integer id;
 
-	@ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class, cascade = { CascadeType.REMOVE })
+	@ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = TABLE_NAME + "_rec", joinColumns = { @JoinColumn(name = COLUMN_ID) }, inverseJoinColumns = { @JoinColumn(name = User.COLUMN_USER_ID) })
 	private List<User> receivers;
 

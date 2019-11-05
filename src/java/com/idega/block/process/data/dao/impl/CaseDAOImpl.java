@@ -183,7 +183,9 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			return null;
 		}
 
-		reminder.setReceivers(!ListUtil.isEmpty(receiversUUIDs) ? userDAO.findAll(null, receiversUUIDs, null) : null);
+		if (reminderId == null) {
+			reminder.setReceivers(!ListUtil.isEmpty(receiversUUIDs) ? userDAO.findAll(null, receiversUUIDs, null) : null);
+		}
 		reminder.setTimestamp(timestamp == null ? null : new Timestamp(timestamp));
 		reminder.setMessage(message);
 		reminder.setDashboardRoles(dashboardRoleIds);
