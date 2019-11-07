@@ -57,7 +57,7 @@ import com.idega.util.DBUtil;
 	@NamedQuery(name = Case.FIND_IDS_BY_STATUSES, query = "select c.id from Case c where c.caseStatus in (:" + Case.PARAM_STATUSES + ")"),
 	@NamedQuery(
 			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP,
-			query = "select count(c.id) from Case c where c.created > :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
+			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
 			"', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null"
 	)
 })
