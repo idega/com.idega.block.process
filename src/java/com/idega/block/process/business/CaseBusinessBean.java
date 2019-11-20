@@ -1310,11 +1310,11 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			theCase.addSubscriber(subscriber);
 		} catch (IDOAddRelationshipException e) {
 			getLogger().log(Level.WARNING, "Failed to add subscriber, cause of: ", e);
-
 			return false;
 		}
 
 		theCase.store();
+		CoreUtil.clearIDOCaches();
 
 		return true;
 	}
