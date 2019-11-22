@@ -25,4 +25,8 @@ public interface ReminderModel {
 
 	public List<Integer> getDashboardRoles();
 
+	public boolean isReminderSent();
+
+	public void setReminderSent(Boolean reminderSent);
+
 }

@@ -68,6 +68,9 @@ public class CaseReminder implements Serializable, ReminderModel {
 	@Column(name = COLUMN_DASHBOARD_ROLE_ID)
 	private List<Integer> dashboardRoles;
 
+	@Column(name = "reminder_sent")
+	private Boolean reminderSent;
+
 	@Override
 	public Integer getId() {
 		return id;
@@ -118,6 +121,19 @@ public class CaseReminder implements Serializable, ReminderModel {
 		this.dashboardRoles = dashboardRoles;
 	}
 
+	public Boolean getReminderSent() {
+		return reminderSent;
+	}
+
+	@Override
+	public boolean isReminderSent() {
+		return reminderSent == null ? Boolean.FALSE : reminderSent;
+	}
+
+	@Override
+	public void setReminderSent(Boolean reminderSent) {
+		this.reminderSent = reminderSent;
+	}
 
 	/*
 	 * (non-Javadoc)

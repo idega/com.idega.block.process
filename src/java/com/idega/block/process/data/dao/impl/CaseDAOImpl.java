@@ -200,7 +200,19 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return reminder.getId() == null ? null : reminder;
 	}
 
+	@Override
+	@Transactional(readOnly = false)
+	public void updateReminder(ReminderModel reminder) {
+		if (reminder == null) {
+			return;
+		}
 
+		if (reminder.getId() == null) {
+			persist(reminder);
+		} else {
+			merge(reminder);
+		}
+	}
 
 	@Override
 	@Transactional(readOnly = false)

@@ -13,6 +13,8 @@ public interface SettingsDAO {
 
 	public ReminderModel updateReminder(Integer reminderId, List<String> receiversUUIDs, Long timestamp, String message, List<Integer> dashboardRoleIds);
 
+	public void updateReminder(ReminderModel reminder);
+
 	public List<ReminderModel> getRemindersBySettingsId(Integer settingsId);
 
 	public boolean removeReminderById(Integer reminderId);
