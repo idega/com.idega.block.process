@@ -71,3 +71,5 @@ loading=Loading...
 reply=Reply
 forward=Forward
 select_case_type=Select case type: 
+case_status_key.REOR=Submitted
+case_status_key.REME=Received meters

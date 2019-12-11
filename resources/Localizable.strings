@@ -67,3 +67,6 @@ sender=Sender
 date=Date
 body=Body
 close=Close
+case_status_key.REOR=Submitted
+case_status_key.REME=Received meters
+
