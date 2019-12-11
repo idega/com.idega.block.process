@@ -65,12 +65,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	private static final long serialVersionUID = 2009559065592278210L;
 
-	private static final String COLUMN_CASE_CODE = "case_code",
-								COLUMN_CASE_STATUS = "case_status",
-								COLUMN_CREATED = "CREATED",
-								COLUMN_PARENT_CASE = "PARENT_CASE_ID",
+	private static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID",
 								COLUMN_CREATOR = "creator_id",
-								COLUMN_HANDLER_GROUP = "HANDLER_GROUP_ID",
 								COLUMN_CASE_NUMBER = "CASE_NUMBER",
 								COLUMN_EXTERNAL_ID = "EXTERNAL_ID",
 								COLUMN_EXTERNAL_HANDLER = "EXTERNAL_HANDLER_ID",
@@ -86,6 +82,10 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_UNIQUE_ID = "unique_id",
 								COLUMN_SUBJECT = "CASE_SUBJECT",
 								COLUMN_USER = "user_id",
+								COLUMN_CASE_CODE = "case_code",
+								COLUMN_CASE_STATUS = "case_status",
+								COLUMN_HANDLER_GROUP = "HANDLER_GROUP_ID",
+								COLUMN_CREATED = "CREATED",
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",
