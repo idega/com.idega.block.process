@@ -540,4 +540,13 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		this.idoCheckInPooledEntity(entity);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
+
+	@Override
+	public Collection<Integer> getCasesIds(Collection<Integer> ids, Integer from, Integer amount) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> result = ((CaseBMPBean) entity).ejbFindCasesIds(ids, from, amount);
+		this.idoCheckInPooledEntity(entity);
+		return result;
+	}
+
 }
