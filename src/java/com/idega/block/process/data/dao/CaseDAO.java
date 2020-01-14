@@ -28,7 +28,7 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 	public List<Case> getAllCasesByStatuses(List<String> statuses);
 	public List<Integer> getCasesIDsByStatuses(List<String> statuses);
 
-	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter);
+	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter, List<String> caseManagerTypes);
 
 	public CaseMileageReimbursement updateMileageReimbursement(
 			Integer id,

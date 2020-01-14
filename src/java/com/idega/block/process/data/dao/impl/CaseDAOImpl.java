@@ -311,14 +311,18 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 	}
 
 	@Override
-	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter) {
+	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter, List<String> caseManagerTypes) {
 		if (timestampAfter == null) {
 			getLogger().warning("Timestamp after is not provided!");
 			return null;
 		}
 
 		try {
-			return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, Long.class, new Param(Case.PARAM_CREATED, timestampAfter));
+			if (ListUtil.isEmpty(caseManagerTypes)) {
+				return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, Long.class, new Param(Case.PARAM_CREATED, timestampAfter));
+			}
+
+			return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS, Long.class, new Param(Case.PARAM_CREATED, timestampAfter), new Param("caseManagerTypes", caseManagerTypes));
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error getting count of cases created after the given timestamp: " + timestampAfter, e);
 		}

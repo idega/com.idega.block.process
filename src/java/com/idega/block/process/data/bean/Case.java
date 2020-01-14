@@ -59,6 +59,11 @@ import com.idega.util.DBUtil;
 			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP,
 			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
 			"', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null"
+	),
+	@NamedQuery(
+			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS,
+			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
+			"', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null and c.managerType in (:caseManagerTypes)"
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
@@ -99,7 +104,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								FIND_ID_BY_UUID = "Case.findIdByUUID",
 								FIND_ALL_BY_STATUSES = "Case.findAllByStatuses",
 								FIND_IDS_BY_STATUSES = "Case.findIDsByStatuses",
-								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP = "Case.countOfCasesCreatedAfterGivenTimestamp";
+								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP = "Case.countOfCasesCreatedAfterGivenTimestamp",
+								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagers";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
