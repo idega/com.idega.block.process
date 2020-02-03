@@ -235,7 +235,8 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			Group referenceUnit,
 			String invoiceReferenceCode,
 			Integer priceRateId,
-			List<ICFile> settingsFiles
+			List<ICFile> settingsFiles,
+			ICFile icon
 	) {
 		if (uuid == null) {
 			return null;

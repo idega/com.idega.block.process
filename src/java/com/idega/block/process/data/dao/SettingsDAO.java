@@ -38,7 +38,8 @@ public interface SettingsDAO {
 			Group referenceUnit,
 			String invoiceReferenceCode,
 			Integer priceRateId,
-			List<ICFile> settingsFiles
+			List<ICFile> settingsFiles,
+			ICFile icon
 	);
 
 }
