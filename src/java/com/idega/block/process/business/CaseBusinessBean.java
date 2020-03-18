@@ -830,7 +830,13 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 						CaseLog log = iter.next();
 						String existingComment = log.getComment();
 						if (!StringUtil.isEmpty(existingComment) && comment.equals(existingComment)) {
-							foundSameComment = true;
+							if (performer != null) {
+								foundSameComment = Integer.valueOf(performer.getId()) == log.getPerformerId();
+								break;
+							} else {
+								foundSameComment = true;
+								break;
+							}
 						}
 					}
 					createLog = !foundSameComment;
