@@ -1497,4 +1497,39 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return false;
 	}
 
+	public Collection<Integer> ejbFindByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode
+	) throws FinderException {
+
+		Table casesTable = new Table(this);
+
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(casesTable.getColumn(getIDColumnName()));
+
+		if (caseNumber != null) {
+			//Column column = new Column(casesTable, COLUMN_CASE_NUMBER);
+			//column.setPrefix("lower(");
+			//column.setPostfix(")");
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_NUMBER), MatchCriteria.EQUALS, caseNumber)); //,true
+		}
+		if (caseSubject != null) {
+			//Column column = casesTable.getColumn(CaseBMPBean.COLUMN_CASE_SUBJECT);
+			//column.setPrefix("lower(");
+			//column.setPostfix(")");
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_SUBJECT), MatchCriteria.EQUALS, caseSubject)); //,true
+		}
+
+		if (!StringUtil.isEmpty(caseCode)) {
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_CODE), MatchCriteria.EQUALS, caseCode));
+		}
+
+		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
+
+		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
+		return idoFindPKsByQuery(query);
+	}
+
+
 }

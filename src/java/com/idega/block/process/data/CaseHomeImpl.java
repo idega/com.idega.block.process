@@ -568,4 +568,25 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return result;
 	}
 
+	@Override
+	public Collection<Integer> findIdsByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode
+	) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode);
+		this.idoCheckInPooledEntity(entity);
+		return ids;
+	}
+
+	@Override
+	public Collection<Case> findByCriteria(String caseNumber,
+			String caseSubject,
+			String caseCode
+	) throws FinderException {
+		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
 }

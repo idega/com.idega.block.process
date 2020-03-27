@@ -577,4 +577,10 @@ public interface CaseBusiness extends IBOService {
 	public String getCaseStatusLocalized(CaseStatus caseStatus);
 
 	public Map<String, AdvancedProperty> getCaseStatuses(boolean showAllStatuses, String caseStatusesToShow, String caseStatusesToHide);
+
+	public Collection<Case> getCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode
+	) throws FinderException, RemoteException;
 }

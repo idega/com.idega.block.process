@@ -1673,4 +1673,21 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		return statuses;
 	}
 
+	@Override
+	public Collection<Case> getCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode
+	) throws FinderException, RemoteException {
+		if (StringUtil.isEmpty(caseCode)) {
+			getLogger().warning("Case code is not provided");
+			return null;
+		}
+
+		Collection<Case> cases = getCaseHome().findByCriteria(caseNumber, caseSubject, caseCode);
+
+		return cases;
+	}
+
+
 }
