@@ -343,12 +343,15 @@ public interface CaseHome extends IDOHome {
 	public Collection<Integer> findIdsByCriteria(
 			String caseNumber,
 			String caseSubject,
-			String caseCode
+			String caseCode,
+			String caseStatus
 	) throws FinderException;
 
-	public Collection<Case> findByCriteria(String caseNumber,
+	public Collection<Case> findByCriteria(
+			String caseNumber,
 			String caseSubject,
-			String caseCode
+			String caseCode,
+			String caseStatus
 	) throws FinderException;
 
 }

@@ -572,20 +572,23 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	public Collection<Integer> findIdsByCriteria(
 			String caseNumber,
 			String caseSubject,
-			String caseCode
+			String caseCode,
+			String caseStatus
 	) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}
 
 	@Override
-	public Collection<Case> findByCriteria(String caseNumber,
+	public Collection<Case> findByCriteria(
+			String caseNumber,
 			String caseSubject,
-			String caseCode
+			String caseCode,
+			String caseStatus
 	) throws FinderException {
-		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode);
+		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 

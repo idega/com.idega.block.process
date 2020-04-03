@@ -1500,7 +1500,8 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public Collection<Integer> ejbFindByCriteria(
 			String caseNumber,
 			String caseSubject,
-			String caseCode
+			String caseCode,
+			String caseStatus
 	) throws FinderException {
 
 		Table casesTable = new Table(this);
@@ -1523,6 +1524,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 		if (!StringUtil.isEmpty(caseCode)) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_CODE), MatchCriteria.EQUALS, caseCode));
+		}
+
+		if (!StringUtil.isEmpty(caseStatus)) {
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), MatchCriteria.EQUALS, caseStatus));
 		}
 
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));

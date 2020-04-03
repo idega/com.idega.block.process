@@ -581,6 +581,7 @@ public interface CaseBusiness extends IBOService {
 	public Collection<Case> getCasesByCriteria(
 			String caseNumber,
 			String caseSubject,
-			String caseCode
+			String caseCode,
+			String caseStatus
 	) throws FinderException, RemoteException;
 }
