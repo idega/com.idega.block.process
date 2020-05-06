@@ -69,4 +69,4 @@ body=Body
 close=Close
 case_status_key.REOR=Submitted
 case_status_key.REME=Received meters
-
+case_status_key.REMO=Removed

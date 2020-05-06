@@ -63,3 +63,4 @@ sender=Avsändare
 date=Mottaget
 body=Meddelandetext
 close=St\u00E4nga
+case_status_key.REMO=Tog bort

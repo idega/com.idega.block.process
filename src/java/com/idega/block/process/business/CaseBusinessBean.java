@@ -1221,7 +1221,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				CaseBMPBean.CASE_STATUS_ASSIGNED,
 				CaseBMPBean.CASE_STATUS_ON_HOLD,
 				CaseBMPBean.CASE_STATUS_RECEIVED_METRICS,
-				CaseBMPBean.CASE_STATUS_RECEIVED_ORDER
+				CaseBMPBean.CASE_STATUS_RECEIVED_ORDER,
+				CaseBMPBean.CASE_STATUS_REMOVED_KEY
 		};
 		if (isStatusForOpenCase(CaseBMPBean.CASE_STATUS_RECEIPT)) {
 			List<String> tmp = new ArrayList<>(Arrays.asList(statuses));
