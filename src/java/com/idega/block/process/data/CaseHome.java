@@ -354,4 +354,20 @@ public interface CaseHome extends IDOHome {
 			String caseStatus
 	) throws FinderException;
 
+	public Collection<Case> findByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus,
+			Integer from,
+			Integer amount
+	) throws FinderException;
+
+	public Long getCountedCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus
+	);
+
 }

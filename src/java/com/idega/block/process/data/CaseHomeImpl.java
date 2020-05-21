@@ -575,8 +575,19 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			String caseCode,
 			String caseStatus
 	) throws FinderException {
+		return findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatus, null, null);
+	}
+
+	public Collection<Integer> findIdsByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus,
+			Integer from,
+			Integer amount
+	) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode, caseStatus, from, amount);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}
@@ -588,8 +599,33 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			String caseCode,
 			String caseStatus
 	) throws FinderException {
-		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
+		return findByCriteria(caseNumber, caseSubject, caseCode, caseStatus, null, null);
+	}
+
+	@Override
+	public Collection<Case> findByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus,
+			Integer from,
+			Integer amount
+	) throws FinderException {
+		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatus, from, amount);
 		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
+	@Override
+	public Long getCountedCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus
+	) {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Long count = ((CaseBMPBean) entity).getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
+		this.idoCheckInPooledEntity(entity);
+		return count;
 	}
 
 }

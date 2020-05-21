@@ -1681,15 +1681,40 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			String caseCode,
 			String caseStatus
 	) throws FinderException, RemoteException {
+		return getCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatus, null, null);
+	}
+
+	@Override
+	public Collection<Case> getCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus,
+			Integer from,
+			Integer amount
+	) throws FinderException, RemoteException {
 		if (StringUtil.isEmpty(caseCode)) {
 			getLogger().warning("Case code is not provided");
 			return null;
 		}
 
-		Collection<Case> cases = getCaseHome().findByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
-
+		Collection<Case> cases = getCaseHome().findByCriteria(caseNumber, caseSubject, caseCode, caseStatus, from, amount);
 		return cases;
 	}
 
+	@Override
+	public Long getCountedCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus
+	) {
+		try {
+			return getCaseHome().getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error counting cases by criteria. Number: " + caseNumber + ", subject: " + caseSubject + ", code: " + caseCode + ", status: " + caseStatus, e);
+		}
+		return null;
+	}
 
 }

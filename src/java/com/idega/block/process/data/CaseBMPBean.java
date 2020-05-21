@@ -1504,24 +1504,33 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus
+			String caseStatus,
+			Integer from,
+			Integer amount
 	) throws FinderException {
+		SelectQuery query = getQuery(caseNumber, caseSubject, caseCode, caseStatus);
+		Table casesTable = new Table(this);
+		query.addColumn(casesTable.getColumn(getIDColumnName()));
+		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
+		if (amount != null) {
+			query.setLimit(amount);
+		}
+		if (from != null) {
+			query.setOffset(from);
+		}
 
+		return idoFindPKsByQuery(query);
+	}
+
+	private SelectQuery getQuery(String caseNumber, String caseSubject, String caseCode, String caseStatus) {
 		Table casesTable = new Table(this);
 
 		SelectQuery query = new SelectQuery(casesTable);
-		query.addColumn(casesTable.getColumn(getIDColumnName()));
 
 		if (caseNumber != null) {
-			//Column column = new Column(casesTable, COLUMN_CASE_NUMBER);
-			//column.setPrefix("lower(");
-			//column.setPostfix(")");
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_NUMBER), MatchCriteria.EQUALS, caseNumber)); //,true
 		}
 		if (caseSubject != null) {
-			//Column column = casesTable.getColumn(CaseBMPBean.COLUMN_CASE_SUBJECT);
-			//column.setPrefix("lower(");
-			//column.setPostfix(")");
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_SUBJECT), MatchCriteria.EQUALS, caseSubject)); //,true
 		}
 
@@ -1533,11 +1542,24 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), MatchCriteria.EQUALS, caseStatus));
 		}
 
-		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
-
-		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
-		return idoFindPKsByQuery(query);
+		return query;
 	}
 
+	public Long getCountedCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus
+	) {
+		SelectQuery query = getQuery(caseNumber, caseSubject, caseCode, caseStatus);
+		query.addColumn(new CountColumn(getIDColumnName()));
+		try {
+			int numberOfRecords = idoGetNumberOfRecords(query);
+			return Integer.valueOf(numberOfRecords).longValue();
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error counting by query: " + query, e);
+		}
+		return null;
+	}
 
 }

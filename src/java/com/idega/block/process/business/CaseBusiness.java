@@ -584,4 +584,21 @@ public interface CaseBusiness extends IBOService {
 			String caseCode,
 			String caseStatus
 	) throws FinderException, RemoteException;
+
+	public Collection<Case> getCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus,
+			Integer from,
+			Integer amount
+	) throws FinderException, RemoteException;
+
+	public Long getCountedCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			String caseStatus
+	);
+
 }
