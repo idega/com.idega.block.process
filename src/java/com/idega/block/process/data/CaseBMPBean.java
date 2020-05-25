@@ -134,6 +134,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String CASE_STATUS_REMOVED_KEY = "REMO";
 	public static final String CASE_STATUS_SETTLED = "SETT";
 	public static final String CASE_STATUS_WITHDRAWN = "WTDR";
+	public static final String CASE_STATUS_EXTENDED = "EXTE";
 
 	@Override
 	public void initializeAttributes() {
