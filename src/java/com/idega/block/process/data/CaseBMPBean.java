@@ -79,10 +79,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String COLUMN_CASE_CODE = "CASE_CODE";
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
 	public static final String COLUMN_CREATED = "CREATED";
-	static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID";
+	public static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID";
 	public static final String COLUMN_USER = "USER_ID";
 	static final String COLUMN_CREATOR = "CREATOR_ID";
-	static final String COLUMN_HANDLER = "HANDLER_GROUP_ID";
+	public static final String COLUMN_HANDLER = "HANDLER_GROUP_ID";
 	public static final String PK_COLUMN = TABLE_NAME + "_ID";
 	static final String COLUMN_EXTERNAL_ID = "EXTERNAL_ID";
 	static final String COLUMN_CASE_NUMBER = "CASE_NUMBER";
