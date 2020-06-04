@@ -9,7 +9,9 @@
  */
 package com.idega.block.process.message.business;
 
+import java.rmi.RemoteException;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
@@ -19,6 +21,7 @@ import com.idega.block.process.data.Case;
 import com.idega.block.process.message.data.Message;
 import com.idega.business.IBOService;
 import com.idega.data.IDOException;
+import com.idega.idegaweb.IWUserContext;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
@@ -74,6 +77,14 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	 */
 	public int getNumberOfMessages(String messageType, User user) throws IDOException, java.rmi.RemoteException;
 
+	public int getNumberOfMessages(
+			String messageType,
+			IWUserContext iwuc,
+			com.idega.user.data.bean.User user,
+			Boolean onlyForParentCaseCreator,
+			Set<String> parentCasesNotHavingCaseCode
+	) throws IDOException, RemoteException;
+
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#getNumberOfNewMessages
 	 */
@@ -95,6 +106,16 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	 */
 	public Collection<Message> findMessages(String messageType, User user, int numberOfEntries, int startingEntry)
 			throws FinderException, java.rmi.RemoteException;
+
+	public Collection<Message> findMessages(
+			IWUserContext iwuc,
+			String messageType,
+			com.idega.user.data.bean.User user,
+			Boolean onlyForParentCaseCreator,
+			Set<String> parentCasesNotHavingCaseCode,
+			int numberOfEntries,
+			int startingEntry
+	) throws FinderException, java.rmi.RemoteException;
 
 	/**
 	 * @see com.idega.block.process.message.business.MessageBusinessBean#findMessages
