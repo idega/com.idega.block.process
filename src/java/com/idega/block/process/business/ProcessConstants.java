@@ -55,7 +55,8 @@ public final class ProcessConstants implements Singleton {
 								GENERAL_CASE_CODE_KEY = "GENCASE",
 								GENERAL_SUPPORT_CASE_CODE = "GENSUPP",
 								SYSTEM_MESSAGE_CASE_CODE = "SYMEDAN",
-								NOTE_CASE_CODE = "NOTE";
+								NOTE_CASE_CODE = "NOTE",
+								CASE_RULLING_CODE = "CASERUL";
 
 	public static final List<CasesListColumn> getCasesListMainColumns(IWResourceBundle iwrb) {
 		CasesListColumn[] columns = new CasesListColumn[6];
