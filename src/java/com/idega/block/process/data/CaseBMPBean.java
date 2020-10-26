@@ -1505,11 +1505,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus,
+			List<String> caseStatuses,
 			Integer from,
 			Integer amount
 	) throws FinderException {
-		SelectQuery query = getQuery(caseNumber, caseSubject, caseCode, caseStatus);
+		SelectQuery query = getQuery(caseNumber, caseSubject, caseCode, caseStatuses);
 		Table casesTable = new Table(this);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
@@ -1523,24 +1523,24 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return idoFindPKsByQuery(query);
 	}
 
-	private SelectQuery getQuery(String caseNumber, String caseSubject, String caseCode, String caseStatus) {
+	private SelectQuery getQuery(String caseNumber, String caseSubject, String caseCode, List<String> caseStatuses) {
 		Table casesTable = new Table(this);
 
 		SelectQuery query = new SelectQuery(casesTable);
 
 		if (caseNumber != null) {
-			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_NUMBER), MatchCriteria.EQUALS, caseNumber)); //,true
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_NUMBER), MatchCriteria.EQUALS, caseNumber));
 		}
 		if (caseSubject != null) {
-			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_SUBJECT), MatchCriteria.EQUALS, caseSubject)); //,true
+			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_SUBJECT), MatchCriteria.EQUALS, caseSubject));
 		}
 
 		if (!StringUtil.isEmpty(caseCode)) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_CODE), MatchCriteria.EQUALS, caseCode));
 		}
 
-		if (!StringUtil.isEmpty(caseStatus)) {
-			query.addCriteria(new MatchCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), MatchCriteria.EQUALS, caseStatus));
+		if (!ListUtil.isEmpty(caseStatuses)) {
+			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), caseStatuses));
 		}
 
 		return query;
@@ -1550,9 +1550,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus
+			List<String> caseStatuses
 	) {
-		SelectQuery query = getQuery(caseNumber, caseSubject, caseCode, caseStatus);
+		SelectQuery query = getQuery(caseNumber, caseSubject, caseCode, caseStatuses);
 		query.addColumn(new CountColumn(getIDColumnName()));
 		try {
 			int numberOfRecords = idoGetNumberOfRecords(query);

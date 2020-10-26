@@ -9,7 +9,9 @@
  */
 package com.idega.block.process.data;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJBException;
@@ -575,19 +577,19 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			String caseCode,
 			String caseStatus
 	) throws FinderException {
-		return findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatus, null, null);
+		return findIdsByCriteria(caseNumber, caseSubject, caseCode, StringUtil.isEmpty(caseStatus) ? Collections.emptyList() : Arrays.asList(caseStatus), null, null);
 	}
 
 	public Collection<Integer> findIdsByCriteria(
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus,
+			List<String> caseStatuses,
 			Integer from,
 			Integer amount
 	) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode, caseStatus, from, amount);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, caseSubject, caseCode, caseStatuses, from, amount);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}
@@ -599,7 +601,7 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			String caseCode,
 			String caseStatus
 	) throws FinderException {
-		return findByCriteria(caseNumber, caseSubject, caseCode, caseStatus, null, null);
+		return findByCriteria(caseNumber, caseSubject, caseCode, StringUtil.isEmpty(caseStatus) ? Collections.emptyList() : Arrays.asList(caseStatus), null, null);
 	}
 
 	@Override
@@ -607,11 +609,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus,
+			List<String> caseStatuses,
 			Integer from,
 			Integer amount
 	) throws FinderException {
-		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatus, from, amount);
+		Collection<Integer> ids = findIdsByCriteria(caseNumber, caseSubject, caseCode, caseStatuses, from, amount);
 		return this.getEntityCollectionForPrimaryKeys(ids);
 	}
 
@@ -620,10 +622,10 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus
+			List<String> caseStatuses
 	) {
 		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
-		Long count = ((CaseBMPBean) entity).getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
+		Long count = ((CaseBMPBean) entity).getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatuses);
 		this.idoCheckInPooledEntity(entity);
 		return count;
 	}

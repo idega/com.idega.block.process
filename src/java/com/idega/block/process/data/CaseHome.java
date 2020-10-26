@@ -358,7 +358,7 @@ public interface CaseHome extends IDOHome {
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus,
+			List<String> caseStatuses,
 			Integer from,
 			Integer amount
 	) throws FinderException;
@@ -367,7 +367,7 @@ public interface CaseHome extends IDOHome {
 			String caseNumber,
 			String caseSubject,
 			String caseCode,
-			String caseStatus
+			List<String> caseStatuses
 	);
 
 }

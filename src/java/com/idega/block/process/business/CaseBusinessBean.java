@@ -1693,12 +1693,24 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			Integer from,
 			Integer amount
 	) throws FinderException, RemoteException {
+		return getCasesByCriteria(caseNumber, caseSubject, caseCode, StringUtil.isEmpty(caseStatus) ? Collections.emptyList() : Arrays.asList(caseStatus), from, amount);
+	}
+
+	@Override
+	public Collection<Case> getCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			List<String> caseStatuses,
+			Integer from,
+			Integer amount
+	) throws FinderException, RemoteException {
 		if (StringUtil.isEmpty(caseCode)) {
 			getLogger().warning("Case code is not provided");
 			return null;
 		}
 
-		Collection<Case> cases = getCaseHome().findByCriteria(caseNumber, caseSubject, caseCode, caseStatus, from, amount);
+		Collection<Case> cases = getCaseHome().findByCriteria(caseNumber, caseSubject, caseCode, caseStatuses, from, amount);
 		return cases;
 	}
 
@@ -1709,10 +1721,20 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			String caseCode,
 			String caseStatus
 	) {
+		return getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, StringUtil.isEmpty(caseStatus) ? Collections.emptyList() : Arrays.asList(caseStatus));
+	}
+
+	@Override
+	public Long getCountedCasesByCriteria(
+			String caseNumber,
+			String caseSubject,
+			String caseCode,
+			List<String> caseStatuses
+	) {
 		try {
-			return getCaseHome().getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatus);
+			return getCaseHome().getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatuses);
 		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Error counting cases by criteria. Number: " + caseNumber + ", subject: " + caseSubject + ", code: " + caseCode + ", status: " + caseStatus, e);
+			getLogger().log(Level.WARNING, "Error counting cases by criteria. Number: " + caseNumber + ", subject: " + caseSubject + ", code: " + caseCode + ", status: " + caseStatuses, e);
 		}
 		return null;
 	}
