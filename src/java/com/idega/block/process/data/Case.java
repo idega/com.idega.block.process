@@ -86,12 +86,16 @@ public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, Meta
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setCreated
 	 */
-	public void setCreated(Timestamp statusChanged);
+	public void setCreated(Timestamp created);
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getCreated
 	 */
 	public Timestamp getCreated();
+
+	public void setDueDate(Timestamp dueDate);
+
+	public Timestamp getDueDate();
 
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setParentCase

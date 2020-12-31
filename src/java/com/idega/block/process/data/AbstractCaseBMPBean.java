@@ -1544,4 +1544,19 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return false;
 	}
 
+	@Override
+	public void setDueDate(Timestamp dueDate) {
+		Case theCase = getGeneralCase();
+		if (theCase != null) {
+			theCase.setDueDate(dueDate);
+			theCase.store();
+		}
+	}
+
+	@Override
+	public Timestamp getDueDate() {
+		Case theCase = getGeneralCase();
+		return theCase == null ? null : theCase.getDueDate();
+	}
+
 }

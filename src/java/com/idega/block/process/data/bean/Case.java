@@ -57,13 +57,14 @@ import com.idega.util.DBUtil;
 	@NamedQuery(name = Case.FIND_IDS_BY_STATUSES, query = "select c.id from Case c where c.caseStatus in (:" + Case.PARAM_STATUSES + ")"),
 	@NamedQuery(
 			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP,
-			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
-			"', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null"
+			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" +
+			ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null"
 	),
 	@NamedQuery(
 			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS,
-			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" + ProcessConstants.GENERAL_SUPPORT_CASE_CODE +
-			"', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null and c.managerType in (:caseManagerTypes)"
+			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" +
+					ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE +
+					"') and c.identifier is not null and c.managerType in (:caseManagerTypes)"
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
@@ -78,7 +79,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_BODY = "CASE_BODY",
 								COLUMN_MANAGER_TYPE = "CASE_MANAGER_TYPE",
 								COLUMN_IDENTIFIER = "CASE_IDENTIFIER",
-								COLUMN_IS_READ = "PROC_CASEREAD";
+								COLUMN_IS_READ = "PROC_CASEREAD",
+								COLUMN_DUE_DATE = CaseBMPBean.COLUMN_DUE_DATE;
 
 	public static final String	ENTITY_NAME = "proc_case",
 								SQL_RELATION_METADATA = "ic_metadata_proc_case",
@@ -120,6 +122,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	@Column(name = COLUMN_CREATED)
 	private Timestamp created;
+
+	@Column(name = COLUMN_DUE_DATE)
+	private Timestamp dueDate;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = COLUMN_PARENT_CASE, referencedColumnName = COLUMN_CASE_ID)
@@ -326,7 +331,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	@Override
 	public Map<String, String> getMetaDataAttributes() {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 
 		Set<Metadata> list = getMetadata();
 		for (Metadata metaData : list) {
@@ -338,7 +343,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	@Override
 	public Map<String, String> getMetaDataTypes() {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 
 		Set<Metadata> list = getMetadata();
 		for (Metadata metaData : list) {
@@ -458,6 +463,14 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public Timestamp getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Timestamp dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	@Override

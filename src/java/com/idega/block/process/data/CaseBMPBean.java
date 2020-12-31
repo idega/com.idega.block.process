@@ -79,6 +79,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String COLUMN_CASE_CODE = "CASE_CODE";
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
 	public static final String COLUMN_CREATED = "CREATED";
+	public static final String COLUMN_DUE_DATE = "DUE_DATE";
 	public static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID";
 	public static final String COLUMN_USER = "USER_ID";
 	static final String COLUMN_CREATOR = "CREATOR_ID";
@@ -142,6 +143,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		addAttribute(COLUMN_CASE_CODE, "Case Code", true, true, String.class, 7, MANY_TO_ONE, CaseCode.class);
 		addAttribute(COLUMN_CASE_STATUS, "Case status", true, true, String.class, 4, MANY_TO_ONE, CaseStatus.class);
 		addAttribute(COLUMN_CREATED, "Created when", Timestamp.class);
+		addAttribute(COLUMN_DUE_DATE, "Due date", Timestamp.class);
 		addAttribute(COLUMN_PARENT_CASE, "Parent case", true, true, Integer.class, MANY_TO_ONE, Case.class);
 		addManyToOneRelationship(COLUMN_USER, "Owner", User.class);
 		addManyToOneRelationship(COLUMN_CREATOR, "Creator", User.class);
@@ -283,13 +285,23 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	}
 
 	@Override
-	public void setCreated(Timestamp statusChanged) {
-		setColumn(CaseBMPBean.COLUMN_CREATED, statusChanged);
+	public void setCreated(Timestamp created) {
+		setColumn(CaseBMPBean.COLUMN_CREATED, created);
 	}
 
 	@Override
 	public Timestamp getCreated() {
 		return ((Timestamp) getColumnValue(COLUMN_CREATED));
+	}
+
+	@Override
+	public void setDueDate(Timestamp dueDate) {
+		setColumn(CaseBMPBean.COLUMN_DUE_DATE, dueDate);
+	}
+
+	@Override
+	public Timestamp getDueDate() {
+		return ((Timestamp) getColumnValue(COLUMN_DUE_DATE));
 	}
 
 	@Override
@@ -1173,7 +1185,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), MatchCriteria.EQUALS, owner.getId()));
 		}
 		if (!ListUtil.isEmpty(groups)) {
-			List<String> groupsIds = new ArrayList<String>(groups.size());
+			List<String> groupsIds = new ArrayList<>(groups.size());
 			for (Group group: groups) {
 				groupsIds.add(group.getId());
 			}
