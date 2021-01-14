@@ -102,6 +102,7 @@ public abstract class CaseBlock extends Block {
 					inactiveTasksToShow,
 					customView;
 
+	private List<Integer> casesIds;
 	private List<Long> procInstIds;
 	private Set<String> roles;
 
@@ -136,6 +137,14 @@ public abstract class CaseBlock extends Block {
 
 	public void setProcInstIds(List<Long> procInstIds) {
 		this.procInstIds = procInstIds;
+	}
+
+	public List<Integer> getCasesIds() {
+		return casesIds;
+	}
+
+	public void setCasesIds(List<Integer> casesIds) {
+		this.casesIds = casesIds;
 	}
 
 	@Override
@@ -416,6 +425,7 @@ public abstract class CaseBlock extends Block {
 		list.setWaitForAllCasePartsLoaded(isWaitForAllCasePartsLoaded());
 		list.setDescriptionEditable(isDescriptionEditable());
 		list.setProcInstIds(getProcInstIds());
+		list.setCasesIds(getCasesIds());
 		list.setRoles(getRoles());
 		list.setShowCasesOnlyByProvidedProcesses(isShowCasesOnlyByProvidedProcesses());
 		list.setNameFromExternalEntity(!isUserNameShown());

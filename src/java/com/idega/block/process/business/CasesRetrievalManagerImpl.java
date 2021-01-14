@@ -79,7 +79,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public List<Long> getAllCaseProcessDefinitions() {
-		return new ArrayList<Long>();
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			Collection<Case> cases = caseBusiness.getAllCasesForUserExceptCodes(user, codes, startIndex, count);
 			Collection<Case> casesToShow = null;
 			if (onlySubscribedCases) {
-				casesToShow = new ArrayList<Case>();
+				casesToShow = new ArrayList<>();
 				for (Case theCase : cases) {
 					Collection<User> subscribers = theCase.getSubscribers();
 					if (!ListUtil.isEmpty(subscribers) && subscribers.contains(user)) {
@@ -113,13 +113,13 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			}
 
 			int caseCount = caseBusiness.getNumberOfCasesForUserExceptCodes(user, codes);
-			return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(casesToShow, locale), Long.valueOf(caseCount));
+			return new PagedDataCollection<>(convertToPresentationBeans(casesToShow, locale), Long.valueOf(caseCount));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (FinderException e) {
 			e.printStackTrace();
 		}
-		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
+		return new PagedDataCollection<>(new ArrayList<CasePresentation>());
 	}
 
 	@Override
@@ -127,6 +127,26 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<String> caseStatusesToShow, int startIndex, int count, boolean onlySubscribedCases, boolean showAllCases, List<Long> ids,
 			Set<String> roles,
 			boolean searchQuery) {
+		return getCases(user, type, locale, caseCodes, caseStatusesToHide, caseStatusesToShow, startIndex, count, onlySubscribedCases, showAllCases, ids, null, roles, searchQuery);
+	}
+
+	@Override
+	public PagedDataCollection<CasePresentation> getCases(
+			User user,
+			String type,
+			Locale locale,
+			List<String> caseCodes,
+			List<String> caseStatusesToHide,
+			List<String> caseStatusesToShow,
+			int startIndex,
+			int count,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<Long> procInstIds,
+			List<Integer> providedCasesIds,
+			Set<String> roles,
+			boolean searchQuery
+	) {
 		return getCases(user, type, locale, caseCodes, caseStatusesToHide, caseStatusesToShow, startIndex, count, onlySubscribedCases, showAllCases);
 	}
 
@@ -260,7 +280,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public PagedDataCollection<CasePresentation> getCasesByEntities(Collection<Case> cases, Locale locale) {
-		return new PagedDataCollection<CasePresentation>(convertToPresentationBeans(cases, locale), Long.valueOf(cases.size()));
+		return new PagedDataCollection<>(convertToPresentationBeans(cases, locale), Long.valueOf(cases.size()));
 	}
 
 	@Override
@@ -277,10 +297,10 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	 */
 	protected List<CasePresentation> convertToPresentationBeans(Collection<? extends Case> cases, Locale locale) {
 		if (ListUtil.isEmpty(cases)) {
-			return new ArrayList<CasePresentation>(0);
+			return new ArrayList<>(0);
 		}
 
-		List<CasePresentation> beans = new ArrayList<CasePresentation>(cases.size());
+		List<CasePresentation> beans = new ArrayList<>(cases.size());
 		for (Iterator<? extends Case> iterator = cases.iterator(); iterator.hasNext();) {
 			Case caze = iterator.next();
 
@@ -379,12 +399,12 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 
 	@Override
 	public PagedDataCollection<CasePresentation> getClosedCases(Collection<Group> groups) {
-		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
+		return new PagedDataCollection<>(new ArrayList<CasePresentation>());
 	}
 
 	@Override
 	public PagedDataCollection<CasePresentation> getMyCases(User user) {
-		return new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>());
+		return new PagedDataCollection<>(new ArrayList<CasePresentation>());
 	}
 
 	protected CaseBusiness getCaseBusiness() {
@@ -583,7 +603,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		if (key == null || id == null) {
 			return;
 		}
-		Map<Integer, Date> data = new HashMap<Integer, Date>(1);
+		Map<Integer, Date> data = new HashMap<>(1);
 		data.put(id, creationDate);
 		putIdsToCache(data, key);
 	}
@@ -596,7 +616,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		}
 
 		try {
-			return new ArrayList<CasesCacheCriteria>(getCache().keySet());
+			return new ArrayList<>(getCache().keySet());
 		} catch (Exception e) {
 		} finally {
 			if (lockRequired) {
@@ -619,7 +639,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			if (MapUtil.isEmpty(data)) {
 				return Collections.emptyMap();
 			}
-			return new LinkedHashMap<Integer, Date>(data);
+			return new LinkedHashMap<>(data);
 		} finally {
 			if (lockRequired) {
 				lock.unlock();
@@ -633,14 +653,14 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 		}
 
 		/* Sorting by date - latest on the top */
-		List<Map.Entry<Integer, Date>> entries = new ArrayList<Map.Entry<Integer, Date>>(data.entrySet());
+		List<Map.Entry<Integer, Date>> entries = new ArrayList<>(data.entrySet());
 		Collections.sort(entries, new Comparator<Map.Entry<Integer, Date>>() {
 			@Override
 			public int compare(Map.Entry<Integer, Date> o1, Map.Entry<Integer, Date> o2) {
 				return -1 * (o1.getValue().compareTo(o2.getValue()));
 			}
 		});
-		List<Integer> cachedIds = new ArrayList<Integer>();
+		List<Integer> cachedIds = new ArrayList<>();
 		for (Map.Entry<Integer, Date> entry: entries) {
 			cachedIds.add(entry.getKey());
 		}
@@ -726,7 +746,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			/* Getting id's, that already cached by given criteria */
 			Map<Integer, Date> cachedIds = cache.get(key);
 			if (cachedIds == null) {
-				cachedIds = new LinkedHashMap<Integer, Date>();
+				cachedIds = new LinkedHashMap<>();
 			}
 
 			/* Putting to cache */

@@ -54,6 +54,7 @@ public class UICasesList extends IWBaseComponent {
 
 	private Long totalNumberOfCases = null;
 
+	private List<Integer> casesIds;
 	private List<Long> procInstIds;
 	private Set<String> roles;
 
@@ -308,13 +309,13 @@ public class UICasesList extends IWBaseComponent {
 				}
 				criterias.setPageSize(getPageSize());
 			}
-			return new PagedDataCollection<CasePresentation>(cases);
+			return new PagedDataCollection<>(cases);
 		}
 
 		CasesRetrievalManager manager = getCaseManagersProvider().getCaseManager();
 		PagedDataCollection<CasePresentation> cases = null;
-		if (isShowCasesOnlyByProvidedProcesses() && ListUtil.isEmpty(getProcInstIds())) {
-			cases = new PagedDataCollection<CasePresentation>(new ArrayList<CasePresentation>(0));
+		if (isShowCasesOnlyByProvidedProcesses() && (ListUtil.isEmpty(getProcInstIds()) && ListUtil.isEmpty(getCasesIds()))) {
+			cases = new PagedDataCollection<>(new ArrayList<CasePresentation>(0));
 		} else {
 			cases = manager.getCases(
 					user,
@@ -328,6 +329,7 @@ public class UICasesList extends IWBaseComponent {
 					isOnlySubscribedCases(),
 					isShowAllCases(),
 					getProcInstIds(),
+					getCasesIds(),
 					getRoles(),
 					false
 			);
@@ -466,7 +468,7 @@ public class UICasesList extends IWBaseComponent {
 	}
 
 	public List<String> getCaseStatusesToHide() {
-		return caseStatusesToHide != null ? caseStatusesToHide : (caseStatusesToHide = new ArrayList<String>());
+		return caseStatusesToHide != null ? caseStatusesToHide : (caseStatusesToHide = new ArrayList<>());
 	}
 
 	public void setCaseStatusesToHide(String caseStatusesToHide) {
@@ -474,7 +476,7 @@ public class UICasesList extends IWBaseComponent {
 	}
 
 	public List<String> getCaseStatusesToShow() {
-		return caseStatusesToShow != null ? caseStatusesToShow : (caseStatusesToShow = new ArrayList<String>());
+		return caseStatusesToShow != null ? caseStatusesToShow : (caseStatusesToShow = new ArrayList<>());
 	}
 
 	public void setCaseStatusesToShow(String caseStatusesToShow) {
@@ -486,7 +488,7 @@ public class UICasesList extends IWBaseComponent {
 	}
 
 	public List<String> getCaseCodes() {
-		return caseCodes != null ? caseCodes : (caseCodes = new ArrayList<String>());
+		return caseCodes != null ? caseCodes : (caseCodes = new ArrayList<>());
 	}
 
 	public void setCaseCodes(String caseCodes) {
@@ -691,6 +693,14 @@ public class UICasesList extends IWBaseComponent {
 
 	public void setProcInstIds(List<Long> procInstIds) {
 		this.procInstIds = procInstIds;
+	}
+
+	public List<Integer> getCasesIds() {
+		return casesIds;
+	}
+
+	public void setCasesIds(List<Integer> casesIds) {
+		this.casesIds = casesIds;
 	}
 
 	public Set<String> getRoles() {

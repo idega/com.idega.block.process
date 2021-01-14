@@ -86,7 +86,24 @@ public interface CasesRetrievalManager {
 			boolean showAllCases,
 			List<Long> procInstIds,
 			Set<String> roles,
-			boolean searchQuery);
+			boolean searchQuery
+	);
+
+	public abstract PagedDataCollection<CasePresentation> getCases(
+			User user,
+			String type,
+			Locale locale,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			int startIndex, int count,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<Long> procInstIds,
+			List<Integer> casesIds,
+			Set<String> roles,
+			boolean searchQuery
+	);
 
 	public abstract List<Integer> getCaseIds(
 			IWContext iwc,
