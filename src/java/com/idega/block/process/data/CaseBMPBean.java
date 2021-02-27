@@ -136,6 +136,17 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String CASE_STATUS_SETTLED = "SETT";
 	public static final String CASE_STATUS_WITHDRAWN = "WTDR";
 	public static final String CASE_STATUS_EXTENDED = "EXTE";
+	public static final String CASE_STATUS_PLANNED = "PLAN";
+	public static final String CASE_STATUS_DELIVERED = "DELI";
+	public static final String CASE_STATUS_DELIVERED_TO_LOGISTICS_CENTER = "DELO";
+	public static final String CASE_STATUS_DELIVERED_TO_POST_OFFICE = "DEPO";
+	public static final String CASE_STATUS_COLLECTED = "COLL";
+	public static final String CASE_STATUS_COLLECTED_FROM_SELF_SERVICE = "COSS";
+	public static final String CASE_STATUS_PAYED = "PAYE";
+	public static final String CASE_STATUS_SENT = "SENT";
+	public static final String CASE_STATUS_AGENT_DAY_ENDED = "ADEN";
+	public static final String CASE_STATUS_MANAGER_DAY_ENDED = "MDEN";
+	public static final String CASE_STATUS_AGENT_DAY_STARTED = "ADST";
 
 	@Override
 	public void initializeAttributes() {
