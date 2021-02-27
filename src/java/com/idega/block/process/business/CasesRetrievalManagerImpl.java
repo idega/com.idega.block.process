@@ -852,8 +852,21 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<String> caseCodes, List<String> statusesToHide,
 			List<String> statusesToShow, boolean onlySubscribedCases,
 			boolean showAllCases, Boolean handlerAssignedCases,
-			List<Integer> exceptOwnersIds)
-			throws Exception {
+			List<Integer> exceptOwnersIds
+	) throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<Case> getCases(
+			Collection<String> processDefinitionNames,
+			Collection<Long> processInstanceIds,
+			Collection<String> caseStatuses,
+			Collection<User> subscribers,
+			Collection<String> caseManagerTypes,
+			Date dateFrom,
+			Date dateTo
+	) {
 		return Collections.emptyList();
 	}
 

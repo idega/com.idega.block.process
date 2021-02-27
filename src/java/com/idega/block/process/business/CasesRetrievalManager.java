@@ -3,6 +3,7 @@ package com.idega.block.process.business;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -309,5 +310,15 @@ public interface CasesRetrievalManager {
 			Boolean handlerAssignedCases,
 			List<Integer> exceptOwnersIds
 	) throws Exception;
+
+	public List<Case> getCases(
+			Collection<String> processDefinitionNames,
+			Collection<Long> processInstanceIds,
+			Collection<String> caseStatuses,
+			Collection<User> subscribers,
+			Collection<String> caseManagerTypes,
+			Date dateFrom,
+			Date dateTo
+	);
 
 }
