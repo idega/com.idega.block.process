@@ -321,4 +321,6 @@ public interface CasesRetrievalManager {
 			Date dateTo
 	);
 
+	public List<CasePresentation> getConvertedToPresentationBeans(Collection<? extends Case> cases, Locale locale);
+
 }
