@@ -17,6 +17,7 @@ import com.idega.builder.bean.AdvancedProperty;
 import com.idega.business.IBOLookup;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.user.data.User;
+import com.idega.util.StringUtil;
 
 /**
  * Case data needed in presentation layer.
@@ -210,6 +211,10 @@ public class CasePresentation implements Serializable {
 	public String getCaseStatusLocalized() {
 		if (caseStatus == null) {
 			return null;
+		}
+
+		if (!StringUtil.isEmpty(localizedStatus) && !localizedStatus.equals(caseStatus.getStatus())) {
+			return localizedStatus;
 		}
 
 		try {
