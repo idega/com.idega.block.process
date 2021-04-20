@@ -39,7 +39,12 @@ public final class ProcessConstants implements Singleton {
 								CASE_OWNER_CITY = "string_ownerMunicipality",
 								CASE_OWNER_COUNTRY = "string_ownerCountry",
 								CASE_OWNER_HOME_PHONE_NUMBER = "string_ownerHomePhoneNumber",
+
 								FINANCING_OF_THE_TASKS = "objlist_ownerFinanceOfTasks",
+								FINANCING_OF_THE_TASKS_STRING = "string_ownerFinanceOfTasks",
+								FINANCING_OF_THE_TASKS_ESTIMATED_EXPENSES =	"string_estimatedExpenses",
+								FINANCING_OF_THE_TASKS_YEARLY_EXPENSES = "string_expensesAmountYear",
+
 								BOARD_FINANCING_SUGGESTION = "string_ownerGradeComment",
 								BOARD_FINANCING_DECISION = "string_ownerGrantAmauntValue",
 								VARIABLE_OWNER_PHONE_NUMBER = "string_ownerPhoneNumber",
@@ -63,6 +68,13 @@ public final class ProcessConstants implements Singleton {
 								NOTE_CASE_CODE = "NOTE",
 								CASE_RULLING_CODE = "CASERUL",
 								SELLER_CASE_CODE = "SELLER";
+
+	public static final List<String> FINANCING_OF_THE_TASKS_VARIABLES = Collections.unmodifiableList(
+			Arrays.asList(
+					FINANCING_OF_THE_TASKS,
+					FINANCING_OF_THE_TASKS_STRING
+			)
+	);
 
 	public static final List<CasesListColumn> getCasesListMainColumns(IWResourceBundle iwrb) {
 		CasesListColumn[] columns = new CasesListColumn[6];
