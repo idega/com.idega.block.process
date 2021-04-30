@@ -339,6 +339,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	}
 
 	@Override
+	public void setCreatorId(Integer creatorId) {
+		super.setColumn(COLUMN_CREATOR, creatorId);
+	}
+
+	@Override
 	public Group getHandler() {
 		return (Group) this.getColumnValue(CaseBMPBean.COLUMN_HANDLER);
 	}

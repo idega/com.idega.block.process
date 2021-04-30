@@ -117,6 +117,8 @@ public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, Meta
 	 */
 	public void setCreator(User creator);
 
+	public void setCreatorId(Integer creatorId);
+
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#getHandler
 	 */
