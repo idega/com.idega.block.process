@@ -169,7 +169,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	private void putCaseStatusInMap(CaseStatus status) {
 		if (this._statusMap == null) {
-			this._statusMap = new HashMap<String, CaseStatus>();
+			this._statusMap = new HashMap<>();
 		}
 
 		this._statusMap.put(status.getStatus(), status);
@@ -498,7 +498,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 		catch (FinderException fe) {
 			fe.printStackTrace();
-			return new ArrayList<CaseCode>();
+			return new ArrayList<>();
 		}
 	}
 
@@ -509,7 +509,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		}
 		catch (FinderException fe) {
 			fe.printStackTrace();
-			return new ArrayList<CaseStatus>();
+			return new ArrayList<>();
 		}
 	}
 
@@ -749,8 +749,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment, boolean canBeSameStatus) {
-		changeCaseStatus(theCase, newCaseStatus, comment, performer, null, canBeSameStatus, null, false);
+	public CaseLog changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer, String comment, boolean canBeSameStatus) {
+		return changeCaseStatus(theCase, newCaseStatus, comment, performer, null, canBeSameStatus, null, false);
 	}
 
 	@Override
@@ -784,7 +784,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus, Map attributes, boolean sendUpdates) {
+	public CaseLog changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus, Map attributes, boolean sendUpdates) {
+		CaseLog log = null;
 		String oldCaseStatus = CoreConstants.EMPTY;
 		try {
 			if (StringUtil.isEmpty(newCaseStatus)) {
@@ -827,14 +828,16 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				} else {
 					boolean foundSameComment = false;
 					for (Iterator<CaseLog> iter = allLogs.iterator(); (!foundSameComment && iter.hasNext());) {
-						CaseLog log = iter.next();
-						String existingComment = log.getComment();
+						CaseLog tmpLog = iter.next();
+						String existingComment = tmpLog.getComment();
 						if (!StringUtil.isEmpty(existingComment) && comment.equals(existingComment)) {
 							if (performer != null) {
-								foundSameComment = Integer.valueOf(performer.getId()) == log.getPerformerId();
+								foundSameComment = Integer.valueOf(performer.getId()) == tmpLog.getPerformerId();
+								log = tmpLog;
 								break;
 							} else {
 								foundSameComment = true;
+								log = tmpLog;
 								break;
 							}
 						}
@@ -843,7 +846,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				}
 			}
 			if (createLog) {
-				CaseLog log = caseLogHome.create();
+				log = caseLogHome.create();
 				log.setCase(Integer.parseInt(theCase.getPrimaryKey().toString()));
 				log.setCaseStatusBefore(oldCaseStatus);
 				log.setCaseStatusAfter(newCaseStatus);
@@ -876,8 +879,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		} catch (CreateException e) {
 			throw new EJBException("Error changing case status: " + oldCaseStatus + " to " + newCaseStatus + ":" + e.getMessage());
 		}
+		return log;
 	}
-
 
 	@Override
 	public String getLocalizedCaseDescription(Case theCase, Locale locale) {
@@ -1055,7 +1058,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	protected List<CaseChangeListener> getCaseChangeListeners(Case theCase, String newCaseStatus) {
-		List<CaseChangeListener> list = new ArrayList<CaseChangeListener>();
+		List<CaseChangeListener> list = new ArrayList<>();
 		String caseCode = theCase.getCode();
 		List<CaseChangeListener> codeList = getListenerListForCaseCode(caseCode);
 		list.addAll(codeList);
@@ -1086,12 +1089,12 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	 */
 	protected List<CaseChangeListener> getListenerListForCaseCode(String caseCode) {
 		if (listenerCaseCodeMap == null) {
-			listenerCaseCodeMap = new HashMap<String, List<CaseChangeListener>>();
+			listenerCaseCodeMap = new HashMap<>();
 		}
 
 		List<CaseChangeListener> listenerList = listenerCaseCodeMap.get(caseCode);
 		if (listenerList == null) {
-			listenerList = new ArrayList<CaseChangeListener>();
+			listenerList = new ArrayList<>();
 			listenerCaseCodeMap.put(caseCode, listenerList);
 		}
 		return listenerList;
@@ -1099,18 +1102,18 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	protected List<CaseChangeListener> getListenerListForCaseCodeAndStatus(String caseCode, String caseStatus) {
 		if (listenerCaseCodeStatusMap == null) {
-			listenerCaseCodeStatusMap = new HashMap<String, Map<String, List<CaseChangeListener>>>();
+			listenerCaseCodeStatusMap = new HashMap<>();
 		}
 
 		Map<String, List<CaseChangeListener>> statusMap = listenerCaseCodeStatusMap.get(caseCode);
 		if (statusMap==null) {
-			statusMap = new HashMap<String, List<CaseChangeListener>>();
+			statusMap = new HashMap<>();
 			listenerCaseCodeStatusMap.put(caseCode, statusMap);
 		}
 
 		List<CaseChangeListener> listenerList = statusMap.get(caseStatus);
 		if (listenerList == null) {
-			listenerList = new ArrayList<CaseChangeListener>();
+			listenerList = new ArrayList<>();
 			statusMap.put(caseStatus,listenerList);
 		}
 		return listenerList;
@@ -1283,7 +1286,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return null;
 		}
 
-		List<CaseCode> codes = new ArrayList<CaseCode>();
+		List<CaseCode> codes = new ArrayList<>();
 		for (String code : msgCodes) {
 			try {
 				codes.add(getCaseCode(code));
@@ -1302,7 +1305,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		} catch (FinderException e) {
 			Logger.getLogger(getClass().getName()).log(Level.WARNING, "Could not get cases by ids", e);
 		}
-		return new ArrayList<Case>();
+		return new ArrayList<>();
 	}
 
 	/*
@@ -1435,7 +1438,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return Collections.emptyList();
 		}
 
-		List<Integer> ids = new ArrayList<Integer>(caseIds.length);
+		List<Integer> ids = new ArrayList<>(caseIds.length);
 		for (String caseId : caseIds) {
 			ids.add(Integer.valueOf(caseId));
 		}
@@ -1459,7 +1462,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return Collections.emptyList();
 		}
 
-		return new ArrayList<Case>(cases);
+		return new ArrayList<>(cases);
 	}
 
 	/*
@@ -1477,7 +1480,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 		 * from multiple groups. For now, this method usually takes only one
 		 * group
 		 */
-		Collection<User> handlers = new ArrayList<User>();
+		Collection<User> handlers = new ArrayList<>();
 		Collection<User> users = null;
 		for (Group group: groups) {
 			try {
@@ -1516,7 +1519,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			return Collections.emptyList();
 		}
 
-		return findSubscribedCases(new HashSet<Group>(groups));
+		return findSubscribedCases(new HashSet<>(groups));
 	}
 
 	/*
@@ -1632,7 +1635,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 		boolean addStatus = true;
 		String localizedStatus = null;
-		Map<String, AdvancedProperty> statuses = new HashMap<String, AdvancedProperty>();
+		Map<String, AdvancedProperty> statuses = new HashMap<>();
 		for (CaseStatus status: allStatuses) {
 			addStatus = true;
 
