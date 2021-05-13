@@ -11,14 +11,14 @@ package com.idega.block.process.data;
 
 import java.sql.Timestamp;
 
-
 import com.idega.data.IDOEntity;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 
 /**
  * Last modified: $Date: 2004/06/28 09:09:50 $ by $Author: laddi $
- * 
+ *
  * @author <a href="mailto:laddi@idega.com">laddi</a>
  * @version $Revision: 1.1 $
  */
@@ -123,5 +123,11 @@ public interface CaseLog extends IDOEntity {
 	 * @see com.idega.block.process.data.CaseLogBMPBean#setComment
 	 */
 	public void setComment(String comment);
+
+	public void setAssigned(Group group);
+
+	public Group getAssigned();
+
+	public Integer getAssignedId();
 
 }

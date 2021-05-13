@@ -14,6 +14,7 @@ import com.idega.data.query.MatchCriteria;
 import com.idega.data.query.SelectQuery;
 import com.idega.data.query.Table;
 import com.idega.data.query.WildCardColumn;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
@@ -39,6 +40,8 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
 	private static final String COLUMN_PERFORMER = "PERFORMER_USER_ID";
 
+	private static final String COLUMN_ASSIGNED_TO = "ASSIGNED_TO_ID";
+
 	private static final String COLUMN_TIMESTAMP = "PROC_TIMESTAMP";
 
 	private static final String COLUMN_COMMENT = "PROC_COMMENT";
@@ -50,6 +53,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		this.addManyToOneRelationship(COLUMN_CASE_STATUS_BEFORE, "The CaseStatus before change", CaseStatus.class);
 		this.addManyToOneRelationship(COLUMN_CASE_STATUS_AFTER, "The CaseStatus after change", CaseStatus.class);
 		this.addManyToOneRelationship(COLUMN_PERFORMER, "The User who makes the change", User.class);
+		this.addManyToOneRelationship(COLUMN_ASSIGNED_TO, "The group or user which is assigned to case", Group.class);
 		this.addAttribute(COLUMN_TIMESTAMP, "Timestamp of the change", Timestamp.class);
 		this.addAttribute(COLUMN_COMMENT, "Comment for change", String.class, 4000);
 	}
@@ -318,5 +322,21 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
 		query.appendOrderBy(COLUMN_TIMESTAMP);
 		return super.idoFindPKsByQuery(query);
+	}
+
+	@Override
+	public void setAssigned(Group group) {
+		setColumn(COLUMN_ASSIGNED_TO, group);
+	}
+
+	@Override
+	public Group getAssigned() {
+		return (Group) getColumnValue(COLUMN_ASSIGNED_TO);
+	}
+
+	@Override
+	public Integer getAssignedId() {
+		int id = (this.getIntColumnValue(COLUMN_ASSIGNED_TO));
+		return id <= 0 ? null : id;
 	}
 }
