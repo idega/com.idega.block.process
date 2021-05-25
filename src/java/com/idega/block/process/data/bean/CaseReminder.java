@@ -58,7 +58,7 @@ public class CaseReminder implements Serializable, ReminderModel {
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
 
-	@Column(name = "message", length = 65000)
+	@Column(name = "message", length = 16000)
 	private String message;
 
 	@ElementCollection(fetch = FetchType.EAGER)
