@@ -635,6 +635,10 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseUserColumnName(), MatchCriteria.EQUALS, user.getPrimaryKey().toString());
 	}
 
+	public Criteria idoCriteriaForUsers(Collection<User> users) {
+		return new InCriteria(idoTableGeneralCase(), getSQLGeneralCaseUserColumnName(), users);
+	}
+
 	public Criteria idoCriteriaForGroup(Group group) {
 		return new MatchCriteria(idoTableGeneralCase(), getSQLGeneralCaseHandlerColumnName(), MatchCriteria.EQUALS, group.getPrimaryKey().toString());
 	}
