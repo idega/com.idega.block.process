@@ -80,7 +80,7 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	public int getNumberOfMessages(
 			String messageType,
 			IWUserContext iwuc,
-			com.idega.user.data.bean.User user,
+			Collection<com.idega.user.data.bean.User> receivers,
 			Boolean onlyForParentCaseCreator,
 			Set<String> parentCasesNotHavingCaseCode
 	) throws IDOException, RemoteException;
@@ -110,7 +110,7 @@ public interface MessageBusiness extends IBOService, CaseBusiness {
 	public Collection<Message> findMessages(
 			IWUserContext iwuc,
 			String messageType,
-			com.idega.user.data.bean.User user,
+			Collection<com.idega.user.data.bean.User> receivers,
 			Boolean onlyForParentCaseCreator,
 			Set<String> parentCasesNotHavingCaseCode,
 			int numberOfEntries,

@@ -112,13 +112,13 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 	public int getNumberOfMessages(
 			String messageType,
 			IWUserContext iwuc,
-			com.idega.user.data.bean.User user,
+			Collection<com.idega.user.data.bean.User> receivers,
 			Boolean onlyForParentCaseCreator,
 			Set<String> parentCasesNotHavingCaseCode
 	) throws IDOException, RemoteException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
 		try {
-			return getMessageHome(messageType).getNumberOfMessages(iwuc, user, validStatuses, onlyForParentCaseCreator, parentCasesNotHavingCaseCode);
+			return getMessageHome(messageType).getNumberOfMessages(iwuc, receivers, validStatuses, onlyForParentCaseCreator, parentCasesNotHavingCaseCode);
 		} catch (FinderException e) {}
 		return 0;
 	}
@@ -148,10 +148,10 @@ public class MessageBusinessBean extends CaseBusinessBean implements MessageBusi
 	}
 
 	@Override
-	public Collection findMessages(IWUserContext iwuc, String messageType, com.idega.user.data.bean.User user, Boolean onlyForParentCaseCreator,
+	public Collection findMessages(IWUserContext iwuc, String messageType, Collection<com.idega.user.data.bean.User> receivers, Boolean onlyForParentCaseCreator,
 			Set<String> parentCasesNotHavingCaseCode, int numberOfEntries, int startingEntry) throws FinderException {
 		String[] validStatuses = { getCaseStatusOpen().getStatus(), getCaseStatusGranted().getStatus() };
-		return getMessageHome(messageType).findMessages(iwuc, user, validStatuses, onlyForParentCaseCreator, parentCasesNotHavingCaseCode, numberOfEntries, startingEntry);
+		return getMessageHome(messageType).findMessages(iwuc, receivers, validStatuses, onlyForParentCaseCreator, parentCasesNotHavingCaseCode, numberOfEntries, startingEntry);
 	}
 
 	@Override

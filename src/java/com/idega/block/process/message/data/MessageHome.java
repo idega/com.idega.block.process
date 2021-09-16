@@ -28,7 +28,7 @@ public interface MessageHome extends IDOHome {
 
 	public Collection<? extends Message> findMessages(
 			IWUserContext iwuc,
-			com.idega.user.data.bean.User user,
+			Collection<com.idega.user.data.bean.User> receivers,
 			String[] status,
 			Boolean onlyForParentCaseCreator,
 			Set<String> parentCasesNotHavingCaseCode,
@@ -38,7 +38,7 @@ public interface MessageHome extends IDOHome {
 
 	public int getNumberOfMessages(
 			IWUserContext iwuc,
-			com.idega.user.data.bean.User user,
+			Collection<com.idega.user.data.bean.User> receivers,
 			String[] status,
 			Boolean onlyForParentCaseCreator,
 			Set<String> parentCasesNotHavingCaseCode
