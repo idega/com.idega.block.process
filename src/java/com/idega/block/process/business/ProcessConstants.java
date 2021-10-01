@@ -67,7 +67,8 @@ public final class ProcessConstants implements Singleton {
 								SYSTEM_MESSAGE_CASE_CODE = "SYMEDAN",
 								NOTE_CASE_CODE = "NOTE",
 								CASE_RULLING_CODE = "CASERUL",
-								SELLER_CASE_CODE = "SELLER";
+								SELLER_CASE_CODE = "SELLER",
+								REQUEST_CASE_CODE = "CASEREQ";
 
 	public static final List<String> FINANCING_OF_THE_TASKS_VARIABLES = Collections.unmodifiableList(
 			Arrays.asList(
