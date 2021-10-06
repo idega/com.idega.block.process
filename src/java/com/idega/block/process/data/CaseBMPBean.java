@@ -1208,13 +1208,13 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 			query.addCriteria(new InCriteria(casesTable.getColumn(COLUMN_HANDLER), groupsIds));
 		}
-		if (caseNumber != null) {
+		if (!StringUtil.isEmpty(caseNumber)) {
 			Column column = new Column(casesTable, COLUMN_CASE_IDENTIFIER);
 			column.setPrefix("lower(");
 			column.setPostfix(")");
 			query.addCriteria(new MatchCriteria(column, MatchCriteria.LIKE, true, caseNumber));
 		}
-		if (description != null) {
+		if (!StringUtil.isEmpty(description)) {
 			Column column = casesTable.getColumn(CaseBMPBean.COLUMN_CASE_SUBJECT);
 			column.setPrefix("lower(");
 			column.setPostfix(")");
@@ -1261,7 +1261,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
 
-		java.util.logging.Logger.getLogger(getClass().getName()).log(Level.INFO, query.toString());
 		return idoFindPKsByQuery(query);
 	}
 
