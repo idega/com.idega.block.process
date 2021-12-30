@@ -25,7 +25,8 @@ public class CasesSearchCriteriaBean implements Serializable {
 					id,
 					instanceId,
 					casesListCustomizer,
-					address;
+					address,
+					evaluationProcess;
 
 	private Long subscribersGroupId;
 	private String[] statuses;
@@ -304,6 +305,12 @@ public class CasesSearchCriteriaBean implements Serializable {
 		this.showContacts = showContacts;
 	}
 
+	public String getEvaluationProcess() {
+		return evaluationProcess;
+	}
 
+	public void setEvaluationProcess(String evaluationProcess) {
+		this.evaluationProcess = evaluationProcess;
+	}
 
 }
