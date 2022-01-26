@@ -40,6 +40,7 @@ public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, Meta
 								METADATA_HANDLER_NOTIFICATION_FOR_TASK_PREFIX = "h_notification_for_task_",
 								METADATA_INVITED_NOTIFICATION_FOR_TASK_PREFIX = "i_notification_for_task_",
 								METADATA_ADMIN_NOTIFICATION_FOR_TASK_PREFIX = "a_notification_for_task_",
+								METADATA_MANAGER_NOTIFICATION_FOR_TASK_PREFIX = "m_notification_for_task_",
 								METADATA_READ = "READ",
 								METADATA_UNREAD = "UNREAD";
 
