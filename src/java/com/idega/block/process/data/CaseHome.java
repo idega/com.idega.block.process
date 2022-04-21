@@ -234,6 +234,8 @@ public interface CaseHome extends IDOHome {
 	 */
 	public Case findCaseByUniqueId(String uniqueId) throws FinderException;
 
+	public Collection<Case> findCasesByUniqueIds(Collection<String> uuids) throws FinderException;
+
 	public Collection<Case> findByCriteria(
 			String caseNumber,
 			String description,

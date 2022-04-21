@@ -1128,6 +1128,21 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return (Integer) idoFindOnePKByQuery(query);
 	}
 
+	public Collection<Integer> ejbFindCasesByUniqueIds(Collection<String> uuids) throws FinderException {
+		if (ListUtil.isEmpty(uuids)) {
+			return null;
+		}
+
+		Table casesTable = new Table(this);
+
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(casesTable.getColumn(getIDColumnName()));
+		query.addCriteria(new InCriteria(casesTable.getColumn(UNIQUE_ID_COLUMN_NAME), uuids));
+		query.addOrder(casesTable, COLUMN_CREATED, false);
+
+		return idoFindPKsByQuery(query);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *

@@ -397,6 +397,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
+	public Collection<Case> findCasesByUniqueIds(Collection<String> uuids) throws FinderException {
+		com.idega.data.IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<?> ids = ((CaseBMPBean) entity).ejbFindCasesByUniqueIds(uuids);
+		this.idoCheckInPooledEntity(entity);
+		return this.getEntityCollectionForPrimaryKeys(ids);
+	}
+
+	@Override
 	public Collection<Integer> findIDsByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 		return findIDsByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, null, null);
