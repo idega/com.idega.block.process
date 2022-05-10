@@ -70,7 +70,9 @@ public final class ProcessConstants implements Singleton {
 								SELLER_CASE_CODE = "SELLER",
 								REQUEST_CASE_CODE = "CASEREQ",
 
-								CASE_APPLIED_AMOUNT = "string_appliedAmount";
+								CASE_APPLIED_AMOUNT = "string_appliedAmount",
+
+								CASE_ACTION_AT = "case_action_at";
 
 	public static final List<String> FINANCING_OF_THE_TASKS_VARIABLES = Collections.unmodifiableList(
 			Arrays.asList(
