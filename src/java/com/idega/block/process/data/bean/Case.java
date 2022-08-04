@@ -39,12 +39,16 @@ import com.idega.data.UniqueIDCapable;
 import com.idega.data.bean.Metadata;
 import com.idega.user.data.bean.Group;
 import com.idega.user.data.bean.User;
+import com.idega.util.CoreConstants;
 import com.idega.util.DBUtil;
 
 @Entity
 @Table(name = Case.ENTITY_NAME, indexes = {
 		@Index(name = "UNIQUE_ID", columnList = Case.COLUMN_UNIQUE_ID),
-		@Index(name = "CASE_SUBJECT_INDEX", columnList = Case.COLUMN_SUBJECT)
+		@Index(name = "CASE_SUBJECT_INDEX", columnList = Case.COLUMN_SUBJECT),
+		@Index(name = "CASE_CODE_INDEX", columnList = Case.COLUMN_CASE_CODE),
+		@Index(name = "CASE_DUE_INDEX", columnList = Case.COLUMN_DUE_DATE),
+		@Index(name = "CASE_C_S_D_INDEX", columnList = Case.COLUMN_CASE_CODE + CoreConstants.COMMA + Case.COLUMN_SUBJECT + CoreConstants.COMMA + Case.COLUMN_DUE_DATE)
 })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -65,7 +69,15 @@ import com.idega.util.DBUtil;
 			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" +
 					ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE +
 					"') and c.identifier is not null and c.managerType in (:caseManagerTypes)"
-	)
+	),
+	@NamedQuery(
+			name = Case.FIND_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE,
+			query = "select c" + Case.QUERY_BY_CODE_AND_SUBJECT_AND_DUE_DATE
+	),
+	@NamedQuery(
+			name = Case.FIND_IDS_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE,
+			query = "select c.id" + Case.QUERY_BY_CODE_AND_SUBJECT_AND_DUE_DATE
+	),
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
@@ -78,8 +90,10 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_BODY = "CASE_BODY",
 								COLUMN_MANAGER_TYPE = "CASE_MANAGER_TYPE",
 								COLUMN_IDENTIFIER = "CASE_IDENTIFIER",
-								COLUMN_IS_READ = "PROC_CASEREAD",
-								COLUMN_DUE_DATE = CaseBMPBean.COLUMN_DUE_DATE;
+								COLUMN_IS_READ = "PROC_CASEREAD";
+
+	static final String QUERY_BY_CODE_AND_SUBJECT_AND_DUE_DATE =	" from Case c where c.caseCode = :" + Case.PARAM_CASE_CODE + " and c.subject = :" + Case.PARAM_SUBJECT +
+																	" and c.dueDate >= :" + Case.PARAM_DUE_DATE;
 
 	public static final String	ENTITY_NAME = "proc_case",
 								SQL_RELATION_METADATA = "ic_metadata_proc_case",
@@ -93,12 +107,15 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_HANDLER_GROUP = "HANDLER_GROUP_ID",
 								COLUMN_CREATED = "CREATED",
 								COLUMN_CREATOR = "creator_id",
+								COLUMN_DUE_DATE = CaseBMPBean.COLUMN_DUE_DATE,
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",
 								PARAM_UUID = "uuid",
 								PARAM_STATUSES = "statuses",
 								PARAM_CREATED = "created",
+								PARAM_CASE_CODE = "caseCode",
+								PARAM_DUE_DATE = "dueDate",
 
 								FIND_ID_BY_SUBJECT = "Case.findIdBySubject",
 								FIND_ID_BY_ID = "Case.findIdById",
@@ -106,6 +123,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								FIND_ID_BY_UUID = "Case.findIdByUUID",
 								FIND_ALL_BY_STATUSES = "Case.findAllByStatuses",
 								FIND_IDS_BY_STATUSES = "Case.findIDsByStatuses",
+								FIND_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE = "Case.findByCaseCodeAndSubjectAndDueDate",
+								FIND_IDS_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE = "Case.findIDsByCaseCodeAndSubjectAndDueDate",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP = "Case.countOfCasesCreatedAfterGivenTimestamp",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagers";
 
