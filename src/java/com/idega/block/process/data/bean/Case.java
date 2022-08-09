@@ -78,6 +78,18 @@ import com.idega.util.DBUtil;
 			name = Case.FIND_IDS_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE,
 			query = "select c.id" + Case.QUERY_BY_CODE_AND_SUBJECT_AND_DUE_DATE
 	),
+	@NamedQuery(
+			name = Case.FIND_IDS_BY_CASE_CODES,
+			query = "select c.id from Case c where c.caseCode in :" + Case.PARAM_CASE_CODE
+	),
+	@NamedQuery(
+			name = Case.FIND_STATUSES_BY_CASE_CODES,
+			query = "select distinct c.caseStatus as caseStatus from Case c where c.caseCode in :" + Case.PARAM_CASE_CODE + " order by caseStatus"
+	),
+	@NamedQuery(
+			name = Case.FIND_STATUSES_BY_IDS,
+			query = "select distinct c.caseStatus as caseStatus from Case c where c.id in :" + Case.PARAM_ID + " order by caseStatus"
+	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
@@ -125,6 +137,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								FIND_IDS_BY_STATUSES = "Case.findIDsByStatuses",
 								FIND_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE = "Case.findByCaseCodeAndSubjectAndDueDate",
 								FIND_IDS_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE = "Case.findIDsByCaseCodeAndSubjectAndDueDate",
+								FIND_IDS_BY_CASE_CODES = "Case.findIDsByCaseCodes",
+								FIND_STATUSES_BY_CASE_CODES = "Case.findStatusesByCaseCodes",
+								FIND_STATUSES_BY_IDS = "Case.findStatusesByIds",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP = "Case.countOfCasesCreatedAfterGivenTimestamp",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagers";
 
