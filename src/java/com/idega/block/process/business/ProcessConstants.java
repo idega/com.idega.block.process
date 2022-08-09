@@ -39,6 +39,7 @@ public final class ProcessConstants implements Singleton {
 								CASE_OWNER_CITY = "string_ownerMunicipality",
 								CASE_OWNER_COUNTRY = "string_ownerCountry",
 								CASE_OWNER_HOME_PHONE_NUMBER = "string_ownerHomePhoneNumber",
+								CASE_STATUS = "string_caseStatus",
 
 								FINANCING_OF_THE_TASKS = "objlist_ownerFinanceOfTasks",
 								FINANCING_OF_THE_TASKS_STRING = "string_ownerFinanceOfTasks",
