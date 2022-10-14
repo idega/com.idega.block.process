@@ -71,4 +71,5 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 			List<Integer> consultantIds
 	);
 
+	public List<Case> findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow(String caseSubject, String caseCode);
 }

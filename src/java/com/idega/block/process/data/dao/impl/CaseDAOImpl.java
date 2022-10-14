@@ -574,4 +574,25 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return cir;
 	}
 
+	@Override
+	public List<Case> findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow(String caseSubject, String caseCode) {
+		if (StringUtil.isEmpty(caseSubject) || StringUtil.isEmpty(caseCode)) {
+			return null;
+		}
+
+		try {
+			return getResultList(
+					Case.FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW,
+					Case.class,
+					new Param(Case.PARAM_SUBJECT, caseSubject),
+					new Param(Case.PARAM_CASE_CODE, caseCode)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting cases by case subject: " + caseSubject + " and case code: caseCode", e);
+		}
+
+		return null;
+
+	}
+
 }
