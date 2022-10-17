@@ -585,7 +585,8 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 					Case.FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW,
 					Case.class,
 					new Param(Case.PARAM_SUBJECT, caseSubject),
-					new Param(Case.PARAM_CASE_CODE, caseCode)
+					new Param(Case.PARAM_CASE_CODE, caseCode),
+					new Param(Case.PARAM_DUE_DATE, new Timestamp(System.currentTimeMillis()))
 			);
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error getting cases by case subject: " + caseSubject + " and case code: caseCode", e);

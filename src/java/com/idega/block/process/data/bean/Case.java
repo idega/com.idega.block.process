@@ -92,7 +92,8 @@ import com.idega.util.DBUtil;
 	),
 	@NamedQuery(
 			name = Case.FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW,
-			query = "select c from Case c where c.subject = :" + Case.PARAM_SUBJECT + " AND c.dueDate > now() AND c.caseCode = :" + Case.PARAM_CASE_CODE + " order by c.dueDate desc"
+			query = "select c from Case c where c.subject = :" + Case.PARAM_SUBJECT + " AND c.dueDate >= :" + Case.PARAM_DUE_DATE + " AND c.caseCode = :" +
+					Case.PARAM_CASE_CODE + " order by c.dueDate desc"
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
