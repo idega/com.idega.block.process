@@ -130,4 +130,8 @@ public interface CaseLog extends IDOEntity {
 
 	public Integer getAssignedId();
 
+	public String getType();
+
+	public void setType(String type);
+
 }

@@ -46,6 +46,8 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
 	private static final String COLUMN_COMMENT = "PROC_COMMENT";
 
+	private static final String COLUMN_TYPE = "TYPE";
+
 	@Override
 	public void initializeAttributes() {
 		addAttribute(COLUMN_CASE_LOG_ID);
@@ -56,6 +58,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		this.addManyToOneRelationship(COLUMN_ASSIGNED_TO, "The group or user which is assigned to case", Group.class);
 		this.addAttribute(COLUMN_TIMESTAMP, "Timestamp of the change", Timestamp.class);
 		this.addAttribute(COLUMN_COMMENT, "Comment for change", String.class, 4000);
+		this.addAttribute(COLUMN_TYPE, "Type", String.class);
 	}
 
 	@Override
@@ -339,4 +342,15 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		int id = (this.getIntColumnValue(COLUMN_ASSIGNED_TO));
 		return id <= 0 ? null : id;
 	}
+
+	@Override
+	public String getType() {
+		return getStringColumnValue(COLUMN_TYPE);
+	}
+
+	@Override
+	public void setType(String type) {
+		setColumn(COLUMN_TYPE, type);
+	}
+
 }
