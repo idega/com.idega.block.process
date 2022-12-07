@@ -764,8 +764,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler) {
-		changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, false);
+	public CaseLog changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler) {
+		return changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, false);
 	}
 
 	@Override
@@ -774,13 +774,13 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) {
-		changeCaseStatus(theCase,newCaseStatus,comment,performer,handler,canBeSameStatus,null);
+	public CaseLog changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus) {
+		return changeCaseStatus(theCase,newCaseStatus,comment,performer,handler,canBeSameStatus,null);
 	}
 
 	@Override
-	public void changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
-		changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, canBeSameStatus, attributes, true);
+	public CaseLog changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus,Map attributes) {
+		return changeCaseStatus(theCase, newCaseStatus, comment, performer, handler, canBeSameStatus, attributes, true);
 	}
 
 	@Override
