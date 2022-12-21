@@ -65,10 +65,23 @@ import com.idega.util.DBUtil;
 			ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null"
 	),
 	@NamedQuery(
+			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES,
+			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" +
+			ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE + "') and c.identifier is not null" +
+			" AND c.caseCode in (:" + Case.PARAM_CASE_CODE + ")"
+	),
+	@NamedQuery(
 			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS,
 			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" +
 					ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE +
 					"') and c.identifier is not null and c.managerType in (:caseManagerTypes)"
+	),
+	@NamedQuery(
+			name = Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS_WITH_CASE_CODES,
+			query = "select count(c.id) from Case c where c.created >= :" + Case.PARAM_CREATED + " and c.caseCode not in ('" + ProcessConstants.GENERAL_CASE_CODE_KEY + "', '" +
+					ProcessConstants.GENERAL_SUPPORT_CASE_CODE + "', '" + ProcessConstants.SYSTEM_MESSAGE_CASE_CODE + "', '" + ProcessConstants.NOTE_CASE_CODE +
+					"') and c.identifier is not null and c.managerType in (:caseManagerTypes)" +
+					" AND c.caseCode in (:" + Case.PARAM_CASE_CODE + ")"
 	),
 	@NamedQuery(
 			name = Case.FIND_BY_CASE_CODE_AND_SUBJECT_AND_DUE_DATE,
@@ -147,7 +160,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								FIND_STATUSES_BY_IDS = "Case.findStatusesByIds",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP = "Case.countOfCasesCreatedAfterGivenTimestamp",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagers",
-								FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW = "Case.findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow";
+								FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW = "Case.findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow",
+								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagersWithCaseCodes",
+								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampWithCaseCodes" ;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

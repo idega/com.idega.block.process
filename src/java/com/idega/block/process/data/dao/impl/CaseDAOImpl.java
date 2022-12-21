@@ -312,7 +312,7 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 	}
 
 	@Override
-	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter, List<String> caseManagerTypes) {
+	public Long getCountOfCasesCreatedAfterGivenTimestamp(Timestamp timestampAfter, List<String> caseManagerTypes, List<String> caseCodes) {
 		if (timestampAfter == null) {
 			getLogger().warning("Timestamp after is not provided!");
 			return null;
@@ -320,10 +320,29 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 		try {
 			if (ListUtil.isEmpty(caseManagerTypes)) {
-				return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, Long.class, new Param(Case.PARAM_CREATED, timestampAfter));
+				if (ListUtil.isEmpty(caseCodes)) {
+					return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP, Long.class, new Param(Case.PARAM_CREATED, timestampAfter));
+				} else {
+					return getSingleResult(
+							Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES,
+							Long.class,
+							new Param(Case.PARAM_CREATED, timestampAfter),
+							new Param(Case.PARAM_CASE_CODE, caseCodes)
+					);
+				}
 			}
 
-			return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS, Long.class, new Param(Case.PARAM_CREATED, timestampAfter), new Param("caseManagerTypes", caseManagerTypes));
+			if (ListUtil.isEmpty(caseCodes)) {
+				return getSingleResult(Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS, Long.class, new Param(Case.PARAM_CREATED, timestampAfter), new Param("caseManagerTypes", caseManagerTypes));
+			} else {
+				return getSingleResult(
+						Case.COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS_WITH_CASE_CODES,
+						Long.class,
+						new Param(Case.PARAM_CREATED, timestampAfter),
+						new Param("caseManagerTypes", caseManagerTypes),
+						new Param(Case.PARAM_CASE_CODE, caseCodes)
+				);
+			}
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error getting count of cases created after the given timestamp: " + timestampAfter, e);
 		}
