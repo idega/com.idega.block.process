@@ -2,6 +2,7 @@ package com.idega.block.process.business;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import com.idega.idegaweb.IWMainApplication;
+import com.idega.util.StringUtil;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -32,13 +36,21 @@ public class CaseManagersProvider implements ApplicationContextAware {
 	private final Map<String, String> caseManagersTypesBeanIdentifiers;
 
 	public CaseManagersProvider() {
-		caseManagersTypesBeanIdentifiers = new HashMap<String, String>();
+		caseManagersTypesBeanIdentifiers = new HashMap<>();
 	}
 
 	public List<CasesRetrievalManager> getCaseManagers() {
-		List<CasesRetrievalManager> managers = new ArrayList<CasesRetrievalManager>(caseManagersTypesBeanIdentifiers.size());
+		String mainAndOnlyManager = IWMainApplication.getDefaultIWMainApplication().getSettings().getProperty(ProcessConstants.MAIN_AND_ONLY_CASES_MANAGER);
+		if (!StringUtil.isEmpty(mainAndOnlyManager)) {
+			CasesRetrievalManager handler = (CasesRetrievalManager) getApplicationContext().getBean(mainAndOnlyManager);
+			if (handler != null) {
+				return Arrays.asList(handler);
+			}
+		}
 
-		for (String handlerIdentifier : caseManagersTypesBeanIdentifiers.values()) {
+		List<CasesRetrievalManager> managers = new ArrayList<>(caseManagersTypesBeanIdentifiers.size());
+
+		for (String handlerIdentifier: caseManagersTypesBeanIdentifiers.values()) {
 			CasesRetrievalManager handler = (CasesRetrievalManager)getApplicationContext().getBean(handlerIdentifier);
 			if (handler != null)
 				managers.add(handler);
