@@ -451,7 +451,7 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 			List<String> caseManagerTypes
 	) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
-		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds, caseCode, caseManagerTypes);
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds, caseCode, caseManagerTypes, null);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}
@@ -636,6 +636,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		Long count = ((CaseBMPBean) entity).getCountedCasesByCriteria(caseNumber, caseSubject, caseCode, caseStatuses);
 		this.idoCheckInPooledEntity(entity);
 		return count;
+	}
+
+	@Override
+	public Collection<Integer> findByCaseIdsAndStatuses(Collection<Integer> casesIds, String[] statuses) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCaseIdsAndStatuses(casesIds, statuses);
+		this.idoCheckInPooledEntity(entity);
+		return ids;
 	}
 
 }

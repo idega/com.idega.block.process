@@ -1173,6 +1173,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return idoFindPKsByQuery(idoQueryGetAllCasesByCaseIdentifier(caseIdentifier));
 	}
 
+	public Collection<Integer> ejbFindByCaseIdsAndStatuses(Collection<Integer> casesIds, String[] statuses) throws FinderException {
+		return ejbFindByCriteria(null, null, null, statuses, null, null, null, null, false, null, null, null, null, casesIds);
+	}
+
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 		return ejbFindByCriteria(
@@ -1185,6 +1189,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 				owner,
 				groups,
 				simpleCases,
+				null,
 				null,
 				null,
 				null,
@@ -1207,11 +1212,34 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			String caseCode,
 			List<String> caseManagerTypes
 	) throws FinderException {
+		return ejbFindByCriteria(caseNumber, description, owners, statuses, dateFrom, dateTo, owner, groups, simpleCases, withHandler, exceptOwnersIds, caseCode, caseManagerTypes, null);
+	}
+
+	public Collection<Integer> ejbFindByCriteria(
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
+			IWTimestamp dateFrom,
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
+			boolean simpleCases,
+			Boolean withHandler,
+			List<Integer> exceptOwnersIds,
+			String caseCode,
+			List<String> caseManagerTypes,
+			Collection<Integer> casesIds
+	) throws FinderException {
 
 		Table casesTable = new Table(this);
 
 		SelectQuery query = new SelectQuery(casesTable);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
+
+		if (!ListUtil.isEmpty(casesIds)) {
+			query.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
+		}
 
 		if (owner != null) {
 			query.addCriteria(new MatchCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_USER), MatchCriteria.EQUALS, owner.getId()));
