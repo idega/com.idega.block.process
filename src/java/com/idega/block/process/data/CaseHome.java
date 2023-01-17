@@ -374,4 +374,6 @@ public interface CaseHome extends IDOHome {
 
 	public Collection<Integer> findByCaseIdsAndStatuses(Collection<Integer> casesIds, String[] statuses) throws FinderException;
 
+	public Collection<Integer> findByCaseIdsAndStatusesAndCasesCode(Collection<Integer> casesIds, String[] statuses, String caseCode) throws FinderException;
+
 }

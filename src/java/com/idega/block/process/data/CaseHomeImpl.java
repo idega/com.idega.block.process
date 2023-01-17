@@ -646,4 +646,11 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		return ids;
 	}
 
+	public Collection<Integer> findByCaseIdsAndStatusesAndCasesCode(Collection<Integer> casesIds, String[] statuses, String caseCode) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCaseIdsAndStatusesAndCasesCode(casesIds, statuses, caseCode);
+		this.idoCheckInPooledEntity(entity);
+		return ids;
+	}
+
 }

@@ -1177,6 +1177,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return ejbFindByCriteria(null, null, null, statuses, null, null, null, null, false, null, null, null, null, casesIds);
 	}
 
+	public Collection<Integer> ejbFindByCaseIdsAndStatusesAndCasesCode(Collection<Integer> casesIds, String[] statuses, String caseCode) throws FinderException {
+		return ejbFindByCriteria(null, null, null, statuses, null, null, null, null, false, null, null, caseCode, null, casesIds);
+	}
+
 	public Collection<Integer> ejbFindByCriteria(String caseNumber, String description, Collection<String> owners, String[] statuses, IWTimestamp dateFrom,
 			IWTimestamp dateTo, User owner, Collection<Group> groups, boolean simpleCases) throws FinderException {
 		return ejbFindByCriteria(
