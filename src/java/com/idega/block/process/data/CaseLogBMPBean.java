@@ -59,6 +59,7 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		this.addAttribute(COLUMN_TIMESTAMP, "Timestamp of the change", Timestamp.class);
 		this.addAttribute(COLUMN_COMMENT, "Comment for change", String.class, 4000);
 		this.addAttribute(COLUMN_TYPE, "Type", String.class);
+		this.addAttribute(COLUMN_STATUS, "Status", String.class);
 	}
 
 	@Override
@@ -351,6 +352,16 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 	@Override
 	public void setType(String type) {
 		setColumn(COLUMN_TYPE, type);
+	}
+
+	@Override
+	public String getStatus() {
+		return getStringColumnValue(COLUMN_STATUS);
+	}
+
+	@Override
+	public void setStatus(String status) {
+		setColumn(COLUMN_STATUS, status);
 	}
 
 }

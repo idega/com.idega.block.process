@@ -134,4 +134,8 @@ public interface CaseLog extends IDOEntity {
 
 	public void setType(String type);
 
+	public String getStatus();
+
+	public void setStatus(String status);
+
 }
