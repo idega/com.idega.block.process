@@ -37,5 +37,11 @@
         timeToIdleSeconds="86400"
         timeToLiveSeconds="86400"
     />
+    <cache
+        maxElementsInMemory="500000"
+        name="com.idega.block.process.data.bean.CaseLog"
+        timeToIdleSeconds="86400"
+        timeToLiveSeconds="86400"
+    />
     
 </ehcache>

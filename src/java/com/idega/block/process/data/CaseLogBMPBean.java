@@ -28,25 +28,18 @@ import com.idega.util.IWTimestamp;
  */
 public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 
-	public static final String TABLE_NAME = "PROC_CASE_LOG";
+	public static final String	TABLE_NAME = "PROC_CASE_LOG",
 
-	private static final String COLUMN_CASE_LOG_ID = "CASE_LOG_ID";
-
-	private static final String COLUMN_CASE_ID = "CASE_ID";
-
-	private static final String COLUMN_CASE_STATUS_BEFORE = "CASE_STATUS_BEFORE";
-
-	private static final String COLUMN_CASE_STATUS_AFTER = "CASE_STATUS_AFTER";
-
-	private static final String COLUMN_PERFORMER = "PERFORMER_USER_ID";
-
-	private static final String COLUMN_ASSIGNED_TO = "ASSIGNED_TO_ID";
-
-	private static final String COLUMN_TIMESTAMP = "PROC_TIMESTAMP";
-
-	private static final String COLUMN_COMMENT = "PROC_COMMENT";
-
-	private static final String COLUMN_TYPE = "TYPE";
+								COLUMN_CASE_LOG_ID = "CASE_LOG_ID",
+								COLUMN_CASE_ID = "CASE_ID",
+								COLUMN_CASE_STATUS_BEFORE = "CASE_STATUS_BEFORE",
+								COLUMN_CASE_STATUS_AFTER = "CASE_STATUS_AFTER",
+								COLUMN_PERFORMER = "PERFORMER_USER_ID",
+								COLUMN_ASSIGNED_TO = "ASSIGNED_TO_ID",
+								COLUMN_TIMESTAMP = "PROC_TIMESTAMP",
+								COLUMN_COMMENT = "PROC_COMMENT",
+								COLUMN_TYPE = "TYPE",
+								COLUMN_STATUS = "STATUS";
 
 	@Override
 	public void initializeAttributes() {

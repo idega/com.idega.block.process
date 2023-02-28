@@ -13,5 +13,6 @@
     <entity class="com.idega.block.process.data.bean.CaseMaterial" />
     <entity class="com.idega.block.process.data.bean.CaseConsultant" />
     <entity class="com.idega.block.process.data.bean.CaseInvoiceRecord" />
+    <entity class="com.idega.block.process.data.bean.CaseLog" />
 
 </entity-mappings>
