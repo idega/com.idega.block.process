@@ -252,6 +252,24 @@ public interface CasesRetrievalManager {
 			Boolean onlyCasesRequiringAction
 	) throws Exception;
 
+	public List<Integer> getCasePrimaryKeys(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<Long> procInstIds,
+			Set<String> roles,
+			Collection<Long> handlerCategoryIDs,
+			List<Integer> exceptOwnersIds,
+			boolean searchQuery,
+			Boolean onlyCasesRequiringAction,
+			String assigned
+	) throws Exception;
+
 	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
 
 	public CasePresentation getCaseByIdLazily(Integer caseId);

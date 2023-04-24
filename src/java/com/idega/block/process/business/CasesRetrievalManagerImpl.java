@@ -234,6 +234,28 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	public List<Integer> getCasePrimaryKeys(IWContext iwc, User user, String type, List<String> caseCodes, List<String> statusesToHide, List<String> statusesToShow,
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs, List<Integer> exceptOwnersIds,
 			boolean searchQuery, Boolean onlyCasesRequiringAction) throws Exception {
+		return getCasePrimaryKeys(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, procInstIds, roles, handlerCategoryIDs, exceptOwnersIds,
+				searchQuery, onlyCasesRequiringAction, null);
+	}
+
+	@Override
+	public List<Integer> getCasePrimaryKeys(
+			IWContext iwc,
+			User user,
+			String type,
+			List<String> caseCodes,
+			List<String> statusesToHide,
+			List<String> statusesToShow,
+			boolean onlySubscribedCases,
+			boolean showAllCases,
+			List<Long> procInstIds,
+			Set<String> roles,
+			Collection<Long> handlerCategoryIDs,
+			List<Integer> exceptOwnersIds,
+			boolean searchQuery,
+			Boolean onlyCasesRequiringAction,
+			String assigned
+	) throws Exception {
 		return Collections.emptyList();
 	}
 
