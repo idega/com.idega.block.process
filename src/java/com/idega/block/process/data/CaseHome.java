@@ -322,6 +322,24 @@ public interface CaseHome extends IDOHome {
 			Collection<Integer> casesIds
 	) throws FinderException;
 
+	public Collection<Integer> findIDsByCriteria(
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
+			IWTimestamp dateFrom,
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
+			boolean simpleCases,
+			Boolean withHandler,
+			List<Integer> exceptOwnersIds,
+			String caseCode,
+			List<String> caseManagerTypes,
+			Collection<Integer> casesIds,
+			Collection<Integer> creators
+	) throws FinderException;
+
 	public abstract Collection<Case> findAllByIds(Collection<Integer> ids) throws FinderException;
 
 	public void createDefaultCaseStatuses();

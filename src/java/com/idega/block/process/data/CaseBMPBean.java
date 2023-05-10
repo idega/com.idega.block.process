@@ -1235,7 +1235,42 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			List<String> caseManagerTypes,
 			Collection<Integer> casesIds
 	) throws FinderException {
+		return ejbFindByCriteria(
+				caseNumber,
+				description,
+				owners,
+				statuses,
+				dateFrom,
+				dateTo,
+				owner,
+				groups,
+				simpleCases,
+				withHandler,
+				exceptOwnersIds,
+				caseCode,
+				caseManagerTypes,
+				casesIds,
+				null
+		);
+	}
 
+	public Collection<Integer> ejbFindByCriteria(
+			String caseNumber,
+			String description,
+			Collection<String> owners,
+			String[] statuses,
+			IWTimestamp dateFrom,
+			IWTimestamp dateTo,
+			User owner,
+			Collection<Group> groups,
+			boolean simpleCases,
+			Boolean withHandler,
+			List<Integer> exceptOwnersIds,
+			String caseCode,
+			List<String> caseManagerTypes,
+			Collection<Integer> casesIds,
+			Collection<Integer> creators
+	) throws FinderException {
 		Table casesTable = new Table(this);
 
 		SelectQuery query = new SelectQuery(casesTable);
@@ -1305,6 +1340,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 		if (!ListUtil.isEmpty(caseManagerTypes)) {
 			query.addCriteria(new InCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CASE_MANAGER_TYPE), caseManagerTypes));
+		}
+
+		if (!ListUtil.isEmpty(creators)) {
+			query.addCriteria(new InCriteria(casesTable.getColumn(CaseBMPBean.COLUMN_CREATOR), creators));
 		}
 
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
