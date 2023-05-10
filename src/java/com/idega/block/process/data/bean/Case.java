@@ -196,6 +196,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 	@PrimaryKeyJoinColumn(name = COLUMN_CREATOR, referencedColumnName = User.COLUMN_USER_ID)
 	private User creator;
 
+	@Column(name = COLUMN_CREATOR)
+	private Integer creatorId;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = COLUMN_HANDLER_GROUP, referencedColumnName = Group.COLUMN_GROUP_ID)
 	private Group handlerGroup;
@@ -518,6 +521,14 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public Integer getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(Integer creatorId) {
+		this.creatorId = creatorId;
 	}
 
 	public Timestamp getDueDate() {
