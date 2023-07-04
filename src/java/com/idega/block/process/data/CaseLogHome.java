@@ -77,7 +77,7 @@ public interface CaseLogHome extends IDOHome {
 	/**
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbFindAllCaseLogsByCaseAndDateAndStatusChange
 	 */
-	public Collection findAllCaseLogsByCaseAndDateAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException;
+	public Collection<CaseLog> findAllCaseLogsByCaseAndDateAndStatusChange(String caseCode, Timestamp fromDate, Timestamp toDate, String statusBefore, String statusAfter) throws FinderException;
 
 	/**
 	 * @see com.idega.block.process.data.CaseLogBMPBean#ejbHomeGetCountByStatusChange
