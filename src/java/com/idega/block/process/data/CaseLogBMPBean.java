@@ -18,6 +18,7 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.CoreConstants;
 import com.idega.util.IWTimestamp;
+import com.idega.util.StringUtil;
 
 /**
  * Title: idegaWeb Description: Copyright: Copyright (c) 2002 Company: idega
@@ -234,7 +235,9 @@ public class CaseLogBMPBean extends GenericEntity implements CaseLog {
 		query.appendSelect().append("pl.*").appendFrom().append(getEntityName()).append(" pl, proc_case p ").appendWhere();
 		query.append(COLUMN_TIMESTAMP).appendLessThanOrEqualsSign().append(toDate);
 		query.appendAnd().append(COLUMN_TIMESTAMP).appendGreaterThanOrEqualsSign().append(fromDate);
-		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_BEFORE, statusBefore);
+		if (!StringUtil.isEmpty(statusBefore)) {
+			query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_BEFORE, statusBefore);
+		}
 		query.appendAndEqualsQuoted(COLUMN_CASE_STATUS_AFTER, statusAfter);
 		query.appendAndEquals("pl." + COLUMN_CASE_ID, "p.proc_case_id");
 		query.appendAndEqualsQuoted("p.case_code", caseCode);
