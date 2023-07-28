@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJBException;
 import javax.ejb.FinderException;
@@ -728,6 +729,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCaseIdsAndStatusesAndCasesCode(casesIds, statuses, caseCode);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
+	}
+
+	@Override
+	public Map<Integer, Map<String, String>> getMetaData(Collection<Integer> casesIds) {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Map<Integer, Map<String, String>> metadata = ((CaseBMPBean) entity).ejbFindMetaData(casesIds);
+		this.idoCheckInPooledEntity(entity);
+		return metadata;
 	}
 
 }

@@ -9,13 +9,16 @@
  */
 package com.idega.block.process.data;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.ejb.EJBException;
@@ -36,7 +39,10 @@ import com.idega.data.IDOQuery;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
+import com.idega.data.MetaData;
+import com.idega.data.MetaDataBMPBean;
 import com.idega.data.MetaDataCapable;
+import com.idega.data.SimpleQuerier;
 import com.idega.data.UniqueIDCapable;
 import com.idega.data.query.BetweenCriteria;
 import com.idega.data.query.Column;
@@ -55,7 +61,9 @@ import com.idega.idegaweb.IWMainApplication;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.user.data.UserBMPBean;
+import com.idega.util.ArrayUtil;
 import com.idega.util.CoreConstants;
+import com.idega.util.CoreUtil;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
@@ -200,45 +208,8 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return true;
 	}
 
-	/*
-	 * public void insertStartData() { try { //CaseHome chome =
-	 * (CaseHome)IDOLookup.getHome(Case.class); CaseCodeHome cchome =
-	 * (CaseCodeHome) IDOLookup.getHome(CaseCode.class); CaseStatusHome cshome =
-	 * (CaseStatusHome) IDOLookup.getHome(CaseStatus.class); CaseCode code =
-	 * cchome.create(); code.setCode("GARENDE"); code.setDescription("General
-	 * Case"); code.store(); CaseStatus status = cshome.create();
-	 * status.setStatus("UBEH"); status.setDescription("Open"); status.store();
-	 * status.setAssociatedCaseCode(code); status.store(); status =
-	 * cshome.create(); status.setStatus("TYST");
-	 * status.setDescription("Inactive"); status.store();
-	 * status.setAssociatedCaseCode(code); status.store(); status =
-	 * cshome.create(); status.setStatus("BVJD");
-	 * status.setDescription("Granted"); status.store();
-	 * status.setAssociatedCaseCode(code); status.store(); status =
-	 * cshome.create(); status.setStatus("AVSL"); status.setDescription("Denied");
-	 * status.store(); status.setAssociatedCaseCode(code); status.store(); status =
-	 * cshome.create(); status.setStatus("OMPR"); status.setDescription("Review");
-	 * status.store(); status.setAssociatedCaseCode(code); status.store(); status =
-	 * cshome.create(); status.setStatus("KOUT"); status.setDescription("Contract
-	 * sent"); status.store(); status.setAssociatedCaseCode(code); status.store();
-	 * status = cshome.create(); status.setStatus("UPPS");
-	 * status.setDescription("Cancelled"); status.store();
-	 * status.setAssociatedCaseCode(code); status.store(); status =
-	 * cshome.create(); status.setStatus("PREL");
-	 * status.setDescription("Preliminary Accepted"); status.store();
-	 * status.setAssociatedCaseCode(code); status.store(); // status =
-	 * cshome.create(); // status.setStatus("PREL"); //
-	 * status.setDescription("Preliminary Accepted in school"); // status.store(); //
-	 * status.setAssociatedCaseCode(code); // status.store(); // // // status =
-	 * cshome.create(); // status.setStatus("PLAC"); //
-	 * status.setDescription("Accepted and placed in school group"); //
-	 * status.store(); // status.setAssociatedCaseCode(code); // status.store(); // }
-	 * catch (Exception e) { System.err.println("Error inserting start data for
-	 * com.idega.block.process.Case"); e.printStackTrace(); } }
-	 */
 	@Override
 	public void setDefaultValues() {
-		// System.out.println("Case : Calling setDefaultValues()");
 		setCreated(IWTimestamp.getTimestampRightNow());
 	}
 
@@ -318,14 +289,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 	@Override
 	public void setParentCase(Case theCase) {
-		// throw new java.lang.UnsupportedOperationException("setParentCase() not
-		// implemented yet");
 		this.setColumn(CaseBMPBean.COLUMN_PARENT_CASE, theCase);
 	}
 
 	@Override
 	public Case getParentCase() {
-		// return (Case)super.getParentNode();
 		return (Case) getColumnValue(CaseBMPBean.COLUMN_PARENT_CASE);
 	}
 
@@ -525,11 +493,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	 */
 	public Collection ejbFindAllCasesByUser(User user) throws FinderException {
 		return idoFindPKsByQuery(idoQueryGetAllCasesByUserOrdered(user));
-		/*
-		 * return (Collection) super.idoFindPKsBySQL( "select * from " +
-		 * this.TABLE_NAME + " where " + this.COLUMN_USER + "=" +
-		 * user.getPrimaryKey().toString() + " order by " + COLUMN_CREATED);
-		 */
 	}
 
 	/**
@@ -570,12 +533,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	 */
 	public Collection ejbFindAllCasesByUser(User user, String caseCode) throws FinderException {
 		return idoFindPKsByQuery(idoQueryGetAllCasesByUser(user, caseCode));
-		/*
-		 * return (Collection) super.idoFindPKsBySQL( "select * from " +
-		 * this.TABLE_NAME + " where " + this.COLUMN_USER + "=" +
-		 * user.getPrimaryKey().toString() + " and " + this.COLUMN_CASE_CODE + "='" +
-		 * caseCode + "'" + " order by " + COLUMN_CREATED);
-		 */
 	}
 
 	/**
@@ -609,13 +566,6 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	 */
 	public Collection ejbFindAllCasesByUser(User user, String caseCode, String caseStatus) throws FinderException {
 		return super.idoFindPKsByQuery(idoQueryGetAllCasesByUser(user, caseCode, caseStatus));
-		/*
-		 * return (Collection) super.idoFindPKsBySQL( "select * from " +
-		 * this.TABLE_NAME + " where " + this.COLUMN_USER + "=" +
-		 * user.getPrimaryKey().toString() + " and " + this.COLUMN_CASE_CODE + "='" +
-		 * caseCode + "'" + " and " + this.COLUMN_CASE_STATUS + "='" + caseStatus +
-		 * "'" + " order by " + COLUMN_CREATED);
-		 */
 	}
 
 	protected IDOQuery idoQueryGetSubCasesUnder(Case theCase) {
@@ -924,14 +874,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	 */
 	public Collection ejbFindAllCasesForUserExceptCodes(User user, CaseCode[] codes, int startingCase, int numberOfCases) throws FinderException {
 		IDOQuery query = idoQueryGetAllCasesForUserExceptCodes(user, codes);
-		log(Level.INFO, "UserCases: " + query);
 		return super.idoFindPKsByQuery(query, numberOfCases, startingCase);
-		/*
-		 * return (Collection) super.idoFindPKsBySQL( "select * from " +
-		 * this.TABLE_NAME + " where " + this.USER + "=" +
-		 * user.getPrimaryKey().toString() + " and " + this.CASE_CODE + " not in (" +
-		 * notInClause + ") order by " + CREATED );
-		 */
 	}
 
 	public Collection ejbFindAllCasesForUserByStatuses(User user, String[] statuses, int startingCase, int numberOfCases) throws FinderException {
@@ -1673,6 +1616,65 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			return Integer.valueOf(numberOfRecords).longValue();
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error counting by query: " + query, e);
+		}
+		return null;
+	}
+
+	public Map<Integer, Map<String, String>> ejbFindMetaData(Collection<Integer> casesIds) {
+		if (ListUtil.isEmpty(casesIds)) {
+			return null;
+		}
+
+		String query = null;
+		long start = System.currentTimeMillis();
+		try {
+			Table casesTable = new Table(this);
+			Table metaData = new Table(MetaData.class);
+			SelectQuery select = new SelectQuery(casesTable);
+			select.addJoin(casesTable, metaData);
+			select.addColumn(casesTable.getColumn(getIDColumnName()));
+			select.addColumn(metaData, MetaDataBMPBean.COLUMN_META_KEY);
+			select.addColumn(metaData, MetaDataBMPBean.COLUMN_META_VALUE);
+			select.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
+			query = select.toString();
+			List<Serializable[]> allData = SimpleQuerier.executeQuery(query, 3);
+			if (ListUtil.isEmpty(allData)) {
+				return null;
+			}
+
+			Map<Integer, Map<String, String>> results = new HashMap<>();
+			for (Serializable[] data: allData) {
+				if (ArrayUtil.isEmpty(data) || data.length < 3) {
+					continue;
+				}
+
+				Serializable id = data[0];
+				if (!(id instanceof Number)) {
+					continue;
+				}
+
+				String key = (String) data[1];
+				if (StringUtil.isEmpty(key)) {
+					continue;
+				}
+
+				Integer caseId = ((Number) id).intValue();
+				Map<String, String> caseData = results.get(caseId);
+				if (caseData == null) {
+					caseData = new HashMap<>();
+					results.put(caseId, caseData);
+				}
+
+				String value = (String) data[2];
+				caseData.put(key, value);
+			}
+			return results;
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting metadata for cases " + casesIds + ". SQL query: " + query, e);
+		} finally {
+			if (CoreUtil.isSQLMeasurementOn()) {
+				CoreUtil.doDebugSQL(start, System.currentTimeMillis(), query, casesIds);
+			}
 		}
 		return null;
 	}

@@ -11,6 +11,7 @@ package com.idega.block.process.data;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.FinderException;
 
@@ -410,5 +411,7 @@ public interface CaseHome extends IDOHome {
 	public Collection<Integer> findByCaseIdsAndStatuses(Collection<Integer> casesIds, String[] statuses) throws FinderException;
 
 	public Collection<Integer> findByCaseIdsAndStatusesAndCasesCode(Collection<Integer> casesIds, String[] statuses, String caseCode) throws FinderException;
+
+	public Map<Integer, Map<String, String>> getMetaData(Collection<Integer> casesIds);
 
 }
