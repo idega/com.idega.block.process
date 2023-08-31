@@ -107,6 +107,10 @@ import com.idega.util.DBUtil;
 			name = Case.FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW,
 			query = "select c from Case c where c.subject = :" + Case.PARAM_SUBJECT + " AND c.dueDate >= :" + Case.PARAM_DUE_DATE + " AND c.caseCode = :" +
 					Case.PARAM_CASE_CODE + " order by c.dueDate desc"
+	),
+	@NamedQuery(
+			name = Case.FIND_RAW_DATA_BY_IDS,
+			query = "select c.id, c.uniqueId, c.caseCode, c.created, c.caseStatus from Case c where c.id in :" + Case.PARAM_IDS + " order by c.created desc"
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
@@ -141,6 +145,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 								PARAM_SUBJECT = "subject",
 								PARAM_ID = "id",
+								PARAM_IDS = PARAM_ID + "s",
 								PARAM_UUID = "uuid",
 								PARAM_STATUSES = "statuses",
 								PARAM_CREATED = "created",
@@ -162,7 +167,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagers",
 								FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW = "Case.findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagersWithCaseCodes",
-								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampWithCaseCodes" ;
+								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampWithCaseCodes",
+								FIND_RAW_DATA_BY_IDS = "Case.findRawDataByIds";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
