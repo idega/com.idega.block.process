@@ -21,11 +21,11 @@ import com.idega.block.process.presentation.beans.CasePresentation;
 import com.idega.block.process.presentation.beans.CasesSearchCriteriaBean;
 import com.idega.block.process.presentation.beans.CasesSearchResultsHolder;
 import com.idega.block.process.presentation.beans.GeneralCasesListBuilder;
+import com.idega.block.process.util.CasesPagerUtil;
 import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
-import com.idega.presentation.ListNavigator;
 import com.idega.presentation.paging.PagedDataCollection;
 import com.idega.user.data.User;
 import com.idega.util.CoreConstants;
@@ -132,21 +132,11 @@ public class UICasesList extends IWBaseComponent {
 	private Map userCasesPageMap;
 
 	private Integer getPageSizeFromSession(IWContext iwc) {
-		String key = "userCases";
-		Object pageSizeOb = iwc.getSessionAttribute(ListNavigator.PARAMETER_NUMBER_OF_ENTRIES + "_" + key);
-		if (pageSizeOb instanceof Integer) {
-			return (Integer) pageSizeOb;
-		}
-		return null;
+		return CasesPagerUtil.getPageSizeFromSession(iwc);
 	}
 
 	private Integer getPageFromSession(IWContext iwc) {
-		String key = "userCases";
-		Object pageOb = iwc.getSessionAttribute(ListNavigator.PARAMETER_CURRENT_PAGE + "_" + key);
-		if (pageOb instanceof Integer) {
-			return (Integer) pageOb;
-		}
-		return null;
+		return CasesPagerUtil.getPageFromSession(iwc);
 	}
 
 	@Override
