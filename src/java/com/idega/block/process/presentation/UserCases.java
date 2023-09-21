@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.business.CasesRetrievalManager;
+import com.idega.block.process.business.ProcessConstants;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.presentation.beans.CaseManagerState;
 import com.idega.block.process.presentation.beans.GeneralCaseManagerViewBuilder;
@@ -97,20 +98,20 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	private Set<String> getHiddenCaseCodes() {
 		if (hiddenCaseCodes == null)
-			hiddenCaseCodes = new HashSet<String>();
+			hiddenCaseCodes = new HashSet<>();
 
 		return hiddenCaseCodes;
 	}
 
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
 		if (this.pageMap == null) {
-			this.pageMap = new HashMap<Object, Object>();
+			this.pageMap = new HashMap<>();
 		}
 
 		@SuppressWarnings("unchecked")
 		Map<Object, Object> statusMap = (Map<Object, Object>) this.pageMap.get(caseCode);
 		if (statusMap == null) {
-			statusMap = new HashMap<Object, Object>();
+			statusMap = new HashMap<>();
 		}
 		statusMap.put(caseStatus, page);
 		this.pageMap.put(caseCode, statusMap);
@@ -118,7 +119,7 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 
 	public void setPage(String caseCode, ICPage page) {
 		if (this.pageMap == null) {
-			this.pageMap = new HashMap<Object, Object>();
+			this.pageMap = new HashMap<>();
 		}
 
 		this.pageMap.put(caseCode, page);
@@ -239,10 +240,9 @@ public class UserCases extends CaseBlock implements IWPageEventListener {
 	private void showList(IWContext iwc) throws RemoteException {
 		Layer layer = new Layer(Layer.DIV);
 		layer.setStyleClass("caseElement");
-		//layer.setID("userCases");
 		layer.getID();
-		layer.setMarkupAttribute("class", "userCases");
-		
+		layer.setMarkupAttribute("class", ProcessConstants.USER_CASES);
+
 		UICasesList list = getCasesList(iwc, layer.getId());
 		layer.add(list);
 
