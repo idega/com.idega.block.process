@@ -21,6 +21,8 @@ public interface CasesSearchResultsHolder {
 
 	public boolean isAllDataLoaded(String id);
 
+	public boolean doExport(String id);
+	public boolean doExport(String id, boolean exportContacts, boolean showCompany);
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
 
 	public MemoryFileBuffer getExportedSearchResults(String id, boolean exportContacts, boolean showCompany);
