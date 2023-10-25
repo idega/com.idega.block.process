@@ -343,6 +343,11 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	}
 
 	@Override
+	public int getCreatorId() {
+		return getIntColumnValue(CaseBMPBean.COLUMN_CREATOR, -1);
+	}
+
+	@Override
 	public void setExternalId(String externalId) {
 		setColumn(COLUMN_EXTERNAL_ID, externalId);
 	}

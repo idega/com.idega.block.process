@@ -1568,4 +1568,11 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 		getGeneralCase().setCreatorId(creatorId);
 	}
 
+	@Override
+	public int getCreatorId() {
+		Case theCase = getGeneralCase();
+		User creator = theCase == null ? null : theCase.getCreator();
+		return creator == null ? -1 : (Integer) creator.getPrimaryKey();
+	}
+
 }
