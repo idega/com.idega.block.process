@@ -60,7 +60,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private List<AdvancedProperty> sortingOptions;
 
-	private List<Long> procInstIds;
+	private List<Serializable> procInstIds;
 
 	public void setCaseNumber(String caseNumber) {
 		this.caseNumber = caseNumber;
@@ -210,12 +210,15 @@ public class CasesSearchCriteriaBean implements Serializable {
 		this.allDataLoaded = allDataLoaded;
 	}
 
-	public List<Long> getProcInstIds() {
-		return procInstIds;
+	public <T extends Serializable> List<T> getProcInstIds() {
+		@SuppressWarnings("unchecked")
+		List<T> results = (List<T>) procInstIds;
+		return results;
 	}
 
-	public void setProcInstIds(List<Long> procInstIds) {
-		this.procInstIds = procInstIds;
+	@SuppressWarnings("unchecked")
+	public void setProcInstIds(List<? extends Serializable> procInstIds) {
+		this.procInstIds = (List<Serializable>) procInstIds;
 	}
 
 	public boolean isShowAllCases() {
