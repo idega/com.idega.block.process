@@ -141,6 +141,7 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COLUMN_HANDLER_GROUP = "HANDLER_GROUP_ID",
 								COLUMN_CREATED = "CREATED",
 								COLUMN_CREATOR = "creator_id",
+								COLUMN_VALID_FROM = CaseBMPBean.COLUMN_VALID_FROM,
 								COLUMN_DUE_DATE = CaseBMPBean.COLUMN_DUE_DATE,
 
 								PARAM_SUBJECT = "subject",
@@ -186,6 +187,9 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	@Column(name = COLUMN_DUE_DATE)
 	private Timestamp dueDate;
+
+	@Column(name = COLUMN_VALID_FROM)
+	private Timestamp validFrom;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = COLUMN_PARENT_CASE, referencedColumnName = COLUMN_CASE_ID)
@@ -535,6 +539,14 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 
 	public void setCreatorId(Integer creatorId) {
 		this.creatorId = creatorId;
+	}
+
+	public Timestamp getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Timestamp validFrom) {
+		this.validFrom = validFrom;
 	}
 
 	public Timestamp getDueDate() {

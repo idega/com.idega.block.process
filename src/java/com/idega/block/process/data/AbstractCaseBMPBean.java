@@ -1564,6 +1564,21 @@ public abstract class AbstractCaseBMPBean extends GenericEntity implements Case,
 	}
 
 	@Override
+	public void setValidFrom(Timestamp validFrom) {
+		Case theCase = getGeneralCase();
+		if (theCase != null) {
+			theCase.setValidFrom(validFrom);
+			theCase.store();
+		}
+	}
+
+	@Override
+	public Timestamp getValidFrom() {
+		Case theCase = getGeneralCase();
+		return theCase == null ? null : theCase.getValidFrom();
+	}
+
+	@Override
 	public void setCreatorId(Integer creatorId) {
 		getGeneralCase().setCreatorId(creatorId);
 	}

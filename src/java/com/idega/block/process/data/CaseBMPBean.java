@@ -88,6 +88,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String COLUMN_CASE_STATUS = "CASE_STATUS";
 	public static final String COLUMN_CREATED = "CREATED";
 	public static final String COLUMN_DUE_DATE = "DUE_DATE";
+	public static final String COLUMN_VALID_FROM = "VALID_FROM";
 	public static final String COLUMN_PARENT_CASE = "PARENT_CASE_ID";
 	public static final String COLUMN_USER = "USER_ID";
 	static final String COLUMN_CREATOR = "CREATOR_ID";
@@ -164,6 +165,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		addAttribute(COLUMN_CASE_STATUS, "Case status", true, true, String.class, 4, MANY_TO_ONE, CaseStatus.class);
 		addAttribute(COLUMN_CREATED, "Created when", Timestamp.class);
 		addAttribute(COLUMN_DUE_DATE, "Due date", Timestamp.class);
+		addAttribute(COLUMN_VALID_FROM, "Valid from", Timestamp.class);
 		addAttribute(COLUMN_PARENT_CASE, "Parent case", true, true, Integer.class, MANY_TO_ONE, Case.class);
 		addManyToOneRelationship(COLUMN_USER, "Owner", User.class);
 		addManyToOneRelationship(COLUMN_CREATOR, "Creator", User.class);
@@ -285,6 +287,16 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	@Override
 	public Timestamp getDueDate() {
 		return ((Timestamp) getColumnValue(COLUMN_DUE_DATE));
+	}
+
+	@Override
+	public void setValidFrom(Timestamp validFrom) {
+		setColumn(CaseBMPBean.COLUMN_VALID_FROM, validFrom);
+	}
+
+	@Override
+	public Timestamp getValidFrom() {
+		return ((Timestamp) getColumnValue(COLUMN_VALID_FROM));
 	}
 
 	@Override

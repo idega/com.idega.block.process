@@ -98,6 +98,10 @@ public interface Case extends IDOEntity, ICTreeNode<Case>, UniqueIDCapable, Meta
 
 	public Timestamp getDueDate();
 
+	public void setValidFrom(Timestamp validFrom);
+
+	public Timestamp getValidFrom();
+
 	/**
 	 * @see com.idega.block.process.data.CaseBMPBean#setParentCase
 	 */
