@@ -110,7 +110,7 @@ import com.idega.util.DBUtil;
 	),
 	@NamedQuery(
 			name = Case.FIND_RAW_DATA_BY_IDS,
-			query = "select c.id, c.uniqueId, c.caseCode, c.created, c.caseStatus from Case c where c.id in :" + Case.PARAM_IDS + " order by c.created desc"
+			query = "select c.id, c.uniqueId, c.caseCode, c.created, c.validFrom, c.dueDate, c.caseStatus from Case c where c.id in :" + Case.PARAM_IDS + " order by c.created desc"
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
