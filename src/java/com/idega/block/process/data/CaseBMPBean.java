@@ -1643,6 +1643,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		}
 
 		String query = null;
+		boolean byIds = casesIds.size() < 5000;
 		long start = System.currentTimeMillis();
 		try {
 			Table casesTable = new Table(this);
@@ -1652,7 +1653,9 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			select.addColumn(casesTable.getColumn(getIDColumnName()));
 			select.addColumn(metaData, MetaDataBMPBean.COLUMN_META_KEY);
 			select.addColumn(metaData, MetaDataBMPBean.COLUMN_META_VALUE);
-			select.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
+			if (byIds) {
+				select.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
+			}
 			query = select.toString();
 			List<Serializable[]> allData = SimpleQuerier.executeQuery(query, 3);
 			if (ListUtil.isEmpty(allData)) {
@@ -1676,6 +1679,10 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 				}
 
 				Integer caseId = ((Number) id).intValue();
+				if (!byIds && !casesIds.contains(caseId)) {
+					continue;
+				}
+
 				Map<String, String> caseData = results.get(caseId);
 				if (caseData == null) {
 					caseData = new HashMap<>();
