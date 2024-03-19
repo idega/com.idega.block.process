@@ -33,7 +33,7 @@ public class CasePresentation implements Serializable {
 
 	private User owner, handledBy;
 
-	private String caseIdentifier, subject, localizedStatus, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName, body, uniqueId;
+	private String caseIdentifier, subject, localizedStatus, status, caseManagerType, code, url, id, externalId, categoryId, caseTypeName, processName, body, uniqueId, procInstId;
 
 	private CaseStatus caseStatus;
 
@@ -47,6 +47,17 @@ public class CasePresentation implements Serializable {
 
 	public CasePresentation() {
 		super();
+	}
+
+	public CasePresentation(Integer id, String procInstId, String status, Timestamp created) {
+		this();
+
+		this.primaryKey = id;
+		this.id = String.valueOf(id);
+
+		this.procInstId = procInstId;
+		this.status = status;
+		this.created = created;
 	}
 
 	public CasePresentation(Case theCase) {
@@ -262,6 +273,22 @@ public class CasePresentation implements Serializable {
 
 	public final void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
 	}
 
 }
