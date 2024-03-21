@@ -23,6 +23,7 @@ public interface CasesSearchResultsHolder {
 	public boolean doExport(String id);
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany);
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
+	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category);
 
 	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany);
 	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
