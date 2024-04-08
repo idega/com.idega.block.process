@@ -35,7 +35,13 @@ import com.idega.user.data.bean.User;
 	@NamedQuery(name = CaseLog.QUERY_COUNT_WITH_TYPE, query = "select count(l.id) from CaseLog l where l.type is not null"),
 
 	@NamedQuery(name = CaseLog.QUERY_FIND_BY_TYPE, query = "select l from CaseLog l where l.type = :" + CaseLog.PARAM_TYPE + " order by l.timestamp desc"),
-	@NamedQuery(name = CaseLog.QUERY_COUNT_BY_TYPE, query = "select count(l.id) from CaseLog l where l.type = :" + CaseLog.PARAM_TYPE)
+	@NamedQuery(name = CaseLog.QUERY_COUNT_BY_TYPE, query = "select count(l.id) from CaseLog l where l.type = :" + CaseLog.PARAM_TYPE),
+
+	@NamedQuery(name = CaseLog.QUERY_FIND_CASE_UUIDS_BY_CASE_UUIDS_AND_STATUS_BEFORE_STATUS_AFTER, query = "SELECT DISTINCT(l.theCase.uniqueId) FROM CaseLog l "
+			+ " WHERE l.theCase.uniqueId IN (:" + CaseLog.PARAM_CASE_UUIDS + ") "
+			+ " AND l.statusBefore = :" + CaseLog.PARAM_STATUS_BEFORE
+			+ " AND l.statusAfter = :" + CaseLog.PARAM_STATUS_AFTER)
+
 })
 public class CaseLog implements Serializable {
 
@@ -45,9 +51,13 @@ public class CaseLog implements Serializable {
 								QUERY_COUNT_WITH_TYPE = "CaseLog.countWithType",
 								QUERY_FIND_BY_TYPE = "CaseLog.findByType",
 								QUERY_COUNT_BY_TYPE = "CaseLog.countByType",
+										QUERY_FIND_CASE_UUIDS_BY_CASE_UUIDS_AND_STATUS_BEFORE_STATUS_AFTER = "CaseLog.caseUUIDSByCaseUUIDSAndStatusBeforeAndStatusAfter",
 
 								PARAM_TYPE = "type",
-								PARAM_STATUS = "status";
+								PARAM_STATUS = "status",
+								PARAM_CASE_UUIDS = "caseUUIDs",
+								PARAM_STATUS_BEFORE = "statusBefore",
+								PARAM_STATUS_AFTER = "statusAfter";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

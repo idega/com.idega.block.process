@@ -11,4 +11,6 @@ public interface CaseLogDAO extends GenericDao {
 
 	public List<CaseLog> getCaseLogsByType(String type);
 
+	public List<String> getCaseUUIDSByCaseUUIDSAndStatusBeforeAndStatusAfter(List<String> caseUUIDs, String statusBefore, String statusAfter);
+
 }
