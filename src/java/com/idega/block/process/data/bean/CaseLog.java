@@ -40,8 +40,12 @@ import com.idega.user.data.bean.User;
 	@NamedQuery(name = CaseLog.QUERY_FIND_CASE_UUIDS_BY_CASE_UUIDS_AND_STATUS_BEFORE_STATUS_AFTER, query = "SELECT DISTINCT(l.theCase.uniqueId) FROM CaseLog l "
 			+ " WHERE l.theCase.uniqueId IN (:" + CaseLog.PARAM_CASE_UUIDS + ") "
 			+ " AND l.statusBefore = :" + CaseLog.PARAM_STATUS_BEFORE
-			+ " AND l.statusAfter = :" + CaseLog.PARAM_STATUS_AFTER)
+			+ " AND l.statusAfter = :" + CaseLog.PARAM_STATUS_AFTER),
 
+	@NamedQuery(
+			name = CaseLog.QUERY_GET_LOGS_FOR_CASES_BY_CASE_CODE_AND_DATE_RANGE,
+			query = "select pc.uniqueId, l.statusAfter, l.timestamp from CaseLog l inner join l.theCase pc where pc.caseCode = :caseCode and pc.created >= :from and pc.created <= :to"
+	)
 })
 public class CaseLog implements Serializable {
 
@@ -51,7 +55,8 @@ public class CaseLog implements Serializable {
 								QUERY_COUNT_WITH_TYPE = "CaseLog.countWithType",
 								QUERY_FIND_BY_TYPE = "CaseLog.findByType",
 								QUERY_COUNT_BY_TYPE = "CaseLog.countByType",
-										QUERY_FIND_CASE_UUIDS_BY_CASE_UUIDS_AND_STATUS_BEFORE_STATUS_AFTER = "CaseLog.caseUUIDSByCaseUUIDSAndStatusBeforeAndStatusAfter",
+								QUERY_FIND_CASE_UUIDS_BY_CASE_UUIDS_AND_STATUS_BEFORE_STATUS_AFTER = "CaseLog.caseUUIDSByCaseUUIDSAndStatusBeforeAndStatusAfter",
+								QUERY_GET_LOGS_FOR_CASES_BY_CASE_CODE_AND_DATE_RANGE = "CaseLog.getLogsForCasesByCaseCodeAndDateRange",
 
 								PARAM_TYPE = "type",
 								PARAM_STATUS = "status",
