@@ -48,6 +48,8 @@ public final class ProcessConstants implements Singleton {
 
 								BOARD_FINANCING_SUGGESTION = "string_ownerGradeComment",
 								BOARD_FINANCING_DECISION = "string_ownerGrantAmauntValue",
+
+								VARIABLE_SHORT_DESCRIPTION_OF_PROJECT_FOR_PUBLIC = "string_shortDescriptionOfTheProjectForPublic",
 								VARIABLE_OWNER_PHONE_NUMBER = "string_ownerPhoneNumber",
 
 								IW_BUNDLE_IDENTIFIER = "com.idega.block.process",
