@@ -367,6 +367,8 @@ public interface CaseBusiness extends IBOService {
 	 */
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale) throws RemoteException;
 
+	public String getLocalizedCaseStatusDescription(Case theCase, String statusKey, Locale locale) throws RemoteException;
+
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) throws RemoteException;
 
 	/**

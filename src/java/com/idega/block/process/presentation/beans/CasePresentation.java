@@ -220,6 +220,19 @@ public class CasePresentation implements Serializable {
 	}
 
 	public String getCaseStatusLocalized() {
+		if (StringUtil.isEmpty(localizedStatus) && !StringUtil.isEmpty(status)) {
+			try {
+				CaseBusiness caseBusiness = IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), CaseBusiness.class);
+				localizedStatus = caseBusiness.getCaseStatusLocalized(status);
+			} catch(Exception e) {
+				Logger.getLogger(getClass().getName()).log(Level.WARNING, "Error getting localized status for status: " + status, e);
+			}
+		}
+
+		if (!StringUtil.isEmpty(localizedStatus)) {
+			return localizedStatus;
+		}
+
 		if (caseStatus == null) {
 			return null;
 		}
