@@ -615,4 +615,20 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 
 	}
 
+	@Override
+	public List<Integer> findHandlerGroupIdsByCaseCode(String caseCode) {
+		if (StringUtil.isEmpty(caseCode)) {
+			getLogger().warning("Case code is not provided!");
+			return null;
+		}
+
+		try {
+			return getResultList(Case.FIND_HANDLER_GROUP_IDS_BY_CASE_CODE, Integer.class, new Param(Case.PARAM_CASE_CODE, caseCode));
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting handler group ids by case code: " + caseCode, e);
+		}
+
+		return null;
+	}
+
 }

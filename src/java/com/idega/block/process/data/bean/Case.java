@@ -111,6 +111,10 @@ import com.idega.util.DBUtil;
 	@NamedQuery(
 			name = Case.FIND_RAW_DATA_BY_IDS,
 			query = "select c.id, c.uniqueId, c.caseCode, c.created, c.validFrom, c.dueDate, c.caseStatus from Case c where c.id in :" + Case.PARAM_IDS + " order by c.created desc"
+	),
+	@NamedQuery(
+			name = Case.FIND_HANDLER_GROUP_IDS_BY_CASE_CODE,
+			query = "select c.handlerGroup.groupID from Case c where c.caseCode = :" + Case.PARAM_CASE_CODE
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
@@ -169,7 +173,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								FIND_BY_CASE_SUBJECT_AND_CASE_CODE_AND_DUE_DATE_LATER_THAN_NOW = "Case.findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagersWithCaseCodes",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampWithCaseCodes",
-								FIND_RAW_DATA_BY_IDS = "Case.findRawDataByIds";
+								FIND_RAW_DATA_BY_IDS = "Case.findRawDataByIds",
+								FIND_HANDLER_GROUP_IDS_BY_CASE_CODE = "Case.findHandlerGroupIdsByCaseCode";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
