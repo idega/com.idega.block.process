@@ -898,8 +898,20 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
+	public String getLocalizedCaseStatusDescription(Case theCase, String statusKey, Locale locale) {
+		return getLocalizedCaseStatusDescription(theCase, statusKey, locale, getBundleIdentifier());
+	}
+
+	@Override
 	public String getLocalizedCaseStatusDescription(Case theCase, CaseStatus status, Locale locale, String bundleIdentifier) {
-		String statusKey = status.toString();
+		return getLocalizedCaseStatusDescription(theCase, status == null ? null : status.toString(), locale, bundleIdentifier);
+	}
+
+	private String getLocalizedCaseStatusDescription(Case theCase, String statusKey, Locale locale, String bundleIdentifier) {
+		if (StringUtil.isEmpty(statusKey)) {
+			return null;
+		}
+
 		String localizationKey = ProcessConstants.CASE_STATUS_KEY + CoreConstants.DOT + statusKey;
 		String localization = getLocalizedString(localizationKey, statusKey, locale, bundleIdentifier);
 		if ((StringUtil.isEmpty(localization) || statusKey.equals(localization)) && !ProcessConstants.IW_BUNDLE_IDENTIFIER.equals(bundleIdentifier)) {
@@ -1563,29 +1575,20 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public String getCaseStatusLocalized(String statusKey) {
-		if (StringUtil.isEmpty(statusKey)) {
-			return null;
-		}
-
-		try {
-			CaseStatusHome caseStatusHome = getCaseStatusHome();
-			CaseStatus caseStatus = caseStatusHome.findByPrimaryKey(statusKey);
-			return getCaseStatusLocalized(caseStatus);
-		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Error getting localized status for: " + statusKey, e);
-		}
-
-		return null;
-	}
-
-	@Override
 	public String getCaseStatusLocalized(CaseStatus caseStatus) {
 		if (caseStatus == null) {
 			return null;
 		}
 
-		String statusKey = caseStatus.getStatus();
+		return getCaseStatusLocalized(caseStatus.getStatus());
+	}
+
+	@Override
+	public String getCaseStatusLocalized(String statusKey) {
+		if (StringUtil.isEmpty(statusKey)) {
+			return null;
+		}
+
 		try {
 			Locale locale = CoreUtil.getCurrentLocale();
 
@@ -1594,22 +1597,22 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 				@SuppressWarnings("unchecked")
 				Class<? extends CaseBusiness> caseBusinessClass = (Class<? extends CaseBusiness>) Class.forName("is.idega.idegaweb.egov.cases.business.CasesBusiness");
 				CaseBusiness casesBusiness = IBOLookup.getServiceInstance(getIWApplicationContext(), caseBusinessClass);
-				localization = casesBusiness.getLocalizedCaseStatusDescription(null, caseStatus, locale);
+				localization = casesBusiness.getLocalizedCaseStatusDescription(null, statusKey, locale);
 			} catch (Exception e) {}
 			if (!StringUtil.isEmpty(localization) && !localization.equals(statusKey)) {
 				return localization;
 			}
 
-			localization = getLocalizedCaseStatusDescription(null, caseStatus, locale);
+			localization = getLocalizedCaseStatusDescription(null, statusKey, locale);
 			if (StringUtil.isEmpty(localization) || localization.equals(statusKey)) {
-				localization = getLocalizedCaseStatusDescription(null, caseStatus, locale, "is.idega.idegaweb.egov.cases");
+				localization = getLocalizedCaseStatusDescription(null, statusKey, locale, "is.idega.idegaweb.egov.cases");
 			}
 			if (StringUtil.isEmpty(localization)) {
 				return statusKey;
 			}
 			return localization;
 		} catch(Exception e) {
-			getLogger().log(Level.WARNING, "Error getting localized status for: " + caseStatus, e);
+			getLogger().log(Level.WARNING, "Error getting localized status for: " + statusKey, e);
 		}
 
 		return statusKey;
