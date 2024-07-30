@@ -14,11 +14,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import javax.ejb.EJBException;
@@ -1701,6 +1704,41 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 			}
 		}
 		return null;
+	}
+
+	public Collection<Integer> ejbFindHandlersGroupsIdsByCaseCode(String caseCode) throws FinderException {
+		if (StringUtil.isEmpty(caseCode)) {
+			return Collections.emptyList();
+		}
+
+		Table casesTable = new Table(this);
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(casesTable.getColumn(COLUMN_HANDLER));
+		query.addCriteria(new MatchCriteria(casesTable, COLUMN_CASE_CODE, MatchCriteria.EQUALS, caseCode));
+		query.addOrder(casesTable, COLUMN_HANDLER, true);
+		String sql = query.toString();
+		List<Serializable[]> allData = null;
+		try {
+			allData = SimpleQuerier.executeQuery(sql, 1);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error executing SQL: " + sql, e);
+		}
+		if (ListUtil.isEmpty(allData)) {
+			return null;
+		}
+
+		Set<Integer> results = new HashSet<>();
+		for (Serializable[] data: allData) {
+			if (ArrayUtil.isEmpty(data)) {
+				continue;
+			}
+
+			Serializable id = data[0];
+			if (id instanceof Number) {
+				results.add(((Number) id).intValue());
+			}
+		}
+		return results;
 	}
 
 }

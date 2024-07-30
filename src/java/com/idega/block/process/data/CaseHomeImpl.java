@@ -732,6 +732,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	}
 
 	@Override
+	public Collection<Integer> findHandlersGroupsIdsByCaseCode(String caseCode) throws FinderException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindHandlersGroupsIdsByCaseCode(caseCode);
+		this.idoCheckInPooledEntity(entity);
+		return ids;
+	}
+
+	@Override
 	public Map<Integer, Map<String, String>> getMetaData(Collection<Integer> casesIds) {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
 		Map<Integer, Map<String, String>> metadata = ((CaseBMPBean) entity).ejbFindMetaData(casesIds);

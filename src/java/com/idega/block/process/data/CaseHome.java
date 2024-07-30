@@ -414,4 +414,6 @@ public interface CaseHome extends IDOHome {
 
 	public Map<Integer, Map<String, String>> getMetaData(Collection<Integer> casesIds);
 
+	public Collection<Integer> findHandlersGroupsIdsByCaseCode(String caseCode) throws FinderException;
+
 }
