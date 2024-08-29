@@ -32,6 +32,7 @@ import com.idega.core.persistence.impl.GenericDaoImpl;
 import com.idega.user.dao.UserDAO;
 import com.idega.user.data.bean.Group;
 import com.idega.user.data.bean.User;
+import com.idega.util.ArrayUtil;
 import com.idega.util.CoreConstants;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
@@ -629,6 +630,265 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		}
 
 		return null;
+	}
+
+
+	@Override
+	public List<Case> getCasesByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	) {
+
+		String query = CoreConstants.EMPTY;
+		List<Case> cases = null;
+		try {
+			List<Param> params = new ArrayList<>();
+
+			if (ListUtil.isEmpty(userIds) && ListUtil.isEmpty(exceptUserIds)) {
+				return cases;
+			}
+
+			query = getCasesQueryByCriteria(
+					caseCode,
+					caseStatuses,
+					userIds,
+					exceptUserIds,
+					timestampCreatedUntilDate,
+					"getCasesByCriteria",
+					params
+			);
+
+			cases = getResultListByInlineQuery(
+					query,
+					Case.class,
+					ArrayUtil.convertListToArray(params)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting users by query: " + query, e);
+		}
+
+		return cases;
+	}
+
+
+	@Override
+	public List<String> getCaseUUIDSByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	) {
+
+		String query = CoreConstants.EMPTY;
+		List<String> casesUUIDS = null;
+		try {
+			List<Param> params = new ArrayList<>();
+
+			if (ListUtil.isEmpty(userIds) && ListUtil.isEmpty(exceptUserIds)) {
+				return casesUUIDS;
+			}
+
+			query = getCasesQueryByCriteria(
+					caseCode,
+					caseStatuses,
+					userIds,
+					exceptUserIds,
+					timestampCreatedUntilDate,
+					"getCaseUUIDSByCriteria",
+					params
+			);
+
+			casesUUIDS = getResultListByInlineQuery(
+					query,
+					String.class,
+					ArrayUtil.convertListToArray(params)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting users by query: " + query, e);
+		}
+
+		return casesUUIDS;
+	}
+
+
+	@Override
+	public Long getDistinctUserIdsCountByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	) {
+
+		String query = CoreConstants.EMPTY;
+		Long count = new Long(0);
+		try {
+			List<Param> params = new ArrayList<>();
+
+			if (ListUtil.isEmpty(userIds) && ListUtil.isEmpty(exceptUserIds)) {
+				return count;
+			}
+
+			query = getCasesQueryByCriteria(
+					caseCode,
+					caseStatuses,
+					userIds,
+					exceptUserIds,
+					timestampCreatedUntilDate,
+					"getDistinctUserIdsCountByCriteria",
+					params
+			);
+
+			count = getSingleResultByInlineQuery(
+					query,
+					Long.class,
+					ArrayUtil.convertListToArray(params)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting users by query: " + query, e);
+		}
+
+		return count;
+	}
+
+
+	@Override
+	public List<String> getUserPersonalIdsByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	) {
+
+		String query = CoreConstants.EMPTY;
+		List<String> userPersonalIds = null;
+		try {
+			List<Param> params = new ArrayList<>();
+
+			if (ListUtil.isEmpty(userIds) && ListUtil.isEmpty(exceptUserIds)) {
+				return userPersonalIds;
+			}
+
+			query = getCasesQueryByCriteria(
+					caseCode,
+					caseStatuses,
+					userIds,
+					exceptUserIds,
+					timestampCreatedUntilDate,
+					"getCaseUUIDSByCriteria",
+					params
+			);
+
+			userPersonalIds = getResultListByInlineQuery(
+					query,
+					String.class,
+					ArrayUtil.convertListToArray(params)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting users by query: " + query, e);
+		}
+
+		return userPersonalIds;
+	}
+
+
+
+	@Override
+	public List<Integer> getCaseIdsByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	) {
+
+		String query = CoreConstants.EMPTY;
+		List<Integer> casesIds = null;
+		try {
+			List<Param> params = new ArrayList<>();
+
+			if (ListUtil.isEmpty(userIds) && ListUtil.isEmpty(exceptUserIds)) {
+				return casesIds;
+			}
+
+			query = getCasesQueryByCriteria(
+					caseCode,
+					caseStatuses,
+					userIds,
+					exceptUserIds,
+					timestampCreatedUntilDate,
+					"getCaseIdsByCriteria",
+					params
+			);
+
+			casesIds = getResultListByInlineQuery(
+					query,
+					Integer.class,
+					ArrayUtil.convertListToArray(params)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting users by query: " + query, e);
+		}
+
+		return casesIds;
+	}
+
+
+	private String getCasesQueryByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate,
+			String queryType,
+			List<Param> params
+	) {
+		String query = CoreConstants.EMPTY;
+
+		if (queryType.equalsIgnoreCase("getCasesByCriteria")) {
+			query = "select c from Case c ";
+		} else if (queryType.equalsIgnoreCase("getCaseUUIDSByCriteria")) {
+			query = "select c.uniqueId from Case c ";
+		} else if (queryType.equalsIgnoreCase("getDistinctUserIdsCountByCriteria")) {
+			query = "select distinct count(c.userId) from Case c ";
+		} else if (queryType.equalsIgnoreCase("getUserPersonalIdsByCriteria")) {
+			query = "select distinct user.personalID from Case c ";
+		} else if (queryType.equalsIgnoreCase("getCaseIdsByCriteria")) {
+			query = "select distinct c.id from Case c ";
+		}
+
+		query = query + " where c.caseCode = :" + Case.PARAM_CASE_CODE
+					  + " AND c.caseStatus in (:" + Case.PARAM_STATUSES + ")";
+
+		if (!StringUtil.isEmpty(caseCode)) {
+			params.add(new Param(Case.PARAM_CASE_CODE, caseCode));
+		}
+		if (!ListUtil.isEmpty(caseStatuses)) {
+			params.add(new Param(Case.PARAM_STATUSES, caseStatuses));
+		}
+		if (!ListUtil.isEmpty(userIds)) {
+			query = query + " AND c.userId in (:userIds)";
+			params.add(new Param("userIds", userIds));
+		}
+		if (!ListUtil.isEmpty(exceptUserIds)) {
+			query = query + " AND c.userId not in (:exceptUserIds)";
+			params.add(new Param("exceptUserIds", exceptUserIds));
+		}
+		if (timestampCreatedUntilDate != null) {
+			query = query + " AND c.created <= :timestampCreatedUntilDate";
+			params.add(new Param("timestampCreatedUntilDate", timestampCreatedUntilDate));
+		}
+
+		if (queryType == "getCasesByCriteria") {
+			query = query + " order by c.userId asc";
+		}
+
+		return query;
 	}
 
 }

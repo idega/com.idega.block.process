@@ -74,4 +74,44 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 	public List<Case> findByCaseSubjectAndCaseCodeAndDueDateLaterThanNow(String caseSubject, String caseCode);
 
 	public List<Integer> findHandlerGroupIdsByCaseCode(String caseCode);
+
+	public List<Case> getCasesByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	);
+
+	public List<String> getCaseUUIDSByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	);
+
+	public List<Integer> getCaseIdsByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	);
+
+	public Long getDistinctUserIdsCountByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	);
+
+	public List<String> getUserPersonalIdsByCriteria(
+			String caseCode,
+			List<String> caseStatuses,
+			List<Integer> userIds,
+			List<Integer> exceptUserIds,
+			Timestamp timestampCreatedUntilDate
+	);
 }
