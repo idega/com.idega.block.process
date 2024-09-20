@@ -166,7 +166,8 @@ public interface CasesRetrievalManager {
 			List<Integer> exceptOwnersIds,
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch,
-			Boolean onlyCasesRequiringAction
+			Boolean onlyCasesRequiringAction,
+			String orderStr
 	) throws Exception;
 
 	public abstract Long getCountedCaseIds(
@@ -268,10 +269,11 @@ public interface CasesRetrievalManager {
 			List<Integer> exceptOwnersIds,
 			boolean searchQuery,
 			Boolean onlyCasesRequiringAction,
-			String assigned
+			String assigned,
+			String orderStr
 	) throws Exception;
 
-	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale);
+	public abstract PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale, String orderStr);
 
 	public CasePresentation getCaseByIdLazily(Integer caseId);
 

@@ -200,7 +200,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch
 	) throws Exception {
-		return getCaseIds(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, page, pageSize, handlerAssignedCases, exceptOwnersIds, exceptCaseCodes, userIdsToUseInSearch, null);
+		return getCaseIds(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, page, pageSize, handlerAssignedCases, exceptOwnersIds, exceptCaseCodes, userIdsToUseInSearch, null, null);
 	}
 
 	@Override
@@ -219,7 +219,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<Integer> exceptOwnersIds,
 			List<String> exceptCaseCodes,
 			List<Integer> userIdsToUseInSearch,
-			Boolean onlyCasesRequiringAction
+			Boolean onlyCasesRequiringAction,
+			String orderStr
 	) throws Exception {
 		return Collections.emptyList();
 	}
@@ -235,7 +236,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			boolean onlySubscribedCases, boolean showAllCases, List<Long> procInstIds, Set<String> roles, Collection<Long> handlerCategoryIDs, List<Integer> exceptOwnersIds,
 			boolean searchQuery, Boolean onlyCasesRequiringAction) throws Exception {
 		return getCasePrimaryKeys(iwc, user, type, caseCodes, statusesToHide, statusesToShow, onlySubscribedCases, showAllCases, procInstIds, roles, handlerCategoryIDs, exceptOwnersIds,
-				searchQuery, onlyCasesRequiringAction, null);
+				searchQuery, onlyCasesRequiringAction, null, null);
 	}
 
 	@Override
@@ -254,7 +255,8 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 			List<Integer> exceptOwnersIds,
 			boolean searchQuery,
 			Boolean onlyCasesRequiringAction,
-			String assigned
+			String assigned,
+			String orderStr
 	) throws Exception {
 		return Collections.emptyList();
 	}
@@ -295,7 +297,7 @@ public class CasesRetrievalManagerImpl extends DefaultSpringBean implements Case
 	}
 
 	@Override
-	public PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale) {
+	public PagedDataCollection<CasePresentation> getCasesByIds(List<Integer> ids, Locale locale, String orderStr) {
 		Collection<Case> cases = getCaseBusiness().getCasesByIds(ids);
 		return getCasesByEntities(cases, locale);
 	}
