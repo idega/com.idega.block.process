@@ -67,6 +67,7 @@ import com.idega.util.CoreUtil;
 import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
+import com.idega.util.expression.ELUtil;
 
 /**
  * <p>
@@ -787,6 +788,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	public CaseLog changeCaseStatus(Case theCase, String newCaseStatus, String comment, User performer, Group handler, boolean canBeSameStatus, Map attributes, boolean sendUpdates) {
 		CaseLog log = null;
 		String oldCaseStatus = CoreConstants.EMPTY;
+		CaseChangeEvent eventAfterStatusChanged = null;
 		try {
 			if (StringUtil.isEmpty(newCaseStatus)) {
 				getLogger().info("Case's status can not be null/empty: not creating log for changing status from '" + oldCaseStatus + "' to '" +  newCaseStatus + "' by " + performer +
@@ -865,21 +867,41 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 			}
 
 			if (sendUpdates) {
+				eventAfterStatusChanged = new CaseChangeEvent(theCase);
+				eventAfterStatusChanged.setPerformer(performer);
+				eventAfterStatusChanged.setStatusFrom(oldCaseStatus);
+				eventAfterStatusChanged.setStatusTo(newCaseStatus);
+				eventAfterStatusChanged.setAttributes(attributes);
+
 				for (Iterator<CaseChangeListener> iter = listeners.iterator(); iter.hasNext();) {
 					CaseChangeListener listener = iter.next();
-					CaseChangeEvent event = new CaseChangeEvent(theCase);
-					event.setPerformer(performer);
-					event.setStatusFrom(oldCaseStatus);
-					event.setStatusTo(newCaseStatus);
-					event.setAttributes(attributes);
-					listener.afterCaseChange(event);
+					listener.afterCaseChange(eventAfterStatusChanged);
 				}
 			}
-
-		} catch (CreateException e) {
+		} catch (Exception e) {
 			throw new EJBException("Error changing case status: " + oldCaseStatus + " to " + newCaseStatus + ":" + e.getMessage());
+		} finally {
+			if (sendUpdates) {
+				doPublishEvent(eventAfterStatusChanged);
+			}
 		}
 		return log;
+	}
+
+	private void doPublishEvent(CaseChangeEvent event) {
+		if (event == null) {
+			return;
+		}
+
+		Thread notifier = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				ELUtil.getInstance().publishEvent(event);
+			}
+
+		});
+		notifier.start();
 	}
 
 	@Override
