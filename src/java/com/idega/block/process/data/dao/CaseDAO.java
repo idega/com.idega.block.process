@@ -114,4 +114,7 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 			List<Integer> exceptUserIds,
 			Timestamp timestampCreatedUntilDate
 	);
+
+	public List<Case> getByMetaData(String key, String value);
+
 }

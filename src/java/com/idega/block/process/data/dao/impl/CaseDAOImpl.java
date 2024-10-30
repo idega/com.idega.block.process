@@ -891,4 +891,24 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 		return query;
 	}
 
+	@Override
+	public List<Case> getByMetaData(String key, String value) {
+		if (StringUtil.isEmpty(key) || StringUtil.isEmpty(value)) {
+			return null;
+		}
+
+		try {
+			return getResultList(
+					Case.FIND_BY_METADATA,
+					Case.class,
+					new Param(Case.PARAM_KEY, key),
+					new Param(Case.PARAM_VALUE, value)
+			);
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting case(s) by metadata key " + key + " and value " + value, e);
+		}
+
+		return null;
+	}
+
 }

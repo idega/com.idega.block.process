@@ -115,6 +115,10 @@ import com.idega.util.DBUtil;
 	@NamedQuery(
 			name = Case.FIND_HANDLER_GROUP_IDS_BY_CASE_CODE,
 			query = "select c.handlerGroup.groupID from Case c where c.caseCode = :" + Case.PARAM_CASE_CODE
+	),
+	@NamedQuery(
+			name = Case.FIND_BY_METADATA,
+			query = "select c from Case c inner join c.metadata mc where mc.key = :" + Case.PARAM_KEY + " and mc.value = :" + Case.PARAM_VALUE
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
@@ -156,6 +160,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								PARAM_CREATED = "created",
 								PARAM_CASE_CODE = "caseCode",
 								PARAM_DUE_DATE = "dueDate",
+								PARAM_KEY = "key",
+								PARAM_VALUE = "value",
 
 								FIND_ID_BY_SUBJECT = "Case.findIdBySubject",
 								FIND_ID_BY_ID = "Case.findIdById",
@@ -174,7 +180,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_BY_CASE_MANAGERS_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampByCaseManagersWithCaseCodes",
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampWithCaseCodes",
 								FIND_RAW_DATA_BY_IDS = "Case.findRawDataByIds",
-								FIND_HANDLER_GROUP_IDS_BY_CASE_CODE = "Case.findHandlerGroupIdsByCaseCode";
+								FIND_HANDLER_GROUP_IDS_BY_CASE_CODE = "Case.findHandlerGroupIdsByCaseCode",
+								FIND_BY_METADATA = "Case.findByMetadata";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
