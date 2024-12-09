@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import com.idega.io.MemoryFileBuffer;
 import com.idega.user.data.User;
 
 public interface CasesSearchResultsHolder {
@@ -25,7 +26,8 @@ public interface CasesSearchResultsHolder {
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category);
 
-	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany);
+	public MemoryFileBuffer getExportedSearchResults(String id, boolean exportContacts, boolean showCompany);
+//	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany);
 	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
 	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category);
 
