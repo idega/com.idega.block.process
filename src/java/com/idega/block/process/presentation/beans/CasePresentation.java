@@ -50,6 +50,10 @@ public class CasePresentation implements Serializable {
 	}
 
 	public CasePresentation(Integer id, String procInstId, String status, Timestamp created) {
+		this(id, procInstId, status, created, null);
+	}
+
+	public CasePresentation(Integer id, String procInstId, String status, Timestamp created, String externalId) {
 		this();
 
 		this.primaryKey = id;
@@ -58,17 +62,21 @@ public class CasePresentation implements Serializable {
 		this.procInstId = procInstId;
 		this.status = status;
 		this.created = created;
+		this.externalId = externalId;
 	}
 
 	public CasePresentation(Case theCase) {
 		this();
 
-		primaryKey = Integer.valueOf(theCase.getId());
-		owner = theCase.getOwner();
-		caseIdentifier = theCase.getCaseIdentifier();
-		subject = theCase.getSubject();
-		caseStatus = theCase.getCaseStatus();
-		uniqueId = theCase.getUniqueId();
+		if (theCase != null) {
+			primaryKey = Integer.valueOf(theCase.getId());
+			owner = theCase.getOwner();
+			caseIdentifier = theCase.getCaseIdentifier();
+			subject = theCase.getSubject();
+			caseStatus = theCase.getCaseStatus();
+			uniqueId = theCase.getUniqueId();
+			externalId = theCase.getExternalId();
+		}
 	}
 
 	public Integer getPrimaryKey() {
