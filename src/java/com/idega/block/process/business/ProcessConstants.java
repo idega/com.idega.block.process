@@ -34,6 +34,7 @@ public final class ProcessConstants implements Singleton {
 								CASE_IDENTIFIER = "string_caseIdentifier",
 								CASE_DESCRIPTION = "string_caseDescription",
 								CASE_OWNER_NAME = "string_ownerName",
+								CASE_OWNER_FULL_NAME = "string_ownerFullName",
 								CASE_OWNER_ADDRESS = "string_ownerAddress",
 								CASE_OWNER_POSTAL_CODE = "string_ownerPostCode",
 								CASE_OWNER_CITY = "string_ownerMunicipality",
