@@ -740,8 +740,8 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 	}
 
 	@Override
-	public void changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer) {
-		changeCaseStatus(theCase, newCaseStatus, null, performer, null, false, null, false);
+	public CaseLog changeCaseStatusDoNotSendUpdates(Case theCase, String newCaseStatus, User performer) {
+		return changeCaseStatus(theCase, newCaseStatus, null, performer, null, false, null, false);
 	}
 
 	@Override
