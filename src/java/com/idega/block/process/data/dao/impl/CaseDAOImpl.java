@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -906,6 +909,45 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			);
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error getting case(s) by metadata key " + key + " and value " + value, e);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Map<String, String> getCaseUUIDSByCriteria(String caseCode, Collection<String> subjects) {
+		if (StringUtil.isEmpty(caseCode) || ListUtil.isEmpty(subjects)) {
+			return null;
+		}
+
+		try {
+			List<Object[]> allData = getResultListByInlineQuery(
+					"select c.subject, c.uniqueId from " + Case.class.getName() + " c where c.caseCode = :code and c.subject in (:subjects)",
+					Object[].class,
+					new Param("code", caseCode),
+					new Param("subjects", subjects)
+			);
+			if (ListUtil.isEmpty(allData)) {
+				return null;
+			}
+
+			Map<String, String> results = new HashMap<>();
+			for (Object[] data: allData) {
+				if (ArrayUtil.isEmpty(data) || data.length < 2) {
+					continue;
+				}
+
+				String subject = (String) data[0];
+				String uniqueId = (String) data[1];
+				if (StringUtil.isEmpty(subject) || StringUtil.isEmpty(uniqueId)) {
+					continue;
+				}
+
+				results.put(subject, uniqueId);
+			}
+			return results;
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting cases subjects and UUIDs by case code " + caseCode + " and subjects " + subjects, e);
 		}
 
 		return null;
