@@ -62,6 +62,8 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	private List<Serializable> procInstIds;
 
+	private List<String> procInstIdsFromSearch;
+
 	public void setCaseNumber(String caseNumber) {
 		this.caseNumber = caseNumber;
 	}
@@ -314,6 +316,14 @@ public class CasesSearchCriteriaBean implements Serializable {
 
 	public void setEvaluationProcess(String evaluationProcess) {
 		this.evaluationProcess = evaluationProcess;
+	}
+
+	public List<String> getProcInstIdsFromSearch() {
+		return procInstIdsFromSearch;
+	}
+
+	public void setProcInstIdsFromSearch(List<String> procInstIdsFromSearch) {
+		this.procInstIdsFromSearch = procInstIdsFromSearch;
 	}
 
 }
