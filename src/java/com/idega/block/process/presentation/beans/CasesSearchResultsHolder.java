@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.idega.user.data.User;
 
 public interface CasesSearchResultsHolder {
@@ -33,6 +35,8 @@ public interface CasesSearchResultsHolder {
 
 	public byte[] getExportedCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
 	public byte[] getExportedCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category);
+
+	public boolean doExportCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category, HttpServletResponse response, String fileName);
 
 	public boolean setCasesToExport(String id, List<CasePresentation> cases);
 
