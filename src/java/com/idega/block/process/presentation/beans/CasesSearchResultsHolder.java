@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.idega.user.data.User;
@@ -26,6 +27,7 @@ public interface CasesSearchResultsHolder {
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany);
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
 	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category);
+	public boolean doExport(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category, HttpServletRequest request);
 
 	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany);
 	public byte[] getExportedSearchResults(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
@@ -36,7 +38,7 @@ public interface CasesSearchResultsHolder {
 	public byte[] getExportedCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields);
 	public byte[] getExportedCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category);
 
-	public boolean doExportCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category, HttpServletResponse response, String fileName);
+	public boolean doExportCases(String id, boolean exportContacts, boolean showCompany, boolean addDefaultFields, String category, HttpServletRequest request, HttpServletResponse response, String fileName);
 
 	public boolean setCasesToExport(String id, List<CasePresentation> cases);
 
