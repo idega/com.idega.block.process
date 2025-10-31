@@ -1271,7 +1271,7 @@ public class CaseBusinessBean extends IBOServiceBean implements CaseBusiness {
 
 	@Override
 	public String[] getStatusesForClosedCases() {
-		String customStatusesForClosedCases = getApplicationProperty("statuses_for_closed_cases");
+		String customStatusesForClosedCases = getApplicationProperty("statuses_for_closed_cases", CaseBMPBean.CASE_STATUS_DELETED_KEY);
 		if (!StringUtil.isEmpty(customStatusesForClosedCases)) {
 			String[] statuses = customStatusesForClosedCases.split(CoreConstants.COMMA);
 			if (!ArrayUtil.isEmpty(statuses)) {
