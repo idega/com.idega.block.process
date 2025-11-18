@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -948,6 +949,43 @@ public class CaseDAOImpl extends GenericDaoImpl implements CaseDAO {
 			return results;
 		} catch (Exception e) {
 			getLogger().log(Level.WARNING, "Error getting cases subjects and UUIDs by case code " + caseCode + " and subjects " + subjects, e);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Map<String, Set<Integer>> getCasesSubjectsAndIdsByIds(Collection<Integer> ids) {
+		if (ListUtil.isEmpty(ids)) {
+			return null;
+		}
+
+		try {
+			List<Object[]> allData = getResultList(Case.FIND_IDS_AND_SUBJECTS_BY_IDS, Object[].class, new Param(Case.PARAM_IDS, ids));
+			if (ListUtil.isEmpty(allData)) {
+				return null;
+			}
+
+			Map<String, Set<Integer>> results = new HashMap<>();
+			for (Object[] data: allData) {
+				if (ArrayUtil.isEmpty(data) || data.length != 2) {
+					continue;
+				}
+
+				Object id = data[0];
+				String subject = (String) data[1];
+				if (id instanceof Number && !StringUtil.isEmpty(subject)) {
+					Set<Integer> caseIds = results.get(subject);
+					if (caseIds == null) {
+						caseIds = new HashSet<>();
+						results.put(subject, caseIds);
+					}
+					caseIds.add(((Number) id).intValue());
+				}
+			}
+			return results;
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting subjects and IDs by cases IDs " + ids, e);
 		}
 
 		return null;

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.idega.block.process.data.bean.Case;
 import com.idega.block.process.data.bean.CaseConsultant;
@@ -120,5 +121,7 @@ public interface CaseDAO extends GenericDao, SettingsDAO {
 	public List<Case> getByMetaData(String key, String value);
 
 	public Map<String, String> getCaseUUIDSByCriteria(String caseCode, Collection<String> subjects);
+
+	public Map<String, Set<Integer>> getCasesSubjectsAndIdsByIds(Collection<Integer> ids);
 
 }

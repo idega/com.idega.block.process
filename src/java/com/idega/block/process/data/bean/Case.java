@@ -119,6 +119,10 @@ import com.idega.util.DBUtil;
 	@NamedQuery(
 			name = Case.FIND_BY_METADATA,
 			query = "select c from Case c inner join c.metadata mc where mc.key = :" + Case.PARAM_KEY + " and mc.value = :" + Case.PARAM_VALUE
+	),
+	@NamedQuery(
+			name = Case.FIND_IDS_AND_SUBJECTS_BY_IDS,
+			query = "select c.id, c.subject from Case c where c.id in :" + Case.PARAM_IDS
 	)
 })
 public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
@@ -181,7 +185,8 @@ public class Case implements Serializable, UniqueIDCapable, MetaDataCapable {
 								COUNT_CASES_CREATED_AFTER_GIVEN_TIMESTAMP_WITH_CASE_CODES = "Case.countOfCasesCreatedAfterGivenTimestampWithCaseCodes",
 								FIND_RAW_DATA_BY_IDS = "Case.findRawDataByIds",
 								FIND_HANDLER_GROUP_IDS_BY_CASE_CODE = "Case.findHandlerGroupIdsByCaseCode",
-								FIND_BY_METADATA = "Case.findByMetadata";
+								FIND_BY_METADATA = "Case.findByMetadata",
+								FIND_IDS_AND_SUBJECTS_BY_IDS = "Case.findIdsAndSubjectsByIds";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
