@@ -52,6 +52,7 @@ public final class ProcessConstants implements Singleton {
 
 								VARIABLE_SHORT_DESCRIPTION_OF_PROJECT_FOR_PUBLIC = "string_shortDescriptionOfTheProjectForPublic",
 								VARIABLE_OWNER_PHONE_NUMBER = "string_ownerPhoneNumber",
+								VARIABLE_PAY_FOR_PARKING_DATE =	"date_payForParkingDate",
 
 								IW_BUNDLE_IDENTIFIER = "com.idega.block.process",
 								EGOV_NEST_CASES_CACHE_KEY = "egovNestCasesCacheKey",
