@@ -1325,8 +1325,12 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		SelectQuery query = new SelectQuery(casesTable);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
 		query.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), ids));
-		query.setLimit(amount);
-		query.setOffset(from);
+		if (amount != null) {
+			query.setLimit(amount);
+		}
+		if (from != null) {
+			query.setOffset(from);
+		}
 		query.addOrder(casesTable, COLUMN_CREATED, false);
 
 		return idoFindPKsByQuery(query);
