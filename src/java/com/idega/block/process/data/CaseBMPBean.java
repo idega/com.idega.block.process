@@ -1155,7 +1155,12 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 
 		query.addJoin(casesTable, getIDColumnName(), casesLogsTable, CaseLogBMPBean.COLUMN_CASE_ID);
 		query.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
-		query.addCriteria(new InCriteria(casesLogsTable.getColumn(CaseLogBMPBean.COLUMN_CASE_STATUS_AFTER), statuses));
+		query.addCriteria(
+				new OR(
+						new InCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), statuses),
+						new InCriteria(casesLogsTable.getColumn(CaseLogBMPBean.COLUMN_CASE_STATUS_AFTER), statuses)
+				)
+		);
 
 		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
 
