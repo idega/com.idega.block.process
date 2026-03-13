@@ -39,6 +39,7 @@ import com.idega.data.GenericEntity;
 import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDOException;
 import com.idega.data.IDOQuery;
+import com.idega.data.IDORelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.data.IDORuntimeException;
 import com.idega.data.IDOStoreException;
@@ -1141,6 +1142,31 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		return ejbFindByCriteria(null, null, null, statuses, null, null, null, null, false, null, null, null, null, casesIds);
 	}
 
+	public Collection<Integer> ejbFindByCasesIdsAndStatusesHistory(Collection<Integer> casesIds, String[] statuses) throws FinderException, IDORelationshipException {
+		if (ListUtil.isEmpty(casesIds) || ArrayUtil.isEmpty(statuses)) {
+			return null;
+		}
+
+		Table casesTable = new Table(this);
+		Table casesLogsTable = new Table(CaseLog.class);
+
+		SelectQuery query = new SelectQuery(casesTable);
+		query.addColumn(casesTable.getColumn(getIDColumnName()));
+
+		query.addJoin(casesTable, getIDColumnName(), casesLogsTable, CaseLogBMPBean.COLUMN_CASE_ID);
+		query.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), casesIds));
+		query.addCriteria(
+				new OR(
+						new InCriteria(casesTable.getColumn(COLUMN_CASE_STATUS), statuses),
+						new InCriteria(casesLogsTable.getColumn(CaseLogBMPBean.COLUMN_CASE_STATUS_AFTER), statuses)
+				)
+		);
+
+		query.addGroupByColumn(casesTable.getColumn(getIDColumnName()));
+
+		return idoFindPKsByQuery(query);
+	}
+
 	public Collection<Integer> ejbFindByCaseIdsAndStatusesAndCasesCode(Collection<Integer> casesIds, String[] statuses, String caseCode) throws FinderException {
 		return ejbFindByCriteria(null, null, null, statuses, null, null, null, null, false, null, null, caseCode, null, casesIds);
 	}
@@ -1325,8 +1351,12 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 		SelectQuery query = new SelectQuery(casesTable);
 		query.addColumn(casesTable.getColumn(getIDColumnName()));
 		query.addCriteria(new InCriteria(casesTable.getColumn(getIDColumnName()), ids));
-		query.setLimit(amount);
-		query.setOffset(from);
+		if (amount != null) {
+			query.setLimit(amount);
+		}
+		if (from != null) {
+			query.setOffset(from);
+		}
 		query.addOrder(casesTable, COLUMN_CREATED, false);
 
 		return idoFindPKsByQuery(query);

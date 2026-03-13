@@ -17,6 +17,7 @@ import javax.ejb.FinderException;
 
 import com.idega.data.IDOException;
 import com.idega.data.IDOHome;
+import com.idega.data.IDORelationshipException;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -409,6 +410,8 @@ public interface CaseHome extends IDOHome {
 	);
 
 	public Collection<Integer> findByCaseIdsAndStatuses(Collection<Integer> casesIds, String[] statuses) throws FinderException;
+
+	public Collection<Integer> findByCasesIdsAndStatusesHistory(Collection<Integer> casesIds, String[] statuses) throws FinderException, IDORelationshipException;
 
 	public Collection<Integer> findByCaseIdsAndStatusesAndCasesCode(Collection<Integer> casesIds, String[] statuses, String caseCode) throws FinderException;
 

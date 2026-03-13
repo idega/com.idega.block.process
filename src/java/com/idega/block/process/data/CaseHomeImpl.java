@@ -22,6 +22,7 @@ import com.idega.data.IDOEntity;
 import com.idega.data.IDOException;
 import com.idega.data.IDOFactory;
 import com.idega.data.IDOLookup;
+import com.idega.data.IDORelationshipException;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -719,6 +720,14 @@ public class CaseHomeImpl extends IDOFactory implements CaseHome {
 	public Collection<Integer> findByCaseIdsAndStatuses(Collection<Integer> casesIds, String[] statuses) throws FinderException {
 		IDOEntity entity = this.idoCheckOutPooledEntity();
 		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCaseIdsAndStatuses(casesIds, statuses);
+		this.idoCheckInPooledEntity(entity);
+		return ids;
+	}
+
+	@Override
+	public Collection<Integer> findByCasesIdsAndStatusesHistory(Collection<Integer> casesIds, String[] statuses) throws FinderException, IDORelationshipException {
+		IDOEntity entity = this.idoCheckOutPooledEntity();
+		Collection<Integer> ids = ((CaseBMPBean) entity).ejbFindByCasesIdsAndStatusesHistory(casesIds, statuses);
 		this.idoCheckInPooledEntity(entity);
 		return ids;
 	}
