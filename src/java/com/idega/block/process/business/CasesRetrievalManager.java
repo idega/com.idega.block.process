@@ -40,6 +40,7 @@ public interface CasesRetrievalManager {
 								CASE_LIST_TYPE_SUBSCRIBER = "SubscriberCases",
 								CASE_LIST_TYPE_SELECTED_USERS = "SelectedUsers",
 								CASE_LIST_TYPE_COMPANY = "CompanyCases",
+								CASE_LIST_TYPE_MY_OPEN_HANDLER_CASES = "MyOpenHandlerCases",
 
 								COMMENTS_PERSISTENCE_MANAGER_IDENTIFIER = "commentsPersistenceManagerIdentifier",
 								BEAN_IDENTIFIER = "defaultCaseHandler",
