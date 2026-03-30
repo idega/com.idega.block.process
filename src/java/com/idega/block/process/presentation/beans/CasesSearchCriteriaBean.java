@@ -31,8 +31,8 @@ public class CasesSearchCriteriaBean implements Serializable {
 	private Long subscribersGroupId;
 	private String[] statuses;
 
-	private IWTimestamp	dateFrom,
-						dateTo;
+	private Date	dateFrom,
+					dateTo;
 
 	private int page = 0,
 				pageSize = 0,
@@ -107,25 +107,25 @@ public class CasesSearchCriteriaBean implements Serializable {
 	public void setDateRange(String dateRange) {
 		this.dateRange = dateRange;
 	}
-	public IWTimestamp getDateFrom() {
+	public Date getDateFrom() {
 		if (dateFrom == null)
 			parseDateString();
 
 		return dateFrom;
 	}
 
-	public void setDateFrom(IWTimestamp dateFrom) {
+	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public IWTimestamp getDateTo() {
+	public Date getDateTo() {
 		if (dateTo == null)
 			parseDateString();
 
 		return dateTo;
 	}
 
-	public void setDateTo(IWTimestamp dateTo) {
+	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
 	}
 
@@ -143,7 +143,7 @@ public class CasesSearchCriteriaBean implements Serializable {
 				} else {
 					date = IWDatePickerHandler.getParsedDateByFormat(dateRange, format);
 				}
-				dateFrom = date == null ? null : new IWTimestamp(date);
+				dateFrom = date;
 			}
 			else {
 				String[] dateRangeParts = dateRange.split(splitter);
@@ -155,18 +155,21 @@ public class CasesSearchCriteriaBean implements Serializable {
 				} else {
 					date = IWDatePickerHandler.getParsedDateByFormat(dateRangeParts[0], format);
 				}
-				dateFrom = date == null ? null : new IWTimestamp(date);
+				dateFrom = date;
 				if (format == null) {
 					date = IWDatePickerHandler.getParsedDate(dateRangeParts[1], locale);
 				} else {
 					date = IWDatePickerHandler.getParsedDateByFormat(dateRangeParts[1], format);
 				}
-				dateTo = date == null ? null : new IWTimestamp(date);
+				IWTimestamp dateTo = date == null ? null : new IWTimestamp(date);
 				if (dateTo != null) {
 					dateTo.setHour(23);
 					dateTo.setMinute(59);
 					dateTo.setSecond(59);
 					dateTo.setMilliSecond(999);
+				}
+				if (dateTo != null) {
+					this.dateTo = dateTo.getDate();
 				}
 			}
 		}
