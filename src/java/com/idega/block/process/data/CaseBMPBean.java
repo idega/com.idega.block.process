@@ -162,6 +162,7 @@ public final class CaseBMPBean extends GenericEntity implements Case, UniqueIDCa
 	public static final String CASE_STATUS_AGENT_DAY_STARTED = "ADST";
 	public static final String CASE_STATUS_RE_OPENED = "REOP";
 	public static final String CASE_STATUS_DATA_RECEIVED = "DARE";
+	public static final String CASE_STATUS_DUPLICATED = "DUPL";
 
 	@Override
 	public void initializeAttributes() {
